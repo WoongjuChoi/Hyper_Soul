@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FiniteStateMachine : MonoBehaviour
 {
-    private Dictionary<EStateID, IfiniteState> _states;
+    private Dictionary<EStateIDs, IfiniteState> _states;
 
     private IfiniteState _currState;
 
@@ -18,7 +18,7 @@ public class FiniteStateMachine : MonoBehaviour
         _currState.OnUpdate();
     }
 
-    public void AddState(EStateID index, IfiniteState state)
+    public void AddState(EStateIDs index, IfiniteState state)
     {
         // 상태가 이미 있다면 추가시키지 않음
         if (_states.ContainsKey(index))
@@ -31,7 +31,7 @@ public class FiniteStateMachine : MonoBehaviour
         _states.Add(index, state);
     }
 
-    public void ChangeState(EStateID index)
+    public void ChangeState(EStateIDs index)
     {
         // 현재 상태가 있을 때 Exit
         _currState?.OnExit();

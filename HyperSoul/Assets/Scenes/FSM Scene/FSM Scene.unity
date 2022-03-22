@@ -1072,6 +1072,8 @@ GameObject:
   - component: {fileID: 1884177659}
   - component: {fileID: 1884177661}
   - component: {fileID: 1884177660}
+  - component: {fileID: 1884177664}
+  - component: {fileID: 1884177663}
   - component: {fileID: 1884177662}
   m_Layer: 0
   m_Name: Sample Player
@@ -1211,7 +1213,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9d229e6b9162db4bab3dce53c4ab692, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerMovement: {fileID: 1884177660}
+  _samplePlayerAttack: {fileID: 1884177664}
+  _samplePlayerHP: {fileID: 1884177663}
+  _samplePlayerMovement: {fileID: 1884177660}
+--- !u!114 &1884177663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884177654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8b96c96de15e034e8a843e8e59396a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerHP: 10
+  _damagedValue: 5
+--- !u!114 &1884177664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884177654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30914bbfa33beae4abd3fcffecdb8e84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2090530388
 PrefabInstance:
   m_ObjectHideFlags: 0

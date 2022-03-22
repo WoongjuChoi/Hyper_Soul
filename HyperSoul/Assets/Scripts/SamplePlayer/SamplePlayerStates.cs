@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class SamplePlayerStates : MonoBehaviour
 {
-    [SerializeField] private SamplePlayerMovement _playerMovement = null;
+    [SerializeField]
+    private SamplePlayerAttack _samplePlayerAttack = null;
+    
+    [SerializeField]
+    private SamplePlayerHP _samplePlayerHP = null;
+
+    [SerializeField]
+    private SamplePlayerMovement _samplePlayerMovement = null;
 
     private FiniteStateMachine _samplePlayerFSM = new FiniteStateMachine();
 
@@ -13,6 +20,8 @@ public class SamplePlayerStates : MonoBehaviour
     private SamplePlayerAttackState _samplePlayerAttackState = new SamplePlayerAttackState();
     private SamplePlayerDamagedState _samplePlayerDamagedState = new SamplePlayerDamagedState();
     private SamplePlayerDieState _samplePlayerDieState = new SamplePlayerDieState();
+
+    private EStateIDs _samplePlayerState = EStateIDs.None;
 
     private void Start()
     {
@@ -23,22 +32,59 @@ public class SamplePlayerStates : MonoBehaviour
         _samplePlayerFSM.AddState(EStateIDs.Die, _samplePlayerDieState);
 
         _samplePlayerFSM.InitializeState(EStateIDs.Idle);
+        _samplePlayerState = EStateIDs.Idle;
     }
 
     private void Update()
     {
-        SamplePlayerMoving();
-    }
+        _samplePlayerFSM.UpdateState();
 
-    private void SamplePlayerMoving()
-    {
-        if (_playerMovement.IsMoving)
+        if (_samplePlayerMovement.IsMoving)
         {
-            _samplePlayerFSM.ChangeState(EStateIDs.Move);
+            _samplePlayerState = EStateIDs.Move;
         }
         else
         {
-            _samplePlayerFSM.ChangeState(EStateIDs.Idle);
+            if (_samplePlayerHP.IsDie)
+            {
+                _samplePlayerState = EStateIDs.Die;
+            }
+            else if (_samplePlayerHP.IsDamaged)
+            {
+                _samplePlayerState = EStateIDs.Damaged;
+            }
+            else
+            {
+                _samplePlayerState = EStateIDs.Idle;
+            }
         }
+
+        if (_samplePlayerAttack.IsAttack)
+        {
+            _samplePlayerState = EStateIDs.Attack;
+        }
+
+        switch (_samplePlayerState)
+        {
+            case EStateIDs.Attack:
+                _samplePlayerFSM.ChangeState(EStateIDs.Attack);
+                break;
+            case EStateIDs.Damaged:
+                _samplePlayerFSM.ChangeState(EStateIDs.Damaged);
+                break;
+            case EStateIDs.Die:
+                _samplePlayerFSM.ChangeState(EStateIDs.Die);
+                break;
+            case EStateIDs.Idle:
+                _samplePlayerFSM.ChangeState(EStateIDs.Idle);
+                break;
+            case EStateIDs.Move:
+                _samplePlayerFSM.ChangeState(EStateIDs.Move);
+                break;
+            default:
+                break;
+        }
+
+        Debug.Log($"_samplePlayerState : {_samplePlayerState}");
     }
 }

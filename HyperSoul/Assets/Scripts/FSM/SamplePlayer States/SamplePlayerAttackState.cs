@@ -14,11 +14,6 @@ public class SamplePlayerAttackState : IfiniteState
         Debug.Log("SamplePlayerAttackState OnExit");
     }
 
-    public void OnInitialize(FiniteStateMachine fsm)
-    {
-        Debug.Log("SamplePlayerAttackState OnInitialize");
-    }
-
     public void OnUpdate()
     {
         Debug.Log("SamplePlayerAttackState OnUpdate");

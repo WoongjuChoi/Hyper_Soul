@@ -13,11 +13,6 @@ class SamplePlayerDamagedState : IfiniteState
         Debug.Log("SamplePlayerDamagedState OnExit");
     }
 
-    public void OnInitialize(FiniteStateMachine fsm)
-    {
-        Debug.Log("SamplePlayerDamagedState OnInitialize");
-    }
-
     public void OnUpdate()
     {
         Debug.Log("SamplePlayerDamagedState OnUpdate");

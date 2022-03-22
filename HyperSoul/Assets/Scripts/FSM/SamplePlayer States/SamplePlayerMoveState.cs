@@ -14,11 +14,6 @@ public class SamplePlayerMoveState : IfiniteState
         Debug.Log("SamplePlayerMoveState OnExit");
     }
 
-    public void OnInitialize(FiniteStateMachine fsm)
-    {
-        Debug.Log("SamplePlayerMoveState OnInitialize");
-    }
-
     public void OnUpdate()
     {
         Debug.Log("SamplePlayerMoveState OnUpdate");

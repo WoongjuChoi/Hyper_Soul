@@ -11,7 +11,5 @@ public interface IfiniteState
 
     public void OnExit();
 
-    public void OnInitialize(FiniteStateMachine fsm);
-
     public void OnUpdate();
 }

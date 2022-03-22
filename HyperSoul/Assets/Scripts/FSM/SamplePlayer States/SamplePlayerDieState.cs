@@ -14,11 +14,6 @@ public class SamplePlayerDieState : IfiniteState
         Debug.Log("SamplePlayerDieState OnExit");
     }
 
-    public void OnInitialize(FiniteStateMachine fsm)
-    {
-        Debug.Log("SamplePlayerDieState OnInitialize");
-    }
-
     public void OnUpdate()
     {
         Debug.Log("SamplePlayerDieState OnUpdate");

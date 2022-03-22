@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FiniteStateMachine : MonoBehaviour
+public class FiniteStateMachine
 {
     private Dictionary<EStateIDs, IfiniteState> _states = new Dictionary<EStateIDs, IfiniteState>();
 
     private IfiniteState _currState;
 
-    private void Update()
+    public void UpdateState()
     {
         if (null == _currState)
         {
@@ -28,7 +28,9 @@ public class FiniteStateMachine : MonoBehaviour
 
         // 상태 추가
         _states.Add(index, state);
-        _states[index].OnInitialize(this);
+
+        // 디버깅용
+        Debug.Log($"AddState : {_states[index].GetType()}");
     }
 
     public void ChangeState(EStateIDs index)

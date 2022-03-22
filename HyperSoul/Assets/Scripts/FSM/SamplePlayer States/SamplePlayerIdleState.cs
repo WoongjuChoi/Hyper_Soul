@@ -14,11 +14,6 @@ public class SamplePlayerIdleState : IfiniteState
         Debug.Log("SamplePlayerIdleState OnExit");
     }
 
-    public void OnInitialize(FiniteStateMachine fsm)
-    {
-        Debug.Log("SamplePlayerIdleState OnInitialize");
-    }
-
     public void OnUpdate()
     {
         Debug.Log("SamplePlayerIdleState OnUpdate");

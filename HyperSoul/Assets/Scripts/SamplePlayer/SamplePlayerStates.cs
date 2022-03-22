@@ -39,6 +39,15 @@ public class SamplePlayerStates : MonoBehaviour
     {
         _samplePlayerFSM.UpdateState();
 
+        ChangeSamplePlayerState();
+
+        ChangeSamplePlayerFSM();
+
+        Debug.Log($"_samplePlayerState : {_samplePlayerState}");
+    }
+
+    private void ChangeSamplePlayerState()
+    {
         if (_samplePlayerMovement.IsMoving)
         {
             _samplePlayerState = EStateIDs.Move;
@@ -63,7 +72,10 @@ public class SamplePlayerStates : MonoBehaviour
         {
             _samplePlayerState = EStateIDs.Attack;
         }
+    }
 
+    private void ChangeSamplePlayerFSM()
+    {
         switch (_samplePlayerState)
         {
             case EStateIDs.Attack:
@@ -84,7 +96,5 @@ public class SamplePlayerStates : MonoBehaviour
             default:
                 break;
         }
-
-        Debug.Log($"_samplePlayerState : {_samplePlayerState}");
     }
 }

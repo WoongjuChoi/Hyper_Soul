@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class SamplePlayerMovement : MonoBehaviour
 {
-    [SerializeField] private SamplePlayerInput _playerInput = null;
+    [SerializeField]
+    private SamplePlayerInput _playerInput = null;
 
-    [SerializeField] private float _moveSpeed = 0f;
+    [SerializeField]
+    private float _moveSpeed = 0f;
 
     private bool _isMoving = false;
 

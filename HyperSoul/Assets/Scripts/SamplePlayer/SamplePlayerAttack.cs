@@ -10,7 +10,7 @@ public class SamplePlayerAttack : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKey(KeyCode.Z))
         {
             _isAttack = true;
         }

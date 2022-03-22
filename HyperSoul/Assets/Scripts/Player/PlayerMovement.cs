@@ -11,7 +11,10 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody _playerRigidbody;
     private Animator _playerAnimator;
 
-    void Awake()
+    private float _jumpForce = 10f;
+    private bool _isJump = false;
+
+    private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
         _playerRigidbody = GetComponent<Rigidbody>();
@@ -21,11 +24,13 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         moveAnimation();
+        jump();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         move();
+        jumpAnimation();
     }
 
     private void moveAnimation()
@@ -40,5 +45,28 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveVector = new Vector3(_playerInput.HorizontalMoveInput * dtMoveSpeed, 0, _playerInput.VerticalMoveInput * dtMoveSpeed);
 
         _playerRigidbody.MovePosition(_playerRigidbody.position + moveVector);
+    }
+
+    private void jumpAnimation()
+    {
+        if (_isJump && _playerAnimator.GetBool(PlayerAnimatorID.ISJUMP) == false)
+        {
+            _playerAnimator.SetTrigger(PlayerAnimatorID.DOJUMP);
+            _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, true);
+        }
+    }
+    private void jump()
+    {
+        if (_playerInput.JumpInput && _isJump == false)
+        {
+            _isJump = true;
+            _playerRigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, false);
+        _isJump = false;
     }
 }

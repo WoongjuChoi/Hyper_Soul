@@ -6,7 +6,7 @@ public class SamplePlayerStates : MonoBehaviour
 {
     [SerializeField]
     private SamplePlayerAttack _samplePlayerAttack = null;
-    
+
     [SerializeField]
     private SamplePlayerHP _samplePlayerHP = null;
 
@@ -43,34 +43,34 @@ public class SamplePlayerStates : MonoBehaviour
 
         ChangeSamplePlayerFSM();
 
-        Debug.Log($"_samplePlayerState : {_samplePlayerState}");
+        // µð¹ö±ë¿ë
+        Debug.Log($"SamplePlayerStates.cs _samplePlayerState : {_samplePlayerState}");
     }
 
     private void ChangeSamplePlayerState()
     {
+        if (false == _samplePlayerMovement.IsMoving && false == _samplePlayerAttack.IsAttack && false == _samplePlayerHP.IsDie && false == _samplePlayerHP.IsDamaged)
+        {
+            _samplePlayerState = EStateIDs.Idle;
+        }
+
         if (_samplePlayerMovement.IsMoving)
         {
             _samplePlayerState = EStateIDs.Move;
-        }
-        else
-        {
-            if (_samplePlayerHP.IsDie)
-            {
-                _samplePlayerState = EStateIDs.Die;
-            }
-            else if (_samplePlayerHP.IsDamaged)
-            {
-                _samplePlayerState = EStateIDs.Damaged;
-            }
-            else
-            {
-                _samplePlayerState = EStateIDs.Idle;
-            }
         }
 
         if (_samplePlayerAttack.IsAttack)
         {
             _samplePlayerState = EStateIDs.Attack;
+        }
+
+        if (_samplePlayerHP.IsDie)
+        {
+            _samplePlayerState = EStateIDs.Die;
+        }
+        else if (_samplePlayerHP.IsDamaged)
+        {
+            _samplePlayerState = EStateIDs.Damaged;
         }
     }
 

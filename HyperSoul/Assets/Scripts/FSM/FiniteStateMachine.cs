@@ -2,14 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FiniteStateMachine
+public class FiniteStateMachine : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject _gameObject = null;
+        
     private Dictionary<EStateIDs, IfiniteState> _states = new Dictionary<EStateIDs, IfiniteState>();
 
     private IfiniteState _currState;
 
-    public void UpdateState()
+    private void Update()
     {
+        // 디버깅용
+        Debug.Log("FiniteStateMachine Update");
+
         if (null == _currState)
         {
             return;
@@ -29,18 +35,11 @@ public class FiniteStateMachine
         // 상태 추가
         _states.Add(index, state);
 
-        // 디버깅용
-        Debug.Log($"AddState : {_states[index].GetType()}");
+        _states[index].OnInitialize(_gameObject, this);
     }
 
     public void ChangeState(EStateIDs index)
     {
-        // 현재 상태가 바꿀 상태가 같다면 실행X
-        if (_states[index] == _currState)
-        {
-            return;
-        }
-
         // 현재 다른 상태가 있을 때 Exit
         _currState?.OnExit();
 
@@ -54,15 +53,12 @@ public class FiniteStateMachine
 
     public void InitializeState(EStateIDs index)
     {
-        // 현재 상태가 있다면 실행X
+        // 현재 상태가 있다면 초기화하지 않음
         if (null != _currState)
         {
             return;
         }
 
         _currState = _states[index];
-
-        // 디버깅용
-        Debug.Log($"_currState : {_states[index].GetType()}");
     }
 }

@@ -8,17 +8,19 @@ public class SamplePlayerIdleState : IfiniteState
 
     private FiniteStateMachine _finiteStateMachine = null;
 
-    public void OnEnter()
+    
+
+    public void EnterState()
     {
         Debug.Log("SamplePlayerIdleState OnEnter");
     }
 
-    public void OnExit()
+    public void ExitState()
     {
         Debug.Log("SamplePlayerIdleState OnExit");
     }
 
-    public void OnInitialize(GameObject obj, FiniteStateMachine fsm)
+    public void InitializeState(GameObject obj, FiniteStateMachine fsm)
     {
         _gameObject = obj;
 
@@ -27,7 +29,7 @@ public class SamplePlayerIdleState : IfiniteState
         Debug.Log("SamplePlayerIdleState OnInitialize");
     }
 
-    public void OnUpdate()
+    public void UpdateState()
     {
         // 디버깅용
         if (Input.GetKeyDown(KeyCode.P))

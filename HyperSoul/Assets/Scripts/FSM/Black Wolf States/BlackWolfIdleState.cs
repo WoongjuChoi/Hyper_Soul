@@ -8,17 +8,17 @@ public class BlackWolfIdleState : IfiniteState
 
     private FiniteStateMachine _finiteStateMachine = null;
 
-    public void OnEnter()
+    public void EnterState()
     {
         Debug.Log("BlackWolfIdleState OnEnter");
     }
 
-    public void OnExit()
+    public void ExitState()
     {
         Debug.Log("BlackWolfIdleState OnExit");
     }
 
-    public void OnInitialize(GameObject obj, FiniteStateMachine fsm)
+    public void InitializeState(GameObject obj, FiniteStateMachine fsm)
     {
         _gameObject = obj;
 
@@ -27,7 +27,7 @@ public class BlackWolfIdleState : IfiniteState
         Debug.Log("BlackWolfIdleState OnInitialize");
     }
 
-    public void OnUpdate()
+    public void UpdateState()
     {
         Debug.Log("BlackWolfIdleState OnUpdate");
     }

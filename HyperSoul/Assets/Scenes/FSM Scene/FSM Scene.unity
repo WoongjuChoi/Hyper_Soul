@@ -1262,6 +1262,7 @@ GameObject:
   - component: {fileID: 1579276155}
   - component: {fileID: 1579276157}
   - component: {fileID: 1579276156}
+  - component: {fileID: 1579276159}
   - component: {fileID: 1579276158}
   m_Layer: 0
   m_Name: Black Wolf
@@ -1327,6 +1328,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameObject: {fileID: 1579276154}
+--- !u!114 &1579276159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579276154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad3b89a5877d8054c892bcbfc76834b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _blackWolfFSM: {fileID: 1579276158}
 --- !u!1 &1884177654
 GameObject:
   m_ObjectHideFlags: 0

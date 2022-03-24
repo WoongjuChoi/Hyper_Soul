@@ -8,17 +8,17 @@ public class SamplePlayerAttackState : IfiniteState
 
     private FiniteStateMachine _finiteStateMachine = null;
 
-    public void OnEnter()
+    public void EnterState()
     {
         Debug.Log("SamplePlayerAttackState OnEnter");
     }
 
-    public void OnExit()
+    public void ExitState()
     {
         Debug.Log("SamplePlayerAttackState OnExit");
     }
 
-    public void OnInitialize(GameObject obj, FiniteStateMachine fsm)
+    public void InitializeState(GameObject obj, FiniteStateMachine fsm)
     {
         _gameObject = obj;
 
@@ -27,7 +27,7 @@ public class SamplePlayerAttackState : IfiniteState
         Debug.Log("SamplePlayerAttackState OnInitialize");
     }
 
-    public void OnUpdate()
+    public void UpdateState()
     {
         // µð¹ö±ë¿ë
         if (Input.GetKeyDown(KeyCode.I))

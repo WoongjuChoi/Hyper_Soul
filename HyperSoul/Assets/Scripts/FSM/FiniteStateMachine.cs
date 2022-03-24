@@ -21,7 +21,7 @@ public class FiniteStateMachine : MonoBehaviour
             return;
         }
 
-        _currState.OnUpdate();
+        _currState.UpdateState();
     }
 
     public void AddState(EStateIDs index, IfiniteState state)
@@ -35,19 +35,19 @@ public class FiniteStateMachine : MonoBehaviour
         // 상태 추가
         _states.Add(index, state);
 
-        _states[index].OnInitialize(_gameObject, this);
+        _states[index].InitializeState(_gameObject, this);
     }
 
     public void ChangeState(EStateIDs index)
     {
         // 현재 다른 상태가 있을 때 Exit
-        _currState?.OnExit();
+        _currState?.ExitState();
 
         // 상태를 바꿔줌
         if (_states.ContainsKey(index))
         {
             _currState = _states[index];
-            _currState.OnEnter();
+            _currState.EnterState();
         }
     }
 

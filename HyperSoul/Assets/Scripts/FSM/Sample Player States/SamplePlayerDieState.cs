@@ -8,17 +8,17 @@ public class SamplePlayerDieState : IfiniteState
 
     private FiniteStateMachine _finiteStateMachine = null;
 
-    public void OnEnter()
+    public void EnterState()
     {
         Debug.Log("SamplePlayerDieState OnEnter");
     }
 
-    public void OnExit()
+    public void ExitState()
     {
         Debug.Log("SamplePlayerDieState OnExit");
     }
 
-    public void OnInitialize(GameObject obj, FiniteStateMachine fsm)
+    public void InitializeState(GameObject obj, FiniteStateMachine fsm)
     {
         _gameObject = obj;
 
@@ -27,7 +27,7 @@ public class SamplePlayerDieState : IfiniteState
         Debug.Log("SamplePlayerDieState OnInitialize");
     }
 
-    public void OnUpdate()
+    public void UpdateState()
     {
         Debug.Log("SamplePlayerDieState OnUpdate");
     }

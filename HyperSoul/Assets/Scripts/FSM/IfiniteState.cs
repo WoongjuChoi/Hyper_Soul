@@ -7,11 +7,11 @@ using UnityEngine;
 
 public interface IfiniteState
 {
-    public void OnEnter();
+    public void EnterState();
 
-    public void OnExit();
+    public void ExitState();
 
-    public void OnInitialize(GameObject obj, FiniteStateMachine fsm);
+    public void InitializeState(GameObject obj, FiniteStateMachine fsm);
 
-    public void OnUpdate();
+    public void UpdateState();
 }

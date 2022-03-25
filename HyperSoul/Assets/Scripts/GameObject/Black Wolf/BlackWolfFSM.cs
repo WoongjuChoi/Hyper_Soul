@@ -5,6 +5,9 @@ using UnityEngine;
 public class BlackWolfFSM : MonoBehaviour
 {
     [SerializeField]
+    private int _blackWolfHP = 0;
+    
+    [SerializeField]
     private FiniteStateMachine _blackWolfFSM = null;
 
     private BlackWolfAlertState _blackWolfAlertState = new BlackWolfAlertState();

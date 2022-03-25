@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 public enum EStateIDs
 {
+    None,
     Idle,
-    Move,
+    Spawn,
     Attack,
     Damaged,
     Die,
+    Alert,
+    Chase,
+    ReturnPosition,
+
 }

@@ -9,8 +9,11 @@ public enum EStateIDs
     None,
     Idle,
     Spawn,
-    Move,
     Attack,
     Damaged,
     Die,
+    Alert,
+    Chase,
+    ReturnPosition,
+
 }

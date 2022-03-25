@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class FiniteStateMachine : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject _gameObject = null;
-        
     private Dictionary<EStateIDs, IfiniteState> _states = new Dictionary<EStateIDs, IfiniteState>();
 
     private IfiniteState _currState;
@@ -35,7 +32,7 @@ public class FiniteStateMachine : MonoBehaviour
         // 상태 추가
         _states.Add(index, state);
 
-        _states[index].InitializeState(_gameObject, this);
+        _states[index].InitializeState(this);
     }
 
     public void ChangeState(EStateIDs index)

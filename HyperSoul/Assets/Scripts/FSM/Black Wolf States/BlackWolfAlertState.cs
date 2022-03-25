@@ -2,29 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlackWolfIdleState : IfiniteState
+public class BlackWolfAlertState : IfiniteState
 {
     private FiniteStateMachine _finiteStateMachine = null;
 
     public void EnterState()
     {
-        Debug.Log("BlackWolfIdleState EnterState");
+        Debug.Log("BlackWolfAlertState EnterState");
     }
 
     public void ExitState()
     {
-        Debug.Log("BlackWolfIdleState ExitState");
+        Debug.Log("BlackWolfAlertState ExitState");
     }
 
     public void InitializeState(FiniteStateMachine fsm)
     {
         _finiteStateMachine = fsm;
 
-        Debug.Log("BlackWolfIdleState InitializeState");
+        Debug.Log("BlackWolfAlertState InitializeState");
     }
 
     public void UpdateState()
     {
-        Debug.Log("BlackWolfIdleState UpdateState");
+        Debug.Log("BlackWolfAlertState UpdateState");
     }
 }

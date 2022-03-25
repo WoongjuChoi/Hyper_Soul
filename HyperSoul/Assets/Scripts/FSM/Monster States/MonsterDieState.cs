@@ -2,29 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlackWolfDieState : IfiniteState
+public class MonsterDieState : IfiniteState
 {
     private FiniteStateMachine _finiteStateMachine = null;
 
     public void EnterState()
     {
-        Debug.Log("BlackWolfDieState EnterState");
+        Debug.Log("MonsterDieState EnterState");
     }
 
     public void ExitState()
     {
-        Debug.Log("BlackWolfDieState ExitState");
+        Debug.Log("MonsterDieState ExitState");
     }
 
-    public void InitializeState(FiniteStateMachine fsm)
+    public void InitializeState(GameObject obj, FiniteStateMachine fsm)
     {
         _finiteStateMachine = fsm;
 
-        Debug.Log("BlackWolfDieState InitializeState");
+        Debug.Log("MonsterDieState InitializeState");
     }
 
     public void UpdateState()
     {
-        Debug.Log("BlackWolfDieState UpdateState");
+        Debug.Log("MonsterDieState UpdateState");
     }
 }

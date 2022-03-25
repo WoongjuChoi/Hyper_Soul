@@ -11,7 +11,7 @@ public interface IfiniteState
 
     public void ExitState();
 
-    public void InitializeState(FiniteStateMachine fsm);
+    public void InitializeState(GameObject obj, FiniteStateMachine fsm);
 
     public void UpdateState();
 }

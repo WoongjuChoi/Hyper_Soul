@@ -14,17 +14,7 @@ class PlayerAnimatorID
 {
     public static readonly int VERTICAL = Animator.StringToHash(InputParameterID.VERTICAL);
     public static readonly int HORIZONTAL = Animator.StringToHash(InputParameterID.HORIZONTAL);
-    public const string DOJUMP = "doJump";
-    public const string ISJUMP = "isJump";
-    public const string ISFALLING = "isFalling";
 }
-
-class TagParameterID
-{
-    public const string MAP = "Map"; // Layer·Î ¹Ù²ã¾ßÇÔ
-    public const string BULLET = "Bullet";
-}
-
 
 public enum EGunState
 {

@@ -10,8 +10,14 @@ public class PlayerMovement : MonoBehaviour
     private PlayerInput _playerInput;
     private Rigidbody _playerRigidbody;
     private Animator _playerAnimator;
+    private PlayerCam _playerCam;
 
+    [SerializeField]
     private float _jumpForce = 10f;
+
+    [SerializeField]
+    private Transform _cameraArm;
+
     private bool _isJump = false;
 
     private void Awake()
@@ -24,13 +30,13 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         moveAnimation();
-        jump();
+        jumpAnimation();
     }
 
     private void FixedUpdate()
     {
         move();
-        jumpAnimation();
+        jump();
     }
 
     private void moveAnimation()
@@ -42,9 +48,10 @@ public class PlayerMovement : MonoBehaviour
     private void move()
     {
         float dtMoveSpeed = _moveSpeed * Time.deltaTime;
-        Vector3 moveVector = new Vector3(_playerInput.HorizontalMoveInput * dtMoveSpeed, 0, _playerInput.VerticalMoveInput * dtMoveSpeed);
-
-        _playerRigidbody.MovePosition(_playerRigidbody.position + moveVector);
+        Vector3 lookForward = new Vector3(_cameraArm.forward.x, 0f, _cameraArm.forward.z).normalized;
+        Vector3 lookRight = new Vector3(_cameraArm.right.x, 0f, _cameraArm.right.z).normalized;
+        Vector3 moveVector = lookForward * _playerInput.VerticalMoveInput + lookRight * _playerInput.HorizontalMoveInput;
+        _playerRigidbody.MovePosition(_playerRigidbody.position + moveVector * dtMoveSpeed);
     }
 
     private void jumpAnimation()

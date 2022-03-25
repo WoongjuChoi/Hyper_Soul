@@ -5,6 +5,8 @@ class InputParameterID
 {
     public const string VERTICAL = "Vertical";
     public const string HORIZONTAL = "Horizontal";
+    public const string MOUSE_X = "Mouse X";
+    public const string MOUSE_Y = "Mouse Y";
     public const string JUMP = "Jump";
 }
 
@@ -19,6 +21,6 @@ class PlayerAnimatorID
 
 class TagParameterID
 {
-    public const string MAP = "Map";
+    public const string MAP = "Map"; // Layer·Î ¹Ù²ã¾ßÇÔ
     public const string BULLET = "Bullet";
 }

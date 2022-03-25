@@ -6,17 +6,14 @@ public class Bazooka : Weapon
 {
     void Start()
     {
-        _curBulletCnt = 7;
+        _curBulletCnt = 10;
         _maxBulletAmt = 10;
         _reloadTime = 5;
     }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            base.HasReloaded();
-        }
+
     }
 
 

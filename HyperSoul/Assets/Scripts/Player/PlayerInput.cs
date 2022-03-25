@@ -9,8 +9,9 @@ public class PlayerInput : MonoBehaviour
     public float MouseX { get; private set; }
     public float MouseY { get; private set; }
     public bool JumpInput { get; private set; }
-
-    // Update is called once per frame
+    public bool FireInput { get; private set; }
+    public bool ZoomInput { get; private set; }
+    
     private void Update()
     {
         VerticalMoveInput = Input.GetAxis(InputParameterID.VERTICAL);
@@ -18,5 +19,7 @@ public class PlayerInput : MonoBehaviour
         MouseX = Input.GetAxis(InputParameterID.MOUSE_X);
         MouseY = Input.GetAxis(InputParameterID.MOUSE_Y);
         JumpInput = Input.GetButtonDown(InputParameterID.JUMP);
+        FireInput = Input.GetButton(InputParameterID.FIRE);
+        ZoomInput = Input.GetButton(InputParameterID.ZOOM);
     }
 }

@@ -25,7 +25,6 @@ public class PlayerCam : MonoBehaviour
     private float _eulerAngleY;
 
     private PlayerInput _playerInput;
-    private Animator _playerAnimator;
 
     private RaycastHit _hit;
     private float _rayDistance = 3f;
@@ -37,7 +36,6 @@ public class PlayerCam : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         _playerInput = GetComponent<PlayerInput>();
-        _playerAnimator = _playerBody.GetComponent<Animator>();
 
         _defaultCamPos = new Vector3(1, 0, -3.4f);
     }
@@ -75,13 +73,12 @@ public class PlayerCam : MonoBehaviour
         {
             if (_hit.transform.gameObject.tag != TagParameterID.PLAYER)
             {
-                _cameraPos.localPosition = Vector3.Lerp(_cameraPos.localPosition, _cameraPos.localPosition + Vector3.forward, Time.deltaTime * 10);
                 _cameraPos.position = _hit.point;
             }
         }
         else
         {
-            _cameraPos.localPosition = Vector3.Lerp(_cameraPos.localPosition, _defaultCamPos, Time.deltaTime * 5f);
+            _cameraPos.localPosition = _defaultCamPos;
         }
     }
 }

@@ -8,6 +8,8 @@ class InputParameterID
     public const string MOUSE_X = "Mouse X";
     public const string MOUSE_Y = "Mouse Y";
     public const string JUMP = "Jump";
+    public const string FIRE = "Fire1";
+    public const string ZOOM = "Zoom";
 }
 
 class PlayerAnimatorID

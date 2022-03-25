@@ -24,3 +24,11 @@ class TagParameterID
     public const string MAP = "Map"; // Layer·Î ¹Ù²ã¾ßÇÔ
     public const string BULLET = "Bullet";
 }
+
+
+public enum EGunState
+{
+    Ready,
+    Empty,
+    Reloading,
+}

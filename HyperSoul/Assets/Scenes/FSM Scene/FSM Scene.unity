@@ -1133,7 +1133,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1579276154}
   m_LocalRotation: {x: 0, y: 0.953717, z: 0, w: 0.30070582}
-  m_LocalPosition: {x: -10.036142, y: 0, z: 11.986109}
+  m_LocalPosition: {x: -10, y: 0, z: 12}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 1270635902}
@@ -1181,6 +1181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b513bd3f66beed84ca75dd7177a9e4ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameObject: {fileID: 1579276154}
 --- !u!114 &1579276159
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1193,7 +1194,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad3b89a5877d8054c892bcbfc76834b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _blackWolfFSM: {fileID: 1579276158}
+  _monsterFSM: {fileID: 1579276158}
+  _monsterInvincibleTime: 2
+  _monsterHP: 10
 --- !u!1 &1884177654
 GameObject:
   m_ObjectHideFlags: 0

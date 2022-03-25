@@ -90,4 +90,10 @@ HyperSoul/Logs/
 HyperSoul/UserSettings/
 HyperSoul/ProjectSettings/
 
+# ignore Photon
+HyperSoul/Assets/Photon/PhotonChat/
+HyperSoul/Assets/Photon/PhotonLibs/
+HyperSoul/Assets/Photon/PhotonRealtime/
+HyperSoul/Assets/Photon/PhotonUnityNetworking/
+
 # End of https://www.toptal.com/developers/gitignore/api/unity

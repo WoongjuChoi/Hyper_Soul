@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BlackWolfFSM : MonoBehaviour
-{
-    [SerializeField]
-    private int _blackWolfHP = 0;
-    
+{    
     [SerializeField]
     private FiniteStateMachine _blackWolfFSM = null;
 

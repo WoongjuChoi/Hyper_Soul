@@ -11,10 +11,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public GameObject DisconnectPanel;
     [Header("RoomPanel")]
     public GameObject RoomPanel;
-
+    public string Nickname;
     public InputField NicknameInput;
-
-
 
     void Start()
     {
@@ -24,6 +22,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void Connect()
     {
         PhotonNetwork.LocalPlayer.NickName = NicknameInput.text;
+        Nickname = NicknameInput.text;
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -44,13 +43,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.Instantiate("SamplePlayer", Vector3.zero, Quaternion.identity);
     }
 
-    PlayerScript FindPlayer()
+    PlayerNetwork FindPlayer()
     {
         foreach(GameObject Player in GameObject.FindGameObjectsWithTag("Player"))
         {
             if(Player.GetPhotonView().IsMine)
             {
-                return Player.GetComponent<PlayerScript>(); 
+                return Player.GetComponent<PlayerNetwork>(); 
             }
         }
         return null;
@@ -58,7 +57,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void Click()
     {
-        PlayerScript Player = FindPlayer();
-
+        PlayerNetwork Player = FindPlayer();
     }
 }

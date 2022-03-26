@@ -4,8 +4,8 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    protected int _curBulletCnt = 0;
-    protected int _maxBulletAmt = 0;
+    public int _curBulletCnt = 0;
+    public int _maxBulletAmt = 0;
     protected float _reloadTime = 0;
 
     protected EGunState _gunState;

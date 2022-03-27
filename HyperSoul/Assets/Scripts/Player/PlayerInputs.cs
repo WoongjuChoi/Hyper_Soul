@@ -7,7 +7,7 @@ public class PlayerInputs : MonoBehaviour
 {
 	public Vector2 MoveVec { get; private set; }
 	public Vector2 MousePos { get; private set; }
-	public bool IsJump { get; private set; }
+	public bool IsJump { get; set; }
 	public bool IsZoom { get; private set; }
 
 	public void OnMove(InputValue value)

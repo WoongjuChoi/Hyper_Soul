@@ -75,5 +75,6 @@ public class PlayerMovement : MonoBehaviour
     {
         _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, false);
         _isJump = false;
+        _input.IsJump = false;
     }
 }

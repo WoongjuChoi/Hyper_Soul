@@ -1,15 +1,18 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Weapon : MonoBehaviour
+public abstract class Weapon : MonoBehaviourPun
 {
+    protected PhotonView _photonView;
+
     public int _curBulletCnt = 0;
     public int _maxBulletAmt = 0;
     protected float _reloadTime = 0;
 
     protected EGunState _gunState;
-
 
     public virtual void Fire() { }
     public virtual void Zoom() { }

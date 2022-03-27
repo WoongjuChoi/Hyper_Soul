@@ -1,9 +1,13 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCam : MonoBehaviour
+public class PlayerCam : MonoBehaviourPun
 {
+    PhotonView _photonview;
+
     [SerializeField]
     private Transform _playerBody;
 
@@ -28,6 +32,8 @@ public class PlayerCam : MonoBehaviour
 
     private void Awake()
     {
+        _photonview = photonView;
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -37,6 +43,10 @@ public class PlayerCam : MonoBehaviour
 
     private void Update()
     {
+        if(!_photonview.IsMine)
+        {
+            return;
+        }
         MouseRotate(_playerInput.MouseX, _playerInput.MouseY);
     }
 

@@ -12,12 +12,13 @@ public class Bazooka : Weapon
     Transform _missileSpawnPos = null;
     [SerializeField]
     GameObject _aimAngleRef;
-    
-    
+    [SerializeField]
     private float _rayDist = 200f;
 
     void Start()
     {
+        _photonView = photonView;
+
         _curBulletCnt = 100;
         _maxBulletAmt = 100;
         _reloadTime = 5;
@@ -26,11 +27,19 @@ public class Bazooka : Weapon
 
     void Update()
     {
+        if(!_photonView.IsMine)
+        {
+            return;
+        }
         // 삭제 예정
         if (Input.GetMouseButtonDown(0) && _curBulletCnt > 0 && _gunState == EGunState.Ready)
         {
             Fire();
-            _gunState = EGunState.Empty;
+             if(_curBulletCnt <= 0)
+            {
+                _gunState = EGunState.Empty;
+            }
+            
         }
         if(Input.GetKeyDown(KeyCode.R))
         {

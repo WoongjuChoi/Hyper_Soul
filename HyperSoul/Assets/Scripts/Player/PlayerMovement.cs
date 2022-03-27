@@ -1,9 +1,12 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviourPun
 {
+    PhotonView _photonView;
+
     [SerializeField]
     private float _moveSpeed = 8.0f;
 
@@ -22,6 +25,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        _photonView = photonView;
+
         _playerInput = GetComponent<PlayerInput>();
         _playerRigidbody = GetComponent<Rigidbody>();
         _playerAnimator = GetComponentInChildren<Animator>();
@@ -29,12 +34,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if(!_photonView.IsMine)
+        {
+            return;
+        }
         moveAnimation();
         jumpAnimation();
     }
 
     private void FixedUpdate()
     {
+        if (!_photonView.IsMine)
+        {
+            return;
+        }
         move();
         jump();
     }

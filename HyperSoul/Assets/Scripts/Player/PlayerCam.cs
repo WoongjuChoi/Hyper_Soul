@@ -14,36 +14,35 @@ public class PlayerCam : MonoBehaviour
     private Transform _cameraPos;
 
     [SerializeField]
-    private float _rotCamXAxisSpeed = 5f;
+    private float _rotCamXAxisSpeed = 0.5f;
 
     [SerializeField]
-    private float _rotCamYAxisSpeed = 3f;
+    private float _rotCamYAxisSpeed = 0.5f;
 
     private float _limitMinX = -80f;
     private float _limitMaxX = 50f;
     private float _eulerAngleX;
     private float _eulerAngleY;
 
-    private PlayerInput _playerInput;
-
+    private PlayerInputs _input;
     private RaycastHit _hit;
     private float _rayDistance = 3f;
     private Vector3 _defaultCamPos;
 
     private void Awake()
     {
+        _input = GetComponent<PlayerInputs>();
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
-        _playerInput = GetComponent<PlayerInput>();
-
-        _defaultCamPos = new Vector3(1, 0, -3.4f);
+        _defaultCamPos = new Vector3(1.5f, 0.4f, -3.4f);
     }
-
+    
     private void Update()
     {
-        MouseRotate(_playerInput.MouseX, _playerInput.MouseY);
-
+        MouseRotate(_input.MousePos.x, _input.MousePos.y);
+        
         camCollisionFix();
     }
 

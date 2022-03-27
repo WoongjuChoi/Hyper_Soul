@@ -30,21 +30,23 @@ public class Bazooka : Weapon
         if (Input.GetMouseButtonDown(0) && _curBulletCnt > 0 && _gunState == EGunState.Ready)
         {
             Fire();
+            _gunState = EGunState.Empty;
         }
         if(Input.GetKeyDown(KeyCode.R))
         {
+            _gunState = EGunState.Reloading;
             base.HasReloaded();
         }
     }
 
     public override void Fire()
     {
-        // 플레이어가 이동하면 탄 회전이 안된채로 나감
         GameObject _bazookaMissile = Instantiate(_missile, _missileSpawnPos.position, _aimAngleRef.transform.rotation);
         _bazookaMissile.GetComponent<BazookaMissile>().Target = AimTarget()?.transform;
         _bazookaMissile.GetComponent<BazookaMissile>().MisilleOwner = this.gameObject;
-        _bazookaMissile.transform.rotation = _aimAngleRef.transform.rotation;
-        _bazookaMissile.GetComponent<Rigidbody>().velocity = _shooter.transform.position * 10f;
+        _bazookaMissile.transform.TransformDirection(_aimAngleRef.transform.forward);
+        _bazookaMissile.GetComponent<Rigidbody>().velocity = new Vector3(0, _aimAngleRef.transform.localPosition.y * 3f, _aimAngleRef.transform.localPosition.z * 10f);
+       
 
         --_curBulletCnt;        
     }

@@ -19,6 +19,13 @@ class PlayerAnimatorID
     public const string ISFALLING = "isFalling";
 }
 
+public class MonsterAnimatorID
+{
+    public const string HAS_SPAWN = "hasSpawn";
+    public const string HAS_IDLE = "hasIdle";
+    public const string HAS_DAMAGED = "hasDamaged";
+}
+
 class TagParameterID
 {
     public const string MAP = "Map"; // Layer·Î ¹Ù²ã¾ßÇÔ

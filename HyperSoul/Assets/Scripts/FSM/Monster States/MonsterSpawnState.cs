@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterSpawnState :IfiniteState
+public class MonsterSpawnState : IfiniteState
 {
     private GameObject _gameObject = null;
+
+    private MonsterInfomations _monsterInfo = null;
 
     private FiniteStateMachine _finiteStateMachine = null;
 
@@ -12,12 +14,15 @@ public class MonsterSpawnState :IfiniteState
 
     public void EnterState()
     {
-        Debug.Log("MonsterSpawnState EnterState");
+        _monsterInfo = _gameObject.GetComponent<MonsterInfomations>();
+
+        _monsterInfo.MonsterCurrentState = EStateIDs.Spawn;
+
+        _gameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_SPAWN);
     }
 
     public void ExitState()
     {
-        Debug.Log("MonsterSpawnState ExitState");
     }
 
     public void InitializeState(GameObject obj, FiniteStateMachine fsm)
@@ -25,21 +30,15 @@ public class MonsterSpawnState :IfiniteState
         _gameObject = obj;
 
         _finiteStateMachine = fsm;
-
-        Debug.Log("MonsterSpawnState InitializeState");
     }
 
     public void UpdateState()
     {
         _elapsedTime += Time.deltaTime;
 
-        Debug.Log($"_elapsedTime : {_elapsedTime}");
-
-        if (_elapsedTime >= _gameObject.GetComponent<MonsterInfomations>().MonsterInvincibleTime)
+        if (_elapsedTime >= _monsterInfo.MonsterInvincibleTime)
         {
             _finiteStateMachine.ChangeState(EStateIDs.Idle);
         }
-        
-        Debug.Log("MonsterSpawnState UpdateState");
     }
 }

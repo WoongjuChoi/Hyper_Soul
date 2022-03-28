@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class Bazooka : Weapon
 {
@@ -17,8 +18,6 @@ public class Bazooka : Weapon
 
     void Start()
     {
-        _photonView = photonView;
-
         _curBulletCnt = 100;
         _maxBulletAmt = 100;
         _reloadTime = 5;
@@ -27,15 +26,17 @@ public class Bazooka : Weapon
 
     void Update()
     {
-        if(!_photonView.IsMine)
+        if(!photonView.IsMine)
         {
             return;
         }
         // 삭제 예정
         if (Input.GetMouseButtonDown(0) && _curBulletCnt > 0 && _gunState == EGunState.Ready)
         {
-            Fire();
-             if(_curBulletCnt <= 0)
+            photonView.RPC("Fire", RpcTarget.AllBufferedViaServer);
+
+
+             if (_curBulletCnt <= 0)
             {
                 _gunState = EGunState.Empty;
             }

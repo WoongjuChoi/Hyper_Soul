@@ -7,27 +7,24 @@ using Photon.Realtime;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
-    //[Header("DisconnectPanel")]
-    //public GameObject DisconnectPanel;
-    //[Header("RoomPanel")]
-    //public GameObject RoomPanel;
-    public InputField NicknameInput;
-
-    [SerializeField]
-    private Text _connetInfoText;
+ 
     [SerializeField]
     private GameObject _baseSpawnPos;
 
-    private const string GAME_VERSION = "0.01";
+    
 
     private bool[] _isSpawned = new bool[4];
 
     PhotonView _photonView;
 
+    private void Awake()
+    {
+        
+    }
+
     void Start()
     {
         Screen.SetResolution(1920, 1080, false);
-        PhotonNetwork.GameVersion = GAME_VERSION;
         _photonView = photonView;
         Connect();
     }
@@ -36,14 +33,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         //PhotonNetwork.LocalPlayer.NickName = NicknameInput.text;
         PhotonNetwork.ConnectUsingSettings();
-        _connetInfoText.text = "Connecting to Master Server";
 
     }
 
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions { MaxPlayers = 4 }, null);
-        _connetInfoText.text = "Online";
     }
     //void ShowPanel(GameObject CurPanel)
     //{
@@ -54,7 +49,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        _connetInfoText.text = "Offline : Disconnected to Master Server\n Reconnecting...";
         PhotonNetwork.ConnectUsingSettings();
         Debug.Log($"Disconnect! Cause : {cause}");
     }

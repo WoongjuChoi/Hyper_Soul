@@ -16,9 +16,11 @@ class PlayerAnimatorID
 {
     public static readonly int VERTICAL = Animator.StringToHash(InputParameterID.VERTICAL);
     public static readonly int HORIZONTAL = Animator.StringToHash(InputParameterID.HORIZONTAL);
-    public const string DOJUMP = "doJump";
-    public const string ISJUMP = "isJump";
-    public const string ISFALLING = "isFalling";
+    public static readonly int AIM = Animator.StringToHash("Aim");
+    public const string DOJUMP = "DoJump";
+    public const string ISJUMP = "IsJump";
+    public const string FALLING = "Falling";
+    public const string DIE = "Die";
 }
 
 class TagParameterID

@@ -23,12 +23,16 @@ public class SamplePlayerFire : MonoBehaviour
         if (_samplePlayerInput.IsFire && false == _fireDelay)
         {
             _ammo.SetActive(true);
-            
+
             _fireVec = transform.forward;
 
             _samplePlayerInput.IsFire = false;
 
             _fireDelay = true;
+
         }
+
+        // 디버깅용(Ammo 발사 방향)
+        Debug.DrawRay(transform.position, transform.forward * 1000f, Color.blue);
     }
 }

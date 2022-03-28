@@ -24,15 +24,18 @@ public class SampleAmmo : MonoBehaviour
     {
         Vector3 moveVec = _moveSpeed * Time.deltaTime * _owner.GetComponent<SamplePlayerFire>().FireVec;
 
+        transform.forward = new Vector3(_owner.GetComponent<SamplePlayerFire>().FireVec.x, _owner.GetComponent<SamplePlayerFire>().FireVec.y, _owner.GetComponent<SamplePlayerFire>().FireVec.z);
+
         transform.position += moveVec;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        gameObject.SetActive(false);
+        if (SamplePlayerParameterID.LAYER_SAMPLE_PLAYER != collision.gameObject.layer)
+        {
+            gameObject.SetActive(false);
 
-        transform.position = _spawner.transform.position;
-
-        _owner.GetComponent<SamplePlayerFire>().FireDelay = false;
+            _owner.GetComponent<SamplePlayerFire>().FireDelay = false;
+        }
     }
 }

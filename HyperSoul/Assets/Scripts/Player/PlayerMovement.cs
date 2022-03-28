@@ -17,8 +17,10 @@ public class PlayerMovement : MonoBehaviour
     private Animator _playerAnimator;
     private PlayerCam _playerCam;
     private PlayerInputs _input;
+    private PlayerInfo _playerInfo;
 
     private bool _isJump = false;
+    private bool _isHit = false;
     private float _aim = 0.5f;
 
     private void Awake()
@@ -27,10 +29,16 @@ public class PlayerMovement : MonoBehaviour
         _playerAnimator = GetComponentInChildren<Animator>();
         _playerCam = GetComponent<PlayerCam>();
         _input = GetComponent<PlayerInputs>();
+        _playerInfo = GetComponent<PlayerInfo>();
     }
 
     private void Update()
     {
+        if (_playerInfo.IsDead)
+        {
+            return;
+        }
+
         moveAnimation();
         jumpAnimation();
         aimAnimation();
@@ -38,6 +46,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (_playerInfo.IsDead)
+        {
+            return;
+        }
+
         move();
         jump();
     }
@@ -79,6 +92,33 @@ public class PlayerMovement : MonoBehaviour
         // 0 ~ 1 사이의 값을 얻기 위해 -80 ~ 50도의 제약이 있는 playerCam의 eulerAngleX의 값을 조정
         _aim = (_playerCam._eulerAngleX + 80f) / 130f;
         _playerAnimator.SetFloat(PlayerAnimatorID.AIM, _aim);
+    }
+
+    public IEnumerator Hit()
+    {
+        _isHit = true;
+        _playerAnimator.SetTrigger(PlayerAnimatorID.HIT);
+        yield return new WaitForSeconds(0.3f);
+
+        _isHit = false;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == TagParameterID.BULLET)
+        {
+            --_playerInfo.Hp;
+            Debug.Log("Player Hp : " + _playerInfo.Hp);
+
+            if (_playerInfo.Hp <= 0)
+            {
+                _playerInfo.IsDead = true;
+                _playerAnimator.SetTrigger(PlayerAnimatorID.DIE);
+            }
+            else if (false == _isHit)
+            {
+                StartCoroutine(Hit());
+            }
+        }
     }
     private void OnTriggerStay(Collider other)
     {

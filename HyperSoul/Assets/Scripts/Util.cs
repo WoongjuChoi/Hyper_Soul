@@ -26,6 +26,11 @@ public class MonsterAnimatorID
     public const string HAS_DAMAGED = "hasDamaged";
 }
 
+public class SamplePlayerParameterID
+{
+    public const int LAYER_SAMPLE_PLAYER = 10;
+}
+
 class TagParameterID
 {
     public const string MAP = "Map"; // Layer·Î ¹Ù²ã¾ßÇÔ

@@ -13,6 +13,8 @@ class MonsterDamagedState : IfiniteState
 
     private Vector3 _lookAtTargetVec = Vector3.zero;
 
+    private Vector3 _rayCastOriginVec = Vector3.zero;
+
     public void EnterState()
     {
         _monsterInfo = _gameObject.GetComponent<MonsterInfomations>();
@@ -23,7 +25,11 @@ class MonsterDamagedState : IfiniteState
 
         _monsterInfo.IsDamaged = false;
 
-        _lookAtTargetVec = _monsterInfo.Target.transform.position - _gameObject.transform.position;
+        _rayCastOriginVec = _gameObject.transform.position + new Vector3(0f, 5f, 0f);
+
+        // 수정 필요 : 현재 Damaged 상태일 때 플레이어의 위치를 가져옴
+        // 탄환이 발사됐을 때의 플레이어의 위치를 가져와야함
+        _lookAtTargetVec = _monsterInfo.Target.transform.position - _rayCastOriginVec;
     }
 
     public void ExitState()
@@ -40,7 +46,13 @@ class MonsterDamagedState : IfiniteState
     public void UpdateState()
     {
         // 데미지 받고
-        //Debug.Log("데미지 입음");
+        _monsterInfo.MonsterHP -= 5;
+
+        // HP <= 0 이면 Die 상태
+        if (_monsterInfo.MonsterHP <= 0)
+        {
+            _finiteStateMachine.ChangeState(EStateIDs.Die);
+        }
 
         // 레이케스트 쐈을 때
             // 적이 있을때
@@ -50,8 +62,7 @@ class MonsterDamagedState : IfiniteState
 
         RaycastHit hit;
 
-        // 문제 => hit.collider.gameObject가 왜 몬스터인가?
-        if (Physics.Raycast(_gameObject.transform.position, _lookAtTargetVec, out hit, _lookAtTargetVec.magnitude))
+        if (Physics.Raycast(_rayCastOriginVec, _lookAtTargetVec, out hit, _lookAtTargetVec.magnitude))
         {
             if (_monsterInfo.Target == hit.collider.gameObject)
             {
@@ -68,6 +79,10 @@ class MonsterDamagedState : IfiniteState
             {
                 _finiteStateMachine.ChangeState(EStateIDs.Alert);
             }
+        }
+        else
+        {
+            _finiteStateMachine.ChangeState(EStateIDs.Alert);
         }
     }
 }

@@ -24,12 +24,12 @@ public class MonsterInfomations : MonoBehaviour
 
     private bool _isWithinAttackRange = false;
 
-    public GameObject Target = null;
+    public GameObject Target { get; private set; }
     public EStateIDs MonsterCurrentState { get; set; }
     public bool IsDamaged { get; set; }
 
     public float MonsterInvincibleTime { get { return _monsterInvincibleTime; } }
-    public int MonsterHP { get { return _monsterHP; } }
+    public int MonsterHP { get { return _monsterHP; } set { _monsterHP = value; } }
     public bool IsWithinAttackRange { get { return _isWithinAttackRange; } }
 
     private void Awake()
@@ -51,7 +51,7 @@ public class MonsterInfomations : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (EStateIDs.Damaged == MonsterCurrentState || EStateIDs.Chase == MonsterCurrentState)
+        if (SamplePlayerParameterID.LAYER_SAMPLE_PLAYER == other.gameObject.layer)
         {
             _isWithinAttackRange = true;
         }
@@ -59,7 +59,7 @@ public class MonsterInfomations : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (EStateIDs.Damaged == MonsterCurrentState || EStateIDs.Attack == MonsterCurrentState)
+        if (SamplePlayerParameterID.LAYER_SAMPLE_PLAYER == other.gameObject.layer)
         {
             _isWithinAttackRange = false;
         }

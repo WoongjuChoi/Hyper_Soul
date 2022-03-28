@@ -25,11 +25,9 @@ class MonsterDamagedState : IfiniteState
 
         _monsterInfo.IsDamaged = false;
 
-        _rayCastOriginVec = _gameObject.transform.position + new Vector3(0f, 5f, 0f);
+        _rayCastOriginVec = _monsterInfo.CollisionVec;
 
-        // 수정 필요 : 현재 Damaged 상태일 때 플레이어의 위치를 가져옴
-        // 탄환이 발사됐을 때의 플레이어의 위치를 가져와야함
-        _lookAtTargetVec = _monsterInfo.Target.transform.position - _rayCastOriginVec;
+        _lookAtTargetVec = _monsterInfo.LookAtTargetVec;
     }
 
     public void ExitState()
@@ -46,12 +44,14 @@ class MonsterDamagedState : IfiniteState
     public void UpdateState()
     {
         // 데미지 받고
-        _monsterInfo.MonsterHP -= 5;
+        _monsterInfo.MonsterCurrentHP -= 50;
 
         // HP <= 0 이면 Die 상태
-        if (_monsterInfo.MonsterHP <= 0)
+        if (_monsterInfo.MonsterCurrentHP <= 0)
         {
             _finiteStateMachine.ChangeState(EStateIDs.Die);
+
+            return;
         }
 
         // 레이케스트 쐈을 때
@@ -62,27 +62,35 @@ class MonsterDamagedState : IfiniteState
 
         RaycastHit hit;
 
-        if (Physics.Raycast(_rayCastOriginVec, _lookAtTargetVec, out hit, _lookAtTargetVec.magnitude))
+        if (Physics.Raycast(_rayCastOriginVec, _lookAtTargetVec, out hit, 1000f))
         {
-            if (_monsterInfo.Target == hit.collider.gameObject)
+            if (_monsterInfo.Target.layer == hit.collider.gameObject.layer)
             {
                 if (_monsterInfo.IsWithinAttackRange)
                 {
                     _finiteStateMachine.ChangeState(EStateIDs.Attack);
+
+                    return;
                 }
                 else
                 {
                     _finiteStateMachine.ChangeState(EStateIDs.Chase);
+
+                    return;
                 }
             }
             else
             {
                 _finiteStateMachine.ChangeState(EStateIDs.Alert);
+
+                return;
             }
         }
         else
         {
             _finiteStateMachine.ChangeState(EStateIDs.Alert);
+
+            return;
         }
     }
 }

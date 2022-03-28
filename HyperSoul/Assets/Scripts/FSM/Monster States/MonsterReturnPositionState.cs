@@ -8,23 +8,18 @@ public class MonsterReturnPositionState : IfiniteState
 
     public void EnterState()
     {
-        Debug.Log("MonsterReturnPositionState EnterState");
     }
 
     public void ExitState()
     {
-        Debug.Log("MonsterReturnPositionState ExitState");
     }
 
     public void InitializeState(GameObject obj, FiniteStateMachine fsm)
     {
         _finiteStateMachine = fsm;
-
-        Debug.Log("MonsterReturnPositionState InitializeState");
     }
 
     public void UpdateState()
     {
-        Debug.Log("MonsterReturnPositionState UpdateState");
     }
 }

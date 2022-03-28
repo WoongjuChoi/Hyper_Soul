@@ -8,23 +8,18 @@ public class MonsterAlertState : IfiniteState
 
     public void EnterState()
     {
-        Debug.Log("MonsterAlertState EnterState");
     }
 
     public void ExitState()
     {
-        Debug.Log("MonsterAlertState ExitState");
     }
 
     public void InitializeState(GameObject obj, FiniteStateMachine fsm)
     {
         _finiteStateMachine = fsm;
-
-        Debug.Log("MonsterAlertState InitializeState");
     }
 
     public void UpdateState()
     {
-        Debug.Log("MonsterAlertState UpdateState");
     }
 }

@@ -8,23 +8,18 @@ public class MonsterChaseState : IfiniteState
 
     public void EnterState()
     {
-        Debug.Log("MonsterChaseState EnterState");
     }
 
     public void ExitState()
     {
-        Debug.Log("MonsterChaseState ExitState");
     }
 
     public void InitializeState(GameObject obj, FiniteStateMachine fsm)
     {
         _finiteStateMachine = fsm;
-
-        Debug.Log("MonsterChaseState InitializeState");
     }
 
     public void UpdateState()
     {
-        Debug.Log("MonsterChaseState UpdateState");
     }
 }

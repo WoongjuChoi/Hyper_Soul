@@ -13,20 +13,11 @@ public class PlayerCam : MonoBehaviour
     [SerializeField]
     private Transform _cameraPos;
 
-    [SerializeField]
-    private GameObject _zoomCam;
-
-    [SerializeField]
-    private float _rotationSpeedX = 0.5f;
-
-    [SerializeField]
-    private float _rotationSpeedY = 0.5f;
+    public float _rotationSpeedX = 0.5f;
+    public float _rotationSpeedY = 0.5f;
 
     [SerializeField]
     private Vector2 _normalRotationSpeed;
-
-    [SerializeField]
-    private Vector2 _zoomRotationSpeed;
 
     private float _limitMinX = -80f;
     private float _limitMaxX = 50f;
@@ -49,9 +40,6 @@ public class PlayerCam : MonoBehaviour
 
         _defaultCamPos = new Vector3(1.5f, 0.4f, -3.4f);
         _normalRotationSpeed = new Vector2(0.5f, 0.5f);
-        _zoomRotationSpeed = new Vector2(0.2f, 0.2f);
-
-        _zoomCam.SetActive(false);
     }
     
     private void Update()
@@ -61,15 +49,8 @@ public class PlayerCam : MonoBehaviour
             return;
         }
         
-        if (_input.IsZoom)
+        if (false == _input.IsZoom)
         {
-            _zoomCam.SetActive(true);
-            _rotationSpeedX = _zoomRotationSpeed.x;
-            _rotationSpeedY = _zoomRotationSpeed.y;
-        }
-        else
-        {
-            _zoomCam.SetActive(false);
             _rotationSpeedX = _normalRotationSpeed.x;
             _rotationSpeedY = _normalRotationSpeed.y;
         }

@@ -32,9 +32,7 @@ public class Rifle : Weapon
     {
         if (_input.IsZoom)
         {
-            _zoomCam.SetActive(true);
-            _playerCam._rotationSpeedX = _zoomRotationSpeed.x;
-            _playerCam._rotationSpeedY = _zoomRotationSpeed.y;
+            Zoom();
         }
         else
         {
@@ -52,8 +50,12 @@ public class Rifle : Weapon
     public override void Fire() 
     {
         --_curBulletCnt;
+        //Debug.Log(_curBulletCnt);
     }
     public override void Zoom() 
     {
+        _zoomCam.SetActive(true);
+        _playerCam._rotationSpeedX = _zoomRotationSpeed.x;
+        _playerCam._rotationSpeedY = _zoomRotationSpeed.y;
     }
 }

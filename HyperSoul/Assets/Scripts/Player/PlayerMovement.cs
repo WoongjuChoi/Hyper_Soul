@@ -13,6 +13,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private Transform _cameraArm;
 
+    [SerializeField]
+    private Weapon _weapon;
+
     private Rigidbody _playerRigidbody;
     private Animator _playerAnimator;
     private PlayerCam _playerCam;
@@ -42,6 +45,9 @@ public class PlayerMovement : MonoBehaviour
         moveAnimation();
         jumpAnimation();
         aimAnimation();
+        Reload();
+        Fire();
+        Debug.Log(_input.IsReload);
     }
 
     private void FixedUpdate()
@@ -87,6 +93,21 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void Reload()
+    {
+        if (_input.IsReload && _weapon.HasReloaded())
+        {
+            _playerAnimator.SetTrigger(PlayerAnimatorID.RELOAD);
+            _input.IsReload = false;
+        }
+    }
+    private void Fire()
+    {
+        if (_input.IsShoot)
+        {
+            _weapon.Fire();
+        }
+    }
     private void aimAnimation()
     {
         // 0 ~ 1 사이의 값을 얻기 위해 -80 ~ 50도의 제약이 있는 playerCam의 eulerAngleX의 값을 조정
@@ -126,7 +147,6 @@ public class PlayerMovement : MonoBehaviour
         _isJump = false;
         _input.IsJump = false;
     }
-
     private void OnTriggerExit(Collider other)
     {
         _playerAnimator.SetTrigger(PlayerAnimatorID.FALLING);

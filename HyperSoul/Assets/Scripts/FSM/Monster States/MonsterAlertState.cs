@@ -4,22 +4,64 @@ using UnityEngine;
 
 public class MonsterAlertState : IfiniteState
 {
+    private GameObject _gameObject = null;
+
+    private MonsterInfomations _monsterInfo = null;
+
     private FiniteStateMachine _finiteStateMachine = null;
+
+    private float _changeIdleAnimator = 4f;
+    private float _elapsedTime = 0f;
 
     public void EnterState()
     {
+        _monsterInfo = _gameObject.GetComponent<MonsterInfomations>();
+
+        _monsterInfo.MonsterCurrentState = EStateIDs.Alert;
+
+        _gameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_ALERT);
     }
 
     public void ExitState()
     {
+        _elapsedTime = 0;
     }
 
     public void InitializeState(GameObject obj, FiniteStateMachine fsm)
     {
+        _gameObject = obj;
+
         _finiteStateMachine = fsm;
     }
 
     public void UpdateState()
     {
+        if (_monsterInfo.IsDamaged)
+        {
+            _finiteStateMachine.ChangeState(EStateIDs.Damaged);
+
+            return;
+        }
+
+        if (-1 == _elapsedTime)
+        {
+            _finiteStateMachine.ChangeState(EStateIDs.Idle);
+
+            return;
+        }
+
+        ChangeIdleAnimator();
+    }
+
+    private void ChangeIdleAnimator()
+    {
+        _elapsedTime += Time.deltaTime;
+
+        if (_elapsedTime >= _changeIdleAnimator)
+        {
+            _gameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_IDLE);
+
+            _elapsedTime = -1f;
+        }
     }
 }

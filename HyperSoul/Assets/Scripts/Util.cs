@@ -21,14 +21,16 @@ class PlayerAnimatorID
 
 public class MonsterAnimatorID
 {
-    public const string HAS_SPAWN = "hasSpawn";
-    public const string HAS_IDLE = "hasIdle";
+    public const string HAS_ALERT = "hasAlert";
     public const string HAS_DAMAGED = "hasDamaged";
+    public const string HAS_IDLE = "hasIdle";
+    public const string HAS_RESTING = "hasResting";
 }
 
-public class SamplePlayerParameterID
+public class SampleObjectParameterID
 {
     public const int LAYER_SAMPLE_PLAYER = 10;
+    public const int LAYER_SAMPLE_AMMO = 11;
 }
 
 class TagParameterID

@@ -17,8 +17,6 @@ public class MonsterSpawnState : IfiniteState
         _monsterInfo = _gameObject.GetComponent<MonsterInfomations>();
 
         _monsterInfo.MonsterCurrentState = EStateIDs.Spawn;
-
-        _gameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_SPAWN);
     }
 
     public void ExitState()
@@ -39,6 +37,8 @@ public class MonsterSpawnState : IfiniteState
         if (_elapsedTime >= _monsterInfo.MonsterInvincibleTime)
         {
             _finiteStateMachine.ChangeState(EStateIDs.Idle);
+
+            return;
         }
     }
 }

@@ -13,17 +13,18 @@ public class PlayerCam : MonoBehaviour
     [SerializeField]
     private Transform _cameraPos;
 
-    [SerializeField]
-    private float _rotCamXAxisSpeed = 0.5f;
+    public float _rotationSpeedX = 0.5f;
+    public float _rotationSpeedY = 0.5f;
 
     [SerializeField]
-    private float _rotCamYAxisSpeed = 0.5f;
+    private Vector2 _normalRotationSpeed;
 
     private float _limitMinX = -80f;
     private float _limitMaxX = 50f;
     public float _eulerAngleX { get; private set; }
     private float _eulerAngleY;
 
+    private PlayerInfo _playerInfo;
     private PlayerInputs _input;
     private RaycastHit _hit;
     private float _rayDistance = 3f;
@@ -32,25 +33,37 @@ public class PlayerCam : MonoBehaviour
     private void Awake()
     {
         _input = GetComponent<PlayerInputs>();
+        _playerInfo = GetComponent<PlayerInfo>();
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
         _defaultCamPos = new Vector3(1.5f, 0.4f, -3.4f);
+        _normalRotationSpeed = new Vector2(0.5f, 0.5f);
     }
     
     private void Update()
     {
-        MouseRotate(_input.MousePos.x, _input.MousePos.y);
+        if (_playerInfo.IsDead)
+        {
+            return;
+        }
         
+        if (false == _input.IsZoom)
+        {
+            _rotationSpeedX = _normalRotationSpeed.x;
+            _rotationSpeedY = _normalRotationSpeed.y;
+        }
+
+        MouseRotate(_input.MousePos.x, _input.MousePos.y);
         camCollisionFix();
     }
 
     public void MouseRotate(float mouseX, float mouseY)
     {
-        _eulerAngleY += mouseX * _rotCamYAxisSpeed;
+        _eulerAngleY += mouseX * _rotationSpeedY;
         // 마우스 아래로 내리면 음수인데 오브젝트의 x축이 +방향으로 회전해야 아래를 보기 때문에 -연산
-        _eulerAngleX -= mouseY * _rotCamXAxisSpeed;
+        _eulerAngleX -= mouseY * _rotationSpeedX;
 
         _eulerAngleX = clampAngle(_eulerAngleX, _limitMinX, _limitMaxX);
 

@@ -9,6 +9,8 @@ public class PlayerInputs : MonoBehaviour
 	public Vector2 MousePos { get; private set; }
 	public bool IsJump { get; set; }
 	public bool IsZoom { get; private set; }
+	public bool IsReload { get; set; }
+	public bool IsShoot { get; set; }
 
 	public bool IsShot { get; private set; }
 	public bool IsSingleShot { get; private set; }
@@ -28,6 +30,14 @@ public class PlayerInputs : MonoBehaviour
 	public void OnZoom(InputValue value)
     {
 		IsZoom = value.isPressed;
+    }
+	public void OnReload(InputValue value)
+    {
+		IsReload = value.isPressed;
+    }
+	public void OnShoot(InputValue value)
+    {
+		IsShoot = value.isPressed;
     }
 	public void OnShot(InputValue value)
 	{

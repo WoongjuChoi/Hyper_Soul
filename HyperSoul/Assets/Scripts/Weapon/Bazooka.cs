@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.InputSystem;
 
 public class Bazooka : Weapon
 {
     [SerializeField]
-    GameObject _shooter;
+    GameObject _shooter; // 수정예정
     [SerializeField]
     GameObject _missile = null;
     [SerializeField]
@@ -15,40 +16,51 @@ public class Bazooka : Weapon
     GameObject _aimAngleRef;
     [SerializeField]
     private float _rayDist = 200f;
+    [SerializeField]
+    PlayerMovement _player;
 
+    private Animator _bazookaAnim;
+
+    private void Awake()
+    {
+        _player.MouseAction -= Trigger;
+        _player.MouseAction += Trigger;
+    }
     void Start()
     {
         _curBulletCnt = 100;
         _maxBulletAmt = 100;
         _reloadTime = 5;
         _gunState = EGunState.Ready;
-    }                                                                                                                                                                                                                                                                                                                                                                                                                                               
 
+        _bazookaAnim = GetComponentInChildren<Animator>();
+    }
+    
     void Update()
     {
-        if(!photonView.IsMine)
-        {
-            return;
-        }
-        // 삭제 예정
-        if (Input.GetMouseButtonDown(0) && _curBulletCnt > 0 && _gunState == EGunState.Ready)
-        {
-            photonView.RPC("Fire", RpcTarget.AllBufferedViaServer);
+        //if(Input.GetKeyDown(KeyCode.R))
+        //{
+        //    _gunState = EGunState.Reloading;
+        //    base.HasReloaded();
+        //}
+    }
 
+    private void Trigger()
+    {
+        if (_curBulletCnt > 0 && _gunState == EGunState.Ready)
+        {
+            photonView.RPC("Fire", RpcTarget.MasterClient);
 
-             if (_curBulletCnt <= 0)
+            if (_curBulletCnt <= 0)
             {
                 _gunState = EGunState.Empty;
             }
-            
         }
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-            _gunState = EGunState.Reloading;
-            base.HasReloaded();
-        }
+
+        _bazookaAnim.SetTrigger(PlayerAnimatorID.IS_SINGLE_SHOT);
     }
 
+    [PunRPC]
     public override void Fire()
     {
         GameObject _bazookaMissile = Instantiate(_missile, _missileSpawnPos.position, _aimAngleRef.transform.rotation);
@@ -57,7 +69,6 @@ public class Bazooka : Weapon
         _bazookaMissile.transform.TransformDirection(_aimAngleRef.transform.forward);
         _bazookaMissile.GetComponent<Rigidbody>().velocity = new Vector3(0, _aimAngleRef.transform.localPosition.y * 3f, _aimAngleRef.transform.localPosition.z * 10f);
        
-
         --_curBulletCnt;        
     }
 

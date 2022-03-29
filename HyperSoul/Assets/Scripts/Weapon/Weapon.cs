@@ -33,6 +33,8 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
 
     public bool HasReloaded()
     {
+        Debug.Log(_curBulletCnt);
+
         if (_gunState == EGunState.Reloading || _curBulletCnt >= _maxBulletAmt)
         {
             return false;
@@ -51,6 +53,7 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
         _curBulletCnt = _maxBulletAmt;
 
         _gunState = EGunState.Ready;
+        Debug.Log(_curBulletCnt);
     }
 
    

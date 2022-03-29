@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ObjectPool
 {
+    private Queue<GameObject> _objQueue = new Queue<GameObject>();
+    
     private GameObject _obj = null;
-    public Queue<GameObject> _objQueue = new Queue<GameObject>();
-
 
     public void Init(GameObject prefab, GameObject type)
     {

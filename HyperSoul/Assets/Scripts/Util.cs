@@ -21,6 +21,7 @@ class PlayerAnimatorID
     public const string ISJUMP = "IsJump";
     public const string FALLING = "Falling";
     public const string DIE = "Die";
+    public const string IS_SINGLE_SHOT = "IsSingleShot";
 }
 
 class TagParameterID

@@ -56,8 +56,6 @@ public class PlayerCam : MonoBehaviour
 
         _cameraArm.rotation = Quaternion.Euler(_eulerAngleX, _eulerAngleY, 0);
         _playerBody.rotation = Quaternion.Euler(0, _eulerAngleY, 0);
-
-        Debug.Log("_eulerAngleX : " + _eulerAngleX);
     }
 
     private float clampAngle(float angle, float min, float max)

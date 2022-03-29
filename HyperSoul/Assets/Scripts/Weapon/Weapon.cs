@@ -4,13 +4,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Weapon : MonoBehaviourPunCallbacks
+public abstract class Weapon : MonoBehaviourPun, IPunObservable
 {
     public int _curBulletCnt = 0;
     public int _maxBulletAmt = 0;
     protected float _reloadTime = 0;
 
     protected EGunState _gunState;
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if(stream.IsWriting)
+        {
+            stream.SendNext(_curBulletCnt);
+            stream.SendNext(_gunState);
+        }
+        else
+        {
+            _curBulletCnt = (int)stream.ReceiveNext();
+            _gunState = (EGunState)stream.ReceiveNext();
+        }
+    }
+
 
     [PunRPC]
     public virtual void Fire() { }
@@ -37,4 +52,6 @@ public abstract class Weapon : MonoBehaviourPunCallbacks
 
         _gunState = EGunState.Ready;
     }
+
+   
 }

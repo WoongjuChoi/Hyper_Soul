@@ -34,6 +34,7 @@ public class SampleObjectParameterID
 {
     public const int LAYER_SAMPLE_PLAYER = 10;
     public const int LAYER_SAMPLE_AMMO = 11;
+    public const int LAYER_MONSTER_BOUNDARY = 12;
 }
 
 class TagParameterID

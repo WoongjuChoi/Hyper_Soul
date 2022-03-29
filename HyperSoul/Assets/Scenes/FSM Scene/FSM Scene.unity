@@ -133,8 +133,9 @@ GameObject:
   m_Component:
   - component: {fileID: 103499632}
   - component: {fileID: 103499633}
-  m_Layer: 0
-  m_Name: Sample Monster Spawner
+  - component: {fileID: 103499634}
+  m_Layer: 12
+  m_Name: Sample Monster Boundary
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150,7 +151,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -10, y: 1, z: 12}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 700708488}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -167,6 +169,20 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 15
   m_Center: {x: 0, y: -1, z: 0}
+--- !u!114 &103499634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103499631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f7445ce6851e741ac2bc8e4a133ce7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _monster: {fileID: 700708479}
+  _spawnTime: 2
 --- !u!1 &216235745
 GameObject:
   m_ObjectHideFlags: 0
@@ -621,6 +637,16 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 460130, guid: 852851e3a3de02f47ae7d2a9a55e1b94, type: 3}
   m_PrefabInstance: {fileID: 638662309}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &700708479 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8205902957052760551, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
+  m_PrefabInstance: {fileID: 1248466091}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &700708488 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
+  m_PrefabInstance: {fileID: 1248466091}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &721592661
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -890,47 +916,63 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 103499632}
     m_Modifications:
+    - target: {fileID: 8205902957052760550, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
+      propertyPath: m_Size.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8205902957052760550, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760551, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_Name
       value: Sample Monster
       objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760551, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8205902957052760569, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12
+      value: -12
       objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.30070582
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.953717
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -938,14 +980,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 145
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8205902957052760575, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
+    - target: {fileID: 8205902957052760574, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8205902957052760575, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
+      propertyPath: _monsterSpawnManager
+      value: 
+      objectReference: {fileID: 103499634}
+    - target: {fileID: 8207624494624470360, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210158215405921194, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
+      propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

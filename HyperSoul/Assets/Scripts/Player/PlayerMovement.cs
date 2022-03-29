@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -13,13 +14,24 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private Transform _cameraArm;
 
+    [SerializeField]
+    private Weapon _weapon;
+
     private Rigidbody _playerRigidbody;
     private Animator _playerAnimator;
     private PlayerCam _playerCam;
     private PlayerInputs _input;
 
     private bool _isJump = false;
+    private bool _isShoot = false;
     private float _aim = 0.5f;
+
+    public event System.Action MouseAction = null;
+
+    public bool IsShoot
+    {
+        set { _isShoot = value; }
+    }
 
     private void Awake()
     {
@@ -31,23 +43,31 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        moveAnimation();
-        jumpAnimation();
-        aimAnimation();
+        MoveAnimation();
+        JumpAnimation();
+        AimAnimation();
+        SingleShot();
     }
 
     private void FixedUpdate()
     {
-        move();
-        jump();
+        Move();
+        Jump();
     }
 
-    private void moveAnimation()
+    private void MoveAnimation()
     {
         _playerAnimator.SetFloat(PlayerAnimatorID.VERTICAL, _input.MoveVec.y);
         _playerAnimator.SetFloat(PlayerAnimatorID.HORIZONTAL, _input.MoveVec.x);
     }
-    private void move()
+    private void SingleShot()
+    {
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            MouseAction.Invoke();
+        }
+    }
+    private void Move()
     {
         float dtMoveSpeed = _moveSpeed * Time.deltaTime;
         // 캐릭터의 로컬 전방을 알기 위한 Vector3 변수
@@ -57,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
         _playerRigidbody.MovePosition(_playerRigidbody.position + moveVector * dtMoveSpeed);
     }
 
-    private void jumpAnimation()
+    private void JumpAnimation()
     {
         if (_isJump && _playerAnimator.GetBool(PlayerAnimatorID.ISJUMP) == false)
         {
@@ -65,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
             _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, true);
         }
     }
-    private void jump()
+    private void Jump()
     {
         if (_input.IsJump && _isJump == false)
         {
@@ -74,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void aimAnimation()
+    private void AimAnimation()
     {
         // 0 ~ 1 사이의 값을 얻기 위해 -80 ~ 50도의 제약이 있는 playerCam의 eulerAngleX의 값을 조정
         _aim = (_playerCam._eulerAngleX + 80f) / 130f;

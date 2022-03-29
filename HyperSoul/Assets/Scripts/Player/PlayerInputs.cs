@@ -10,16 +10,17 @@ public class PlayerInputs : MonoBehaviour
 	public bool IsJump { get; set; }
 	public bool IsZoom { get; private set; }
 
+	public bool IsShot { get; private set; }
+	public bool IsSingleShot { get; private set; }
+
 	public void OnMove(InputValue value)
     {
 		MoveVec = value.Get<Vector2>();
     }
-
 	public void OnLook(InputValue value)
     {
 		MousePos = value.Get<Vector2>();
     }
-
 	public void OnJump(InputValue value)
     {
 		IsJump = value.isPressed;
@@ -28,4 +29,9 @@ public class PlayerInputs : MonoBehaviour
     {
 		IsZoom = value.isPressed;
     }
+	public void OnShot(InputValue value)
+	{
+		IsShot = value.isPressed;
+	}
+
 }

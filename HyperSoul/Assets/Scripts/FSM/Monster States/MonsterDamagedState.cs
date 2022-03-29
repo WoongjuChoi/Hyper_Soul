@@ -13,7 +13,7 @@ class MonsterDamagedState : IfiniteState
 
     private Vector3 _lookAtTargetVec = Vector3.zero;
 
-    private Vector3 _rayCastOriginVec = Vector3.zero;
+    private Vector3 _raycastOriginVec = Vector3.zero;
 
     public void EnterState()
     {
@@ -25,7 +25,7 @@ class MonsterDamagedState : IfiniteState
 
         _monsterInfo.IsDamaged = false;
 
-        _rayCastOriginVec = _monsterInfo.CollisionVec;
+        _raycastOriginVec = _monsterInfo.CollisionVec;
 
         _lookAtTargetVec = _monsterInfo.LookAtTargetVec;
     }
@@ -44,7 +44,7 @@ class MonsterDamagedState : IfiniteState
     public void UpdateState()
     {
         // 데미지 받고
-        _monsterInfo.MonsterCurrentHP -= 50;
+        //_monsterInfo.MonsterCurrentHP -= 50;
 
         // HP <= 0 이면 Die 상태
         if (_monsterInfo.MonsterCurrentHP <= 0)
@@ -62,10 +62,12 @@ class MonsterDamagedState : IfiniteState
 
         RaycastHit hit;
 
-        if (Physics.Raycast(_rayCastOriginVec, _lookAtTargetVec, out hit, 1000f))
+        if (Physics.Raycast(_raycastOriginVec, _lookAtTargetVec, out hit, 1000f))
         {
             if (_monsterInfo.Target.layer == hit.collider.gameObject.layer)
             {
+                _monsterInfo.MonsterChaser.IsTarget = _monsterInfo.Target.transform;
+
                 if (_monsterInfo.IsWithinAttackRange)
                 {
                     _finiteStateMachine.ChangeState(EStateIDs.Attack);

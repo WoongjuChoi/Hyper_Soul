@@ -10,7 +10,7 @@ public class MonsterAlertState : IfiniteState
 
     private FiniteStateMachine _finiteStateMachine = null;
 
-    private float _changeIdleAnimator = 4f;
+    private float _changeIdleAnimationTime = 4f;
     private float _elapsedTime = 0f;
 
     public void EnterState()
@@ -57,7 +57,7 @@ public class MonsterAlertState : IfiniteState
     {
         _elapsedTime += Time.deltaTime;
 
-        if (_elapsedTime >= _changeIdleAnimator)
+        if (_elapsedTime >= _changeIdleAnimationTime)
         {
             _gameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_IDLE);
 

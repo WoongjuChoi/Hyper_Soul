@@ -10,7 +10,7 @@ public class MonsterIdleState : IfiniteState
 
     private FiniteStateMachine _finiteStateMachine = null;
 
-    private float _changeRestingAnimator = 5f;
+    private float _changeRestingAnimationTime = 5f;
     private float _elapsedTime = 0f;
 
     private int _increaseHealing = 0;
@@ -73,7 +73,7 @@ public class MonsterIdleState : IfiniteState
     {
         _elapsedTime += Time.deltaTime;
 
-        if (_elapsedTime >= _changeRestingAnimator)
+        if (_elapsedTime >= _changeRestingAnimationTime)
         {
             _gameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_RESTING);
 

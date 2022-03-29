@@ -8,6 +8,12 @@ public class MonsterInfomations : MonoBehaviour
     private FiniteStateMachine _monsterFSM = null;
 
     [SerializeField]
+    private Chaser _monsterChaser = null;
+
+    [SerializeField]
+    private Transform _monsterRayPoint = null;
+
+    [SerializeField]
     private float _monsterInvincibleTime = 0f;
 
     [SerializeField]
@@ -34,6 +40,8 @@ public class MonsterInfomations : MonoBehaviour
     public bool IsDamaged { get; set; }
     public int MonsterCurrentHP { get { return _monsterCurrentHP; } set { _monsterCurrentHP = value; } }
 
+    public Chaser MonsterChaser { get { return _monsterChaser; } }
+    public Transform MonsterRayPoint { get { return _monsterRayPoint; } }
     public Vector3 CollisionVec { get { return _collisionVec; } }
     public Vector3 LookAtTargetVec { get { return _lookAtTargetVec; } }
     public bool IsWithinAttackRange { get { return _isWithinAttackRange; } }
@@ -67,6 +75,14 @@ public class MonsterInfomations : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (SampleObjectParameterID.LAYER_SAMPLE_PLAYER == other.gameObject.layer)
+        {
+            _isWithinAttackRange = true;
+        }
+    }
+
     private void OnTriggerExit(Collider other)
     {
         if (SampleObjectParameterID.LAYER_SAMPLE_PLAYER == other.gameObject.layer)
@@ -90,13 +106,18 @@ public class MonsterInfomations : MonoBehaviour
             }
         }
 
+        if (SampleObjectParameterID.LAYER_SAMPLE_PLAYER == collision.gameObject.layer)
+        {
+            _isWithinAttackRange = true;
+        }
     }
 
     private void Update()
     {
         // 디버깅용(몬스터가 맞은 위치로부터 플레이어가 쏜 방향의 반대로 레이)
         Debug.DrawRay(_collisionVec, _lookAtTargetVec * 1000f, Color.red);
+        Debug.DrawRay(_monsterRayPoint.position, gameObject.transform.forward * 1000f, Color.black);
 
-        Debug.Log($"_monsterCurrentHP : {_monsterCurrentHP}");
+        //Debug.Log($"_monsterCurrentHP : {_monsterCurrentHP}");
     }
 }

@@ -49,6 +49,13 @@ public class MonsterChaseState : IfiniteState
             return;
         }
 
+        if (_monsterInfo.OutOfBoundary)
+        {
+            _finiteStateMachine.ChangeState(EStateIDs.ReturnPosition);
+
+            return;
+        }
+
         _monsterInfo.MonsterChaser.IsActive = true;
     }
 }

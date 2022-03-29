@@ -28,18 +28,25 @@ public class MonsterInfomations : MonoBehaviour
     private MonsterReturnPositionState _monsterReturnPositionState = new MonsterReturnPositionState();
     private MonsterSpawnState _monsterSpawnState = new MonsterSpawnState();
 
+    private GameObject _target = null;
+
     private Vector3 _collisionVec = Vector3.zero;
     private Vector3 _lookAtTargetVec = Vector3.zero;
 
+    private EStateIDs _monsterCurrentState = EStateIDs.None;
+
+    private bool _isDamaged = false;
+    private bool _isTargeting = false;
     private bool _isWithinAttackRange = false;
 
     private int _monsterCurrentHP = 0;
 
-    public GameObject Target { get; private set; }
-    public EStateIDs MonsterCurrentState { get; set; }
-    public bool IsDamaged { get; set; }
+    public EStateIDs MonsterCurrentState { get { return _monsterCurrentState; } set { _monsterCurrentState = value; } }
+    public bool IsDamaged { get { return _isDamaged; } set { _isDamaged = value; } }
+    public bool IsTargeting { get { return _isTargeting; } set { _isTargeting = value; } }
     public int MonsterCurrentHP { get { return _monsterCurrentHP; } set { _monsterCurrentHP = value; } }
 
+    public GameObject Target { get { return _target; } }
     public Chaser MonsterChaser { get { return _monsterChaser; } }
     public Transform MonsterRayPoint { get { return _monsterRayPoint; } }
     public Vector3 CollisionVec { get { return _collisionVec; } }
@@ -58,13 +65,15 @@ public class MonsterInfomations : MonoBehaviour
         _monsterFSM.AddState(EStateIDs.Idle, _monsterIdleState);
         _monsterFSM.AddState(EStateIDs.ReturnPosition, _monsterReturnPositionState);
         _monsterFSM.AddState(EStateIDs.Spawn, _monsterSpawnState);
-
-        _monsterCurrentHP = _monsterMaxHP;
     }
 
     private void OnEnable()
     {
         _monsterFSM.ChangeState(EStateIDs.Spawn);
+
+        _monsterCurrentHP = _monsterMaxHP;
+
+        _isTargeting = false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -93,16 +102,16 @@ public class MonsterInfomations : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (false == IsDamaged && SampleObjectParameterID.LAYER_SAMPLE_AMMO == collision.gameObject.layer)
+        if (false == _isDamaged && SampleObjectParameterID.LAYER_SAMPLE_AMMO == collision.gameObject.layer)
         {
-            if (EStateIDs.Alert == MonsterCurrentState || EStateIDs.Attack == MonsterCurrentState || EStateIDs.Chase == MonsterCurrentState || EStateIDs.Idle == MonsterCurrentState)
+            if (EStateIDs.Alert == _monsterCurrentState || EStateIDs.Attack == _monsterCurrentState || EStateIDs.Chase == _monsterCurrentState || EStateIDs.Idle == _monsterCurrentState)
             {
-                IsDamaged = true;
+                _isDamaged = true;
 
                 _collisionVec = collision.gameObject.transform.position;
                 _lookAtTargetVec = -collision.gameObject.transform.forward;
 
-                Target = collision.gameObject.GetComponent<SampleAmmo>().Owner;
+                _target = collision.gameObject.GetComponent<SampleAmmo>().Owner;
             }
         }
 

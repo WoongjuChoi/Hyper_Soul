@@ -54,6 +54,8 @@ public class MonsterAttackState : IfiniteState
         if (_gameObject.GetComponentInChildren<Animator>().GetCurrentAnimatorStateInfo(0).IsName(MONSTER_IDLE_ANIMATION) && false == _monsterInfo.IsWithinAttackRange)
         {
             _finiteStateMachine.ChangeState(EStateIDs.Chase);
+
+            return;
         }
 
         if (_elapsedTime >= _changeAttackAnimationTime)

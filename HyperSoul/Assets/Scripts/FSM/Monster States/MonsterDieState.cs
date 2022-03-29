@@ -10,6 +10,9 @@ public class MonsterDieState : IfiniteState
 
     private FiniteStateMachine _finiteStateMachine = null;
 
+    private float _monsterDieTime = 2f;
+    private float _elapsedTime = 0f;
+
     public void EnterState()
     {
         _monsterInfo = _gameObject.GetComponent<MonsterInfomations>();
@@ -21,6 +24,9 @@ public class MonsterDieState : IfiniteState
 
     public void ExitState()
     {
+        _elapsedTime = 0f;
+
+        _gameObject.transform.eulerAngles = Vector3.zero;
     }
 
     public void InitializeState(GameObject obj, FiniteStateMachine fsm)
@@ -32,5 +38,27 @@ public class MonsterDieState : IfiniteState
 
     public void UpdateState()
     {
+        if (-1f == _elapsedTime)
+        {
+            return;
+        }
+
+        MonsterDie();
+    }
+
+    private void MonsterDie()
+    {
+        if (_elapsedTime >= _monsterDieTime)
+        {
+            _monsterInfo.IsDie = true;
+
+            _elapsedTime = -1f;
+
+            _gameObject.SetActive(false);
+
+            return;
+        }
+
+        _elapsedTime += Time.deltaTime;
     }
 }

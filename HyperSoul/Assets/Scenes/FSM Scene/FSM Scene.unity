@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 103499632}
   - component: {fileID: 103499633}
   m_Layer: 0
-  m_Name: Sample Monster Spawn Point
+  m_Name: Sample Monster Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -896,6 +896,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sample Monster
       objectReference: {fileID: 0}
+    - target: {fileID: 8205902957052760551, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -939,6 +943,10 @@ PrefabInstance:
     - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8205902957052760575, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7446ece6d94db774b84e84965371e25a, type: 3}

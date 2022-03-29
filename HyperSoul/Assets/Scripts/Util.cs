@@ -25,6 +25,7 @@ public class MonsterAnimatorID
     public const string HAS_ATTACK = "hasAttack";
     public const string HAS_CHASE = "hasChase";
     public const string HAS_DAMAGED = "hasDamaged";
+    public const string HAS_DIE = "hasDie";
     public const string HAS_IDLE = "hasIdle";
     public const string HAS_RESTING = "hasResting";
 }

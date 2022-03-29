@@ -10,7 +10,7 @@ public class PlayerInputs : MonoBehaviour
 	public bool IsJump { get; set; }
 	public bool IsZoom { get; private set; }
 	public bool IsReload { get; set; }
-	public bool IsShoot { get; private set; }
+	public bool IsShoot { get; set; }
 
 	public void OnMove(InputValue value)
     {

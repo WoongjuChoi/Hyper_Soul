@@ -47,7 +47,6 @@ public class PlayerMovement : MonoBehaviour
         aimAnimation();
         Reload();
         Fire();
-        Debug.Log(_input.IsReload);
     }
 
     private void FixedUpdate()

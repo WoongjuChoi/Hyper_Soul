@@ -89,6 +89,7 @@ public class BazookaMissile : MonoBehaviour
     private IEnumerator OnCollisionEnter(Collision collision)
     {
         Debug.Log("Ãæµ¹µÊ");
+        Debug.Log(collision.gameObject.name);
         Explosion();
         yield return new WaitForSeconds(1f);
         

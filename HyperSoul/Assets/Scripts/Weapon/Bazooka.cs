@@ -50,7 +50,7 @@ public class Bazooka : Weapon
         if (_curBulletCnt > 0 && _gunState == EGunState.Ready)
         {
             photonView.RPC("Fire", RpcTarget.MasterClient);
-
+            Fire();
             if (_curBulletCnt <= 0)
             {
                 _gunState = EGunState.Empty;

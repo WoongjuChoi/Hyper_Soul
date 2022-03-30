@@ -132,7 +132,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 103499632}
-  - component: {fileID: 103499633}
   - component: {fileID: 103499634}
   m_Layer: 12
   m_Name: Sample Monster Boundary
@@ -156,19 +155,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &103499633
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 103499631}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 15
-  m_Center: {x: 0, y: -1, z: 0}
 --- !u!114 &103499634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _monster: {fileID: 700708479}
+  _initializeDirection: 145
   _spawnTime: 2
 --- !u!1 &216235745
 GameObject:
@@ -918,14 +905,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 103499632}
     m_Modifications:
-    - target: {fileID: 8205902957052760550, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
-      propertyPath: m_Size.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8205902957052760550, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760551, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_Name
       value: Sample Monster
@@ -935,16 +914,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760569, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
-      propertyPath: m_Enabled
-      value: 1
+      propertyPath: m_Speed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8205902957052760569, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
+      propertyPath: m_StoppingDistance
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_RootOrder
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760571, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -986,22 +965,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8205902957052760574, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8205902957052760575, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
       propertyPath: _monsterSpawnManager
       value: 
       objectReference: {fileID: 103499634}
-    - target: {fileID: 8207624494624470360, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8210158215405921194, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7446ece6d94db774b84e84965371e25a, type: 3}
 --- !u!1001 &1290108047
@@ -1256,7 +1223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _owner: {fileID: 1884177654}
   _spawner: {fileID: 216235745}
-  _moveSpeed: 5
+  _moveSpeed: 20
 --- !u!54 &1480227439
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1451,7 +1418,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1884177654}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10, y: 1, z: 1.52}
+  m_LocalPosition: {x: 5, y: 1, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 216235749}

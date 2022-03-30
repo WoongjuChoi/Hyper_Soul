@@ -28,6 +28,7 @@ public class MonsterAnimatorID
     public const string HAS_DIE = "hasDie";
     public const string HAS_IDLE = "hasIdle";
     public const string HAS_RESTING = "hasResting";
+    public const string HAS_WALK = "hasWalk";
 }
 
 public class SampleObjectParameterID

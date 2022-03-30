@@ -1,44 +1,14 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Rifle : Weapon
 {
     [SerializeField]
-    private Vector2 _zoomRotationSpeed;
+    private Transform _bulletSpawnPos;
 
     [SerializeField]
-    private GameObject _zoomCam;
-
-    [SerializeField]
-    private GameObject _player;
-
-    private Animator _playerAnimator;
-    private PlayerCam _playerCam;
-    private PlayerInputs _input;
-
-    private void Awake()
-    {
-        _playerAnimator = _player.GetComponent<Animator>();
-        _playerCam = _player.GetComponent<PlayerCam>();
-        _input = _player.GetComponent<PlayerInputs>();
-
-        _zoomRotationSpeed = new Vector2(0.2f, 0.2f);
-
-        _zoomCam.SetActive(false);
-    }
-
-    private void Update()
-    {
-        if (_input.IsZoom)
-        {
-            Zoom();
-        }
-        else
-        {
-            _zoomCam.SetActive(false);
-        }
-    }
+    private GameObject _bulletPrefab;
 
     private void OnEnable()
     {
@@ -47,15 +17,31 @@ public class Rifle : Weapon
         _reloadTime = 2f;
         _gunState = EGunState.Ready;
     }
-    public override void Fire() 
+   
+    public override void Fire()
     {
-        --_curBulletCnt;
-        //Debug.Log(_curBulletCnt);
+        if (_curBulletCnt > 0 && _canFire == true)
+        {
+            StartCoroutine(Shoot());
+        }
     }
-    public override void Zoom() 
+    public override void Zoom()
     {
         _zoomCam.SetActive(true);
         _playerCam._rotationSpeedX = _zoomRotationSpeed.x;
         _playerCam._rotationSpeedY = _zoomRotationSpeed.y;
+    }
+    private IEnumerator Shoot()
+    {
+        --_curBulletCnt;
+        Vector3 aimDir = (_mousePos - _bulletSpawnPos.position).normalized;
+        Instantiate(_bulletPrefab, _bulletSpawnPos.position, Quaternion.LookRotation(aimDir, Vector3.up));
+        _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, true);
+        _canFire = false;
+
+        yield return new WaitForSeconds(0.1f);
+
+        _canFire = true;
+        _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, false);
     }
 }

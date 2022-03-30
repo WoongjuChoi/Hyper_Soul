@@ -18,8 +18,7 @@ class PlayerAnimatorID
     public const string DIE = "Die";
     public const string HIT = "Hit";
     public const string RELOAD = "Reload";
-    public const string ISFIRE = "IsFire";
-    public const string IS_SINGLE_SHOT = "IsSingleShot";
+    public const string ISSHOOT = "IsShoot";
 }
 
 class TagParameterID

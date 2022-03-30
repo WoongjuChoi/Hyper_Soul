@@ -52,17 +52,8 @@
                 },
                 {
                     "name": "Reload",
-                    "type": "PassThrough",
-                    "id": "04f75595-3ae8-4f91-afff-20737c1cab4a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SingleShot",
                     "type": "Button",
-                    "id": "e60477c2-2516-4ee1-8f75-277d5f293a9e",
+                    "id": "92668794-59db-41ab-8c00-639eb7612555",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -171,23 +162,12 @@
                 },
                 {
                     "name": "",
-                    "id": "ba4b7079-e3f9-4622-a97e-8a9497592c5d",
+                    "id": "de56379c-d516-4548-97f7-1d56dadc25a4",
                     "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Reload",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ce9f71c9-b1f6-49a5-9358-a14472b2a5c5",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SingleShot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

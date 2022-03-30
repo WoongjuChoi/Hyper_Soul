@@ -41,14 +41,14 @@ public class PlayerCam : MonoBehaviour
         _defaultCamPos = new Vector3(1.5f, 0.4f, -3.4f);
         _normalRotationSpeed = new Vector2(0.5f, 0.5f);
     }
-    
+
     private void Update()
     {
         if (_playerInfo.IsDead)
         {
             return;
         }
-        
+
         if (false == _input.IsZoom)
         {
             _rotationSpeedX = _normalRotationSpeed.x;

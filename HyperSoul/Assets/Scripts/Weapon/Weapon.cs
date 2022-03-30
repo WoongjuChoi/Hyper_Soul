@@ -6,10 +6,20 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviourPun, IPunObservable
 {
+    public Vector2 _zoomRotationSpeed;
+    public GameObject _zoomCam;
+    public GameObject _player;
+
     public int _curBulletCnt = 0;
     public int _maxBulletAmt = 0;
-    protected float _reloadTime = 0;
 
+    protected float _reloadTime = 0;
+    protected bool _canFire = true;
+
+    protected Vector3 _mousePos;
+    protected Animator _playerAnimator;
+    protected PlayerCam _playerCam;
+    protected PlayerInputs _input;
     protected EGunState _gunState;
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -28,13 +38,34 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
 
 
     [PunRPC]
+    private void Awake()
+    {
+        _playerAnimator = _player.GetComponentInChildren<Animator>();
+        _playerCam = _player.GetComponent<PlayerCam>();
+        _input = _player.GetComponent<PlayerInputs>();
+
+        _zoomRotationSpeed = new Vector2(0.2f, 0.2f);
+
+        _zoomCam.SetActive(false);
+    }
+    protected void Update()
+    {
+        if (_input.IsZoom)
+        {
+            Zoom();
+        }
+        else
+        {
+            _zoomCam.SetActive(false);
+        }
+
+        SetMousePos();
+    }
     public virtual void Fire() { }
     public virtual void Zoom() { }
 
     public bool HasReloaded()
     {
-        Debug.Log(_curBulletCnt);
-
         if (_gunState == EGunState.Reloading || _curBulletCnt >= _maxBulletAmt)
         {
             return false;
@@ -53,8 +84,15 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
         _curBulletCnt = _maxBulletAmt;
 
         _gunState = EGunState.Ready;
-        Debug.Log(_curBulletCnt);
     }
 
-   
+    public void SetMousePos()
+    {
+        Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f))
+        {
+            _mousePos = raycastHit.point;
+        }
+    }
 }

@@ -12,9 +12,6 @@ public class PlayerInputs : MonoBehaviour
 	public bool IsReload { get; set; }
 	public bool IsShoot { get; private set; }
 
-	public bool IsShot { get; private set; }
-	public bool IsSingleShot { get; private set; }
-
 	public void OnMove(InputValue value)
     {
 		MoveVec = value.Get<Vector2>();
@@ -39,9 +36,4 @@ public class PlayerInputs : MonoBehaviour
     {
 		IsShoot = value.isPressed;
     }
-	public void OnShot(InputValue value)
-	{
-		IsShot = value.isPressed;
-	}
-
 }

@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             index = Random.Range(0, 4);
         }
-        PhotonNetwork.Instantiate("Player", spawnPoint[index].position, Quaternion.identity);
+        PhotonNetwork.Instantiate("BazookaPlayer", spawnPoint[index].position, Quaternion.identity);
 
         photonView.RPC("SpawnPosMarking", RpcTarget.AllBuffered, index);
     }

@@ -9,33 +9,37 @@ using Photon.Realtime;
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     private const string GAME_VERSION = "0.01";
-
+    // 로그인
     [SerializeField]
     private GameObject _loginPanel;
     [SerializeField]
-    private GameObject _lobbyPanel;
-    [SerializeField]
-    private GameObject _roomPanel;
-
-    GameObject _curPanel;
-
-    [SerializeField]
     private InputField _nickNameInput;
     [SerializeField]
-    private InputField _roomNameInput;
-
-    [SerializeField]
     private Button _joinButton;
+
+    // 로비
+    [SerializeField]
+    private GameObject _roomPanel;
+    [SerializeField]
+    private InputField _roomNameInput;
     [SerializeField]
     private Button _createRoomButton;
     [SerializeField]
     private Button _randomJoinRoomButton;
     [SerializeField]
+    private GameObject _roomInfo;
+    [SerializeField]
+    private Transform _roomPos;
+
+    GameObject _curPanel;
+
+    private Dictionary<string, GameObject> _roomList = new Dictionary<string, GameObject>();
+
+    [SerializeField]
     private Text _connetInfoText;
 
     private byte _maxPlayer = 4;
 
-   
 
     private void Awake()
     {
@@ -55,24 +59,82 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.LocalPlayer.NickName = _nickNameInput.text;
-        _connetInfoText.text = "Connect to Master Server";
+        PhotonNetwork.JoinLobby();
+        _connetInfoText.text = "Join Lobby";
+    }
+
+    public override void OnJoinedLobby()
+    {
+        _connetInfoText.text = "Joined Lobby";
     }
     public void Connect()
     {
         _joinButton.interactable = false;
         PhotonNetwork.ConnectUsingSettings();
         _connetInfoText.text = "Connecting to Master Server";
-        ChangePanel(_roomPanel);
+
+        if (PhotonNetwork.IsConnected == true)
+        {
+            ChangePanel(_roomPanel);
+        }
     }
 
     public void CreateRoom()
     {
         PhotonNetwork.CreateRoom(_roomNameInput.text, new RoomOptions { MaxPlayers = _maxPlayer }, null);
     }
+    public override void OnCreatedRoom()
+    {
+        Debug.Log("Created Room");
+        Debug.Log(PhotonNetwork.CurrentRoom.Name);
+    }
 
+    public override void OnRoomListUpdate(List<Photon.Realtime.RoomInfo> roomList)
+    {
+        GameObject _newRoom = null;
+        foreach(RoomInfo room in roomList)
+        {
+            if(room.RemovedFromList == true)
+            {
+                _roomList.TryGetValue(room.Name, out _newRoom);
+                Destroy(_newRoom);
+                _roomList.Remove(room.Name);
+            }
+            else
+            {
+                if(_roomList.ContainsKey(room.Name) == false)
+                {
+                    _newRoom = Instantiate(_roomInfo, _roomPos);
+                    Room _room = _newRoom.GetComponent<Room>();
+                    _room.RoomName = room.Name;
+                    _room.CurPlayer = room.PlayerCount;
+                    _room.MaxPlayer = room.MaxPlayers;
+                    _room.UpdateInfo();
+                    _room.GetComponent<Button>().onClick.AddListener(delegate { OnClickRoom(_room.RoomName); });
+                    _roomList.Add(_room.RoomName, _newRoom);
+                }
+                else
+                {
+                    _roomList.TryGetValue(room.Name, out _newRoom);
+                    Room _room = _newRoom.GetComponent<Room>();
+                    _room.RoomName = room.Name;
+                    _room.CurPlayer = room.PlayerCount;
+                    _room.MaxPlayer = room.MaxPlayers;
+                    _room.UpdateInfo();
+                }
+            }
+        }
+    }
+
+    public void OnClickRoom(string roomName)
+    {
+        PhotonNetwork.NickName = PhotonNetwork.LocalPlayer.NickName;
+        PlayerPrefs.SetString("USER_NICKNAME", PhotonNetwork.NickName);
+        PhotonNetwork.JoinRoom(roomName, null);
+    }
     public void JoinRandomRoom()
     {
-        PhotonNetwork.JoinOrCreateRoom(_roomNameInput.text, new RoomOptions { MaxPlayers = _maxPlayer }, null);
+        PhotonNetwork.JoinRandomRoom();
     }
     public override void OnJoinedRoom()
     {

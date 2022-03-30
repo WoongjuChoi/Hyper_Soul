@@ -7420,6 +7420,10 @@ PrefabInstance:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: a2550d7096ad62d4d97266a2072d9408, type: 3}
+    - target: {fileID: 1296819307666463165, guid: e8b75f87c0a12c84ba8482c4165c9056, type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6705630553274540460, guid: e8b75f87c0a12c84ba8482c4165c9056, type: 3}
       propertyPath: _player
       value: 

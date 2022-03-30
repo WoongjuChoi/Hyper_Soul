@@ -38,10 +38,4 @@ public class Room : MonoBehaviour
         _roomInfo.text = $"{_roomName}\n {_curPlayerCnt.ToString("0")} / {_maxPlayer.ToString()}";
     }
 
-    public void OnClickRoom()
-    {
-        PhotonNetwork.NickName = PhotonNetwork.LocalPlayer.NickName;
-        PhotonNetwork.JoinRoom(_roomName, null);
-        PlayerPrefs.SetString("USER_NICKNAME", PhotonNetwork.NickName);
-    }
 }

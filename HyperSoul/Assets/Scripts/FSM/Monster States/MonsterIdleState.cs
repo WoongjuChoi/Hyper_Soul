@@ -38,6 +38,17 @@ public class MonsterIdleState : IfiniteState
 
     public void UpdateState()
     {
+        Vector3 InitializeAngle = new Vector3(0f, _monsterInfo.MonsterSpawnDirection, 0f);
+
+        if (InitializeAngle != _gameObject.transform.eulerAngles)
+        {
+            _gameObject.transform.rotation = Quaternion.identity;
+
+            Quaternion monsterInitializeDirection = Quaternion.Euler(0f, _monsterInfo.MonsterSpawnDirection, 0f);
+
+            _gameObject.transform.rotation = monsterInitializeDirection;
+        }
+
         if (_monsterInfo.IsDamaged)
         {
             _finiteStateMachine.ChangeState(EStateIDs.Damaged);

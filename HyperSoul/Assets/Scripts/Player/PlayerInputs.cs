@@ -10,10 +10,7 @@ public class PlayerInputs : MonoBehaviour
 	public bool IsJump { get; set; }
 	public bool IsZoom { get; private set; }
 	public bool IsReload { get; set; }
-	public bool IsShoot { get; set; }
-
-	public bool IsShot { get; private set; }
-	public bool IsSingleShot { get; private set; }
+	public bool IsShoot { get; private set; }
 
 	public void OnMove(InputValue value)
     {
@@ -39,9 +36,4 @@ public class PlayerInputs : MonoBehaviour
     {
 		IsShoot = value.isPressed;
     }
-	public void OnShot(InputValue value)
-	{
-		IsShot = value.isPressed;
-	}
-
 }

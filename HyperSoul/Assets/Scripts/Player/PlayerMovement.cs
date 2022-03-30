@@ -74,13 +74,7 @@ public class PlayerMovement : MonoBehaviour
         _playerAnimator.SetFloat(PlayerAnimatorID.VERTICAL, _input.MoveVec.y);
         _playerAnimator.SetFloat(PlayerAnimatorID.HORIZONTAL, _input.MoveVec.x);
     }
-    private void SingleShot()
-    {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            MouseAction.Invoke();
-        }
-    }
+
     private void Move()
     {
         float dtMoveSpeed = _moveSpeed * Time.deltaTime;
@@ -107,7 +101,6 @@ public class PlayerMovement : MonoBehaviour
             _playerRigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
         }
     }
-
     private void Reload()
     {
         if (_input.IsReload && _weapon.HasReloaded())
@@ -123,14 +116,13 @@ public class PlayerMovement : MonoBehaviour
             _weapon.Fire();
         }
     }
-    
+
     private void AimAnimation()
     {
         // 0 ~ 1 사이의 값을 얻기 위해 -80 ~ 50도의 제약이 있는 playerCam의 eulerAngleX의 값을 조정
         _aim = (_playerCam._eulerAngleX + 80f) / 130f;
         _playerAnimator.SetFloat(PlayerAnimatorID.AIM, _aim);
     }
-
     public IEnumerator Hit()
     {
         _isHit = true;
@@ -139,9 +131,11 @@ public class PlayerMovement : MonoBehaviour
 
         _isHit = false;
     }
-    private void OnTriggerEnter(Collider other)
+
+    // 공격당했을 때를 처리하는 CollisionEnter
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.tag == TagParameterID.BULLET)
+        if (collision.gameObject.tag == TagParameterID.BULLET)
         {
             --_playerInfo.Hp;
             Debug.Log("Player Hp : " + _playerInfo.Hp);
@@ -157,12 +151,15 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+
+    // 점프 애니메이션 처리를 위한 트리거 콜라이더 처리
     private void OnTriggerStay(Collider other)
     {
          _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, false);
         _isJump = false;
         _input.IsJump = false;
     }
+
     private void OnTriggerExit(Collider other)
     {
         _playerAnimator.SetTrigger(PlayerAnimatorID.FALLING);

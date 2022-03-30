@@ -13,9 +13,6 @@ public class FiniteStateMachine : MonoBehaviour
 
     private void Update()
     {
-        // 디버깅용
-        Debug.Log("FiniteStateMachine Update");
-
         if (null == _currState)
         {
             return;
@@ -49,16 +46,5 @@ public class FiniteStateMachine : MonoBehaviour
             _currState = _states[index];
             _currState.EnterState();
         }
-    }
-
-    public void InitializeState(EStateIDs index)
-    {
-        // 현재 상태가 있다면 초기화하지 않음
-        if (null != _currState)
-        {
-            return;
-        }
-
-        _currState = _states[index];
     }
 }

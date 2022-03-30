@@ -5,27 +5,31 @@ using UnityEngine.AI;
 
 public class Chaser : MonoBehaviour
 {
-    NavMeshAgent Agent;
-
-    [SerializeField]
-    private Transform _target;
     [SerializeField]
     private bool _active = false;
+
+    private Transform _target = null;
+
+    private NavMeshAgent _agent = null;
 
     public Transform IsTarget { get { return _target; } set { _target = value; } }
     public bool IsActive { get { return _active; } set { _active = value; } }
 
     private void Awake()
     {
-        Agent = GetComponent<NavMeshAgent>();
+        _agent = GetComponent<NavMeshAgent>();
     }
 
-    void Update()
+    private void Update()
     {
-        if (_active == true && _target != null)
+        if (_active && null != _target)
         {
-            Agent.SetDestination(_target.position);
+            _agent.SetDestination(_target.position);
         }
     }
 
+    public void ResetPath()
+    {
+        _agent.ResetPath();
+    }
 }

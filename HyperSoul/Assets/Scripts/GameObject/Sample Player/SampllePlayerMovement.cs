@@ -12,7 +12,7 @@ public class SampllePlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Vector3 moveVec = new Vector3(_samplePlayerInput.MOVEHORIZONTAL, 0f, _samplePlayerInput.MOVEVERTICAL).normalized;
+        Vector3 moveVec = new Vector3(_samplePlayerInput.MoveHorizontal, 0f, _samplePlayerInput.MoveVertical).normalized;
 
         transform.position += _moveSpeed * Time.deltaTime * moveVec;
     }

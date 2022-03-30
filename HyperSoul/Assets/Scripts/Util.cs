@@ -21,6 +21,25 @@ class PlayerAnimatorID
     public const string ISSHOOT = "IsShoot";
 }
 
+public class MonsterAnimatorID
+{
+    public const string HAS_ALERT = "hasAlert";
+    public const string HAS_ATTACK = "hasAttack";
+    public const string HAS_CHASE = "hasChase";
+    public const string HAS_DAMAGED = "hasDamaged";
+    public const string HAS_DIE = "hasDie";
+    public const string HAS_IDLE = "hasIdle";
+    public const string HAS_RESTING = "hasResting";
+    public const string HAS_WALK = "hasWalk";
+}
+
+public class SampleObjectParameterID
+{
+    public const int LAYER_SAMPLE_PLAYER = 10;
+    public const int LAYER_SAMPLE_AMMO = 11;
+    public const int LAYER_MONSTER_BOUNDARY = 12;
+}
+
 class TagParameterID
 {
     public const string MAP = "Map"; // Layer·Î ¹Ù²ã¾ßÇÔ

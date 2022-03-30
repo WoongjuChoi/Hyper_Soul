@@ -53,7 +53,8 @@ class MonsterDamagedState : IfiniteState
             return;
         }
 
-        // 적을 한번 타겟팅 하면 
+        // 적을 한번 타겟팅 하면 이후 갱신 X
+        // (활동 범위를 벗어나 되돌아 가거나 죽었을 때 타겟팅 해제)
         if (_monsterInfo.IsTargeting)
         {
             _finiteStateMachine.ChangeState(EStateIDs.Chase);

@@ -17,9 +17,6 @@ public class MonsterInfomations : MonoBehaviour
     private Transform _monsterRayPoint = null;
 
     [SerializeField]
-    private float _monsterSpawnDirection = 0f;
-
-    [SerializeField]
     private float _monsterInvincibleTime = 0f;
 
     [SerializeField]
@@ -36,8 +33,9 @@ public class MonsterInfomations : MonoBehaviour
 
     private GameObject _target = null;
 
+    private Transform _initializePosition = null;
+
     private Vector3 _collisionVec = Vector3.zero;
-    private Vector3 _initializePosition = Vector3.zero;
     private Vector3 _lookAtTargetVec = Vector3.zero;
 
     private EStateIDs _monsterCurrentState = EStateIDs.None;
@@ -46,7 +44,8 @@ public class MonsterInfomations : MonoBehaviour
     private bool _isDie = false;
     private bool _isTargeting = false;
     private bool _isWithinAttackRange = false;
-    private bool _outOfBoundary = false;
+
+    private float _monsterSpawnDirection = 0f;
 
     private int _monsterCurrentHP = 0;
 
@@ -54,17 +53,17 @@ public class MonsterInfomations : MonoBehaviour
     public bool IsDamaged { get { return _isDamaged; } set { _isDamaged = value; } }
     public bool IsDie { get { return _isDie; } set { _isDie = value; } }
     public bool IsTargeting { get { return _isTargeting; } set { _isTargeting = value; } }
-    public bool OutOfBoundary { get { return _outOfBoundary; } set { _outOfBoundary = value; } }
     public int MonsterCurrentHP { get { return _monsterCurrentHP; } set { _monsterCurrentHP = value; } }
 
     public GameObject Target { get { return _target; } }
     public Chaser MonsterChaser { get { return _monsterChaser; } }
+    public Transform InitializePosition { get { return _initializePosition; } }
     public Transform MonsterRayPoint { get { return _monsterRayPoint; } }
     public Vector3 CollisionVec { get { return _collisionVec; } }
-    public Vector3 InitializePosition { get { return _initializePosition; } }
     public Vector3 LookAtTargetVec { get { return _lookAtTargetVec; } }
     public bool IsWithinAttackRange { get { return _isWithinAttackRange; } }
     public float MonsterInvincibleTime { get { return _monsterInvincibleTime; } }
+    public float MonsterSpawnDirection { get { return _monsterSpawnDirection; } }
     public int MonsterMaxHP { get { return _monsterMaxHP; } }
 
     private void Awake()
@@ -85,20 +84,19 @@ public class MonsterInfomations : MonoBehaviour
 
         _monsterCurrentHP = _monsterMaxHP;
 
-        _initializePosition = _monsterSpawnManager.gameObject.transform.position;
+        _initializePosition = _monsterSpawnManager.gameObject.transform;
 
-        gameObject.transform.position = _initializePosition;
+        gameObject.transform.position = _initializePosition.position;
 
         _monsterSpawnDirection = _monsterSpawnManager.InitializeDirection;
 
-        Vector3 monsterInitializeDirection = new Vector3(0f, _monsterSpawnDirection, 0f);
+        Quaternion monsterInitializeDirection = Quaternion.Euler(0f, _monsterSpawnDirection, 0f);
 
-        gameObject.transform.Rotate(monsterInitializeDirection);
+        gameObject.transform.rotation = monsterInitializeDirection;
 
         _isDie = false;
         _isTargeting = false;
         _isWithinAttackRange = false;
-        _outOfBoundary = false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -122,11 +120,6 @@ public class MonsterInfomations : MonoBehaviour
         if (SampleObjectParameterID.LAYER_SAMPLE_PLAYER == other.gameObject.layer)
         {
             _isWithinAttackRange = false;
-        }
-        
-        if (SampleObjectParameterID.LAYER_MONSTER_BOUNDARY == other.gameObject.layer)
-        {
-            _outOfBoundary = true;
         }
     }
 
@@ -158,5 +151,6 @@ public class MonsterInfomations : MonoBehaviour
         Debug.DrawRay(_monsterRayPoint.position, gameObject.transform.forward * 1000f, Color.black);
 
         //Debug.Log($"_monsterCurrentHP : {_monsterCurrentHP}");
+        Debug.Log($"gameObject.transform.eulerAngles: {gameObject.transform.eulerAngles}");
     }
 }

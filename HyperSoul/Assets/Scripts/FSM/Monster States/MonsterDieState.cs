@@ -26,7 +26,7 @@ public class MonsterDieState : IfiniteState
     {
         _elapsedTime = 0f;
 
-        _gameObject.transform.eulerAngles = Vector3.zero;
+        _gameObject.transform.rotation = Quaternion.identity;
     }
 
     public void InitializeState(GameObject obj, FiniteStateMachine fsm)

@@ -49,7 +49,9 @@ public class MonsterChaseState : IfiniteState
             return;
         }
 
-        if (_monsterInfo.OutOfBoundary)
+        float distance = (_gameObject.transform.position - _monsterInfo.InitializePosition.position).magnitude;
+
+        if (distance >= 10f)
         {
             _finiteStateMachine.ChangeState(EStateIDs.ReturnPosition);
 

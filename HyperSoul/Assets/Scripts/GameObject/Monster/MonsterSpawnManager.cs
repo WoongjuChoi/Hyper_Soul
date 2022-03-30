@@ -9,20 +9,20 @@ public class MonsterSpawnManager : MonoBehaviour
     private GameObject _monster = null;
 
     [SerializeField]
+    private float _initializeDirection = 0f;
+
+    [SerializeField]
     private float _spawnTime = 0f;
 
     private bool _isSpawned = false;
 
     private float _elapsedTime = 0f;
-    private float _initializeDirection = 0f;
 
     public float InitializeDirection { get { return _initializeDirection; } }
 
-    private void Start()
+    private void Awake()
     {
         _elapsedTime = _spawnTime;
-
-        _initializeDirection = 145f;
     }
 
     private void Update()

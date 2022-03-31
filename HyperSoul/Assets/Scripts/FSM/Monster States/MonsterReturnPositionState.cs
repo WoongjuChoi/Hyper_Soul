@@ -21,6 +21,8 @@ public class MonsterReturnPositionState : IfiniteState
         _monsterInfo = _gameObject.GetComponent<MonsterInfomations>();
 
         _monsterInfo.MonsterCurrentState = EStateIDs.ReturnPosition;
+
+        _gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_CHASE, true);
     }
 
     public void ExitState()
@@ -43,8 +45,7 @@ public class MonsterReturnPositionState : IfiniteState
 
         _monsterInfo.GetComponentInChildren<Animator>().SetBool(IS_WALK, false);
 
-        // µð¹ö±ë¿ë
-        Debug.Log($"MonsterReturnPositionState _gameObject.transform.eulerAngles: {_gameObject.transform.eulerAngles}");
+        _gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_CHASE, false);
     }
 
     public void InitializeState(GameObject obj, FiniteStateMachine fsm)

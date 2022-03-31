@@ -13,13 +13,15 @@ public class MonsterDieState : IfiniteState
     private float _monsterDieTime = 2f;
     private float _elapsedTime = 0f;
 
+    private const string IS_DIE = "isDie";
+
     public void EnterState()
     {
         _monsterInfo = _gameObject.GetComponent<MonsterInfomations>();
 
         _monsterInfo.MonsterCurrentState = EStateIDs.Die;
 
-        _gameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_DIE);
+        _gameObject.GetComponentInChildren<Animator>().SetBool(IS_DIE, true);
     }
 
     public void ExitState()
@@ -53,6 +55,8 @@ public class MonsterDieState : IfiniteState
             _monsterInfo.IsDie = true;
 
             _elapsedTime = -1f;
+
+            _gameObject.GetComponentInChildren<Animator>().SetBool(IS_DIE, false);
 
             _gameObject.SetActive(false);
 

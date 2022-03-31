@@ -34,6 +34,7 @@ public class BazookaMissile : MonoBehaviour
     }
     public GameObject MisilleOwner
     {
+        get { return _misilleOwner; }
         set { _misilleOwner = value; }
     }
 
@@ -69,7 +70,7 @@ public class BazookaMissile : MonoBehaviour
 
             float _curDistMissileAndLaunchPos = Vector3.Distance(_launchPos, transform.position);
 
-            if (_targetDistance < _curDistMissileAndLaunchPos + 10f)
+            if (_targetDistance + 10f < _curDistMissileAndLaunchPos)
             {
 
                 Explosion();

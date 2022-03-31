@@ -19,7 +19,7 @@ public class MonsterAlertState : IfiniteState
 
         _monsterInfo.MonsterCurrentState = EStateIDs.Alert;
 
-        _gameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_ALERT);
+        _gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, true);
     }
 
     public void ExitState()
@@ -47,13 +47,15 @@ public class MonsterAlertState : IfiniteState
         {
             _finiteStateMachine.ChangeState(EStateIDs.Idle);
 
+            _gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, false);
+
             return;
         }
 
-        ChangeIdleAnimator();
+        ChangeIdleAnimation();
     }
 
-    private void ChangeIdleAnimator()
+    private void ChangeIdleAnimation()
     {
         _elapsedTime += Time.deltaTime;
 

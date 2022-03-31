@@ -21,7 +21,9 @@ class MonsterDamagedState : IfiniteState
 
         _monsterInfo.MonsterCurrentState = EStateIDs.Damaged;
 
-        _gameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_DAMAGED);
+        _gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DAMAGED, true);
+
+        _monsterInfo.MonsterAttackRangeCollider.enabled = false;
 
         _raycastOriginVec = _monsterInfo.CollisionVec;
 
@@ -30,7 +32,11 @@ class MonsterDamagedState : IfiniteState
 
     public void ExitState()
     {
-        _monsterInfo.IsDamaged = false; 
+        _monsterInfo.IsDamaged = false;
+
+        _gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DAMAGED, false);
+
+        _monsterInfo.MonsterAttackRangeCollider.enabled = true;
     }
 
     public void InitializeState(GameObject obj, FiniteStateMachine fsm)
@@ -43,11 +49,13 @@ class MonsterDamagedState : IfiniteState
     public void UpdateState()
     {
         // 데미지 받고 (수정 필요)
-        _monsterInfo.MonsterCurrentHP -= 50;
+        _monsterInfo.MonsterCurrentHP -= 5;
 
         // HP <= 0 이면 Die 상태
         if (_monsterInfo.MonsterCurrentHP <= 0)
         {
+            _gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, false);
+
             _finiteStateMachine.ChangeState(EStateIDs.Die);
 
             return;
@@ -57,9 +65,18 @@ class MonsterDamagedState : IfiniteState
         // (활동 범위를 벗어나 되돌아 가거나 죽었을 때 타겟팅 해제)
         if (_monsterInfo.IsTargeting)
         {
-            _finiteStateMachine.ChangeState(EStateIDs.Chase);
+            if (_monsterInfo.IsWithinAttackRange)
+            {
+                _finiteStateMachine.ChangeState(EStateIDs.Attack);
 
-            return;
+                return;
+            }
+            else
+            {
+                _finiteStateMachine.ChangeState(EStateIDs.Chase);
+
+                return;
+            }
         }
 
         // 레이케스트 쐈을 때
@@ -73,6 +90,9 @@ class MonsterDamagedState : IfiniteState
 
         if (Physics.Raycast(_raycastOriginVec, _lookAtTargetVec, out hit, 1000f))
         {
+            //// 디버깅용
+            //Debug.Log($"_monsterInfo.Target.layer : {_monsterInfo.Target.layer}\nhit.collider.gameObject.layer :{hit.collider.gameObject.layer}");
+
             if (_monsterInfo.Target.layer == hit.collider.gameObject.layer)
             {
                 _monsterInfo.MonsterChaser.IsTarget = _monsterInfo.Target.transform;

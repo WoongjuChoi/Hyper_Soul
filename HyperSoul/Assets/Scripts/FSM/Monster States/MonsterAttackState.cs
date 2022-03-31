@@ -10,10 +10,10 @@ public class MonsterAttackState : IfiniteState
 
     private FiniteStateMachine _finiteStateMachine = null;
 
-    private float _changeAttackAnimationTime = 2f;
+    private float _changeAttackAnimationTime = 3f;
     private float _elapsedTime = 0f;
 
-    private const string MONSTER_IDLE_ANIMATION = "Idle";
+    private const string IS_IDLE = "isIdle";
 
     public void EnterState()
     {
@@ -23,9 +23,9 @@ public class MonsterAttackState : IfiniteState
         {
             _elapsedTime = _changeAttackAnimationTime;
         }
-        else
+        else if (EStateIDs.Damaged == _monsterInfo.MonsterCurrentState)
         {
-            _gameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_IDLE);
+            _gameObject.GetComponentInChildren<Animator>().SetBool(IS_IDLE, true);
         }
 
         _monsterInfo.MonsterCurrentState = EStateIDs.Attack;
@@ -33,6 +33,9 @@ public class MonsterAttackState : IfiniteState
 
     public void ExitState()
     {
+        _elapsedTime = 0f;
+
+        _gameObject.GetComponentInChildren<Animator>().SetBool(IS_IDLE, false);
     }
 
     public void InitializeState(GameObject obj, FiniteStateMachine fsm)
@@ -51,7 +54,7 @@ public class MonsterAttackState : IfiniteState
             return;
         }
 
-        if (_gameObject.GetComponentInChildren<Animator>().GetCurrentAnimatorStateInfo(0).IsName(MONSTER_IDLE_ANIMATION) && false == _monsterInfo.IsWithinAttackRange)
+        if (false == _monsterInfo.IsWithinAttackRange)
         {
             _finiteStateMachine.ChangeState(EStateIDs.Chase);
 

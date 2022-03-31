@@ -21,6 +21,7 @@ public class MonsterSpawnState : IfiniteState
 
     public void ExitState()
     {
+        _elapsedTime = 0f;
     }
 
     public void InitializeState(GameObject obj, FiniteStateMachine fsm)

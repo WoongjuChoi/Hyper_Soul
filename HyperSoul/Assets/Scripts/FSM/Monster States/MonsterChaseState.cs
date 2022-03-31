@@ -16,7 +16,7 @@ public class MonsterChaseState : IfiniteState
 
         _monsterInfo.MonsterCurrentState = EStateIDs.Chase;
 
-        _gameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_CHASE);
+        _gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_CHASE, true);
     }
 
     public void ExitState()
@@ -24,6 +24,8 @@ public class MonsterChaseState : IfiniteState
         _monsterInfo.MonsterChaser.IsActive = false;
 
         _monsterInfo.MonsterChaser.ResetPath();
+
+        _gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_CHASE, false);
     }
 
     public void InitializeState(GameObject obj, FiniteStateMachine fsm)

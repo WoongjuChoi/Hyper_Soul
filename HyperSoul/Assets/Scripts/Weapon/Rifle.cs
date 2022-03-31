@@ -14,7 +14,7 @@ public class Rifle : Weapon
     {
         CurBulletCnt = 20;
         MaxBulletAmt = 20;
-        _reloadTime = 2f;
+        _reloadTime = 2;
         _gunState = EGunState.Ready;
     }
    

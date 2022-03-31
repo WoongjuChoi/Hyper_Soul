@@ -20,6 +20,7 @@ class PlayerAnimatorID
     public const string RELOAD = "Reload";
     public const string RELOAD_SPEED = "ReloadSpeed";
     public const string ISSHOOT = "IsShoot";
+    public const string SINGLESHOT = "SingleShot";
 }
 
 class TagParameterID

@@ -14,6 +14,9 @@ public class MonsterInfomations : MonoBehaviour
     private Chaser _monsterChaser = null;
 
     [SerializeField]
+    private Collider _attackRangeCollider = null;
+
+    [SerializeField]
     private Transform _monsterRayPoint = null;
 
     [SerializeField]
@@ -57,7 +60,9 @@ public class MonsterInfomations : MonoBehaviour
 
     public GameObject Target { get { return _target; } }
     public Chaser MonsterChaser { get { return _monsterChaser; } }
-    public Transform InitializePosition { get { return _initializePosition; } }
+    public Collider MonsterAttackRangeCollider { get { return _attackRangeCollider; } }
+    public Transform InitializePosition
+    { get { return _initializePosition; } }
     public Transform MonsterRayPoint { get { return _monsterRayPoint; } }
     public Vector3 CollisionVec { get { return _collisionVec; } }
     public Vector3 LookAtTargetVec { get { return _lookAtTargetVec; } }
@@ -131,10 +136,13 @@ public class MonsterInfomations : MonoBehaviour
             {
                 _isDamaged = true;
 
-                _collisionVec = collision.gameObject.transform.position;
-                _lookAtTargetVec = -collision.gameObject.transform.forward;
+                _target = collision.gameObject.GetComponent<BazookaMissile>().MisilleOwner;
 
-                _target = collision.gameObject.GetComponent<SampleAmmo>().Owner;
+                _collisionVec = collision.gameObject.transform.position;
+
+                Vector3 targetPosition = _target.transform.position + new Vector3(0f, 1.3f, 0f);
+
+                _lookAtTargetVec = targetPosition - _collisionVec;
             }
         }
 
@@ -151,6 +159,6 @@ public class MonsterInfomations : MonoBehaviour
         Debug.DrawRay(_monsterRayPoint.position, gameObject.transform.forward * 1000f, Color.black);
 
         //Debug.Log($"_monsterCurrentHP : {_monsterCurrentHP}");
-        Debug.Log($"gameObject.transform.eulerAngles: {gameObject.transform.eulerAngles}");
+        //Debug.Log($"gameObject.transform.eulerAngles: {gameObject.transform.eulerAngles}");
     }
 }

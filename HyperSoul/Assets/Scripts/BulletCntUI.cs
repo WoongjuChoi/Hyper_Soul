@@ -19,7 +19,7 @@ public class BulletCntUI : MonoBehaviour
 
     void Update()
     {
-        _bullet.text = $"{_bazooka._curBulletCnt}" + " / " + $"{_bazooka._maxBulletAmt}";
+        _bullet.text = $"{_bazooka.CurBulletCnt}" + " / " + $"{_bazooka.MaxBulletAmt}";
         //_nickname.text = _networkManager.Nickname;
     }
 }

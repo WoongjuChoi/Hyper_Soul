@@ -8,7 +8,7 @@ public class Bullet : MonoBehaviour
     private PlayerInfo _playerInfo;
 
     [SerializeField]
-    private float _speed = 15f;
+    private float _speed = 100f;
 
     public float AttackValue = 1;
 

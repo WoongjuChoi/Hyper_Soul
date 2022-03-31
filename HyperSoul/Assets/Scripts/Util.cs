@@ -18,6 +18,7 @@ class PlayerAnimatorID
     public const string DIE = "Die";
     public const string HIT = "Hit";
     public const string RELOAD = "Reload";
+    public const string RELOAD_SPEED = "ReloadSpeed";
     public const string ISSHOOT = "IsShoot";
 }
 

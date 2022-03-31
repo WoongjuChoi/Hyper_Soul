@@ -77,10 +77,10 @@ public class MonsterIdleState : IfiniteState
             return;
         }
 
-        ChangeRestingAnimator();
+        ChangeRestingAnimation();
     }
 
-    private void ChangeRestingAnimator()
+    private void ChangeRestingAnimation()
     {
         _elapsedTime += Time.deltaTime;
 

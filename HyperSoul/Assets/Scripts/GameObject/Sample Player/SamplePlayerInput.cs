@@ -1,35 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SamplePlayerInput : MonoBehaviour
 {
-    private float _moveHorizontal = 0f;
-    private float _moveVertical = 0f;
-    private float _rotateHorizontal = 0f;
+    [SerializeField]
+    private float _moveSpeed = 0f;
 
-    private const string HORIZONTAL = "Horizontal";
-    private const string VERTICAL = "Vertical";
-    private const string MOUSE_X = "Mouse X";
+    [SerializeField]
+    private float _rotateSpeed = 180f;
+
+    private PlayerInputs _playerInputs = null;
+
+    private Rigidbody _rigidbody = null;
 
     private bool _isFire = false;
 
+    private float _rotateHorizontal = 0f;
+
     public bool IsFire { get { return _isFire; } set { _isFire = value; } }
-    public float MoveHorizontal { get { return _moveHorizontal; } }
-    public float MoveVertical { get { return _moveVertical; } }
-    public float RotateHorizontal { get { return _rotateHorizontal; } }
+
+    private void Awake()
+    {
+        _playerInputs = GetComponent<PlayerInputs>();
+
+        _rigidbody = GetComponent<Rigidbody>();
+    }
 
     private void Update()
     {
-        _moveHorizontal = Input.GetAxisRaw(HORIZONTAL);
+        Vector3 moveVec = new Vector3(_playerInputs.MoveVec.x, 0f, _playerInputs.MoveVec.y).normalized;
 
-        _moveVertical = Input.GetAxisRaw(VERTICAL);
+        _rigidbody.MovePosition(transform.position + _moveSpeed * Time.deltaTime * moveVec);
 
-        _rotateHorizontal = Input.GetAxis(MOUSE_X);
-
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             _isFire = true;
         }
+
+        float turnSpeed = _playerInputs.MousePos.x * _rotateSpeed * Time.deltaTime;
+
+        gameObject.GetComponent<Rigidbody>().rotation *= Quaternion.Euler(0f, turnSpeed, 0f);
+
+        Debug.Log(turnSpeed);
     }
 }

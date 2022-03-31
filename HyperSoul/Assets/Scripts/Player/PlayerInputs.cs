@@ -1,9 +1,10 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInputs : MonoBehaviour
+public class PlayerInputs : MonoBehaviourPun
 {
 	public Vector2 MoveVec { get; private set; }
 	public Vector2 MousePos { get; private set; }
@@ -14,26 +15,50 @@ public class PlayerInputs : MonoBehaviour
 
 	public void OnMove(InputValue value)
     {
+		if(false == photonView.IsMine)
+        {
+			return;
+        }
 		MoveVec = value.Get<Vector2>();
     }
 	public void OnLook(InputValue value)
     {
+		if (false == photonView.IsMine)
+		{
+			return;
+		}
 		MousePos = value.Get<Vector2>();
     }
 	public void OnJump(InputValue value)
     {
+		if (false == photonView.IsMine)
+		{
+			return;
+		}
 		IsJump = value.isPressed;
     }
 	public void OnZoom(InputValue value)
     {
+		if (false == photonView.IsMine)
+		{
+			return;
+		}
 		IsZoom = value.isPressed;
     }
 	public void OnReload(InputValue value)
     {
+		if (false == photonView.IsMine)
+		{
+			return;
+		}
 		IsReload = value.isPressed;
     }
 	public void OnShoot(InputValue value)
     {
+		if (false == photonView.IsMine)
+		{
+			return;
+		}
 		IsShoot = value.isPressed;
     }
 }

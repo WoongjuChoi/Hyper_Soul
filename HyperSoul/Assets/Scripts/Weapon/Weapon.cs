@@ -37,7 +37,7 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
     }
 
 
-    [PunRPC]
+    
     private void Awake()
     {
         _playerAnimator = _player.GetComponentInChildren<Animator>();
@@ -61,6 +61,7 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
 
         SetMousePos();
     }
+    [PunRPC]
     public virtual void Fire() { }
     public virtual void Zoom() { }
 

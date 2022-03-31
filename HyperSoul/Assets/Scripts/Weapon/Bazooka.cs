@@ -18,12 +18,19 @@ public class Bazooka : Weapon
     [SerializeField]
     private float _rayDist = 200f;
 
+    private ObjectPool _missilePool = new ObjectPool();
+
     private void OnEnable()
     {
         _curBulletCnt = 100;
         _maxBulletAmt = 100;
         _reloadTime = 5;
         _gunState = EGunState.Ready;
+
+        for(int i = 0; i < 100; ++i)
+        {
+            _missilePool.Init(_missilePrefab);
+        }
     }
 
     [PunRPC]
@@ -46,7 +53,10 @@ public class Bazooka : Weapon
     {
         --_curBulletCnt;
         Vector3 aimDir = (_mousePos - _missileSpawnPos.position).normalized;
-        GameObject _bazookaMissile = Instantiate(_missilePrefab, _missileSpawnPos.position, Quaternion.LookRotation(aimDir, Vector3.up));
+        GameObject _bazookaMissile = _missilePool.GetObj();
+        _bazookaMissile.SetActive(true);
+        _bazookaMissile.transform.position = _missileSpawnPos.position;
+        _bazookaMissile.transform.rotation = Quaternion.LookRotation(aimDir, Vector3.up);
         _bazookaMissile.GetComponent<BazookaMissile>().Target = AimTarget()?.transform;
         _bazookaMissile.GetComponent<BazookaMissile>().MisilleOwner = this.gameObject;
         _bazookaMissile.transform.TransformDirection(_aimAngleRef.transform.forward);

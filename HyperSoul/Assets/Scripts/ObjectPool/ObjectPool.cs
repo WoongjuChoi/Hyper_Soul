@@ -8,22 +8,23 @@ public class ObjectPool
     
     private GameObject _obj = null;
 
-    public void Init(GameObject prefab, GameObject type)
+    public void Init(GameObject prefab)
     {
         _obj = prefab;
-        _objQueue.Enqueue(CreateObj(type));
+        _objQueue.Enqueue(CreateObj());
     }
 
-    private GameObject CreateObj(GameObject type)
+    private GameObject CreateObj()
     {
         GameObject newObject = GameObject.Instantiate(_obj);
+        newObject.SetActive(false);
 
         return newObject;
     }
 
     public GameObject GetObj()
     {
-        GameObject newObj = _objQueue.Dequeue();
+        GameObject newObj = (_objQueue.Count > 0) ? newObj = _objQueue.Dequeue() : newObj = CreateObj();
 
         return newObj;
     }

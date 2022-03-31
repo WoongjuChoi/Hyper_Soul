@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCam : MonoBehaviour
+public class PlayerCam : MonoBehaviourPun
 {
     [SerializeField]
     private Transform _playerBody;
@@ -32,19 +33,23 @@ public class PlayerCam : MonoBehaviour
 
     private void Awake()
     {
-        _input = GetComponent<PlayerInputs>();
-        _playerInfo = GetComponent<PlayerInfo>();
+        if(photonView.IsMine)
+        {
+            _input = GetComponent<PlayerInputs>();
+            _playerInfo = GetComponent<PlayerInfo>();
 
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
 
-        _defaultCamPos = new Vector3(1.5f, 0.4f, -3.4f);
-        _normalRotationSpeed = new Vector2(0.5f, 0.5f);
+            _defaultCamPos = new Vector3(1.5f, 0.4f, -3.4f);
+            _normalRotationSpeed = new Vector2(0.5f, 0.5f);
+        }
+        
     }
 
     private void Update()
     {
-        if (_playerInfo.IsDead)
+        if (!photonView.IsMine || _playerInfo.IsDead)
         {
             return;
         }

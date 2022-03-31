@@ -477,7 +477,6 @@ MonoBehaviour:
   - {fileID: 1591210600240758448}
   - {fileID: 7571659138667561152}
   - {fileID: 4420473771590932976}
-  - {fileID: 2674803741113845634}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -7574,6 +7573,29 @@ MonoBehaviour:
   _missilePrefab: {fileID: 5412352353896642085, guid: 9e2e1aad3b68c6342a1f6bf52418430e, type: 3}
   _aimAngleRef: {fileID: 4938414192074980028}
   _rayDist: 200
+--- !u!114 &2675873248627407612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3634500803319843523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 2
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 2674803741113845634}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &2968808698235491120
 PrefabInstance:
   m_ObjectHideFlags: 0

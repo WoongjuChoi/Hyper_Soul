@@ -47,7 +47,6 @@ public class BazookaMissile : MonoBehaviour
         {
             StartCoroutine(SoftLaunch());
             _targetDistance = Vector3.Distance(_misilleOwner.transform.position, _target.transform.position);
-            //Debug.Log(_targetDistance);
         }
     }
     private void FixedUpdate()
@@ -69,9 +68,8 @@ public class BazookaMissile : MonoBehaviour
 
             float _curDistMissileAndLaunchPos = Vector3.Distance(_launchPos, transform.position);
 
-            if (_targetDistance < _curDistMissileAndLaunchPos + 10f)
+            if (_targetDistance + 10f < _curDistMissileAndLaunchPos)
             {
-
                 Explosion();
             }
         }
@@ -88,8 +86,6 @@ public class BazookaMissile : MonoBehaviour
 
     private IEnumerator OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Ãæµ¹µÊ");
-        Debug.Log(collision.gameObject.name);
         Explosion();
         yield return new WaitForSeconds(1f);
         
@@ -108,6 +104,7 @@ public class BazookaMissile : MonoBehaviour
     {
         _isHitted = true;
         _explosionEffect.SetActive(true);
+        _rocketParticleEffect.SetActive(false);
         _missilePrefab.SetActive(false);
     }
 }

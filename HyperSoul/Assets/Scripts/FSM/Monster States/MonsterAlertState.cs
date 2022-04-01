@@ -2,52 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterAlertState : IfiniteState
+public class MonsterAlertState : BaseState<MonsterInfomations>
 {
-    private GameObject _gameObject = null;
-
-    private MonsterInfomations _monsterInfo = null;
-
-    private FiniteStateMachine _finiteStateMachine = null;
-
     private float _changeIdleAnimationTime = 4f;
     private float _elapsedTime = 0f;
 
-    public void EnterState()
+    public override void EnterState()
     {
-        _monsterInfo = _gameObject.GetComponent<MonsterInfomations>();
+        base.CreatureInfomation = base.GameObject.GetComponent<MonsterInfomations>();
 
-        _monsterInfo.MonsterCurrentState = EStateIDs.Alert;
+        base.CreatureInfomation.MonsterCurrentState = EStateIDs.Alert;
 
-        _gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, true);
+        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, true);
     }
 
-    public void ExitState()
+    public override void ExitState()
     {
         _elapsedTime = 0;
     }
 
-    public void InitializeState(GameObject obj, FiniteStateMachine fsm)
+    public override void UpdateState()
     {
-        _gameObject = obj;
-
-        _finiteStateMachine = fsm;
-    }
-
-    public void UpdateState()
-    {
-        if (_monsterInfo.IsDamaged)
+        if (base.CreatureInfomation.IsDamaged)
         {
-            _finiteStateMachine.ChangeState(EStateIDs.Damaged);
+            base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
 
             return;
         }
 
         if (-1 == _elapsedTime)
         {
-            _finiteStateMachine.ChangeState(EStateIDs.Idle);
+            base.FiniteStateMachine.ChangeState(EStateIDs.Idle);
 
-            _gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, false);
+            base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, false);
 
             return;
         }
@@ -61,7 +48,7 @@ public class MonsterAlertState : IfiniteState
 
         if (_elapsedTime >= _changeIdleAnimationTime)
         {
-            _gameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_IDLE);
+            base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_IDLE);
 
             _elapsedTime = -1f;
         }

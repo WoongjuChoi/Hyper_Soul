@@ -2,42 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterSpawnState : IfiniteState
+public class MonsterSpawnState : BaseState<MonsterInfomations>
 {
-    private GameObject _gameObject = null;
-
-    private MonsterInfomations _monsterInfo = null;
-
-    private FiniteStateMachine _finiteStateMachine = null;
-
     private float _elapsedTime = 0f;
 
-    public void EnterState()
+    public override void EnterState()
     {
-        _monsterInfo = _gameObject.GetComponent<MonsterInfomations>();
+        base.CreatureInfomation = base.GameObject.GetComponent<MonsterInfomations>();
 
-        _monsterInfo.MonsterCurrentState = EStateIDs.Spawn;
+        base.CreatureInfomation.MonsterCurrentState = EStateIDs.Spawn;
     }
 
-    public void ExitState()
+    public override void ExitState()
     {
         _elapsedTime = 0f;
     }
 
-    public void InitializeState(GameObject obj, FiniteStateMachine fsm)
-    {
-        _gameObject = obj;
-
-        _finiteStateMachine = fsm;
-    }
-
-    public void UpdateState()
+    public override void UpdateState()
     {
         _elapsedTime += Time.deltaTime;
 
-        if (_elapsedTime >= _monsterInfo.MonsterInvincibleTime)
+        if (_elapsedTime >= base.CreatureInfomation.MonsterInvincibleTime)
         {
-            _finiteStateMachine.ChangeState(EStateIDs.Idle);
+            base.FiniteStateMachine.ChangeState(EStateIDs.Idle);
 
             return;
         }

@@ -2,84 +2,71 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterAttackState : IfiniteState
+public class MonsterAttackState : BaseState<MonsterInfomations>
 {
-    private GameObject _gameObject = null;
-
-    private MonsterInfomations _monsterInfo = null;
-
-    private FiniteStateMachine _finiteStateMachine = null;
-
     private float _changeAttackAnimationTime = 3f;
     private float _elapsedTime = 0f;
 
     private const string IS_IDLE = "isIdle";
 
-    public void EnterState()
+    public override void EnterState()
     {
-        _monsterInfo = _gameObject.GetComponent<MonsterInfomations>();
+        base.CreatureInfomation = base.GameObject.GetComponent<MonsterInfomations>();
 
-        if (EStateIDs.Chase == _monsterInfo.MonsterCurrentState)
+        if (EStateIDs.Chase == base.CreatureInfomation.MonsterCurrentState)
         {
             _elapsedTime = _changeAttackAnimationTime;
         }
-        else if (EStateIDs.Damaged == _monsterInfo.MonsterCurrentState)
+        else if (EStateIDs.Damaged == base.CreatureInfomation.MonsterCurrentState)
         {
-            _gameObject.GetComponentInChildren<Animator>().SetBool(IS_IDLE, true);
+            base.GameObject.GetComponentInChildren<Animator>().SetBool(IS_IDLE, true);
         }
 
-        _monsterInfo.MonsterCurrentState = EStateIDs.Attack;
+        base.CreatureInfomation.MonsterCurrentState = EStateIDs.Attack;
     }
 
-    public void ExitState()
+    public override void ExitState()
     {
         _elapsedTime = 0f;
 
-        _gameObject.GetComponentInChildren<Animator>().SetBool(IS_IDLE, false);
+        base.GameObject.GetComponentInChildren<Animator>().SetBool(IS_IDLE, false);
     }
 
-    public void InitializeState(GameObject obj, FiniteStateMachine fsm)
+    public override void UpdateState()
     {
-        _gameObject = obj;
-
-        _finiteStateMachine = fsm;
-    }
-
-    public void UpdateState()
-    {
-        if (_monsterInfo.IsDamaged)
+        if (base.CreatureInfomation.IsDamaged)
         {
-            _finiteStateMachine.ChangeState(EStateIDs.Damaged);
+            base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
 
             return;
         }
 
-        if (false == _monsterInfo.IsWithinAttackRange)
+        if (false == base.CreatureInfomation.IsWithinAttackRange)
         {
-            _finiteStateMachine.ChangeState(EStateIDs.Chase);
+            base.FiniteStateMachine.ChangeState(EStateIDs.Chase);
 
             return;
         }
 
         if (_elapsedTime >= _changeAttackAnimationTime)
         {
-            Vector3 raycastOriginVec = _monsterInfo.MonsterRayPoint.position + new Vector3(0f, 0f, 1f);
+            Vector3 raycastOriginVec = base.CreatureInfomation.MonsterRayPoint.position + new Vector3(0f, 0f, 1f);
 
             RaycastHit hit;
 
-            if (Physics.Raycast(raycastOriginVec, _gameObject.transform.forward, out hit, 100f))
+            if (Physics.Raycast(raycastOriginVec, base.GameObject.transform.forward, out hit, 100f))
             {
-                if (_monsterInfo.Target.layer != hit.collider.gameObject.layer)
+                if (base.CreatureInfomation.Target.layer != hit.collider.gameObject.layer)
                 {
-                    _gameObject.transform.LookAt(_monsterInfo.Target.transform);
+                    base.GameObject.transform.LookAt(base.CreatureInfomation.Target.transform);
                 }
             }
             else
             {
-                _gameObject.transform.LookAt(_monsterInfo.Target.transform);
+                base.GameObject.transform.LookAt(base.CreatureInfomation.Target.transform);
             }
 
-            _gameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_ATTACK);
+            base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_ATTACK);
 
             _elapsedTime = 0f;
         }

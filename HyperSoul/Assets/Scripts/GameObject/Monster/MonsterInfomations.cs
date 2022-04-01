@@ -24,15 +24,15 @@ public class MonsterInfomations : MonoBehaviour
 
     [SerializeField]
     private int _monsterMaxHP = 0;
-
-    private MonsterAlertState _monsterAlertState = new MonsterAlertState();
-    private MonsterAttackState _monsterAttackState = new MonsterAttackState();
-    private MonsterChaseState _monsterChaseState = new MonsterChaseState();
-    private MonsterDamagedState _monsterDamagedState = new MonsterDamagedState();
-    private MonsterDieState _monsterDieState = new MonsterDieState();
-    private MonsterIdleState _monsterIdleState = new MonsterIdleState();
-    private MonsterReturnPositionState _monsterReturnPositionState = new MonsterReturnPositionState();
-    private MonsterSpawnState _monsterSpawnState = new MonsterSpawnState();
+    
+    private BaseState<MonsterInfomations> _monsterAlertState = new MonsterAlertState();
+    private BaseState<MonsterInfomations> _monsterAttackState = new MonsterAttackState();
+    private BaseState<MonsterInfomations> _monsterChaseState = new MonsterChaseState();
+    private BaseState<MonsterInfomations> _monsterDamagedState = new MonsterDamagedState();
+    private BaseState<MonsterInfomations> _monsterDieState = new MonsterDieState();
+    private BaseState<MonsterInfomations> _monsterIdleState = new MonsterIdleState();
+    private BaseState<MonsterInfomations> _monsterReturnPositionState = new MonsterReturnPositionState();
+    private BaseState<MonsterInfomations> _monsterSpawnState = new MonsterSpawnState();
 
     private GameObject _target = null;
 
@@ -52,17 +52,10 @@ public class MonsterInfomations : MonoBehaviour
 
     private int _monsterCurrentHP = 0;
 
-    public EStateIDs MonsterCurrentState { get { return _monsterCurrentState; } set { _monsterCurrentState = value; } }
-    public bool IsDamaged { get { return _isDamaged; } set { _isDamaged = value; } }
-    public bool IsDie { get { return _isDie; } set { _isDie = value; } }
-    public bool IsTargeting { get { return _isTargeting; } set { _isTargeting = value; } }
-    public int MonsterCurrentHP { get { return _monsterCurrentHP; } set { _monsterCurrentHP = value; } }
-
     public GameObject Target { get { return _target; } }
     public Chaser MonsterChaser { get { return _monsterChaser; } }
     public Collider MonsterAttackRangeCollider { get { return _attackRangeCollider; } }
-    public Transform InitializePosition
-    { get { return _initializePosition; } }
+    public Transform InitializePosition { get { return _initializePosition; } }
     public Transform MonsterRayPoint { get { return _monsterRayPoint; } }
     public Vector3 CollisionVec { get { return _collisionVec; } }
     public Vector3 LookAtTargetVec { get { return _lookAtTargetVec; } }
@@ -70,6 +63,12 @@ public class MonsterInfomations : MonoBehaviour
     public float MonsterInvincibleTime { get { return _monsterInvincibleTime; } }
     public float MonsterSpawnDirection { get { return _monsterSpawnDirection; } }
     public int MonsterMaxHP { get { return _monsterMaxHP; } }
+
+    public EStateIDs MonsterCurrentState { get { return _monsterCurrentState; } set { _monsterCurrentState = value; } }
+    public bool IsDamaged { get { return _isDamaged; } set { _isDamaged = value; } }
+    public bool IsDie { get { return _isDie; } set { _isDie = value; } }
+    public bool IsTargeting { get { return _isTargeting; } set { _isTargeting = value; } }
+    public int MonsterCurrentHP { get { return _monsterCurrentHP; } set { _monsterCurrentHP = value; } }
 
     private void Awake()
     {
@@ -140,7 +139,7 @@ public class MonsterInfomations : MonoBehaviour
 
                 _collisionVec = collision.gameObject.transform.position;
 
-                Vector3 targetPosition = _target.transform.position + new Vector3(0f, 1.3f, 0f);
+                Vector3 targetPosition = _target.GetComponent<PlayerMovement>().StoreFirePosition + new Vector3(0f, 1.3f, 0f);
 
                 _lookAtTargetVec = targetPosition - _collisionVec;
             }

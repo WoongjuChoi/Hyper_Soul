@@ -3,77 +3,64 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-class MonsterDamagedState : IfiniteState
+class MonsterDamagedState : BaseState<MonsterInfomations>
 {
-    private GameObject _gameObject = null;
-
-    private MonsterInfomations _monsterInfo = null;
-
-    private FiniteStateMachine _finiteStateMachine = null;
-
     private Vector3 _lookAtTargetVec = Vector3.zero;
 
     private Vector3 _raycastOriginVec = Vector3.zero;
 
-    public void EnterState()
+    public override void EnterState()
     {
-        _monsterInfo = _gameObject.GetComponent<MonsterInfomations>();
+        base.CreatureInfomation = base.GameObject.GetComponent<MonsterInfomations>();
 
-        _monsterInfo.MonsterCurrentState = EStateIDs.Damaged;
+        base.CreatureInfomation.MonsterCurrentState = EStateIDs.Damaged;
 
-        _gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DAMAGED, true);
+        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DAMAGED, true);
 
-        _monsterInfo.MonsterAttackRangeCollider.enabled = false;
+        base.CreatureInfomation.MonsterAttackRangeCollider.enabled = false;
 
-        _raycastOriginVec = _monsterInfo.CollisionVec;
+        _raycastOriginVec = base.CreatureInfomation.CollisionVec;
 
-        _lookAtTargetVec = _monsterInfo.LookAtTargetVec;
+        _lookAtTargetVec = base.CreatureInfomation.LookAtTargetVec;
     }
 
-    public void ExitState()
+    public override void ExitState()
     {
-        _monsterInfo.IsDamaged = false;
+        base.CreatureInfomation.IsDamaged = false;
 
-        _gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DAMAGED, false);
+        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DAMAGED, false);
 
-        _monsterInfo.MonsterAttackRangeCollider.enabled = true;
+        base.CreatureInfomation.MonsterAttackRangeCollider.enabled = true;
     }
 
-    public void InitializeState(GameObject obj, FiniteStateMachine fsm)
-    {
-        _gameObject = obj;
-
-        _finiteStateMachine = fsm;
-    }
-
-    public void UpdateState()
+    public override void UpdateState()
     {
         // 데미지 받고 (수정 필요)
-        _monsterInfo.MonsterCurrentHP -= 5;
+        base.CreatureInfomation.MonsterCurrentHP -= 30;
 
         // HP <= 0 이면 Die 상태
-        if (_monsterInfo.MonsterCurrentHP <= 0)
+        if (base.CreatureInfomation.MonsterCurrentHP <= 0)
         {
-            _gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, false);
+            base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, false);
 
-            _finiteStateMachine.ChangeState(EStateIDs.Die);
+            base.FiniteStateMachine.ChangeState(EStateIDs.Die);
 
             return;
         }
 
         // 적을 한번 타겟팅 하면 이후 갱신 X
         // (활동 범위를 벗어나 되돌아 가거나 죽었을 때 타겟팅 해제)
-        if (_monsterInfo.IsTargeting)
+        if (base.CreatureInfomation.IsTargeting)
         {
-            if (_monsterInfo.IsWithinAttackRange)
+            if (base.CreatureInfomation.IsWithinAttackRange)
             {
-                _finiteStateMachine.ChangeState(EStateIDs.Attack);
+                base.FiniteStateMachine.ChangeState(EStateIDs.Attack);
 
                 return;
             }
             else
             {
-                _finiteStateMachine.ChangeState(EStateIDs.Chase);
+                base.FiniteStateMachine.ChangeState(EStateIDs.Chase);
 
                 return;
             }
@@ -93,35 +80,35 @@ class MonsterDamagedState : IfiniteState
             //// 디버깅용
             //Debug.Log($"_monsterInfo.Target.layer : {_monsterInfo.Target.layer}\nhit.collider.gameObject.layer :{hit.collider.gameObject.layer}");
 
-            if (_monsterInfo.Target.layer == hit.collider.gameObject.layer)
+            if (base.CreatureInfomation.Target.layer == hit.collider.gameObject.layer)
             {
-                _monsterInfo.MonsterChaser.IsTarget = _monsterInfo.Target.transform;
+                base.CreatureInfomation.MonsterChaser.IsTarget = base.CreatureInfomation.Target.transform;
 
-                _monsterInfo.IsTargeting = true;
+                base.CreatureInfomation.IsTargeting = true;
 
-                if (_monsterInfo.IsWithinAttackRange)
+                if (base.CreatureInfomation.IsWithinAttackRange)
                 {
-                    _finiteStateMachine.ChangeState(EStateIDs.Attack);
+                    base.FiniteStateMachine.ChangeState(EStateIDs.Attack);
 
                     return;
                 }
                 else
                 {
-                    _finiteStateMachine.ChangeState(EStateIDs.Chase);
+                    base.FiniteStateMachine.ChangeState(EStateIDs.Chase);
 
                     return;
                 }
             }
             else
             {
-                _finiteStateMachine.ChangeState(EStateIDs.Alert);
+                base.FiniteStateMachine.ChangeState(EStateIDs.Alert);
 
                 return;
             }
         }
         else
         {
-            _finiteStateMachine.ChangeState(EStateIDs.Alert);
+            base.FiniteStateMachine.ChangeState(EStateIDs.Alert);
 
             return;
         }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterDieState : BaseState<MonsterInfomations>
+public class WolfDieState : BaseState<WolfInformation>
 {
     private float _monsterDieTime = 2f;
     private float _elapsedTime = 0f;
@@ -11,8 +11,6 @@ public class MonsterDieState : BaseState<MonsterInfomations>
 
     public override void EnterState()
     {
-        base.CreatureInfomation = base.GameObject.GetComponent<MonsterInfomations>();
-
         base.CreatureInfomation.MonsterCurrentState = EStateIDs.Die;
 
         base.GameObject.GetComponentInChildren<Animator>().SetBool(IS_DIE, true);

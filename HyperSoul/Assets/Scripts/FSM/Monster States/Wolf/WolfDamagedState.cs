@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-class MonsterDamagedState : BaseState<MonsterInfomations>
+class WolfDamagedState : BaseState<WolfInformation>
 {
     private Vector3 _lookAtTargetVec = Vector3.zero;
 
@@ -11,8 +11,6 @@ class MonsterDamagedState : BaseState<MonsterInfomations>
 
     public override void EnterState()
     {
-        base.CreatureInfomation = base.GameObject.GetComponent<MonsterInfomations>();
-
         base.CreatureInfomation.MonsterCurrentState = EStateIDs.Damaged;
 
         base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DAMAGED, true);

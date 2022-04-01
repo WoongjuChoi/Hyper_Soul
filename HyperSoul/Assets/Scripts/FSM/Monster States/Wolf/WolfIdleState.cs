@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterIdleState : BaseState<MonsterInfomations>
+public class WolfIdleState : BaseState<WolfInformation>
 {
+    private bool _playAnimation = false;
+
     private float _changeRestingAnimationTime = 5f;
     private float _elapsedTime = 0f;
 
@@ -11,14 +13,14 @@ public class MonsterIdleState : BaseState<MonsterInfomations>
 
     public override void EnterState()
     {
-        base.CreatureInfomation = base.GameObject.GetComponent<MonsterInfomations>();
-
         base.CreatureInfomation.MonsterCurrentState = EStateIDs.Idle;
     }
 
     public override void ExitState()
     {
         _elapsedTime = 0f;
+
+        _playAnimation = false;
 
         _increaseHealing = 0;
     }
@@ -59,8 +61,7 @@ public class MonsterIdleState : BaseState<MonsterInfomations>
             base.CreatureInfomation.MonsterCurrentHP += _increaseHealing;
         }
 
-        // 설정한 애니메이션을 진행하면 더 이상 진행하지 않게끔 설정
-        if (-1 == _elapsedTime)
+        if (_playAnimation)
         {
             return;
         }
@@ -75,8 +76,8 @@ public class MonsterIdleState : BaseState<MonsterInfomations>
         if (_elapsedTime >= _changeRestingAnimationTime)
         {
             base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_RESTING);
-
-            _elapsedTime = -1f;
+            
+            _playAnimation = true;
         }
     }
 }

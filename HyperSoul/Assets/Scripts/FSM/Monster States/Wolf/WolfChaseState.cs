@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterChaseState : BaseState<MonsterInfomations>
+public class WolfChaseState : BaseState<WolfInformation>
 {
     public override void EnterState()
     {
-        base.CreatureInfomation = base.GameObject.GetComponent<MonsterInfomations>();
-
         base.CreatureInfomation.MonsterCurrentState = EStateIDs.Chase;
 
         base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_CHASE, true);
@@ -40,7 +38,7 @@ public class MonsterChaseState : BaseState<MonsterInfomations>
 
         float distance = (base.GameObject.transform.position - base.CreatureInfomation.InitializePosition.position).magnitude;
 
-        if (distance >= 10f)
+        if (distance >= 20f)
         {
             base.FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
 

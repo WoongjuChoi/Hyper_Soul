@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterAlertState : BaseState<MonsterInfomations>
+public class WolfAlertState : BaseState<WolfInformation>
 {
+    private bool _playAnimation = false;
+
     private float _changeIdleAnimationTime = 4f;
     private float _elapsedTime = 0f;
 
     public override void EnterState()
     {
-        base.CreatureInfomation = base.GameObject.GetComponent<MonsterInfomations>();
-
         base.CreatureInfomation.MonsterCurrentState = EStateIDs.Alert;
 
         base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, true);
@@ -19,6 +19,8 @@ public class MonsterAlertState : BaseState<MonsterInfomations>
     public override void ExitState()
     {
         _elapsedTime = 0;
+
+        _playAnimation = false;
     }
 
     public override void UpdateState()
@@ -30,7 +32,7 @@ public class MonsterAlertState : BaseState<MonsterInfomations>
             return;
         }
 
-        if (-1 == _elapsedTime)
+        if (_playAnimation)
         {
             base.FiniteStateMachine.ChangeState(EStateIDs.Idle);
 
@@ -50,7 +52,7 @@ public class MonsterAlertState : BaseState<MonsterInfomations>
         {
             base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_IDLE);
 
-            _elapsedTime = -1f;
+            _playAnimation = true;
         }
     }
 }

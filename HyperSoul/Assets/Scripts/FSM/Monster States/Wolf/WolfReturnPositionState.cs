@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterReturnPositionState : BaseState<MonsterInfomations>
+public class WolfReturnPositionState : BaseState<WolfInformation>
 {
     private float _distance = 0f;
 
@@ -12,8 +12,6 @@ public class MonsterReturnPositionState : BaseState<MonsterInfomations>
 
     public override void EnterState()
     {
-        base.CreatureInfomation = base.GameObject.GetComponent<MonsterInfomations>();
-
         base.CreatureInfomation.MonsterCurrentState = EStateIDs.ReturnPosition;
 
         base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_CHASE, true);

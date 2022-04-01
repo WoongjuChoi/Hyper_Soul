@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterInfomations : MonoBehaviour
+public class WolfInformation : MonoBehaviour
 {
     [SerializeField]
     private FiniteStateMachine _monsterFSM = null;
@@ -25,14 +25,14 @@ public class MonsterInfomations : MonoBehaviour
     [SerializeField]
     private int _monsterMaxHP = 0;
     
-    private BaseState<MonsterInfomations> _monsterAlertState = new MonsterAlertState();
-    private BaseState<MonsterInfomations> _monsterAttackState = new MonsterAttackState();
-    private BaseState<MonsterInfomations> _monsterChaseState = new MonsterChaseState();
-    private BaseState<MonsterInfomations> _monsterDamagedState = new MonsterDamagedState();
-    private BaseState<MonsterInfomations> _monsterDieState = new MonsterDieState();
-    private BaseState<MonsterInfomations> _monsterIdleState = new MonsterIdleState();
-    private BaseState<MonsterInfomations> _monsterReturnPositionState = new MonsterReturnPositionState();
-    private BaseState<MonsterInfomations> _monsterSpawnState = new MonsterSpawnState();
+    private BaseState<WolfInformation> _monsterAlertState = new WolfAlertState();
+    private BaseState<WolfInformation> _monsterAttackState = new WolfAttackState();
+    private BaseState<WolfInformation> _monsterChaseState = new WolfChaseState();
+    private BaseState<WolfInformation> _monsterDamagedState = new WolfDamagedState();
+    private BaseState<WolfInformation> _monsterDieState = new WolfDieState();
+    private BaseState<WolfInformation> _monsterIdleState = new WolfIdleState();
+    private BaseState<WolfInformation> _monsterReturnPositionState = new WolfReturnPositionState();
+    private BaseState<WolfInformation> _monsterSpawnState = new WolfSpawnState();
 
     private GameObject _target = null;
 

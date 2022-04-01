@@ -2,14 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterSpawnState : BaseState<MonsterInfomations>
+public class WolfSpawnState : BaseState<WolfInformation>
 {
     private float _elapsedTime = 0f;
 
     public override void EnterState()
     {
-        base.CreatureInfomation = base.GameObject.GetComponent<MonsterInfomations>();
-
         base.CreatureInfomation.MonsterCurrentState = EStateIDs.Spawn;
     }
 

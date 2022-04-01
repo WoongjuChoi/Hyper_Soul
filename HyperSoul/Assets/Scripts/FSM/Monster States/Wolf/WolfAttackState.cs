@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterAttackState : BaseState<MonsterInfomations>
+public class WolfAttackState : BaseState<WolfInformation>
 {
     private float _changeAttackAnimationTime = 3f;
     private float _elapsedTime = 0f;
@@ -11,8 +11,6 @@ public class MonsterAttackState : BaseState<MonsterInfomations>
 
     public override void EnterState()
     {
-        base.CreatureInfomation = base.GameObject.GetComponent<MonsterInfomations>();
-
         if (EStateIDs.Chase == base.CreatureInfomation.MonsterCurrentState)
         {
             _elapsedTime = _changeAttackAnimationTime;

@@ -301,7 +301,7 @@ GameObject:
   - component: {fileID: 5641331980754899856}
   - component: {fileID: 9039456690425684840}
   - component: {fileID: 1591210600240758448}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: BazookaPlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -7570,6 +7570,7 @@ MonoBehaviour:
   _player: {fileID: 5641331980754899854}
   _curBulletCnt: 0
   _maxBulletAmt: 0
+  _shooter: {fileID: 0}
   _missileSpawnPos: {fileID: 2674803741861350455}
   _missilePrefab: {fileID: 5412352353896642085, guid: 9e2e1aad3b68c6342a1f6bf52418430e, type: 3}
   _aimAngleRef: {fileID: 4938414192074980028}

@@ -15,8 +15,6 @@ public class SamplePlayerInput : MonoBehaviour
 
     private bool _isFire = false;
 
-    private float _rotateHorizontal = 0f;
-
     public bool IsFire { get { return _isFire; } set { _isFire = value; } }
 
     private void Awake()

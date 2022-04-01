@@ -2,75 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WolfInformation : MonoBehaviour
+public class WolfInformation : MonsterInformation
 {
-    [SerializeField]
-    private FiniteStateMachine _monsterFSM = null;
+    private WolfAlertState _monsterAlertState = new WolfAlertState();
+    private WolfAttackState _monsterAttackState = new WolfAttackState();
+    private WolfChaseState _monsterChaseState = new WolfChaseState();
+    private WolfDamagedState _monsterDamagedState = new WolfDamagedState();
+    private WolfDieState _monsterDieState = new WolfDieState();
+    private WolfIdleState _monsterIdleState = new WolfIdleState();
+    private WolfReturnPositionState _monsterReturnPositionState = new WolfReturnPositionState();
+    private WolfSpawnState _monsterSpawnState = new WolfSpawnState();
 
-    [SerializeField]
-    private MonsterSpawnManager _monsterSpawnManager = null;
-
-    [SerializeField]
-    private Chaser _monsterChaser = null;
-
-    [SerializeField]
-    private Collider _attackRangeCollider = null;
-
-    [SerializeField]
-    private Transform _monsterRayPoint = null;
-
-    [SerializeField]
-    private float _monsterInvincibleTime = 0f;
-
-    [SerializeField]
-    private int _monsterMaxHP = 0;
-    
-    private BaseState<WolfInformation> _monsterAlertState = new WolfAlertState();
-    private BaseState<WolfInformation> _monsterAttackState = new WolfAttackState();
-    private BaseState<WolfInformation> _monsterChaseState = new WolfChaseState();
-    private BaseState<WolfInformation> _monsterDamagedState = new WolfDamagedState();
-    private BaseState<WolfInformation> _monsterDieState = new WolfDieState();
-    private BaseState<WolfInformation> _monsterIdleState = new WolfIdleState();
-    private BaseState<WolfInformation> _monsterReturnPositionState = new WolfReturnPositionState();
-    private BaseState<WolfInformation> _monsterSpawnState = new WolfSpawnState();
-
-    private GameObject _target = null;
-
-    private Transform _initializePosition = null;
-
-    private Vector3 _collisionVec = Vector3.zero;
-    private Vector3 _lookAtTargetVec = Vector3.zero;
-
-    private EStateIDs _monsterCurrentState = EStateIDs.None;
-
-    private bool _isDamaged = false;
-    private bool _isDie = false;
-    private bool _isTargeting = false;
-    private bool _isWithinAttackRange = false;
-
-    private float _monsterSpawnDirection = 0f;
-
-    private int _monsterCurrentHP = 0;
-
-    public GameObject Target { get { return _target; } }
-    public Chaser MonsterChaser { get { return _monsterChaser; } }
-    public Collider MonsterAttackRangeCollider { get { return _attackRangeCollider; } }
-    public Transform InitializePosition { get { return _initializePosition; } }
-    public Transform MonsterRayPoint { get { return _monsterRayPoint; } }
-    public Vector3 CollisionVec { get { return _collisionVec; } }
-    public Vector3 LookAtTargetVec { get { return _lookAtTargetVec; } }
-    public bool IsWithinAttackRange { get { return _isWithinAttackRange; } }
-    public float MonsterInvincibleTime { get { return _monsterInvincibleTime; } }
-    public float MonsterSpawnDirection { get { return _monsterSpawnDirection; } }
-    public int MonsterMaxHP { get { return _monsterMaxHP; } }
-
-    public EStateIDs MonsterCurrentState { get { return _monsterCurrentState; } set { _monsterCurrentState = value; } }
-    public bool IsDamaged { get { return _isDamaged; } set { _isDamaged = value; } }
-    public bool IsDie { get { return _isDie; } set { _isDie = value; } }
-    public bool IsTargeting { get { return _isTargeting; } set { _isTargeting = value; } }
-    public int MonsterCurrentHP { get { return _monsterCurrentHP; } set { _monsterCurrentHP = value; } }
-
-    private void Awake()
+    public override void Awake()
     {
         _monsterFSM.AddState(EStateIDs.Alert, _monsterAlertState);
         _monsterFSM.AddState(EStateIDs.Attack, _monsterAttackState);
@@ -80,27 +23,6 @@ public class WolfInformation : MonoBehaviour
         _monsterFSM.AddState(EStateIDs.Idle, _monsterIdleState);
         _monsterFSM.AddState(EStateIDs.ReturnPosition, _monsterReturnPositionState);
         _monsterFSM.AddState(EStateIDs.Spawn, _monsterSpawnState);
-    }
-
-    private void OnEnable()
-    {
-        _monsterFSM.ChangeState(EStateIDs.Spawn);
-
-        _monsterCurrentHP = _monsterMaxHP;
-
-        _initializePosition = _monsterSpawnManager.gameObject.transform;
-
-        gameObject.transform.position = _initializePosition.position;
-
-        _monsterSpawnDirection = _monsterSpawnManager.InitializeDirection;
-
-        Quaternion monsterInitializeDirection = Quaternion.Euler(0f, _monsterSpawnDirection, 0f);
-
-        gameObject.transform.rotation = monsterInitializeDirection;
-
-        _isDie = false;
-        _isTargeting = false;
-        _isWithinAttackRange = false;
     }
 
     private void OnTriggerEnter(Collider other)

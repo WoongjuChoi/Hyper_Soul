@@ -21,6 +21,8 @@ public class WolfAlertState : BaseState<WolfInformation>
         _elapsedTime = 0;
 
         _playAnimation = false;
+
+        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, false);
     }
 
     public override void UpdateState()
@@ -35,8 +37,6 @@ public class WolfAlertState : BaseState<WolfInformation>
         if (_playAnimation)
         {
             base.FiniteStateMachine.ChangeState(EStateIDs.Idle);
-
-            base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, false);
 
             return;
         }

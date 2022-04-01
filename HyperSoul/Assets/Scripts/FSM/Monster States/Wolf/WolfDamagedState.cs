@@ -34,13 +34,11 @@ class WolfDamagedState : BaseState<WolfInformation>
     public override void UpdateState()
     {
         // 데미지 받고 (수정 필요)
-        base.CreatureInfomation.MonsterCurrentHP -= 30;
+        base.CreatureInfomation.MonsterCurrentHP -= 20;
 
         // HP <= 0 이면 Die 상태
         if (base.CreatureInfomation.MonsterCurrentHP <= 0)
         {
-            base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, false);
-
             base.FiniteStateMachine.ChangeState(EStateIDs.Die);
 
             return;

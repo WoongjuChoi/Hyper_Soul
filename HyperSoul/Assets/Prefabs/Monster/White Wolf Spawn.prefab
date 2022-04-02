@@ -1088,7 +1088,7 @@ GameObject:
   - component: {fileID: 6504689496865234809}
   - component: {fileID: 6504689496865234808}
   m_Layer: 12
-  m_Name: Sample Monster
+  m_Name: white Wolf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1742,7 +1742,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6504689497433525173
 Transform:
   m_ObjectHideFlags: 0

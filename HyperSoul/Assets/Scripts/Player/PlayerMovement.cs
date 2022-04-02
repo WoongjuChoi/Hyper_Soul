@@ -25,15 +25,9 @@ public class PlayerMovement : MonoBehaviour
 
     private bool _isJump = false;
     private bool _isHit = false;
-    private bool _isShoot = false;
     private float _aim = 0.5f;
 
     public event System.Action MouseAction = null;
-
-    public bool IsShoot
-    {
-        set { _isShoot = value; }
-    }
 
     private void Awake()
     {
@@ -137,10 +131,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == TagParameterID.BULLET)
         {
-            --_playerInfo.Hp;
-            Debug.Log("Player Hp : " + _playerInfo.Hp);
+            --_playerInfo.CurrHp;
+            Debug.Log("Player Hp : " + _playerInfo.CurrHp);
 
-            if (_playerInfo.Hp <= 0)
+            if (_playerInfo.CurrHp <= 0)
             {
                 _playerInfo.IsDead = true;
                 _playerAnimator.SetTrigger(PlayerAnimatorID.DIE);

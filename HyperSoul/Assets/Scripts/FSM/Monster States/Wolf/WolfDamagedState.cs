@@ -11,33 +11,33 @@ class WolfDamagedState : BaseState<WolfInformation>
 
     public override void EnterState()
     {
-        base.CreatureInfomation.MonsterCurrentState = EStateIDs.Damaged;
+        base.CreatureInformation.MonsterCurrentState = EStateIDs.Damaged;
 
         base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DAMAGED, true);
 
-        base.CreatureInfomation.MonsterAttackRangeCollider.enabled = false;
+        base.CreatureInformation.MonsterAttackRangeCollider.enabled = false;
 
-        _raycastOriginVec = base.CreatureInfomation.CollisionVec;
+        _raycastOriginVec = base.CreatureInformation.CollisionVec;
 
-        _lookAtTargetVec = base.CreatureInfomation.LookAtTargetVec;
+        _lookAtTargetVec = base.CreatureInformation.LookAtTargetVec;
     }
 
     public override void ExitState()
     {
-        base.CreatureInfomation.IsDamaged = false;
+        base.CreatureInformation.IsDamaged = false;
 
         base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DAMAGED, false);
 
-        base.CreatureInfomation.MonsterAttackRangeCollider.enabled = true;
+        base.CreatureInformation.MonsterAttackRangeCollider.enabled = true;
     }
 
     public override void UpdateState()
     {
         // 데미지 받고 (수정 필요)
-        base.CreatureInfomation.MonsterCurrentHP -= 20;
+        base.CreatureInformation.MonsterCurrentHP -= 20;
 
         // HP <= 0 이면 Die 상태
-        if (base.CreatureInfomation.MonsterCurrentHP <= 0)
+        if (base.CreatureInformation.MonsterCurrentHP <= 0)
         {
             base.FiniteStateMachine.ChangeState(EStateIDs.Die);
 
@@ -46,9 +46,9 @@ class WolfDamagedState : BaseState<WolfInformation>
 
         // 적을 한번 타겟팅 하면 이후 갱신 X
         // (활동 범위를 벗어나 되돌아 가거나 죽었을 때 타겟팅 해제)
-        if (base.CreatureInfomation.IsTargeting)
+        if (base.CreatureInformation.IsTargeting)
         {
-            if (base.CreatureInfomation.IsWithinAttackRange)
+            if (base.CreatureInformation.IsWithinAttackRange)
             {
                 base.FiniteStateMachine.ChangeState(EStateIDs.Attack);
 
@@ -76,13 +76,13 @@ class WolfDamagedState : BaseState<WolfInformation>
             //// 디버깅용
             //Debug.Log($"_monsterInfo.Target.layer : {_monsterInfo.Target.layer}\nhit.collider.gameObject.layer :{hit.collider.gameObject.layer}");
 
-            if (base.CreatureInfomation.Target.layer == hit.collider.gameObject.layer)
+            if (base.CreatureInformation.Target.layer == hit.collider.gameObject.layer)
             {
-                base.CreatureInfomation.MonsterChaser.IsTarget = base.CreatureInfomation.Target.transform;
+                base.CreatureInformation.MonsterChaser.IsTarget = base.CreatureInformation.Target.transform;
 
-                base.CreatureInfomation.IsTargeting = true;
+                base.CreatureInformation.IsTargeting = true;
 
-                if (base.CreatureInfomation.IsWithinAttackRange)
+                if (base.CreatureInformation.IsWithinAttackRange)
                 {
                     base.FiniteStateMachine.ChangeState(EStateIDs.Attack);
 

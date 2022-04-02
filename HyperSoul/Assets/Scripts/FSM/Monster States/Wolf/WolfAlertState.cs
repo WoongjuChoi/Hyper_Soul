@@ -11,7 +11,7 @@ public class WolfAlertState : BaseState<WolfInformation>
 
     public override void EnterState()
     {
-        base.CreatureInfomation.MonsterCurrentState = EStateIDs.Alert;
+        base.CreatureInformation.MonsterCurrentState = EStateIDs.Alert;
 
         base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, true);
     }
@@ -27,7 +27,7 @@ public class WolfAlertState : BaseState<WolfInformation>
 
     public override void UpdateState()
     {
-        if (base.CreatureInfomation.IsDamaged)
+        if (base.CreatureInformation.IsDamaged)
         {
             base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
 

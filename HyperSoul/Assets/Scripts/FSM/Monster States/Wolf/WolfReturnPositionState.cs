@@ -12,22 +12,22 @@ public class WolfReturnPositionState : BaseState<WolfInformation>
 
     public override void EnterState()
     {
-        base.CreatureInfomation.MonsterCurrentState = EStateIDs.ReturnPosition;
+        base.CreatureInformation.MonsterCurrentState = EStateIDs.ReturnPosition;
 
         base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_CHASE, true);
     }
 
     public override void ExitState()
     {
-        base.CreatureInfomation.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_IDLE);
+        base.CreatureInformation.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_IDLE);
 
-        base.CreatureInfomation.IsTargeting = false;
+        base.CreatureInformation.IsTargeting = false;
 
-        base.CreatureInfomation.MonsterChaser.ResetPath();
+        base.CreatureInformation.MonsterChaser.ResetPath();
 
-        base.CreatureInfomation.MonsterChaser.IsActive = false;
+        base.CreatureInformation.MonsterChaser.IsActive = false;
 
-        base.GameObject.transform.position = base.CreatureInfomation.InitializePosition.position;
+        base.GameObject.transform.position = base.CreatureInformation.InitializePosition.position;
 
         base.GameObject.GetComponentInChildren<Animator>().SetBool(IS_WALK, false);
 
@@ -36,11 +36,11 @@ public class WolfReturnPositionState : BaseState<WolfInformation>
 
     public override void UpdateState()
     {
-        _distance = (base.GameObject.transform.position - base.CreatureInfomation.InitializePosition.position).magnitude;
+        _distance = (base.GameObject.transform.position - base.CreatureInformation.InitializePosition.position).magnitude;
 
         if (_distance <= 2f)
         {
-            base.CreatureInfomation.GetComponentInChildren<Animator>().SetBool(IS_WALK, true);
+            base.CreatureInformation.GetComponentInChildren<Animator>().SetBool(IS_WALK, true);
         }
         
         if (_distance <= 0.5f)
@@ -51,9 +51,9 @@ public class WolfReturnPositionState : BaseState<WolfInformation>
         }
 
         // 현재 체력이 최대 체력이 아니라면 서서히 증가
-        if (base.CreatureInfomation.MonsterCurrentHP >= base.CreatureInfomation.MonsterMaxHP)
+        if (base.CreatureInformation.MonsterCurrentHP >= base.CreatureInformation.MonsterMaxHP)
         {
-            base.CreatureInfomation.MonsterCurrentHP = base.CreatureInfomation.MonsterMaxHP;
+            base.CreatureInformation.MonsterCurrentHP = base.CreatureInformation.MonsterMaxHP;
 
             _increaseHealing = 0;
         }
@@ -63,11 +63,11 @@ public class WolfReturnPositionState : BaseState<WolfInformation>
 
             _increaseHealing += (int)Mathf.Round(increaseHealing * 10);
 
-            base.CreatureInfomation.MonsterCurrentHP += _increaseHealing;
+            base.CreatureInformation.MonsterCurrentHP += _increaseHealing;
         }
 
-        base.CreatureInfomation.MonsterChaser.IsTarget = base.CreatureInfomation.InitializePosition;
+        base.CreatureInformation.MonsterChaser.IsTarget = base.CreatureInformation.InitializePosition;
 
-        base.CreatureInfomation.MonsterChaser.IsActive = true;
+        base.CreatureInformation.MonsterChaser.IsActive = true;
     }
 }

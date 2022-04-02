@@ -12,7 +12,7 @@ public abstract class BaseState<T> : IfiniteState where T : class
 
     public GameObject GameObject { get { return _gameObject; } }
     public FiniteStateMachine FiniteStateMachine { get { return _finiteStateMachine; } }
-    public T CreatureInfomation { get { return _creatureInfo; } set { _creatureInfo = value; } }
+    public T CreatureInformation { get { return _creatureInfo; } set { _creatureInfo = value; } }
 
     public abstract void EnterState();
 

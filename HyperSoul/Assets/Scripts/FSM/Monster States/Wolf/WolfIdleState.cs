@@ -13,7 +13,7 @@ public class WolfIdleState : BaseState<WolfInformation>
 
     public override void EnterState()
     {
-        base.CreatureInfomation.MonsterCurrentState = EStateIDs.Idle;
+        base.CreatureInformation.MonsterCurrentState = EStateIDs.Idle;
     }
 
     public override void ExitState()
@@ -27,18 +27,18 @@ public class WolfIdleState : BaseState<WolfInformation>
 
     public override void UpdateState()
     {
-        Vector3 InitializeAngle = new Vector3(0f, base.CreatureInfomation.MonsterSpawnDirection, 0f);
+        Vector3 InitializeAngle = new Vector3(0f, base.CreatureInformation.MonsterSpawnDirection, 0f);
 
         if (InitializeAngle != base.GameObject.transform.eulerAngles)
         {
             base.GameObject.transform.rotation = Quaternion.identity;
 
-            Quaternion monsterInitializeDirection = Quaternion.Euler(0f, base.CreatureInfomation.MonsterSpawnDirection, 0f);
+            Quaternion monsterInitializeDirection = Quaternion.Euler(0f, base.CreatureInformation.MonsterSpawnDirection, 0f);
 
             base.GameObject.transform.rotation = monsterInitializeDirection;
         }
 
-        if (base.CreatureInfomation.IsDamaged)
+        if (base.CreatureInformation.IsDamaged)
         {
             base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
 
@@ -46,9 +46,9 @@ public class WolfIdleState : BaseState<WolfInformation>
         }
 
         // 현재 체력이 최대 체력이 아니라면 서서히 증가
-        if (base.CreatureInfomation.MonsterCurrentHP >= base.CreatureInfomation.MonsterMaxHP)
+        if (base.CreatureInformation.MonsterCurrentHP >= base.CreatureInformation.MonsterMaxHP)
         {
-            base.CreatureInfomation.MonsterCurrentHP = base.CreatureInfomation.MonsterMaxHP;
+            base.CreatureInformation.MonsterCurrentHP = base.CreatureInformation.MonsterMaxHP;
 
             _increaseHealing = 0;
         }
@@ -58,7 +58,7 @@ public class WolfIdleState : BaseState<WolfInformation>
 
             _increaseHealing += (int)Mathf.Round(increaseHealing * 10);
 
-            base.CreatureInfomation.MonsterCurrentHP += _increaseHealing;
+            base.CreatureInformation.MonsterCurrentHP += _increaseHealing;
         }
 
         if (_playAnimation)

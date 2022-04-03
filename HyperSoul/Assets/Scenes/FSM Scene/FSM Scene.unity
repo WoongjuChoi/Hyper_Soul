@@ -1069,6 +1069,7 @@ GameObject:
   - component: {fileID: 1108617562}
   - component: {fileID: 1108617561}
   - component: {fileID: 1108617560}
+  - component: {fileID: 1108617564}
   - component: {fileID: 1108617559}
   m_Layer: 12
   m_Name: Blue Treant
@@ -1141,6 +1142,8 @@ MonoBehaviour:
   _monsterRayPoint: {fileID: 874064291}
   _monsterInvincibleTime: 3
   _monsterMaxHP: 100
+  _viewAngle: 60
+  _rotateSpeed: 1
 --- !u!114 &1108617558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1212,6 +1215,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c68632d0fdc8b94e8efb8c80d920ad2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1108617564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1108617553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e835550fe322ce047a0e971406fb070a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1234868500

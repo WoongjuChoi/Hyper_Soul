@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class TreantDamagedState : BaseState<TreantInformation>
 {
-    private float _viewAngle = 60f;
-
     public override void EnterState()
     {
         base.CreatureInformation.MonsterCurrentState = EStateIDs.Damaged;
@@ -35,23 +33,15 @@ public class TreantDamagedState : BaseState<TreantInformation>
             return;
         }
 
-        Vector3 monsterSightPosition = new Vector3(base.CreatureInformation.MonsterRayPoint.position.x, base.CreatureInformation.Target.transform.position.y, base.CreatureInformation.MonsterRayPoint.position.z);
-
-        Vector3 vecMonsterToPlayer = (base.CreatureInformation.Target.transform.position - monsterSightPosition).normalized;
-
-        float dotPlayerToMonster = Vector3.Dot(base.GameObject.transform.forward, vecMonsterToPlayer);
-
-        float temp = Mathf.Cos(_viewAngle * Mathf.Deg2Rad);
-
-        if (dotPlayerToMonster < Mathf.Cos(_viewAngle * Mathf.Deg2Rad))
+        if (base.CreatureInformation.ExistInSight)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.RotatePosition);
+            base.FiniteStateMachine.ChangeState(EStateIDs.Attack);
 
             return;
         }
         else
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Attack);
+            base.FiniteStateMachine.ChangeState(EStateIDs.RotatePosition);
 
             return;
         }

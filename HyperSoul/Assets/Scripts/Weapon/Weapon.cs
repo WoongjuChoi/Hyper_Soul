@@ -97,9 +97,18 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
     {
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f))
+
+        RaycastHit[] raycastHits = Physics.RaycastAll(ray, 999f);
+
+        for (int i = 0; i < raycastHits.Length; ++i)
         {
-            _mousePos = raycastHit.point;
+            RaycastHit hit = raycastHits[i];
+
+            if (hit.distance > 4)
+            {
+                _mousePos = hit.point;
+                break;
+            }
         }
     }
 }

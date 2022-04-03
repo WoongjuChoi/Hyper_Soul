@@ -489,7 +489,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerBody: {fileID: 5892330615431718051}
   _cameraArm: {fileID: 373113709861832450}
-  _cameraPos: {fileID: 373113710641856354}
+  _followCameraPos: {fileID: 373113710641856354}
   _rotationSpeedX: 0.5
   _rotationSpeedY: 0.5
   _normalRotationSpeed: {x: 0, y: 0}
@@ -505,6 +505,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28437a05fb04af241bc0e14363c86097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hpSlider: {fileID: 0}
+  _expSlider: {fileID: 0}
+  _ammoText: {fileID: 0}
+  _expText: {fileID: 0}
+  _killText: {fileID: 0}
+  _levelUpText: {fileID: 0}
+  _gameOverText: {fileID: 0}
 --- !u!114 &373113710294506608
 MonoBehaviour:
   m_ObjectHideFlags: 0

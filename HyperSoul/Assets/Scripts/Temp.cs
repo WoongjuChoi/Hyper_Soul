@@ -15,16 +15,16 @@ public class Temp : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.tag == "Bullet")
+        if (other.tag == "Bullet")
         {
             --hp;
             Debug.Log("Enemy Hp : " + hp);
             if (hp <= 0)
             {
-                playerInfo.CurrExp += 10;
-                Destroy(this);
+                playerInfo.CurrExp += 20;
+                Destroy(gameObject);
             }
         }
     }

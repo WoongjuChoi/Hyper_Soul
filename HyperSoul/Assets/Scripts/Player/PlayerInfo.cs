@@ -58,6 +58,11 @@ public class PlayerInfo : MonoBehaviour
     private void HpUpdate()
     {
         _hpSlider.value = (float)CurrHp / MaxHp;
+
+        if (CurrHp <= 0)
+        {
+            _gameOverText.gameObject.SetActive(true);
+        }
     }
 
     private void AmmoUpdate()
@@ -69,7 +74,7 @@ public class PlayerInfo : MonoBehaviour
     {
         _expText.text = "Exp : " + CurrExp;
 
-        _expSlider.value = CurrExp / Exp;
+        _expSlider.value = (float)CurrExp / Exp;
 
         if (CurrExp >= Exp)
         {

@@ -4,17 +4,26 @@ using UnityEngine;
 
 public class WolfInformation : MonsterInformation
 {
-    private WolfAlertState _monsterAlertState = new WolfAlertState();
-    private WolfAttackState _monsterAttackState = new WolfAttackState();
-    private WolfChaseState _monsterChaseState = new WolfChaseState();
-    private WolfDamagedState _monsterDamagedState = new WolfDamagedState();
-    private WolfDieState _monsterDieState = new WolfDieState();
-    private WolfIdleState _monsterIdleState = new WolfIdleState();
-    private WolfReturnPositionState _monsterReturnPositionState = new WolfReturnPositionState();
-    private WolfSpawnState _monsterSpawnState = new WolfSpawnState();
+    private WolfAlertState _monsterAlertState = null;
+    private WolfAttackState _monsterAttackState = null;
+    private WolfChaseState _monsterChaseState = null;
+    private WolfDamagedState _monsterDamagedState = null;
+    private WolfDieState _monsterDieState = null;
+    private WolfIdleState _monsterIdleState = null;
+    private WolfReturnPositionState _monsterReturnPositionState = null;
+    private WolfSpawnState _monsterSpawnState = null;
 
     public override void Awake()
     {
+        _monsterAlertState = GetComponent<WolfAlertState>();
+        _monsterAttackState = GetComponent<WolfAttackState>();
+        _monsterChaseState = GetComponent<WolfChaseState>();
+        _monsterDamagedState = GetComponent<WolfDamagedState>();
+        _monsterDieState = GetComponent<WolfDieState>();
+        _monsterIdleState = GetComponent<WolfIdleState>();
+        _monsterReturnPositionState = GetComponent<WolfReturnPositionState>();
+        _monsterSpawnState = GetComponent<WolfSpawnState>();
+
         _monsterFSM.AddState(EStateIDs.Alert, _monsterAlertState);
         _monsterFSM.AddState(EStateIDs.Attack, _monsterAttackState);
         _monsterFSM.AddState(EStateIDs.Chase, _monsterChaseState);

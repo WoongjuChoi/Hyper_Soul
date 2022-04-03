@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class TreantInformation : MonsterInformation
 {
-    private TreantAttackState _treantAttackState = new TreantAttackState();
-    private TreantDamagedState _treantDamagedState = new TreantDamagedState();
-    private TreantDieState _treantDieState = new TreantDieState();
-    private TreantIdleState _treantIdleState = new TreantIdleState();
-    private TreantSpawnState _treantSpawnState = new TreantSpawnState();
+    private TreantAttackState _treantAttackState = null;
+    private TreantDamagedState _treantDamagedState = null;
+    private TreantDieState _treantDieState = null;
+    private TreantIdleState _treantIdleState = null;
+    private TreantSpawnState _treantSpawnState = null;
 
     private const float DOT_120_DEGREE = -0.5f;
 
     public override void Awake()
     {
+        _treantAttackState = GetComponent<TreantAttackState>();
+        _treantDamagedState = GetComponent<TreantDamagedState>();
+        _treantDieState = GetComponent<TreantDieState>();
+        _treantIdleState = GetComponent<TreantIdleState>();
+        _treantSpawnState = GetComponent<TreantSpawnState>();
+
         _monsterFSM.AddState(EStateIDs.Attack, _treantAttackState);
         _monsterFSM.AddState(EStateIDs.Damaged, _treantDamagedState);
         _monsterFSM.AddState(EStateIDs.Die, _treantDieState);

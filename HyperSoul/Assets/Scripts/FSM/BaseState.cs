@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseState<T> : IfiniteState where T : class
+public abstract class BaseState<T> : MonoBehaviour, IfiniteState where T : class
 {
     private GameObject _gameObject = null;
 

@@ -400,9 +400,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa951a8111cf9e40aaf93f93d732f9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerBody: {fileID: 0}
-  _cameraArm: {fileID: 0}
-  _cameraPos: {fileID: 0}
+  _playerBody: {fileID: 6700010149244072713}
+  _cameraArm: {fileID: 4938414192074980031}
+  _cameraPos: {fileID: 4938414190442410515}
   _rotationSpeedX: 0.5
   _rotationSpeedY: 0.5
   _normalRotationSpeed: {x: 0, y: 0}
@@ -459,6 +459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28437a05fb04af241bc0e14363c86097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hpBar: {fileID: 0}
 --- !u!114 &5641331980754899856
 MonoBehaviour:
   m_ObjectHideFlags: 0

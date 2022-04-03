@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class Bazooka : Weapon
 {
+    PlayerInfo _bazookaOwner;
+    
     [SerializeField]
     Transform _missileSpawnPos;
 
@@ -20,8 +22,11 @@ public class Bazooka : Weapon
 
     private ObjectPool _missilePool = new ObjectPool();
 
+
     private void OnEnable()
     {
+        _bazookaOwner = GetComponentInParent<PlayerInfo>();
+
         _curBulletCnt = 100;
         _maxBulletAmt = 100;
         _reloadTime = 5;
@@ -54,13 +59,14 @@ public class Bazooka : Weapon
         --_curBulletCnt;
         Vector3 aimDir = (_mousePos - _missileSpawnPos.position).normalized;
         GameObject _bazookaMissile = _missilePool.GetObj();
-        _bazookaMissile.SetActive(true);
         _bazookaMissile.transform.position = _missileSpawnPos.position;
         _bazookaMissile.transform.rotation = Quaternion.LookRotation(aimDir, Vector3.up);
+        _bazookaMissile.GetComponent<BazookaMissile>().ReceiveReturnMissileFunc(ReturnMissile);
         _bazookaMissile.GetComponent<BazookaMissile>().Target = AimTarget()?.transform;
-        _bazookaMissile.GetComponent<BazookaMissile>().MisilleOwner = this.gameObject;
+        _bazookaMissile.GetComponent<BazookaMissile>().MisilleOwner = _bazookaOwner;
         _bazookaMissile.transform.TransformDirection(_aimAngleRef.transform.forward);
         _bazookaMissile.GetComponent<Rigidbody>().velocity = new Vector3(0, _aimAngleRef.transform.localPosition.y * 3f, _aimAngleRef.transform.localPosition.z * 10f);
+        _bazookaMissile.SetActive(true);
 
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, true);
         _canFire = false;
@@ -87,4 +93,10 @@ public class Bazooka : Weapon
         }
         return null;
     }
+
+    private void ReturnMissile(GameObject missile)
+    {
+        _missilePool.ReturnObj(missile);
+    }
+
 }

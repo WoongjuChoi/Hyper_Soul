@@ -21,7 +21,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         IsDead = isDead;
     }
     [PunRPC]
-    public virtual void TakeDamage(GameObject attacker, int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
+    public virtual void TakeDamage(LivingEntity attacker, int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
     {
         if(PhotonNetwork.IsMasterClient)
         {
@@ -36,9 +36,9 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         }
     }
 
-    public void Die(GameObject attacker)
+    public void Die(LivingEntity attacker)
     {
-        GameManager.Instance.SendDieMessage(this.gameObject, attacker);
+        GameManager.Instance.SendDieMessage(this, attacker);
         IsDead = true;
     }
 

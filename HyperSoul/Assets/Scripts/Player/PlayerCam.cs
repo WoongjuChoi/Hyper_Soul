@@ -60,17 +60,10 @@ public class PlayerCam : MonoBehaviourPun
 
     private void Update()
     {
-        // 지울 것
-        if(photonView.IsMine == false)
-        {
-            Debug.Log("이즈마인펄스");
-            return;
-        }
         if (_playerInfo.IsDead || photonView.IsMine == false)
         {
             return;
         }
-        Debug.Log("이즈마인트루");
         if (false == _input.IsZoom)
         {
             _rotationSpeedX = _normalRotationSpeed.x;

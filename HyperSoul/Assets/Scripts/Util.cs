@@ -40,3 +40,9 @@ class LayerParameter
     public const int PLAYER = 3;
     public const int MONSTER = 6;
 }
+
+public enum CharacterType
+{
+    Player,
+    Monster,
+}

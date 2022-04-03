@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
         }
         if(Keyboard.current[Key.Escape].wasPressedThisFrame)
         {
-            PhotonNetwork.LeaveRoom();
+            //PhotonNetwork.LeaveRoom();
         }
     }
     public override void OnLeftRoom()
@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
         photonView.RPC("Chat", RpcTarget.OthersBuffered, msg);
         Chat(msg);
     }
-    public void SendDieMessage(GameObject attacker, GameObject victim)
+    public void SendDieMessage(LivingEntity attacker, LivingEntity victim)
     {
         string msg = "";
         PlayerInfo attackerInfo = attacker.GetComponent<PlayerInfo>();

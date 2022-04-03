@@ -30,7 +30,7 @@ public class PlayerInfo : LivingEntity
 
     }
     [PunRPC]
-    public override void TakeDamage(GameObject attacker, int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
+    public override void TakeDamage(LivingEntity attacker, int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
     {
         if(IsDead == false)
         {

@@ -10,6 +10,8 @@ public class TreantInformation : MonsterInformation
     private TreantIdleState _treantIdleState = new TreantIdleState();
     private TreantSpawnState _treantSpawnState = new TreantSpawnState();
 
+    private const float DOT_120_DEGREE = -0.5f;
+
     public override void Awake()
     {
         _monsterFSM.AddState(EStateIDs.Attack, _treantAttackState);
@@ -25,11 +27,20 @@ public class TreantInformation : MonsterInformation
         {
             if (EStateIDs.Attack == _monsterCurrentState || EStateIDs.Idle == _monsterCurrentState)
             {
-                _isDamaged = true;
+                _collisionVec = collision.gameObject.transform.position;
+
+                Vector3 collisionVec = new Vector3(_collisionVec.x, gameObject.transform.position.y, _collisionVec.z);
+
+                collisionVec = (collisionVec - gameObject.transform.position).normalized;
+
+                float internalAngle = Vector3.Dot(gameObject.transform.forward, collisionVec);
+
+                if (internalAngle > DOT_120_DEGREE)
+                {
+                    _isDamaged = true;
+                }
 
                 _target = collision.gameObject.GetComponent<BazookaMissile>().MisilleOwner;
-
-                _collisionVec = collision.gameObject.transform.position;
 
                 Vector3 targetPosition = _target.transform.position;
 

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class TreantIdleState : BaseState<TreantInformation>
 {
-    private const float DOT_120_DEGREE = -0.5f;
-
     private int _increaseHealing = 0;
 
     public override void EnterState()
@@ -22,19 +20,9 @@ public class TreantIdleState : BaseState<TreantInformation>
     {
         if (base.CreatureInformation.IsDamaged)
         {
-            Vector3 collisionVec = new Vector3(base.CreatureInformation.CollisionVec.x, base.GameObject.transform.position.y, base.CreatureInformation.CollisionVec.z);
+            base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
 
-            collisionVec = (collisionVec - base.GameObject.transform.position).normalized;
-
-            float internalAngle = Vector3.Dot(base.GameObject.transform.forward, collisionVec);
-
-            // 전방벡터와 데미지 입은 방향벡터와의 내각을 이용하여 
-            if (internalAngle > DOT_120_DEGREE)
-            {
-                base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
-
-                return;
-            }
+            return;
         }
 
         // 현재 체력이 최대 체력이 아니라면 서서히 증가

@@ -55,11 +55,11 @@ public class WolfInformation : MonsterInformation
         {
             if (EStateIDs.Alert == _monsterCurrentState || EStateIDs.Attack == _monsterCurrentState || EStateIDs.Chase == _monsterCurrentState || EStateIDs.Idle == _monsterCurrentState)
             {
+                _collisionVec = collision.gameObject.transform.position;
+
                 _isDamaged = true;
 
                 _target = collision.gameObject.GetComponent<BazookaMissile>().MisilleOwner;
-
-                _collisionVec = collision.gameObject.transform.position;
 
                 Vector3 targetPosition = _target.GetComponent<PlayerMovement>().StoreFirePosition + new Vector3(0f, 1.3f, 0f);
 

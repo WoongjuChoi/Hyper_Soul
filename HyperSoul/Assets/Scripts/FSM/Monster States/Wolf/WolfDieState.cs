@@ -7,13 +7,11 @@ public class WolfDieState : BaseState<WolfInformation>
     private float _monsterDieTime = 2f;
     private float _elapsedTime = 0f;
 
-    private const string IS_DIE = "isDie";
-
     public override void EnterState()
     {
         base.CreatureInformation.MonsterCurrentState = EStateIDs.Die;
 
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(IS_DIE, true);
+        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DIE, true);
     }
 
     public override void ExitState()
@@ -25,23 +23,21 @@ public class WolfDieState : BaseState<WolfInformation>
 
     public override void UpdateState()
     {
-        if (-1f == _elapsedTime)
+        DieWolf();
+    }
+
+    private void DieWolf()
+    {
+        if (base.CreatureInformation.IsDie)
         {
             return;
         }
 
-        MonsterDie();
-    }
-
-    private void MonsterDie()
-    {
         if (_elapsedTime >= _monsterDieTime)
         {
             base.CreatureInformation.IsDie = true;
 
-            _elapsedTime = -1f;
-
-            base.GameObject.GetComponentInChildren<Animator>().SetBool(IS_DIE, false);
+            base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DIE, false);
 
             base.GameObject.SetActive(false);
 

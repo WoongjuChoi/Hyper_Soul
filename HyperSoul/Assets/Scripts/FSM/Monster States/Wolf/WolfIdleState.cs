@@ -27,6 +27,39 @@ public class WolfIdleState : BaseState<WolfInformation>
 
     public override void UpdateState()
     {
+        InitializeDirection();
+
+        if (base.CreatureInformation.IsDamaged)
+        {
+            base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
+
+            return;
+        }
+
+        IncreaseHealing();
+
+        ChangeRestingAnimation();
+    }
+
+    private void ChangeRestingAnimation()
+    {
+        if (_playAnimation)
+        {
+            return;
+        }
+
+        _elapsedTime += Time.deltaTime;
+
+        if (_elapsedTime >= _changeRestingAnimationTime)
+        {
+            base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_RESTING);
+            
+            _playAnimation = true;
+        }
+    }
+
+    private void InitializeDirection()
+    {
         Vector3 InitializeAngle = new Vector3(0f, base.CreatureInformation.MonsterSpawnDirection, 0f);
 
         if (InitializeAngle != base.GameObject.transform.eulerAngles)
@@ -37,14 +70,10 @@ public class WolfIdleState : BaseState<WolfInformation>
 
             base.GameObject.transform.rotation = monsterInitializeDirection;
         }
+    }
 
-        if (base.CreatureInformation.IsDamaged)
-        {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
-
-            return;
-        }
-
+    private void IncreaseHealing()
+    {
         // 현재 체력이 최대 체력이 아니라면 서서히 증가
         if (base.CreatureInformation.MonsterCurrentHP >= base.CreatureInformation.MonsterMaxHP)
         {
@@ -59,25 +88,6 @@ public class WolfIdleState : BaseState<WolfInformation>
             _increaseHealing += (int)Mathf.Round(increaseHealing * 10);
 
             base.CreatureInformation.MonsterCurrentHP += _increaseHealing;
-        }
-
-        if (_playAnimation)
-        {
-            return;
-        }
-
-        ChangeRestingAnimation();
-    }
-
-    private void ChangeRestingAnimation()
-    {
-        _elapsedTime += Time.deltaTime;
-
-        if (_elapsedTime >= _changeRestingAnimationTime)
-        {
-            base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_RESTING);
-            
-            _playAnimation = true;
         }
     }
 }

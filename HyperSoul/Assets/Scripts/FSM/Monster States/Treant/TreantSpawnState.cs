@@ -9,6 +9,8 @@ public class TreantSpawnState : BaseState<TreantInformation>
     public override void EnterState()
     {
         base.CreatureInformation.MonsterCurrentState = EStateIDs.Spawn;
+
+        base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_SPAWN);
     }
 
     public override void ExitState()

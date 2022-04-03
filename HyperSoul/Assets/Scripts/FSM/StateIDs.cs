@@ -15,5 +15,6 @@ public enum EStateIDs
     Alert,
     Chase,
     ReturnPosition,
+    RotatePosition,
 
 }

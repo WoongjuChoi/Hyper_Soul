@@ -80,8 +80,8 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 0}
+  m_LookAt: {fileID: 6700010149244072713}
+  m_Follow: {fileID: 6700010149244072713}
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 5
@@ -193,6 +193,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4938414192019781352}
   - component: {fileID: 4938414192019781353}
+  - component: {fileID: 3488275756360659979}
   m_Layer: 3
   m_Name: AimCamera
   m_TagString: Untagged
@@ -250,6 +251,22 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 4938414190991599379}
+--- !u!114 &3488275756360659979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4938414192019781350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &4938414192074980028
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,6 +276,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4938414192074980031}
+  - component: {fileID: 3480030698709689012}
   m_Layer: 3
   m_Name: CameraArm
   m_TagString: Untagged
@@ -282,6 +300,22 @@ Transform:
   m_Father: {fileID: 3799432508737507915}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3480030698709689012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4938414192074980028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &5641331980754899854
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,7 +368,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.7
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1.3, z: 0}
@@ -366,9 +400,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa951a8111cf9e40aaf93f93d732f9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerBody: {fileID: 6700010149244072713}
-  _cameraArm: {fileID: 4938414192074980031}
-  _cameraPos: {fileID: 4938414190442410515}
+  _playerBody: {fileID: 0}
+  _cameraArm: {fileID: 0}
+  _cameraPos: {fileID: 0}
   _rotationSpeedX: 0.5
   _rotationSpeedY: 0.5
   _normalRotationSpeed: {x: 0, y: 0}
@@ -477,6 +511,8 @@ MonoBehaviour:
   - {fileID: 1591210600240758448}
   - {fileID: 7571659138667561152}
   - {fileID: 4420473771590932976}
+  - {fileID: 3480030698709689012}
+  - {fileID: 3488275756360659979}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

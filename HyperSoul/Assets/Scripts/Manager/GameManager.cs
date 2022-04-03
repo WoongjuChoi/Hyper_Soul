@@ -7,6 +7,13 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
 {
+    static private GameManager _instance;
+    static public GameManager Instance
+    {
+        get { Init(); return _instance; }
+    }
+
+
     [SerializeField]
     private Transform _spawnPosBase;
     [SerializeField]
@@ -16,8 +23,11 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     private bool[] _isSpawned = new bool[5];
 
+   
+
     void Start()
     {
+        Init();
         SpawnPlayer();
         PhotonNetwork.IsMessageQueueRunning = true;
     }
@@ -28,12 +38,19 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             _chatMsg.ActivateInputField();
         }
-        if (Keyboard.current[Key.Enter].wasPressedThisFrame && _chatMsg.text != "")
+        if(Keyboard.current[Key.Enter].wasPressedThisFrame && _chatMsg.text != "")
         {
             SendChatMessage();
             _chatMsg.text = "";
         }
-
+        if(Keyboard.current[Key.Escape].wasPressedThisFrame)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+    }
+    public override void OnLeftRoom()
+    {
+        PhotonNetwork.LoadLevel("LobbyScene");
     }
 
     private void SpawnPlayer()
@@ -44,12 +61,12 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             index = Random.Range(1, 5);
         }
-        Debug.Log($"스폰위치 {index}");
-        PhotonNetwork.Instantiate("BazookaPlayer", spawnPoint[index].position, Quaternion.identity);
-
+        GameObject obj= PhotonNetwork.Instantiate("BazookaPlayer", spawnPoint[index].position, Quaternion.identity);
+        
         photonView.RPC("SpawnPosMarking", RpcTarget.AllBuffered, index);
     }
 
+    [PunRPC]
     private void SpawnPosMarking(int spawnPosNum)
     {
         _isSpawned[spawnPosNum] = true;
@@ -64,6 +81,24 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
     private void SendChatMessage()
     {
         string msg = $"[{PhotonNetwork.LocalPlayer.NickName}] \n {_chatMsg.text}";
+        photonView.RPC("Chat", RpcTarget.OthersBuffered, msg);
+        Chat(msg);
+    }
+    public void SendDieMessage(GameObject attacker, GameObject victim)
+    {
+        string msg = "";
+        PlayerInfo attackerInfo = attacker.GetComponent<PlayerInfo>();
+        PlayerInfo victimPlayerInfo = victim.GetComponent<PlayerInfo>();
+        // MonsterInfo victimMonsterInfo =  victim.GetComponent<MonsterInfo>(); 만들기
+        if (victimPlayerInfo != null)
+        {
+            msg = $"{attackerInfo.NickName}이(가) {victimPlayerInfo.NickName}을(를) 처치";
+        }
+        //else if(victimMonsterInfo != null)
+        //{
+        //    msg = $"{attackerInfo.NickName}이(가) {victimMonsterInfo.NickName}을(를) 처치";
+        //}
+
         photonView.RPC("Chat", RpcTarget.OthersBuffered, msg);
         Chat(msg);
     }
@@ -109,5 +144,21 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             _isSpawned = (bool[])stream.ReceiveNext();
         }
+    }
+
+    static private void Init()
+    {
+        if (_instance == null)
+        {
+            GameObject gameManager = GameObject.Find("GameManager");
+            if (gameManager == null)
+            {
+                gameManager = new GameObject { name = "GameManager" };
+                gameManager.AddComponent<GameManager>();
+            }
+            DontDestroyOnLoad(gameManager);
+            _instance = gameManager.GetComponent<GameManager>();
+        }
+
     }
 }

@@ -29,7 +29,6 @@ public class PlayerMovement : MonoBehaviourPun
     private bool _isShoot = false;
     private float _aim = 0.5f;
 
-    public event System.Action MouseAction = null;
 
     public bool IsShoot
     {
@@ -47,11 +46,10 @@ public class PlayerMovement : MonoBehaviourPun
 
     private void Update()
     {
-        if (_playerInfo.IsDead)
+        if (_playerInfo.IsDead || photonView.IsMine == false)
         {
             return;
         }
-
         MoveAnimation();
         JumpAnimation();
         AimAnimation();
@@ -61,11 +59,10 @@ public class PlayerMovement : MonoBehaviourPun
 
     private void FixedUpdate()
     {
-        if (_playerInfo.IsDead)
+        if (_playerInfo.IsDead || photonView.IsMine == false)
         {
             return;
         }
-
         Move();
         Jump();
     }
@@ -138,18 +135,19 @@ public class PlayerMovement : MonoBehaviourPun
     {
         if (collision.gameObject.tag == TagParameterID.BULLET)
         {
-            --_playerInfo.Hp;
-            Debug.Log("Player Hp : " + _playerInfo.Hp);
 
-            if (_playerInfo.Hp <= 0)
-            {
-                _playerInfo.IsDead = true;
-                _playerAnimator.SetTrigger(PlayerAnimatorID.DIE);
-            }
-            else if (false == _isHit)
-            {
-                StartCoroutine(Hit());
-            }
+            //--_playerInfo.Hp;
+            //Debug.Log("Player Hp : " + _playerInfo.Hp);
+
+            //if (_playerInfo.Hp <= 0)
+            //{
+            //    _playerInfo.IsDead = true;
+            //    _playerAnimator.SetTrigger(PlayerAnimatorID.DIE);
+            //}
+            //else if (false == _isHit)
+            //{
+            //    StartCoroutine(Hit());
+            //}
         }
     }
 

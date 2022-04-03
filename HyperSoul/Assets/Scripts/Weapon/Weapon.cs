@@ -15,6 +15,7 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
 
     protected float _reloadTime = 0;
     protected bool _canFire = true;
+    protected int Damage = 0;
 
     protected Vector3 _mousePos;
     protected Animator _playerAnimator;

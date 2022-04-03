@@ -15,50 +15,45 @@ public class PlayerInputs : MonoBehaviourPun
 
 	public void OnMove(InputValue value)
     {
-		if(false == photonView.IsMine)
+		if(photonView.IsMine)
         {
-			return;
-        }
-		MoveVec = value.Get<Vector2>();
+			MoveVec = value.Get<Vector2>();
+		}
     }
 	public void OnLook(InputValue value)
     {
-		if (false == photonView.IsMine)
+		if (photonView.IsMine)
 		{
-			return;
+			MousePos = value.Get<Vector2>();
 		}
-		MousePos = value.Get<Vector2>();
     }
 	public void OnJump(InputValue value)
     {
-		if (false == photonView.IsMine)
+		if (photonView.IsMine)
 		{
-			return;
+			IsJump = value.isPressed;
 		}
-		IsJump = value.isPressed;
     }
 	public void OnZoom(InputValue value)
     {
-		if (false == photonView.IsMine)
+		if (photonView.IsMine)
 		{
-			return;
+			IsZoom = value.isPressed;
 		}
-		IsZoom = value.isPressed;
     }
 	public void OnReload(InputValue value)
     {
-		if (false == photonView.IsMine)
+		if (photonView.IsMine)
 		{
-			return;
+			IsReload = value.isPressed;
 		}
-		IsReload = value.isPressed;
+
     }
 	public void OnShoot(InputValue value)
     {
-		if (false == photonView.IsMine)
+		if (photonView.IsMine)
 		{
-			return;
+			IsShoot = value.isPressed;
 		}
-		IsShoot = value.isPressed;
     }
 }

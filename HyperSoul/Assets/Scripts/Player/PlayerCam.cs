@@ -1,3 +1,4 @@
+using Cinemachine;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,8 +34,15 @@ public class PlayerCam : MonoBehaviourPun
 
     private void Awake()
     {
-        if(photonView.IsMine)
+        if (photonView.IsMine)
         {
+            CinemachineVirtualCamera[] followCam = FindObjectsOfType<CinemachineVirtualCamera>();
+            foreach(CinemachineVirtualCamera cam in followCam)
+            {
+                cam.Follow = _playerBody;
+                cam.LookAt = _playerBody;
+            }
+            
             _input = GetComponent<PlayerInputs>();
             _playerInfo = GetComponent<PlayerInfo>();
 
@@ -44,16 +52,25 @@ public class PlayerCam : MonoBehaviourPun
             _defaultCamPos = new Vector3(1.5f, 0.4f, -3.4f);
             _normalRotationSpeed = new Vector2(0.5f, 0.5f);
         }
-        
+        else
+        {
+            _cameraArm.gameObject.SetActive(false);
+        }
     }
 
     private void Update()
     {
-        if (!photonView.IsMine || _playerInfo.IsDead)
+        // 지울 것
+        if(photonView.IsMine == false)
+        {
+            Debug.Log("이즈마인펄스");
+            return;
+        }
+        if (_playerInfo.IsDead || photonView.IsMine == false)
         {
             return;
         }
-
+        Debug.Log("이즈마인트루");
         if (false == _input.IsZoom)
         {
             _rotationSpeedX = _normalRotationSpeed.x;

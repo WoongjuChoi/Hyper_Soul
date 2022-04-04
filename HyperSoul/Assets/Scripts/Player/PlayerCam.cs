@@ -11,7 +11,7 @@ public class PlayerCam : MonoBehaviour
     private Transform _cameraArm;
 
     [SerializeField]
-    private Transform _cameraPos;
+    private Transform _followCameraPos;
 
     public float _rotationSpeedX = 0.5f;
     public float _rotationSpeedY = 0.5f;
@@ -81,16 +81,16 @@ public class PlayerCam : MonoBehaviour
 
     private void camCollisionFix()
     {
-        if (Physics.Raycast(_cameraArm.transform.position, (_cameraPos.position - _cameraArm.transform.position).normalized, out _hit, _rayDistance))
+        if (Physics.Raycast(_cameraArm.transform.position, (_followCameraPos.position - _cameraArm.transform.position).normalized, out _hit, _rayDistance))
         {
             if (_hit.transform.gameObject.tag != TagParameterID.PLAYER)
             {
-                _cameraPos.position = _hit.point;
+                _followCameraPos.position = _hit.point;
             }
         }
         else
         {
-            _cameraPos.localPosition = _defaultCamPos;
+            _followCameraPos.localPosition = _defaultCamPos;
         }
     }
 }

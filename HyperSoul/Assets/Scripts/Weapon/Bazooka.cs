@@ -20,16 +20,17 @@ public class Bazooka : Weapon
 
     private void OnEnable()
     {
-        _curBulletCnt = 100;
-        _maxBulletAmt = 100;
-        _reloadTime = 5;
+        CurBulletCnt = 1;
+        MaxBulletAmt = 1;
+        _reloadTime = 2;
+        _reloadSpeed = 0.01f;
         _gunState = EGunState.Ready;
     }
 
     [PunRPC]
     public override void Fire()
     {
-        if (_curBulletCnt > 0 && _canFire == true)
+        if (CurBulletCnt > 0 && _canFire == true)
         {
             StartCoroutine(Shoot());
         }
@@ -37,14 +38,14 @@ public class Bazooka : Weapon
 
     public override void Zoom()
     {
-        _zoomCam.SetActive(true);
-        _playerCam._rotationSpeedX = _zoomRotationSpeed.x;
-        _playerCam._rotationSpeedY = _zoomRotationSpeed.y;
+        ZoomCam.SetActive(true);
+        _playerCam._rotationSpeedX = ZoomRotationSpeed.x;
+        _playerCam._rotationSpeedY = ZoomRotationSpeed.y;
     }
 
     private IEnumerator Shoot()
     {
-        --_curBulletCnt;
+        --CurBulletCnt;
         Vector3 aimDir = (_mousePos - _missileSpawnPos.position).normalized;
         GameObject _bazookaMissile = Instantiate(_missilePrefab, _missileSpawnPos.position, Quaternion.LookRotation(aimDir, Vector3.up));
         _bazookaMissile.GetComponent<BazookaMissile>().Target = AimTarget()?.transform;
@@ -55,10 +56,15 @@ public class Bazooka : Weapon
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, true);
         _canFire = false;
 
+        _audioSource.clip = ShotSound;
+        _audioSource.Play();
+        MuzzleFlashEffect.SetActive(true);
+
         yield return new WaitForSeconds(1f);
 
         _canFire = true;
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, false);
+        MuzzleFlashEffect.SetActive(false);
     }
 
     private GameObject AimTarget()

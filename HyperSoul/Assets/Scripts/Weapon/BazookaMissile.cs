@@ -55,6 +55,8 @@ public class BazookaMissile : MonoBehaviour
     {
         GetComponent<Rigidbody>().AddForce(Vector3.up * _gravityForce);
 
+        float _curDistMissileAndLaunchPos = Vector3.Distance(_launchPos, transform.position);
+
         if (_isHitted == false && _isLaunched == true)
         {
             if (_curSpeed <= _maxSpeed)
@@ -67,8 +69,6 @@ public class BazookaMissile : MonoBehaviour
         {
             Vector3 dir = (_target.position - transform.position).normalized;
             transform.forward = Vector3.Lerp(transform.forward, dir, 0.1f);
-
-            float _curDistMissileAndLaunchPos = Vector3.Distance(_launchPos, transform.position);
 
             if (_targetDistance + 10f < _curDistMissileAndLaunchPos)
             {

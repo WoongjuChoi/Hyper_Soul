@@ -52,7 +52,7 @@
                 },
                 {
                     "name": "Reload",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "92668794-59db-41ab-8c00-639eb7612555",
                     "expectedControlType": "Button",
                     "processors": "",

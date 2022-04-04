@@ -7,15 +7,20 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
     private float _moveSpeed = 8.0f;
-
     [SerializeField]
     private float _jumpForce = 10f;
-
     [SerializeField]
     private Transform _cameraArm;
-
     [SerializeField]
     private Weapon _weapon;
+    [SerializeField]
+    private GameObject _hitImage;
+    [SerializeField]
+    private GameObject _walkingSound;
+    [SerializeField]
+    private GameObject _hitSound;
+    [SerializeField]
+    private GameObject _deathSound;
 
     private Rigidbody _playerRigidbody;
     private Animator _playerAnimator;
@@ -25,15 +30,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool _isJump = false;
     private bool _isHit = false;
-    private bool _isShoot = false;
     private float _aim = 0.5f;
-
-    public event System.Action MouseAction = null;
-
-    public bool IsShoot
-    {
-        set { _isShoot = value; }
-    }
 
     private void Awake()
     {
@@ -42,6 +39,10 @@ public class PlayerMovement : MonoBehaviour
         _playerCam = GetComponent<PlayerCam>();
         _input = GetComponent<PlayerInputs>();
         _playerInfo = GetComponent<PlayerInfo>();
+        _hitImage.SetActive(false);
+        _walkingSound.SetActive(false);
+        _hitSound.SetActive(false);
+        _deathSound.SetActive(false);
     }
 
     private void Update()
@@ -73,6 +74,15 @@ public class PlayerMovement : MonoBehaviour
     {
         _playerAnimator.SetFloat(PlayerAnimatorID.VERTICAL, _input.MoveVec.y);
         _playerAnimator.SetFloat(PlayerAnimatorID.HORIZONTAL, _input.MoveVec.x);
+
+        if (_input.MoveVec != Vector2.zero)
+        {
+            _walkingSound.SetActive(true);
+        }
+        else
+        {
+            _walkingSound.SetActive(false);
+        }
     }
 
     private void Move()
@@ -127,9 +137,13 @@ public class PlayerMovement : MonoBehaviour
     {
         _isHit = true;
         _playerAnimator.SetTrigger(PlayerAnimatorID.HIT);
+        _hitImage.SetActive(true);
+        _hitSound.SetActive(true);
         yield return new WaitForSeconds(0.3f);
 
         _isHit = false;
+        _hitImage.SetActive(false);
+        _hitSound.SetActive(false);
     }
 
     // 공격당했을 때를 처리하는 CollisionEnter
@@ -137,13 +151,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == TagParameterID.BULLET)
         {
-            --_playerInfo.Hp;
-            Debug.Log("Player Hp : " + _playerInfo.Hp);
+            --_playerInfo.CurrHp;
+            Debug.Log("Player Hp : " + _playerInfo.CurrHp);
 
-            if (_playerInfo.Hp <= 0)
+            if (_playerInfo.CurrHp <= 0)
             {
                 _playerInfo.IsDead = true;
                 _playerAnimator.SetTrigger(PlayerAnimatorID.DIE);
+                _deathSound.SetActive(true);
+                _walkingSound.SetActive(false);
             }
             else if (false == _isHit)
             {

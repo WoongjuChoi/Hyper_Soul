@@ -32,6 +32,10 @@ public class PlayerMovement : MonoBehaviour
     private bool _isHit = false;
     private float _aim = 0.5f;
 
+    private Vector3 _storeFirePosition = Vector3.zero;  // (22.04.01) 슈팅했을 때의 플레이어의 위치값을 저장하는 변수 추가
+    
+    public Vector3 StoreFirePosition { get { return _storeFirePosition; } } // (22.04.01) 슈팅했을 때의 플레이어의 위치값을 저장하는 변수의 프로퍼티 추가
+
     private void Awake()
     {
         _playerRigidbody = GetComponent<Rigidbody>();
@@ -123,6 +127,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_input.IsShoot)
         {
+            _storeFirePosition = gameObject.transform.position;
             _weapon.Fire();
         }
     }

@@ -34,6 +34,7 @@ public class BazookaMissile : MonoBehaviour
     }
     public GameObject MisilleOwner
     {
+        get { return _misilleOwner; }
         set { _misilleOwner = value; }
     }
 

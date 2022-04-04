@@ -7,11 +7,13 @@ using UnityEngine.InputSystem;
 public class Bazooka : Weapon
 {
     [SerializeField]
+    GameObject _shooter;
+    [SerializeField]
     Transform _missileSpawnPos;
 
     [SerializeField]
     GameObject _missilePrefab;
-   
+
     [SerializeField]
     GameObject _aimAngleRef;
 
@@ -49,7 +51,7 @@ public class Bazooka : Weapon
         Vector3 aimDir = (_mousePos - _missileSpawnPos.position).normalized;
         GameObject _bazookaMissile = Instantiate(_missilePrefab, _missileSpawnPos.position, Quaternion.LookRotation(aimDir, Vector3.up));
         _bazookaMissile.GetComponent<BazookaMissile>().Target = AimTarget()?.transform;
-        _bazookaMissile.GetComponent<BazookaMissile>().MisilleOwner = this.gameObject;
+        _bazookaMissile.GetComponent<BazookaMissile>().MisilleOwner = _shooter;         // (22.03.31) this.gameObject ¿¡¼­ _shooter·Î ¹Ù²Þ
         _bazookaMissile.transform.TransformDirection(_aimAngleRef.transform.forward);
         _bazookaMissile.GetComponent<Rigidbody>().velocity = new Vector3(0, _aimAngleRef.transform.localPosition.y * 3f, _aimAngleRef.transform.localPosition.z * 10f);
 
@@ -75,7 +77,7 @@ public class Bazooka : Weapon
         if (Physics.Raycast(ray, out target, _rayDist))
         {
             Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 1f);
-            if(target.transform.gameObject.layer == 3 || target.transform.gameObject.layer == 6)
+            if (target.transform.gameObject.layer == 3 || target.transform.gameObject.layer == 6 || target.transform.gameObject.layer == 12)
             {
                 Debug.Log($"Target is {target.transform.gameObject.layer}");
                 return target.transform.gameObject;

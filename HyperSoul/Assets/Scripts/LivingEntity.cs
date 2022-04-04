@@ -21,7 +21,11 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     [SerializeField]
     protected GameObject _deathSound;
     [SerializeField]
-    private GameObject _hitImage;
+    protected GameObject _hitImage;
+    [SerializeField]
+    protected Transform _cameraArm;
+    [SerializeField]
+    protected Canvas _hpCanvas;
 
     protected Animator _animator;
     protected bool _isHit = false;
@@ -32,6 +36,12 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         _hitSound.SetActive(false);
         _deathSound.SetActive(false);
         _animator = GetComponentInChildren<Animator>();
+    }
+
+    private void FixedUpdate()
+    {
+        _hpBar.value = (float)CurHp / MaxHp;
+        _hpCanvas.transform.rotation = _cameraArm.rotation;
     }
 
     [PunRPC]

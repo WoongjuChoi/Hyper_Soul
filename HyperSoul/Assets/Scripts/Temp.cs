@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class Temp : LivingEntity
 {
-    int hp = 5;
-
     [SerializeField]
     private PlayerInfo playerInfo;
+
+    private void Start()
+    {
+        CurHp = 5;
+        MaxHp = 5;
+    }
 
     private void OnTriggerEnter(Collider other)
     {

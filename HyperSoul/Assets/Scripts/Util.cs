@@ -21,6 +21,7 @@ class PlayerAnimatorID
     public const string RELOAD_SPEED = "ReloadSpeed";
     public const string ISSHOOT = "IsShoot";
     public const string SINGLESHOT = "SingleShot";
+    public const string MOVEMENT = "Movement";
 }
 
 public class MonsterAnimatorID

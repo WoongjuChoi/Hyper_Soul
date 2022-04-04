@@ -75,7 +75,7 @@ public class PlayerMovement : MonoBehaviour
         _playerAnimator.SetFloat(PlayerAnimatorID.VERTICAL, _input.MoveVec.y);
         _playerAnimator.SetFloat(PlayerAnimatorID.HORIZONTAL, _input.MoveVec.x);
 
-        if (_input.MoveVec != Vector2.zero)
+        if (_input.MoveVec != Vector2.zero && _playerAnimator.GetCurrentAnimatorStateInfo(0).IsName(PlayerAnimatorID.MOVEMENT))
         {
             _walkingSound.SetActive(true);
         }

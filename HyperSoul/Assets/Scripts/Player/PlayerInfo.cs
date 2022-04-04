@@ -11,6 +11,7 @@ public class PlayerInfo : MonoBehaviour
     public int CurrExp { get; set; }
     public int Exp { get; set; }
     public bool IsDead { get; set; }
+    public string NickName { get; set; }
 
     [SerializeField]
     private Slider _hpSlider;

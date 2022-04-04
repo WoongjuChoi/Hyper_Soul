@@ -5,6 +5,9 @@ using UnityEngine;
 public class TreantInformation : MonsterInformation
 {
     [SerializeField]
+    private GameObject _stompAttackArea = null;
+
+    [SerializeField]
     private float _viewAngle = 0f;
 
     [SerializeField]
@@ -18,13 +21,16 @@ public class TreantInformation : MonsterInformation
     private TreantSpawnState _treantSpawnState = null;
 
     private Vector3 _vecMonsterToTarget = Vector3.zero;
+    private Vector3 _targetPosition = Vector3.zero;
 
     private bool _existInSight = false;
 
     private const float DOT_120_DEGREE = -0.5f;
 
-    public Vector3 VectorMonsterYoTarget { get { return _vecMonsterToTarget; } }
+    public GameObject StompAttackArea { get { return _stompAttackArea; } }
+    public Vector3 VectorMonsterToTarget { get { return _vecMonsterToTarget; } }
     public bool ExistInSight { get { return _existInSight; } }
+    public float DistanceMonsterToTarget { get; private set; }
     public float RotateSpeed { get { return _rotateSpeed; } }
 
     public override void Awake()
@@ -61,13 +67,13 @@ public class TreantInformation : MonsterInformation
                 if (internalAngle > DOT_120_DEGREE)
                 {
                     _isDamaged = true;
-                }
 
-                if (false == _isTargeting)
-                {
-                    _target = collision.gameObject.GetComponent<BazookaMissile>().MisilleOwner;
+                    if (false == _isTargeting)
+                    {
+                        _target = collision.gameObject.GetComponent<BazookaMissile>().MisilleOwner;
 
-                    _isTargeting = true;
+                        _isTargeting = true;
+                    }
                 }
             }
         }
@@ -77,7 +83,13 @@ public class TreantInformation : MonsterInformation
     {
         if (_isTargeting)
         {
+            _targetPosition = _target.transform.position + new Vector3(0f, 1.3f, 0f);
+
             ExistInTreantSight();
+
+            Vector3 gameObjecPosition = new Vector3(gameObject.transform.position.x, _targetPosition.y, gameObject.transform.position.z);
+
+            DistanceMonsterToTarget = (_targetPosition - gameObjecPosition).magnitude;
         }
 
         // µð¹ö±ë¿ë
@@ -90,13 +102,11 @@ public class TreantInformation : MonsterInformation
 
     private void ExistInTreantSight()
     {
-        Vector3 targetPosition = _target.transform.position + new Vector3(0f, 1.3f, 0f);
+        _lookAtTargetVec = _targetPosition - _collisionVec;
 
-        _lookAtTargetVec = targetPosition - _collisionVec;
+        Vector3 monsterSightPosition = new Vector3(_monsterRayPoint.position.x, _targetPosition.y, _monsterRayPoint.position.z);
 
-        Vector3 monsterSightPosition = new Vector3(_monsterRayPoint.position.x, targetPosition.y, _monsterRayPoint.position.z);
-
-        _vecMonsterToTarget = (targetPosition - monsterSightPosition).normalized;
+        _vecMonsterToTarget = (_targetPosition - monsterSightPosition).normalized;
 
         float dotMonsterToTarget = Vector3.Dot(gameObject.transform.forward, _vecMonsterToTarget);
 

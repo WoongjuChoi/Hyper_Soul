@@ -37,6 +37,8 @@ public class MonsterAnimatorID
     public const string IS_DAMAGED = "isDamaged";
     public const string IS_DIE = "isDie";
     public const string IS_CHASE = "isChase";
+    public const string IS_TREANT_ROOT_ATTACK = "isRootAttack";
+    public const string IS_TREANT_STOMP_ATTACK = "isStompAttack";
 }
 
 public class SampleObjectParameterID

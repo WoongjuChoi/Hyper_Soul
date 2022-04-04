@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class TreantAttackState : BaseState<TreantInformation>
 {
+    private TreantAttackManager _treantAttackManager = new TreantAttackManager();
+
+    private TreantRootAttack _treantRootAttack = new TreantRootAttack();
+    private TreantStompAttack _treantStompAttack = new TreantStompAttack();
+
     public override void EnterState()
     {
         base.CreatureInformation.MonsterCurrentState = EStateIDs.RotatePosition;
@@ -11,6 +16,10 @@ public class TreantAttackState : BaseState<TreantInformation>
 
     public override void ExitState()
     {
+        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, false);
+        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, false);
+
+        base.CreatureInformation.StompAttackArea.SetActive(false);
     }
 
     public override void UpdateState()
@@ -29,16 +38,20 @@ public class TreantAttackState : BaseState<TreantInformation>
             return;
         }
 
-        StartCoroutine(AttackMotion());
+        SetAttackPattern();
+
+        _treantAttackManager.Attack(base.GameObject);
     }
 
-    private IEnumerator AttackMotion()
+    private void SetAttackPattern()
     {
-        while (base.CreatureInformation.ExistInSight)
+        if (base.CreatureInformation.DistanceMonsterToTarget < 10f)
         {
-            base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_ATTACK);
-
-            yield return new WaitForSeconds(5f);
+            _treantAttackManager.SetTreantAttack(_treantStompAttack);
+        }
+        else if (base.CreatureInformation.DistanceMonsterToTarget < 50f)
+        {
+            _treantAttackManager.SetTreantAttack(_treantRootAttack);
         }
     }
 }

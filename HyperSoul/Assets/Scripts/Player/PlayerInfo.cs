@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerInfo : MonoBehaviour
+public class PlayerInfo : LivingEntity
 {
-    public float Attack { get; private set; }
-    public int CurrHp { get; set; }
-    public int MaxHp { get; set; }
-    public int CurrExp { get; set; }
+    public int CurExp { get; set; }
     public int Exp { get; set; }
-    public bool IsDead { get; set; }
     public string NickName { get; set; }
 
     [SerializeField]
@@ -31,12 +27,13 @@ public class PlayerInfo : MonoBehaviour
 
     private Weapon _playerWeapon;
 
-    private void Awake()
+    private void Start()
     {
         _playerWeapon = GetComponentInChildren<Weapon>();
         Attack = 1f;
-        CurrExp = 0;
+        CurExp = 0;
         Exp = 100;
+
         _killText.gameObject.SetActive(false);
         _levelUpText.gameObject.SetActive(false);
         _gameOverText.gameObject.SetActive(false);
@@ -45,7 +42,7 @@ public class PlayerInfo : MonoBehaviour
     private void OnEnable()
     {
         MaxHp = 5;
-        CurrHp = 5;
+        CurHp = 5;
         IsDead = false;
     }
 
@@ -58,9 +55,9 @@ public class PlayerInfo : MonoBehaviour
 
     private void HpUpdate()
     {
-        _hpSlider.value = (float)CurrHp / MaxHp;
+        _hpSlider.value = (float)CurHp / MaxHp;
 
-        if (CurrHp <= 0)
+        if (CurHp <= 0)
         {
             _gameOverText.gameObject.SetActive(true);
         }
@@ -73,14 +70,14 @@ public class PlayerInfo : MonoBehaviour
 
     private void ExpUpdate()
     {
-        _expText.text = "Exp : " + CurrExp;
+        _expText.text = "Exp : " + CurExp;
 
-        _expSlider.value = (float)CurrExp / Exp;
+        _expSlider.value = (float)CurExp / Exp;
 
-        if (CurrExp >= Exp)
+        if (CurExp >= Exp)
         {
             StartCoroutine(LevelUp());
-            CurrExp = 0;
+            CurExp = 0;
         }
     }
 

@@ -15,8 +15,6 @@ class PlayerAnimatorID
     public const string DOJUMP = "DoJump";
     public const string ISJUMP = "IsJump";
     public const string FALLING = "Falling";
-    public const string DIE = "Die";
-    public const string HIT = "Hit";
     public const string RELOAD = "Reload";
     public const string RELOAD_SPEED = "ReloadSpeed";
     public const string ISSHOOT = "IsShoot";
@@ -34,6 +32,12 @@ public class MonsterAnimatorID
     public const string HAS_IDLE = "hasIdle";
     public const string HAS_RESTING = "hasResting";
     public const string HAS_WALK = "hasWalk";
+}
+
+public class CommonAnimatorID
+{
+    public const string DIE = "Die";
+    public const string HIT = "Hit";
 }
 
 public class SampleObjectParameterID

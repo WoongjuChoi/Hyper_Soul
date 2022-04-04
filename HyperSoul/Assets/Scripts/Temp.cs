@@ -2,30 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Temp : MonoBehaviour
+public class Temp : LivingEntity
 {
     int hp = 5;
 
     [SerializeField]
     private PlayerInfo playerInfo;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Bullet")
         {
-            --hp;
-            Debug.Log("Enemy Hp : " + hp);
-            if (hp <= 0)
+            --CurHp;
+            Debug.Log("Enemy Hp : " + CurHp);
+            if (CurHp <= 0)
             {
-                playerInfo.CurrExp += 20;
-                Destroy(gameObject);
+                playerInfo.CurExp += 20;
             }
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (false == collision.gameObject.GetComponent<LivingEntity>().IsDead)
+        {
+            collision.gameObject.GetComponent<LivingEntity>()?.TakeDamage(this, 1, collision.contacts[0].point, collision.contacts[0].normal);
         }
     }
 }

@@ -14,15 +14,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private Weapon _weapon;
     [SerializeField]
-    private GameObject _hitImage;
-    [SerializeField]
     private GameObject _walkingSound;
     [SerializeField]
-    private GameObject _hitSound;
-    [SerializeField]
-    private GameObject _deathSound;
-    [SerializeField]
-    private GameObject _jumpSound;
+    protected GameObject _jumpSound;
 
     private Rigidbody _playerRigidbody;
     private Animator _playerAnimator;
@@ -31,7 +25,6 @@ public class PlayerMovement : MonoBehaviour
     private PlayerInfo _playerInfo;
 
     private bool _isJump = false;
-    private bool _isHit = false;
     private float _aim = 0.5f;
 
     private void Awake()
@@ -41,17 +34,16 @@ public class PlayerMovement : MonoBehaviour
         _playerCam = GetComponent<PlayerCam>();
         _input = GetComponent<PlayerInputs>();
         _playerInfo = GetComponent<PlayerInfo>();
-        _hitImage.SetActive(false);
         _walkingSound.SetActive(false);
-        _hitSound.SetActive(false);
-        _deathSound.SetActive(false);
-        _jumpSound.SetActive(false);
     }
 
     private void Update()
     {
         if (_playerInfo.IsDead)
         {
+            _walkingSound.SetActive(false);
+            _jumpSound.SetActive(false);
+
             return;
         }
 
@@ -152,53 +144,25 @@ public class PlayerMovement : MonoBehaviour
         _aim = (_playerCam._eulerAngleX + 80f) / 130f;
         _playerAnimator.SetFloat(PlayerAnimatorID.AIM, _aim);
     }
-    public IEnumerator Hit()
-    {
-        _isHit = true;
-        _playerAnimator.SetTrigger(PlayerAnimatorID.HIT);
-        _hitImage.SetActive(true);
-        _hitSound.SetActive(true);
-        yield return new WaitForSeconds(0.3f);
-
-        _isHit = false;
-        _hitImage.SetActive(false);
-        _hitSound.SetActive(false);
-    }
-
-    // 공격당했을 때를 처리하는 CollisionEnter
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == TagParameterID.BULLET)
-        {
-            --_playerInfo.CurrHp;
-            Debug.Log("Player Hp : " + _playerInfo.CurrHp);
-
-            if (_playerInfo.CurrHp <= 0)
-            {
-                _playerInfo.IsDead = true;
-                _playerAnimator.SetTrigger(PlayerAnimatorID.DIE);
-                _deathSound.SetActive(true);
-                _walkingSound.SetActive(false);
-            }
-            else if (false == _isHit)
-            {
-                StartCoroutine(Hit());
-            }
-        }
-    }
 
     // 점프 애니메이션 처리를 위한 트리거 콜라이더 처리
     private void OnTriggerStay(Collider other)
     {
-         _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, false);
-        _isJump = false;
-        _input.IsJump = false;
+        if (false == _playerInfo.IsDead)
+        {
+            _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, false);
+            _isJump = false;
+            _input.IsJump = false;
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        _playerAnimator.SetTrigger(PlayerAnimatorID.FALLING);
-        _isJump = true;
-        _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, true);
+        if (false == _playerInfo.IsDead)
+        {
+            _playerAnimator.SetTrigger(PlayerAnimatorID.FALLING);
+            _isJump = true;
+            _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, true);
+        }
     }
 }

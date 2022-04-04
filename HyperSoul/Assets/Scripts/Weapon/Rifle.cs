@@ -17,7 +17,7 @@ public class Rifle : Weapon
         _reloadTime = 2;
         _gunState = EGunState.Ready;
     }
-   
+
     public override void Fire()
     {
         if (CurBulletCnt > 0 && _canFire == true)

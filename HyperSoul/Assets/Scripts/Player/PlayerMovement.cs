@@ -21,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
     private GameObject _hitSound;
     [SerializeField]
     private GameObject _deathSound;
+    [SerializeField]
+    private GameObject _jumpSound;
 
     private Rigidbody _playerRigidbody;
     private Animator _playerAnimator;
@@ -43,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
         _walkingSound.SetActive(false);
         _hitSound.SetActive(false);
         _deathSound.SetActive(false);
+        _jumpSound.SetActive(false);
     }
 
     private void Update()
@@ -55,6 +58,8 @@ public class PlayerMovement : MonoBehaviour
         MoveAnimation();
         JumpAnimation();
         AimAnimation();
+        MoveSound();
+        JumpSound();
         Reload();
         Fire();
     }
@@ -74,15 +79,6 @@ public class PlayerMovement : MonoBehaviour
     {
         _playerAnimator.SetFloat(PlayerAnimatorID.VERTICAL, _input.MoveVec.y);
         _playerAnimator.SetFloat(PlayerAnimatorID.HORIZONTAL, _input.MoveVec.x);
-
-        if (_input.MoveVec != Vector2.zero && _playerAnimator.GetCurrentAnimatorStateInfo(0).IsName(PlayerAnimatorID.MOVEMENT))
-        {
-            _walkingSound.SetActive(true);
-        }
-        else
-        {
-            _walkingSound.SetActive(false);
-        }
     }
 
     private void Move()
@@ -93,6 +89,18 @@ public class PlayerMovement : MonoBehaviour
         Vector3 lookRight = new Vector3(_cameraArm.right.x, 0f, _cameraArm.right.z).normalized;
         Vector3 moveVector = lookForward * _input.MoveVec.y + lookRight * _input.MoveVec.x;
         _playerRigidbody.MovePosition(_playerRigidbody.position + moveVector * dtMoveSpeed);
+    }
+
+    private void MoveSound()
+    {
+        if (_input.MoveVec != Vector2.zero && _playerAnimator.GetCurrentAnimatorStateInfo(0).IsName(PlayerAnimatorID.MOVEMENT))
+        {
+            _walkingSound.SetActive(true);
+        }
+        else
+        {
+            _walkingSound.SetActive(false);
+        }
     }
 
     private void JumpAnimation()
@@ -109,6 +117,17 @@ public class PlayerMovement : MonoBehaviour
         {
             _isJump = true;
             _playerRigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+        }
+    }
+    private void JumpSound()
+    {
+        if (_playerAnimator.GetBool(PlayerAnimatorID.ISJUMP))
+        {
+            _jumpSound.SetActive(true);
+        }
+        else
+        {
+            _jumpSound.SetActive(false);
         }
     }
     private void Reload()

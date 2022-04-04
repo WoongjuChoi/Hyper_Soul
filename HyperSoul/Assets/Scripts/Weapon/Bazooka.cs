@@ -22,8 +22,8 @@ public class Bazooka : Weapon
 
     private void OnEnable()
     {
-        CurBulletCnt = 1;
-        MaxBulletAmt = 1;
+        CurBulletCnt = 3000;
+        MaxBulletAmt = 3000;
         _reloadTime = 2;
         _reloadSpeed = 0.01f;
         _gunState = EGunState.Ready;

@@ -49,7 +49,7 @@ public class TreantRotatePositionState : BaseState<TreantInformation>
 
     private void CheckTargetPosition()
     {
-        Vector3 crossMonsterToTarget = Vector3.Cross(base.GameObject.transform.forward, base.CreatureInformation.VectorMonsterYoTarget);
+        Vector3 crossMonsterToTarget = Vector3.Cross(base.GameObject.transform.forward, base.CreatureInformation.VectorMonsterToTarget);
 
         if (crossMonsterToTarget.y > 0f)
         {

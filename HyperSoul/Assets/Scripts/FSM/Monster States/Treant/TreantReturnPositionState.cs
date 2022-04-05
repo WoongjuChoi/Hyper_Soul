@@ -69,15 +69,11 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
         {
             _isLocatedLeftSide = true;
             _isLocatedRightSide = false;
-
-            Debug.Log("¿ÞÂÊ º½");
         }
         else if (crossCurrentVec.y < 0f)
         {
             _isLocatedLeftSide = false;
             _isLocatedRightSide = true;
-
-            Debug.Log("¿À¸¥ÂÊ º½");
         }
     }
 

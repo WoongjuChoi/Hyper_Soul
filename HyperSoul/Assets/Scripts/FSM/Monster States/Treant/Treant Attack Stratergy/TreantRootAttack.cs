@@ -63,4 +63,9 @@ public class TreantRootAttack : MonoBehaviour, ITreantAttack
             _isTargeting = false;
         }
     }
+
+    public void StopRootAttack()
+    {
+        StopCoroutine(RootAttack());
+    }
 }

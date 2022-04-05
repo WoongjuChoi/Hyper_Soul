@@ -30,6 +30,8 @@ public class TreantAttackState : BaseState<TreantInformation>
 
     public override void UpdateState()
     {
+        SetAttackPattern();
+
         if (base.CreatureInformation.IsDamaged)
         {
             base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
@@ -37,8 +39,6 @@ public class TreantAttackState : BaseState<TreantInformation>
             return;
         }
         
-        SetAttackPattern();
-
         if (_outOfSight)
         {
             base.FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
@@ -58,11 +58,13 @@ public class TreantAttackState : BaseState<TreantInformation>
 
     private void SetAttackPattern()
     {
-        if (base.CreatureInformation.DistanceMonsterToTarget < 5f)
+        if (base.CreatureInformation.DistanceMonsterToTarget < 10f)
         {
             _treantAttackManager.SetTreantAttack(_treantStompAttack);
+
+            _treantRootAttack.StopRootAttack();
         }
-        else if (base.CreatureInformation.DistanceMonsterToTarget < 10f)
+        else if (base.CreatureInformation.DistanceMonsterToTarget < 30f)
         {
             _treantAttackManager.SetTreantAttack(_treantRootAttack);
         }

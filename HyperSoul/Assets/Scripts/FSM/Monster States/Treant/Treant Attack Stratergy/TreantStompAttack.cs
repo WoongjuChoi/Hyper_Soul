@@ -1,19 +1,16 @@
 using UnityEngine;
 
-public class TreantStompAttack : ITreantAttack
+public class TreantStompAttack : MonoBehaviour, ITreantAttack
 {
     private bool _isAttack = false;
 
     private float _elapsedTime = 0f;
 
-    private const float ATTACK_TIME = 1f;
-    private const float ATTACK_DELAY_TIME = 5f;
+    private const float ATTACK_DELAY_TIME = 3f;
 
-    public void Attack(GameObject obj)
+    public void Attack()
     {
         _elapsedTime += Time.deltaTime;
-
-        obj.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, false);
 
         if (_elapsedTime <= ATTACK_DELAY_TIME)
         {
@@ -26,8 +23,10 @@ public class TreantStompAttack : ITreantAttack
             _elapsedTime = 0;
         }
 
-        obj.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, _isAttack);
+        gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, false);
 
-        obj.GetComponent<TreantInformation>().StompAttackArea.SetActive(_isAttack);
+        gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, _isAttack);
+
+        gameObject.GetComponent<TreantInformation>().StompAttackArea.SetActive(_isAttack);
     }
 }

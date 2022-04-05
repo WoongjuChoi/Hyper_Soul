@@ -17,6 +17,7 @@ public class TreantInformation : MonsterInformation
     private TreantDamagedState _treantDamagedState = null;
     private TreantDieState _treantDieState = null;
     private TreantIdleState _treantIdleState = null;
+    private TreantReturnPositionState _treantReturnPositionState = null;
     private TreantRotatePositionState _treantRotatePositionState = null;
     private TreantSpawnState _treantSpawnState = null;
 
@@ -29,6 +30,7 @@ public class TreantInformation : MonsterInformation
 
     public GameObject StompAttackArea { get { return _stompAttackArea; } }
     public Vector3 VectorMonsterToTarget { get { return _vecMonsterToTarget; } }
+    public Vector3 OriginVec { get; set; }
     public bool ExistInSight { get { return _existInSight; } }
     public float DistanceMonsterToTarget { get; private set; }
     public float RotateSpeed { get { return _rotateSpeed; } }
@@ -39,6 +41,7 @@ public class TreantInformation : MonsterInformation
         _treantDamagedState = GetComponent<TreantDamagedState>();
         _treantDieState = GetComponent<TreantDieState>();
         _treantIdleState = GetComponent<TreantIdleState>();
+        _treantReturnPositionState = GetComponent<TreantReturnPositionState>();
         _treantRotatePositionState = GetComponent<TreantRotatePositionState>();
         _treantSpawnState = GetComponent<TreantSpawnState>();
 
@@ -46,6 +49,7 @@ public class TreantInformation : MonsterInformation
         _monsterFSM.AddState(EStateIDs.Damaged, _treantDamagedState);
         _monsterFSM.AddState(EStateIDs.Die, _treantDieState);
         _monsterFSM.AddState(EStateIDs.Idle, _treantIdleState);
+        _monsterFSM.AddState(EStateIDs.ReturnPosition, _treantReturnPositionState);
         _monsterFSM.AddState(EStateIDs.RotatePosition, _treantRotatePositionState);
         _monsterFSM.AddState(EStateIDs.Spawn, _treantSpawnState);
     }

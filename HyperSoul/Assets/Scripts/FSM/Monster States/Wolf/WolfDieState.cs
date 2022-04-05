@@ -11,7 +11,7 @@ public class WolfDieState : BaseState<WolfInformation>
     {
         base.CreatureInformation.MonsterCurrentState = EStateIDs.Die;
 
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DIE, true);
+        base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_DIE);
     }
 
     public override void ExitState()
@@ -36,8 +36,6 @@ public class WolfDieState : BaseState<WolfInformation>
         if (_elapsedTime >= _monsterDieTime)
         {
             base.CreatureInformation.IsDie = true;
-
-            base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DIE, false);
 
             base.GameObject.SetActive(false);
 

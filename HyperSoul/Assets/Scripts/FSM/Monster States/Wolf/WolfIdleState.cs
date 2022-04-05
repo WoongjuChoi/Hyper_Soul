@@ -14,6 +14,8 @@ public class WolfIdleState : BaseState<WolfInformation>
     public override void EnterState()
     {
         base.CreatureInformation.MonsterCurrentState = EStateIDs.Idle;
+
+        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_RETURN_POSITION, true);
     }
 
     public override void ExitState()
@@ -23,6 +25,8 @@ public class WolfIdleState : BaseState<WolfInformation>
         _playAnimation = false;
 
         _increaseHealing = 0;
+
+        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_RETURN_POSITION, false);
     }
 
     public override void UpdateState()

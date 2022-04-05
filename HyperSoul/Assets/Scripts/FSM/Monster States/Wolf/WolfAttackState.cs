@@ -15,9 +15,9 @@ public class WolfAttackState : BaseState<WolfInformation>
         {
             _elapsedTime = _changeAttackAnimationTime;
         }
-        else if (EStateIDs.Damaged == base.CreatureInformation.MonsterCurrentState)
+        else
         {
-            base.GameObject.GetComponentInChildren<Animator>().SetBool(IS_IDLE, true);
+            _elapsedTime = _changeAttackAnimationTime - 0.5f;
         }
 
         base.CreatureInformation.MonsterCurrentState = EStateIDs.Attack;
@@ -27,7 +27,7 @@ public class WolfAttackState : BaseState<WolfInformation>
     {
         _elapsedTime = 0f;
 
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(IS_IDLE, false);
+        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ATTACK, false);
     }
 
     public override void UpdateState()
@@ -64,7 +64,7 @@ public class WolfAttackState : BaseState<WolfInformation>
                 base.GameObject.transform.LookAt(base.CreatureInformation.Target.transform);
             }
 
-            base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_ATTACK);
+            base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ATTACK, true);
 
             _elapsedTime = 0f;
         }

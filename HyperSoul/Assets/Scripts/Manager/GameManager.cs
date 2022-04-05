@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
         get { Init(); return _instance; }
     }
 
+    public Transform PlayerCamRotationTransform { get; set; }
 
     [SerializeField]
     private Transform _spawnPosBase;
@@ -28,7 +29,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
     void Start()
     {
         Init();
-        SpawnPlayer();
+        //SpawnPlayer();
         PhotonNetwork.IsMessageQueueRunning = true;
     }
 

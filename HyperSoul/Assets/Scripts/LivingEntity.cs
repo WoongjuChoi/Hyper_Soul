@@ -23,8 +23,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     [SerializeField]
     protected GameObject _hitImage;
     [SerializeField]
-    protected Transform _cameraArm;
-    [SerializeField]
     protected Canvas _hpCanvas;
 
     protected Animator _animator;
@@ -38,10 +36,10 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         _animator = GetComponentInChildren<Animator>();
     }
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         _hpBar.value = (float)CurHp / MaxHp;
-        _hpCanvas.transform.rotation = _cameraArm.rotation;
+        _hpCanvas.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;
     }
 
     [PunRPC]

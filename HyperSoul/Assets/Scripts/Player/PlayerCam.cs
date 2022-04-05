@@ -40,6 +40,7 @@ public class PlayerCam : MonoBehaviour
 
         _defaultCamPos = new Vector3(1.5f, 0.4f, -3.4f);
         _normalRotationSpeed = new Vector2(0.5f, 0.5f);
+        GameManager.Instance.PlayerCamRotationTransform = _cameraArm;
     }
 
     private void Update()

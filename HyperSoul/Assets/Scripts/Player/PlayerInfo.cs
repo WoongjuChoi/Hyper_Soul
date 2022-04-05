@@ -10,7 +10,7 @@ public class PlayerInfo : LivingEntity
     public string NickName { get; set; }
 
     [SerializeField]
-    private Slider _hpSlider;
+    private Slider _myHpSlider;
     [SerializeField]
     private Slider _expSlider;
     [SerializeField]
@@ -55,7 +55,7 @@ public class PlayerInfo : LivingEntity
 
     private void HpUpdate()
     {
-        _hpSlider.value = (float)CurHp / MaxHp;
+        _myHpSlider.value = (float)CurHp / MaxHp;
 
         if (CurHp <= 0)
         {

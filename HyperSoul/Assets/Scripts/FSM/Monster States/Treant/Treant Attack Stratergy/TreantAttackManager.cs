@@ -11,8 +11,8 @@ public class TreantAttackManager
         this._treantAttack = treantAttack;
     }
 
-    public void Attack(GameObject obj)
+    public void Attack()
     {
-        _treantAttack.Attack(obj);
+        _treantAttack.Attack();
     }
 }

@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class TreantAttackState : BaseState<TreantInformation>
 {
+    [SerializeField]
+    private TreantRootAttack _treantRootAttack = null;
+    [SerializeField]
+    private TreantStompAttack _treantStompAttack = null;
+
     private TreantAttackManager _treantAttackManager = new TreantAttackManager();
 
-    private TreantRootAttack _treantRootAttack = new TreantRootAttack();
-    private TreantStompAttack _treantStompAttack = new TreantStompAttack();
+    private bool _outOfSight = false;
 
     public override void EnterState()
     {
@@ -20,6 +24,8 @@ public class TreantAttackState : BaseState<TreantInformation>
         base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, false);
 
         base.CreatureInformation.StompAttackArea.SetActive(false);
+
+        _outOfSight = false;
     }
 
     public override void UpdateState()
@@ -27,6 +33,15 @@ public class TreantAttackState : BaseState<TreantInformation>
         if (base.CreatureInformation.IsDamaged)
         {
             base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
+
+            return;
+        }
+        
+        SetAttackPattern();
+
+        if (_outOfSight)
+        {
+            base.FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
 
             return;
         }
@@ -38,20 +53,22 @@ public class TreantAttackState : BaseState<TreantInformation>
             return;
         }
 
-        SetAttackPattern();
-
-        _treantAttackManager.Attack(base.GameObject);
+        _treantAttackManager.Attack();
     }
 
     private void SetAttackPattern()
     {
-        if (base.CreatureInformation.DistanceMonsterToTarget < 10f)
+        if (base.CreatureInformation.DistanceMonsterToTarget < 5f)
         {
             _treantAttackManager.SetTreantAttack(_treantStompAttack);
         }
-        else if (base.CreatureInformation.DistanceMonsterToTarget < 50f)
+        else if (base.CreatureInformation.DistanceMonsterToTarget < 10f)
         {
             _treantAttackManager.SetTreantAttack(_treantRootAttack);
+        }
+        else
+        {
+            _outOfSight = true;
         }
     }
 }

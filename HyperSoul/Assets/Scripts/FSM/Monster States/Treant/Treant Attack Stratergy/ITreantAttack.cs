@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ITreantAttack
 {
-    public void Attack(GameObject obj);
+    public void Attack();
 }

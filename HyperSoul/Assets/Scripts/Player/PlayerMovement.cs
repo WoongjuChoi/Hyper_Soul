@@ -14,13 +14,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private Weapon _weapon;
     [SerializeField]
-    private GameObject _hitImage;
-    [SerializeField]
     private GameObject _walkingSound;
     [SerializeField]
-    private GameObject _hitSound;
-    [SerializeField]
-    private GameObject _deathSound;
+    protected GameObject _jumpSound;
 
     private Rigidbody _playerRigidbody;
     private Animator _playerAnimator;
@@ -29,7 +25,6 @@ public class PlayerMovement : MonoBehaviour
     private PlayerInfo _playerInfo;
 
     private bool _isJump = false;
-    private bool _isHit = false;
     private float _aim = 0.5f;
 
     private Vector3 _storeFirePosition = Vector3.zero;  // (22.04.01) 슈팅했을 때의 플레이어의 위치값을 저장하는 변수 추가
@@ -43,22 +38,24 @@ public class PlayerMovement : MonoBehaviour
         _playerCam = GetComponent<PlayerCam>();
         _input = GetComponent<PlayerInputs>();
         _playerInfo = GetComponent<PlayerInfo>();
-        _hitImage.SetActive(false);
         _walkingSound.SetActive(false);
-        _hitSound.SetActive(false);
-        _deathSound.SetActive(false);
     }
 
     private void Update()
     {
         if (_playerInfo.IsDead)
         {
+            _walkingSound.SetActive(false);
+            _jumpSound.SetActive(false);
+
             return;
         }
 
         MoveAnimation();
         JumpAnimation();
         AimAnimation();
+        MoveSound();
+        JumpSound();
         Reload();
         Fire();
     }
@@ -78,15 +75,6 @@ public class PlayerMovement : MonoBehaviour
     {
         _playerAnimator.SetFloat(PlayerAnimatorID.VERTICAL, _input.MoveVec.y);
         _playerAnimator.SetFloat(PlayerAnimatorID.HORIZONTAL, _input.MoveVec.x);
-
-        if (_input.MoveVec != Vector2.zero)
-        {
-            _walkingSound.SetActive(true);
-        }
-        else
-        {
-            _walkingSound.SetActive(false);
-        }
     }
 
     private void Move()
@@ -97,6 +85,18 @@ public class PlayerMovement : MonoBehaviour
         Vector3 lookRight = new Vector3(_cameraArm.right.x, 0f, _cameraArm.right.z).normalized;
         Vector3 moveVector = lookForward * _input.MoveVec.y + lookRight * _input.MoveVec.x;
         _playerRigidbody.MovePosition(_playerRigidbody.position + moveVector * dtMoveSpeed);
+    }
+
+    private void MoveSound()
+    {
+        if (_input.MoveVec != Vector2.zero && _playerAnimator.GetCurrentAnimatorStateInfo(0).IsName(PlayerAnimatorID.MOVEMENT))
+        {
+            _walkingSound.SetActive(true);
+        }
+        else
+        {
+            _walkingSound.SetActive(false);
+        }
     }
 
     private void JumpAnimation()
@@ -113,6 +113,17 @@ public class PlayerMovement : MonoBehaviour
         {
             _isJump = true;
             _playerRigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+        }
+    }
+    private void JumpSound()
+    {
+        if (_playerAnimator.GetBool(PlayerAnimatorID.ISJUMP))
+        {
+            _jumpSound.SetActive(true);
+        }
+        else
+        {
+            _jumpSound.SetActive(false);
         }
     }
     private void Reload()
@@ -138,53 +149,25 @@ public class PlayerMovement : MonoBehaviour
         _aim = (_playerCam._eulerAngleX + 80f) / 130f;
         _playerAnimator.SetFloat(PlayerAnimatorID.AIM, _aim);
     }
-    public IEnumerator Hit()
-    {
-        _isHit = true;
-        _playerAnimator.SetTrigger(PlayerAnimatorID.HIT);
-        _hitImage.SetActive(true);
-        _hitSound.SetActive(true);
-        yield return new WaitForSeconds(0.3f);
-
-        _isHit = false;
-        _hitImage.SetActive(false);
-        _hitSound.SetActive(false);
-    }
-
-    // 공격당했을 때를 처리하는 CollisionEnter
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == TagParameterID.BULLET)
-        {
-            --_playerInfo.CurrHp;
-            Debug.Log("Player Hp : " + _playerInfo.CurrHp);
-
-            if (_playerInfo.CurrHp <= 0)
-            {
-                _playerInfo.IsDead = true;
-                _playerAnimator.SetTrigger(PlayerAnimatorID.DIE);
-                _deathSound.SetActive(true);
-                _walkingSound.SetActive(false);
-            }
-            else if (false == _isHit)
-            {
-                StartCoroutine(Hit());
-            }
-        }
-    }
 
     // 점프 애니메이션 처리를 위한 트리거 콜라이더 처리
     private void OnTriggerStay(Collider other)
     {
-         _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, false);
-        _isJump = false;
-        _input.IsJump = false;
+        if (false == _playerInfo.IsDead)
+        {
+            _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, false);
+            _isJump = false;
+            _input.IsJump = false;
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        _playerAnimator.SetTrigger(PlayerAnimatorID.FALLING);
-        _isJump = true;
-        _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, true);
+        if (false == _playerInfo.IsDead)
+        {
+            _playerAnimator.SetTrigger(PlayerAnimatorID.FALLING);
+            _isJump = true;
+            _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, true);
+        }
     }
 }

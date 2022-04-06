@@ -15,12 +15,11 @@ class PlayerAnimatorID
     public const string DOJUMP = "DoJump";
     public const string ISJUMP = "IsJump";
     public const string FALLING = "Falling";
-    public const string DIE = "Die";
-    public const string HIT = "Hit";
     public const string RELOAD = "Reload";
     public const string RELOAD_SPEED = "ReloadSpeed";
     public const string ISSHOOT = "IsShoot";
     public const string SINGLESHOT = "SingleShot";
+    public const string MOVEMENT = "Movement";
 }
 
 public class MonsterAnimatorID
@@ -37,6 +36,12 @@ public class MonsterAnimatorID
     public const string IS_DAMAGED = "isDamaged";
     public const string IS_DIE = "isDie";
     public const string IS_CHASE = "isChase";
+}
+
+public class CommonAnimatorID
+{
+    public const string DIE = "Die";
+    public const string HIT = "Hit";
 }
 
 public class SampleObjectParameterID

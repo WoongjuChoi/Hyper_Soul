@@ -2,6 +2,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviourPun, IPunObservable
@@ -98,7 +99,7 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
 
-        RaycastHit[] raycastHits = Physics.RaycastAll(ray, 999f);
+        RaycastHit[] raycastHits = Physics.RaycastAll(ray).OrderBy(h => h.distance).ToArray();
 
         for (int i = 0; i < raycastHits.Length; ++i)
         {

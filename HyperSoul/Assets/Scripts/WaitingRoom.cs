@@ -7,6 +7,7 @@ public class WaitingRoom : MonoBehaviour
 {
     public int CurPlayerType { get; private set; }
     public bool IsReady { get; private set; }
+    public Text PlayerName;
 
     private const int PLAYERCHARACTOR_COUNT = 3;
 
@@ -18,8 +19,6 @@ public class WaitingRoom : MonoBehaviour
     private GameObject _sniperPlayer;
     [SerializeField]
     private GameObject _readyButton;
-    [SerializeField]
-    private Text _playerName;
 
     private List<GameObject> _playerCharactor = new List<GameObject>();
     private Text _readyButtonText;
@@ -48,7 +47,7 @@ public class WaitingRoom : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerName.text = "Player 1";
+        PlayerName.text = "Player 1";
     }
 
     public void RightClick()

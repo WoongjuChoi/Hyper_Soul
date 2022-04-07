@@ -31,6 +31,7 @@ Transform:
   m_Father: {fileID: 1258827286868462974}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< Updated upstream:HyperSoul/Assets/Prefab/Player.prefab
 --- !u!1 &1258827284978915300
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,6 +187,9 @@ SkinnedMeshRenderer:
     m_Extent: {x: 0.5007817, y: 0.5822783, z: 0.5729898}
   m_DirtyAABB: 0
 --- !u!1 &1258827285000342716
+=======
+--- !u!1 &4938414190442410513
+>>>>>>> Stashed changes:HyperSoul/Assets/Resources/BazookaPlayer.prefab
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -224,6 +228,7 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1258827285000342716}
   m_Enabled: 1
+<<<<<<< Updated upstream:HyperSoul/Assets/Prefab/Player.prefab
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -310,6 +315,36 @@ SkinnedMeshRenderer:
     m_Extent: {x: 0.60155445, y: 0.61079764, z: 0.53185666}
   m_DirtyAABB: 0
 --- !u!1 &1258827285013438046
+=======
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ExcludedPropertiesInInspector:
+  - m_Script
+  m_LockStageInInspector: 
+  m_StreamingVersion: 20170927
+  m_Priority: 10
+  m_StandbyUpdate: 2
+  m_LookAt: {fileID: 6700010149244072713}
+  m_Follow: {fileID: 6700010149244072713}
+  m_Lens:
+    FieldOfView: 60
+    OrthographicSize: 5
+    NearClipPlane: 0.3
+    FarClipPlane: 1000
+    Dutch: 0
+    LensShift: {x: 0, y: 0}
+  m_Transitions:
+    m_BlendHint: 0
+    m_InheritPosition: 0
+    m_OnCameraLive:
+      m_PersistentCalls:
+        m_Calls: []
+  m_LegacyBlendHint: 0
+  m_ComponentOwner: {fileID: 4938414191181472087}
+--- !u!1 &4938414190991599376
+>>>>>>> Stashed changes:HyperSoul/Assets/Resources/BazookaPlayer.prefab
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -503,9 +538,17 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< Updated upstream:HyperSoul/Assets/Prefab/Player.prefab
   - component: {fileID: 1258827285137388728}
   m_Layer: 0
   m_Name: index_03_r
+=======
+  - component: {fileID: 4938414192074980031}
+  - component: {fileID: 8450607824860636103}
+  - component: {fileID: 3480030698709689012}
+  m_Layer: 3
+  m_Name: CameraArm
+>>>>>>> Stashed changes:HyperSoul/Assets/Resources/BazookaPlayer.prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -525,7 +568,50 @@ Transform:
   m_Father: {fileID: 1258827286919568960}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< Updated upstream:HyperSoul/Assets/Prefab/Player.prefab
 --- !u!1 &1258827285137986095
+=======
+--- !u!114 &8450607824860636103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4938414192074980028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 3480030698709689012}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &3480030698709689012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4938414192074980028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!1 &5641331980754899854
+>>>>>>> Stashed changes:HyperSoul/Assets/Resources/BazookaPlayer.prefab
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -533,10 +619,28 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< Updated upstream:HyperSoul/Assets/Prefab/Player.prefab
   - component: {fileID: 1258827285137986094}
   m_Layer: 0
   m_Name: index_03_l
   m_TagString: Untagged
+=======
+  - component: {fileID: 3799432508737507915}
+  - component: {fileID: 6954971236725922382}
+  - component: {fileID: 7354889530556509805}
+  - component: {fileID: 9039456690425684840}
+  - component: {fileID: 5641331980754899855}
+  - component: {fileID: 1308096826260647213}
+  - component: {fileID: 5641331980754899857}
+  - component: {fileID: 5641331980754899859}
+  - component: {fileID: 5641331980754899858}
+  - component: {fileID: 5641331980754899856}
+  - component: {fileID: 1591210600240758448}
+  - component: {fileID: 7931394099576958583}
+  m_Layer: 3
+  m_Name: BazookaPlayer
+  m_TagString: Player
+>>>>>>> Stashed changes:HyperSoul/Assets/Resources/BazookaPlayer.prefab
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -551,11 +655,212 @@ Transform:
   m_LocalRotation: {x: 0.019108133, y: -0.021374207, z: 0.0004085892, w: 0.99958885}
   m_LocalPosition: {x: -0.06901584, y: -0.004201027, z: -0.004045686}
   m_LocalScale: {x: 1, y: 1, z: 1}
+<<<<<<< Updated upstream:HyperSoul/Assets/Prefab/Player.prefab
   m_Children: []
   m_Father: {fileID: 1258827285641403301}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1258827285248937202
+=======
+  m_Children:
+  - {fileID: 6700010149244072713}
+  - {fileID: 4938414192074980031}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &6954971236725922382
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641331980754899854}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.7
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.3, z: 0}
+--- !u!54 &7354889530556509805
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641331980754899854}
+  serializedVersion: 2
+  m_Mass: 1.3
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
+--- !u!114 &9039456690425684840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641331980754899854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 2
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 1308096826260647213}
+  - {fileID: 1591210600240758448}
+  - {fileID: 7931394099576958583}
+  - {fileID: 7571659138667561152}
+  - {fileID: 4420473771590932976}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &5641331980754899855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641331980754899854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28437a05fb04af241bc0e14363c86097, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hpBar: {fileID: 0}
+--- !u!114 &1308096826260647213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641331980754899854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ef8acc97e1cd084099a198e69886c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 8
+  _jumpForce: 10
+  _cameraArm: {fileID: 4938414192074980031}
+  _weapon: {fileID: 2674803741113845634}
+--- !u!114 &5641331980754899857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641331980754899854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aa951a8111cf9e40aaf93f93d732f9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerBody: {fileID: 6700010149244072713}
+  _cameraArm: {fileID: 4938414192074980031}
+  _cameraPos: {fileID: 4938414190442410515}
+  _rotationSpeedX: 0.5
+  _rotationSpeedY: 0.5
+  _normalRotationSpeed: {x: 0, y: 0}
+--- !u!65 &5641331980754899859
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641331980754899854}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
+  m_Center: {x: 0, y: 0.4, z: 0}
+--- !u!114 &5641331980754899858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641331980754899854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0701d76c8af10ae4882e32cf0b17b82a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5641331980754899856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641331980754899854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 5995bd7992de1254a8bd6b50c1cb869d, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &1591210600240758448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641331980754899854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
+--- !u!114 &7931394099576958583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641331980754899854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!1 &6700010149108254389
+>>>>>>> Stashed changes:HyperSoul/Assets/Resources/BazookaPlayer.prefab
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1198,7 +1503,202 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream:HyperSoul/Assets/Prefab/Player.prefab
   m_GameObject: {fileID: 1258827285507443880}
+=======
+  m_GameObject: {fileID: 6700010149221319506}
+  m_LocalRotation: {x: 0.022786943, y: 0.002945359, z: -0.40929776, w: 0.9121115}
+  m_LocalPosition: {x: -0.08471742, y: -0.011332375, z: -0.0045711263}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 6700010149657496286}
+  m_Father: {fileID: 6700010149110595178}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6700010149244072727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6700010149244072713}
+  - component: {fileID: 6700010149244072726}
+  - component: {fileID: 7571659138667561152}
+  - component: {fileID: 4420473771590932976}
+  m_Layer: 3
+  m_Name: PlayerCharactor
+  m_TagString: Player
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6700010149244072713
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6700010149244072727}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 6700010150990291441}
+  - {fileID: 6700010149149069706}
+  - {fileID: 6700010151178272017}
+  - {fileID: 6700010150591446145}
+  - {fileID: 6700010150397217183}
+  - {fileID: 6700010150995534719}
+  - {fileID: 6700010149206654973}
+  - {fileID: 6700010150048443233}
+  - {fileID: 6700010149518660900}
+  - {fileID: 6700010149343883685}
+  - {fileID: 6700010150692376424}
+  - {fileID: 6700010150234154534}
+  - {fileID: 6700010150258283837}
+  - {fileID: 6700010149246535824}
+  - {fileID: 6700010149300344334}
+  - {fileID: 6700010150750300334}
+  - {fileID: 6700010149816055316}
+  - {fileID: 6700010149792388175}
+  - {fileID: 6700010149466849338}
+  - {fileID: 6700010150757660646}
+  - {fileID: 6700010150831324228}
+  - {fileID: 6700010149899627405}
+  - {fileID: 6700010151210102429}
+  - {fileID: 6700010149111488425}
+  - {fileID: 6700010149955341501}
+  - {fileID: 6700010150320459054}
+  - {fileID: 6700010150677176416}
+  - {fileID: 6700010150770663255}
+  - {fileID: 6700010150452288004}
+  - {fileID: 6700010151095495502}
+  - {fileID: 6700010150938970824}
+  - {fileID: 6700010150852868156}
+  - {fileID: 6700010150669204673}
+  - {fileID: 6700010149181114305}
+  - {fileID: 6700010149355803739}
+  - {fileID: 6700010150653971732}
+  - {fileID: 6700010149863438324}
+  - {fileID: 6700010149612670041}
+  - {fileID: 6700010149489806131}
+  - {fileID: 6700010150508092729}
+  - {fileID: 6700010150986775052}
+  m_Father: {fileID: 3799432508737507915}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &6700010149244072726
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6700010149244072727}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 9f078227c6f09b54392514bfaa25c741, type: 3}
+  m_Controller: {fileID: 22100000, guid: 6466b243fafea1d4fb650365c762d6a8, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7571659138667561152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6700010149244072727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 1
+    SynchronizeType: 1
+    Name: Horizontal
+  - Type: 1
+    SynchronizeType: 1
+    Name: Vertical
+  - Type: 9
+    SynchronizeType: 1
+    Name: DoJump
+  - Type: 4
+    SynchronizeType: 1
+    Name: IsJump
+  - Type: 9
+    SynchronizeType: 1
+    Name: Falling
+  - Type: 9
+    SynchronizeType: 1
+    Name: Die
+  - Type: 9
+    SynchronizeType: 1
+    Name: Hit
+  - Type: 1
+    SynchronizeType: 1
+    Name: Aim
+  - Type: 9
+    SynchronizeType: 1
+    Name: Reload
+  - Type: 4
+    SynchronizeType: 1
+    Name: IsShoot
+  m_SynchronizeLayers:
+  - SynchronizeType: 1
+    LayerIndex: 0
+  - SynchronizeType: 1
+    LayerIndex: 1
+--- !u!114 &4420473771590932976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6700010149244072727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!1 &6700010149246535825
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6700010149246535824}
+  - component: {fileID: 6700010149246535827}
+  m_Layer: 3
+  m_Name: Body14
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &6700010149246535824
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6700010149246535825}
+>>>>>>> Stashed changes:HyperSoul/Assets/Resources/BazookaPlayer.prefab
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 1.429432, z: -1.3900039}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -6475,7 +6975,236 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1541296155197722071, guid: 7b2284d4a9faf474492e3b11a78a77ca, type: 3}
   m_PrefabInstance: {fileID: 784524833022148346}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream:HyperSoul/Assets/Prefab/Player.prefab
 --- !u!1001 &875558490317570178
+=======
+  m_GameObject: {fileID: 6700010151178272030}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6700010149244072713}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &6700010151178272016
+SkinnedMeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6700010151178272030}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 3
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9a563ffc77d94094bac866f46e58cfa5, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 4300044, guid: 9f078227c6f09b54392514bfaa25c741, type: 3}
+  m_Bones:
+  - {fileID: 6700010150986775052}
+  - {fileID: 6700010150679139726}
+  - {fileID: 6700010149851690292}
+  - {fileID: 6700010149145400054}
+  - {fileID: 6700010150338468745}
+  - {fileID: 6700010150349786357}
+  - {fileID: 6700010150804276275}
+  - {fileID: 6700010149265768959}
+  - {fileID: 6700010150209467398}
+  - {fileID: 6700010150339483777}
+  - {fileID: 6700010150521077803}
+  - {fileID: 6700010149938842889}
+  - {fileID: 6700010149309042274}
+  - {fileID: 6700010149108254388}
+  - {fileID: 6700010149110595178}
+  - {fileID: 6700010149221319509}
+  - {fileID: 6700010149657496286}
+  - {fileID: 6700010149168215542}
+  - {fileID: 6700010150150132741}
+  - {fileID: 6700010149884202775}
+  - {fileID: 6700010150380429524}
+  - {fileID: 6700010150652166618}
+  - {fileID: 6700010150205500488}
+  - {fileID: 6700010150181189688}
+  - {fileID: 6700010150534954020}
+  - {fileID: 6700010150587298041}
+  - {fileID: 6700010149262698649}
+  - {fileID: 6700010150054231513}
+  - {fileID: 6700010150625281712}
+  - {fileID: 6700010149656800328}
+  - {fileID: 6700010149450346021}
+  - {fileID: 6700010149602930397}
+  - {fileID: 6700010150709079040}
+  - {fileID: 6700010150885467506}
+  - {fileID: 6700010150243235723}
+  - {fileID: 6700010150818775966}
+  - {fileID: 6700010150367869551}
+  - {fileID: 6700010149780342433}
+  - {fileID: 6700010149188859705}
+  - {fileID: 6700010149734425228}
+  - {fileID: 6700010149147396714}
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 6700010150986775052}
+  m_AABB:
+    m_Center: {x: -0.004300624, y: -0.08930412, z: 0.48370504}
+    m_Extent: {x: 0.51579297, y: 0.6187875, z: 0.5644741}
+  m_DirtyAABB: 0
+--- !u!1 &6700010151210102426
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6700010151210102429}
+  - component: {fileID: 6700010151210102428}
+  m_Layer: 3
+  m_Name: Head03
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &6700010151210102429
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6700010151210102426}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6700010149244072713}
+  m_RootOrder: 22
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &6700010151210102428
+SkinnedMeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6700010151210102426}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 3
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 00eb1ba92a205e143944fa63388db963, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 4300004, guid: 9f078227c6f09b54392514bfaa25c741, type: 3}
+  m_Bones:
+  - {fileID: 6700010150986775052}
+  - {fileID: 6700010150679139726}
+  - {fileID: 6700010149851690292}
+  - {fileID: 6700010149145400054}
+  - {fileID: 6700010150338468745}
+  - {fileID: 6700010150349786357}
+  - {fileID: 6700010150804276275}
+  - {fileID: 6700010149265768959}
+  - {fileID: 6700010150209467398}
+  - {fileID: 6700010150339483777}
+  - {fileID: 6700010150521077803}
+  - {fileID: 6700010149938842889}
+  - {fileID: 6700010149309042274}
+  - {fileID: 6700010149108254388}
+  - {fileID: 6700010149110595178}
+  - {fileID: 6700010149221319509}
+  - {fileID: 6700010149657496286}
+  - {fileID: 6700010149168215542}
+  - {fileID: 6700010150150132741}
+  - {fileID: 6700010149884202775}
+  - {fileID: 6700010150380429524}
+  - {fileID: 6700010150652166618}
+  - {fileID: 6700010150205500488}
+  - {fileID: 6700010150181189688}
+  - {fileID: 6700010150534954020}
+  - {fileID: 6700010150587298041}
+  - {fileID: 6700010149262698649}
+  - {fileID: 6700010150054231513}
+  - {fileID: 6700010150625281712}
+  - {fileID: 6700010149656800328}
+  - {fileID: 6700010149450346021}
+  - {fileID: 6700010149602930397}
+  - {fileID: 6700010150709079040}
+  - {fileID: 6700010150885467506}
+  - {fileID: 6700010150243235723}
+  - {fileID: 6700010150818775966}
+  - {fileID: 6700010150367869551}
+  - {fileID: 6700010149780342433}
+  - {fileID: 6700010149188859705}
+  - {fileID: 6700010149734425228}
+  - {fileID: 6700010149147396714}
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 6700010150986775052}
+  m_AABB:
+    m_Center: {x: -0.0072407424, y: -0.05030465, z: 1.3460083}
+    m_Extent: {x: 0.46757722, y: 0.43353295, z: 0.57333827}
+  m_DirtyAABB: 0
+--- !u!1001 &572366046446984149
+>>>>>>> Stashed changes:HyperSoul/Assets/Resources/BazookaPlayer.prefab
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -6880,13 +7609,97 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
+<<<<<<< Updated upstream:HyperSoul/Assets/Prefab/Player.prefab
     - target: {fileID: 2196376887940251523, guid: 79cfad6d28604f54a97b32d45af9d2b2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
+=======
+    - target: {fileID: 1247223829425884222, guid: f3aa0537edf19a840a5ee3762f7bb9ed, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1247223829425884222, guid: f3aa0537edf19a840a5ee3762f7bb9ed, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1247223829428837662, guid: f3aa0537edf19a840a5ee3762f7bb9ed, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f46d64b56f1dfcf4e9e43dbed6748fe9, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f3aa0537edf19a840a5ee3762f7bb9ed, type: 3}
+--- !u!4 &3634500803320338147 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1247223829425884222, guid: f3aa0537edf19a840a5ee3762f7bb9ed, type: 3}
+  m_PrefabInstance: {fileID: 2539837017669425885}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3634500803319843523 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1247223829425721374, guid: f3aa0537edf19a840a5ee3762f7bb9ed, type: 3}
+  m_PrefabInstance: {fileID: 2539837017669425885}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &2674803741113845635
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3634500803319843523}
+  m_Enabled: 0
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: a2550d7096ad62d4d97266a2072d9408, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+>>>>>>> Stashed changes:HyperSoul/Assets/Resources/BazookaPlayer.prefab
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2196376887940251523, guid: 79cfad6d28604f54a97b32d45af9d2b2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+<<<<<<< Updated upstream:HyperSoul/Assets/Prefab/Player.prefab
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79cfad6d28604f54a97b32d45af9d2b2, type: 3}
@@ -6966,6 +7779,94 @@ Transform:
   m_PrefabInstance: {fileID: 2969101471331283400}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3225166560057518779
+=======
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &1564122530379757664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3634500803319843523}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!114 &2674803741113845634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3634500803319843523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26f3c8a1929ee374fab3b0c2ab9e3da0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _zoomRotationSpeed: {x: 0, y: 0}
+  _zoomCam: {fileID: 4938414192019781350}
+  _player: {fileID: 5641331980754899854}
+  _curBulletCnt: 0
+  _maxBulletAmt: 0
+  _missileSpawnPos: {fileID: 2674803741861350455}
+  _missilePrefab: {fileID: 5412352353896642085, guid: 9e2e1aad3b68c6342a1f6bf52418430e, type: 3}
+  _aimAngleRef: {fileID: 4938414192074980028}
+  _rayDist: 200
+--- !u!114 &4508601557612438340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3634500803319843523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 1564122530379757664}
+  - {fileID: 2674803741113845634}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!1001 &2968808698235491120
+>>>>>>> Stashed changes:HyperSoul/Assets/Resources/BazookaPlayer.prefab
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2

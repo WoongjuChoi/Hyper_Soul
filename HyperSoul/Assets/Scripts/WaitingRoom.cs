@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WaitingRoom : MonoBehaviour
 {
+    public int CurPlayerType { get; private set; }
+    public bool IsReady { get; private set; }
+
     private const int PLAYERCHARACTOR_COUNT = 3;
 
     [SerializeField]
@@ -12,10 +16,15 @@ public class WaitingRoom : MonoBehaviour
     private GameObject _bazookaPlayer;
     [SerializeField]
     private GameObject _sniperPlayer;
+    [SerializeField]
+    private GameObject _readyButton;
+    [SerializeField]
+    private Text _playerName;
 
     private List<GameObject> _playerCharactor = new List<GameObject>();
+    private Text _readyButtonText;
+    private Image _readyButtonImage;
 
-    private int index = 0;
 
     private void Awake()
     {
@@ -23,37 +32,65 @@ public class WaitingRoom : MonoBehaviour
         _playerCharactor.Add(_bazookaPlayer);
         _playerCharactor.Add(_sniperPlayer);
 
-        _playerCharactor[index].SetActive(true);
+        CurPlayerType = (int)EPlayerType.Rifle;
+        _playerCharactor[CurPlayerType].SetActive(true);
 
         for (int i = 1; i < _playerCharactor.Count; ++i)
         {
             _playerCharactor[i].SetActive(false);
         }
+
+        IsReady = false;
+
+        _readyButtonText = _readyButton.GetComponentInChildren<Text>();
+        _readyButtonImage = _readyButton.GetComponent<Image>();
+    }
+
+    private void OnEnable()
+    {
+        _playerName.text = "Player 1";
     }
 
     public void RightClick()
     {
-        _playerCharactor[index].SetActive(false);
-        ++index;
+        _playerCharactor[CurPlayerType].SetActive(false);
+        ++CurPlayerType;
 
-        if (index > PLAYERCHARACTOR_COUNT - 1)
+        if (CurPlayerType > PLAYERCHARACTOR_COUNT - 1)
         {
-            index = 0;
+            CurPlayerType = 0;
         }
 
-        _playerCharactor[index].SetActive(true);
+        _playerCharactor[CurPlayerType].SetActive(true);
     }
 
     public void LeftClick()
     {
-        _playerCharactor[index].SetActive(false);
-        --index;
+        _playerCharactor[CurPlayerType].SetActive(false);
+        --CurPlayerType;
 
-        if (index < 0)
+        if (CurPlayerType < 0)
         {
-            index = PLAYERCHARACTOR_COUNT - 1;
+            CurPlayerType = PLAYERCHARACTOR_COUNT - 1;
         }
 
-        _playerCharactor[index].SetActive(true);
+        _playerCharactor[CurPlayerType].SetActive(true);
+    }
+
+    public void ReadyClick()
+    {
+        IsReady = !IsReady;
+        Debug.Log(IsReady);
+
+        if (IsReady)
+        {
+            _readyButtonImage.color = new Color(80, 255, 0, 255);
+            _readyButtonText.color = new Color(80, 255, 0, 255);
+        }
+        else
+        {
+            _readyButtonImage.color = new Color(255, 255, 255, 255);
+            _readyButtonText.color = new Color(255, 255, 255, 255);
+        }
     }
 }

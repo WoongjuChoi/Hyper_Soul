@@ -48,6 +48,7 @@ public class Bazooka : Weapon
     private IEnumerator Shoot()
     {
         --CurBulletCnt;
+
         Vector3 aimDir = (_mousePos - _missileSpawnPos.position).normalized;
         GameObject _bazookaMissile = Instantiate(_missilePrefab, _missileSpawnPos.position, Quaternion.LookRotation(aimDir, Vector3.up));
         _bazookaMissile.GetComponent<BazookaMissile>().Target = AimTarget()?.transform;

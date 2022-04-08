@@ -14,6 +14,8 @@ public class TreantIdleState : BaseState<TreantInformation>
     public override void ExitState()
     {
         _increaseHealing = 0;
+
+        base.CreatureInformation.OriginVec = base.GameObject.transform.forward;
     }
 
     public override void UpdateState()

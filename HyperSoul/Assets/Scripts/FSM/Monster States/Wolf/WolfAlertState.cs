@@ -34,25 +34,13 @@ public class WolfAlertState : BaseState<WolfInformation>
             return;
         }
 
-        if (_playAnimation)
-        {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Idle);
-
-            return;
-        }
-
-        ChangeIdleAnimation();
-    }
-
-    private void ChangeIdleAnimation()
-    {
         _elapsedTime += Time.deltaTime;
 
         if (_elapsedTime >= _changeIdleAnimationTime)
         {
-            base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_IDLE);
+            base.FiniteStateMachine.ChangeState(EStateIDs.Idle);
 
-            _playAnimation = true;
+            return;
         }
     }
 }

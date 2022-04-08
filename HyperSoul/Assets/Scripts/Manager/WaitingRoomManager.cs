@@ -35,6 +35,17 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         UpdatePlayerList();
     }
 
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+    }
+
+    public void LeaveRoom()
+    {
+        //_playerPanal[PhotonNetwork.LocalPlayer]
+        PhotonNetwork.LeaveRoom();
+    }
+
     private void UpdatePlayerList()
     {
         foreach (var player in _playerList)

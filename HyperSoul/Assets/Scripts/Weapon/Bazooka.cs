@@ -29,10 +29,7 @@ public class Bazooka : Weapon
         _reloadTime = 5;
         _gunState = EGunState.Ready;
 
-        for (int i = 0; i < 20; ++i)
-        {
-            _missilePool.Init(_missilePrefab);
-        }
+        _missilePool.Init(_missilePrefab, 20);
     }
 
     public override void Fire()
@@ -82,14 +79,21 @@ public class Bazooka : Weapon
         _bazookaMissile.GetComponent<BazookaMissile>().Attack = _playerInfo.Attack;
         _bazookaMissile.SetActive(true);
 
+        Collider[] bazookaColliders = _bazookaMissile.GetComponentsInChildren<Collider>();
         if(!PhotonNetwork.IsMasterClient)
         {
-            Collider[] bazookaColliders = _bazookaMissile.GetComponentsInChildren<Collider>();
             foreach(Collider col in bazookaColliders)
             {
                 col.enabled = false;
             }
-        }    
+        }
+        else
+        {
+            foreach (Collider col in bazookaColliders)
+            {
+                col.enabled = true;
+            }
+        }
 
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, true);
         _canFire = false;

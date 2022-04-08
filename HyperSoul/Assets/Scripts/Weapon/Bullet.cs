@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : Projectile
 {
     [SerializeField]
     private PlayerInfo _playerInfo;
@@ -13,6 +14,7 @@ public class Bullet : MonoBehaviour
     public float AttackValue = 1;
 
     private Rigidbody _bulletRigidbody;
+    private event Action<GameObject> _returnBullet;
 
     private void Awake()
     {
@@ -30,8 +32,14 @@ public class Bullet : MonoBehaviour
         AttackValue *= attack;
     }
 
+    public void SetBulletReturnFunc(Action<GameObject> bulletReturnFunc)
+    {
+        _returnBullet = bulletReturnFunc;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+        _returnBullet(this.gameObject);
     }
 }

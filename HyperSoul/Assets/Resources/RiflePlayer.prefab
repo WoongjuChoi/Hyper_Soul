@@ -849,7 +849,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &373113709458251327
 Transform:
   m_ObjectHideFlags: 0
@@ -1023,6 +1023,7 @@ GameObject:
   - component: {fileID: 373113710294506608}
   - component: {fileID: 373113710294506609}
   - component: {fileID: 373113710294506622}
+  - component: {fileID: -5591715195339320392}
   m_Layer: 3
   m_Name: RiflePlayer
   m_TagString: Untagged
@@ -1124,15 +1125,15 @@ MonoBehaviour:
   _hpBar: {fileID: 1353005246}
   _hitSound: {fileID: 739769758}
   _deathSound: {fileID: 987949751}
-  _hitImage: {fileID: 0}
+  _hitImage: {fileID: 1929795909168276049, guid: 27b7602f957623b4b817b4419869da27, type: 3}
   _hpCanvas: {fileID: 1285060676}
-  _myHpSlider: {fileID: 0}
-  _expSlider: {fileID: 0}
-  _ammoText: {fileID: 0}
-  _expText: {fileID: 0}
-  _killText: {fileID: 0}
-  _levelUpText: {fileID: 0}
-  _gameOverText: {fileID: 0}
+  _myHpSlider: {fileID: 7467527113778228717, guid: 7395b404982461b43bbdae7d0d4fea36, type: 3}
+  _expSlider: {fileID: 5316954508555281336, guid: d49fd4694e403434aa86342c2ff9cc4c, type: 3}
+  _ammoText: {fileID: 1343726679322093401, guid: 3c3dfdb198c12e449aa08cb24272b22c, type: 3}
+  _expText: {fileID: 9060520241315195460, guid: c8489e3862cc3d94eab9cda914c9f5af, type: 3}
+  _killText: {fileID: 4308544771184054176, guid: 2ccd37ae90091fa4494e7463523747b6, type: 3}
+  _levelUpText: {fileID: 4199034508237601109, guid: 5e82225b8e1587848a619b59bd147b9e, type: 3}
+  _gameOverText: {fileID: 4775482550414879116, guid: fc9b5346689816d4887bcbe794cabf8d, type: 3}
 --- !u!114 &373113710294506608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1193,6 +1194,28 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &-5591715195339320392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 373113710294506623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &373113710641856355
 GameObject:
   m_ObjectHideFlags: 0
@@ -7794,14 +7817,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4543ab5e3d405ec40a8d4e9aa5165030, type: 3}
---- !u!1 &371880137776894659 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1336949550903370, guid: 4543ab5e3d405ec40a8d4e9aa5165030, type: 3}
-  m_PrefabInstance: {fileID: 373113708972827273}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &377716461760900585 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4639870034382688, guid: 4543ab5e3d405ec40a8d4e9aa5165030, type: 3}
+  m_PrefabInstance: {fileID: 373113708972827273}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &371880137776894659 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1336949550903370, guid: 4543ab5e3d405ec40a8d4e9aa5165030, type: 3}
   m_PrefabInstance: {fileID: 373113708972827273}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &561552790265792680
@@ -8699,6 +8722,28 @@ MonoBehaviour:
   MaxBulletAmt: 0
   _bulletSpawnPos: {fileID: 373113709583059685}
   _bulletPrefab: {fileID: 40015687277312625, guid: b42852f34ef274f45b9923bf7bd64982, type: 3}
+--- !u!114 &8078295870490273075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6403828596175151574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &3800107250511853534
 PrefabInstance:
   m_ObjectHideFlags: 0

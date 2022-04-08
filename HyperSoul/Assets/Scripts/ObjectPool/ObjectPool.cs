@@ -8,10 +8,14 @@ public class ObjectPool
     
     private GameObject _obj = null;
 
-    public void Init(GameObject prefab)
+    public void Init(GameObject prefab, int amount)
     {
         _obj = prefab;
-        _objQueue.Enqueue(CreateObj());
+
+        for (int i = 0; i < amount; ++i)
+        {
+            _objQueue.Enqueue(CreateObj());
+        }
     }
 
     private GameObject CreateObj()

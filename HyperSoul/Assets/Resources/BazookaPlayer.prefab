@@ -959,7 +959,7 @@ GameObject:
   - component: {fileID: 4430822983370153764}
   - component: {fileID: 3556345572235115753}
   - component: {fileID: 8439974226294832488}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1309,21 +1309,21 @@ GameObject:
   - component: {fileID: 3799432508737507915}
   - component: {fileID: 6954971236725922382}
   - component: {fileID: 7354889530556509805}
+  - component: {fileID: 5641331980754899859}
+  - component: {fileID: 5641331980754899855}
   - component: {fileID: 5641331980754899857}
   - component: {fileID: 1308096826260647213}
-  - component: {fileID: 5641331980754899859}
   - component: {fileID: 5641331980754899858}
-  - component: {fileID: 5641331980754899855}
   - component: {fileID: 5641331980754899856}
   - component: {fileID: 9039456690425684840}
   - component: {fileID: 1591210600240758448}
-  m_Layer: 10
+  m_Layer: 3
   m_Name: BazookaPlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3799432508737507915
 Transform:
   m_ObjectHideFlags: 0
@@ -1373,6 +1373,43 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!65 &5641331980754899859
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641331980754899854}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
+  m_Center: {x: 0, y: 0.4, z: 0}
+--- !u!114 &5641331980754899855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641331980754899854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28437a05fb04af241bc0e14363c86097, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hpBar: {fileID: 2029308139}
+  _hitSound: {fileID: 1117319132}
+  _deathSound: {fileID: 486409335}
+  _hitImage: {fileID: 1929795909168276049, guid: 27b7602f957623b4b817b4419869da27, type: 3}
+  _hpCanvas: {fileID: 1688093137}
+  _myHpSlider: {fileID: 7467527113778228717, guid: 7395b404982461b43bbdae7d0d4fea36, type: 3}
+  _expSlider: {fileID: 5316954508555281336, guid: d49fd4694e403434aa86342c2ff9cc4c, type: 3}
+  _ammoText: {fileID: 1343726679322093401, guid: 3c3dfdb198c12e449aa08cb24272b22c, type: 3}
+  _expText: {fileID: 9060520241315195460, guid: c8489e3862cc3d94eab9cda914c9f5af, type: 3}
+  _killText: {fileID: 4308544771184054176, guid: 2ccd37ae90091fa4494e7463523747b6, type: 3}
+  _levelUpText: {fileID: 4199034508237601109, guid: 5e82225b8e1587848a619b59bd147b9e, type: 3}
+  _gameOverText: {fileID: 4775482550414879116, guid: fc9b5346689816d4887bcbe794cabf8d, type: 3}
 --- !u!114 &5641331980754899857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1409,19 +1446,6 @@ MonoBehaviour:
   _weapon: {fileID: 2674803741113845634}
   _walkingSound: {fileID: 751206103}
   _jumpSound: {fileID: 713746862565708131}
---- !u!65 &5641331980754899859
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5641331980754899854}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5, z: 0.5}
-  m_Center: {x: 0, y: 0.4, z: 0}
 --- !u!114 &5641331980754899858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1434,30 +1458,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0701d76c8af10ae4882e32cf0b17b82a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5641331980754899855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5641331980754899854}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28437a05fb04af241bc0e14363c86097, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hpBar: {fileID: 2029308139}
-  _hitSound: {fileID: 1117319132}
-  _deathSound: {fileID: 486409335}
-  _hitImage: {fileID: 0}
-  _hpCanvas: {fileID: 1688093137}
-  _myHpSlider: {fileID: 0}
-  _expSlider: {fileID: 0}
-  _ammoText: {fileID: 0}
-  _expText: {fileID: 0}
-  _killText: {fileID: 0}
-  _levelUpText: {fileID: 0}
-  _gameOverText: {fileID: 0}
 --- !u!114 &5641331980754899856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1503,14 +1503,13 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 2
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1591210600240758448}
   - {fileID: 7571659138667561152}
   - {fileID: 4420473771590932976}
-  - {fileID: 2674803741113845634}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -2350,39 +2349,45 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 1
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Horizontal
   - Type: 1
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Vertical
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: DoJump
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: IsJump
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Falling
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Die
-  - Type: 9
-    SynchronizeType: 0
-    Name: Hit
   - Type: 1
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Aim
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Reload
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: IsShoot
+  - Type: 1
+    SynchronizeType: 2
+    Name: ReloadSpeed
+  - Type: 9
+    SynchronizeType: 2
+    Name: SingleShot
+  - Type: 4
+    SynchronizeType: 2
+    Name: Hit
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 2
     LayerIndex: 0
-  - SynchronizeType: 0
+  - SynchronizeType: 2
     LayerIndex: 1
 --- !u!114 &4420473771590932976
 MonoBehaviour:
@@ -2399,7 +2404,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
-  m_UseLocal: 1
+  m_UseLocal: 0
 --- !u!1 &6700010149246535825
 GameObject:
   m_ObjectHideFlags: 0
@@ -8480,14 +8485,14 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f46d64b56f1dfcf4e9e43dbed6748fe9, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3aa0537edf19a840a5ee3762f7bb9ed, type: 3}
---- !u!4 &3634500803320338147 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1247223829425884222, guid: f3aa0537edf19a840a5ee3762f7bb9ed, type: 3}
-  m_PrefabInstance: {fileID: 2539837017669425885}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3634500803319843523 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1247223829425721374, guid: f3aa0537edf19a840a5ee3762f7bb9ed, type: 3}
+  m_PrefabInstance: {fileID: 2539837017669425885}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3634500803320338147 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1247223829425884222, guid: f3aa0537edf19a840a5ee3762f7bb9ed, type: 3}
   m_PrefabInstance: {fileID: 2539837017669425885}
   m_PrefabAsset: {fileID: 0}
 --- !u!82 &2674803741113845635
@@ -8586,6 +8591,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &615993624585503215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3634500803319843523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!114 &2674803741113845634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8606,11 +8627,33 @@ MonoBehaviour:
   ReloadSound: {fileID: 8300000, guid: 5e7f633dda3117f4f90253f51ee065f0, type: 3}
   CurBulletCnt: 0
   MaxBulletAmt: 0
-  _shooter: {fileID: 0}
   _missileSpawnPos: {fileID: 2674803741861350455}
   _missilePrefab: {fileID: 5412352353896642085, guid: 9e2e1aad3b68c6342a1f6bf52418430e, type: 3}
   _aimAngleRef: {fileID: 4938414192074980028}
   _rayDist: 200
+--- !u!114 &5995072029199966483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3634500803319843523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 615993624585503215}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &2674803740312319853
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8621,6 +8664,10 @@ PrefabInstance:
     - target: {fileID: 858254026862122849, guid: 4c155b64c00c4ca4689f4e0fb8d5129a, type: 3}
       propertyPath: m_Name
       value: FlameParticle
+      objectReference: {fileID: 0}
+    - target: {fileID: 858254026862122849, guid: 4c155b64c00c4ca4689f4e0fb8d5129a, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 858254026862122849, guid: 4c155b64c00c4ca4689f4e0fb8d5129a, type: 3}
       propertyPath: m_IsActive

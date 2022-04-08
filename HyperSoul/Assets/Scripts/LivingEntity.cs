@@ -12,7 +12,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
 
     public int CurHp { get; set; }
     public int MaxHp { get; set; }
-    public float Attack { get; set; }
+    public int Attack { get; set; }
     public bool IsDead { get; set; }
 
     // 새로 추가된 변수들
@@ -26,7 +26,15 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     protected Canvas _hpCanvas;
 
     protected Animator _animator;
-    protected bool _isHit = false;
+    protected bool _isHitting = false;
+
+   
+    public int Exp { get; set; }
+    public string CharacterName { get; set; } // 바주카인지 라이플인지 이런거 넣기
+    public int Level { get; set; }
+    public CharacterType Type { get; set; }
+
+    protected DataManager _dataManager;
 
     private void Awake()
     {
@@ -34,18 +42,27 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         _hitSound.SetActive(false);
         _deathSound.SetActive(false);
         _animator = GetComponentInChildren<Animator>();
-    }
+        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
+        if(photonView.IsMine)
+        {
+            _hpBar.gameObject.SetActive(false);
+        }
+    }
     private void LateUpdate()
     {
         _hpBar.value = (float)CurHp / MaxHp;
         _hpCanvas.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;
     }
 
-    [PunRPC]
-    public void UpdateHP(int newHp)
-    {
-        CurHp = newHp;
+    private void OnCollisionEnter(Collision collision)
+    { 
+        if(collision.gameObject.GetComponent<Projectile>() != null)
+        {
+            TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwner, collision.gameObject.GetComponent<Projectile>().Attack,
+                collision.transform.position, collision.transform.position.normalized);
+        }
+        
     }
 
     [PunRPC]
@@ -56,20 +73,20 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         gameObject.SetActive(true);
     }
 
-    [PunRPC]
     public virtual void TakeDamage(LivingEntity attacker, int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
     {
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        //    CurHp -= damageAmt;
-        //    photonView.RPC("UpdateHP", RpcTarget.Others, CurHp, IsDead);
-        //    photonView.RPC("TakeDamage", RpcTarget.Others, damageAmt, hitPoint, hitNormal);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            CurHp -= damageAmt;
+            Hit();
+            //photonView.RPC("UpdateHP", RpcTarget.Others, CurHp, IsDead);
+            photonView.RPC("OnDamage", RpcTarget.Others, damageAmt, hitPoint, hitNormal);
 
-        //    if (false == _isHit)
-        //    {
-        //        StartCoroutine(Hit());
-        //    }
-        //}
+            if (false == _isHitting)
+            {
+                photonView.RPC("Hit", RpcTarget.Others, null);
+            }
+        }
 
         // 디버그용 TakeDamage 코드
         CurHp -= damageAmt;
@@ -78,21 +95,46 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         {
             Die(attacker);
         }
-        else if(false == _isHit)
+        else if(false == _isHitting)
         {
-            StartCoroutine(Hit());
+            StartCoroutine(HitCorountine());
         }
     }
-    // Hit시 애니메이션과 사운드, 이펙트 처리
-    public IEnumerator Hit()
+
+    [PunRPC]
+    protected void OnDamage(int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
     {
-        _isHit = true;
+        if(IsDead)
+        {
+            return;
+        }
+        CurHp -= damageAmt;
+    }
+
+    //[PunRPC]
+    //public void UpdateHP(int newHp)
+    //{
+    //    CurHp = newHp;
+    //}
+    [PunRPC]
+    private void Hit()
+    {
+        StartCoroutine(HitCorountine());
+    }
+
+    // Hit시 애니메이션과 사운드, 이펙트 처리
+    public IEnumerator HitCorountine()
+    {
+        _isHitting = true;
         _animator.SetBool(CommonAnimatorID.HIT, true);
-        _hitImage.SetActive(true);
+        if(photonView.IsMine)
+        {
+            _hitImage.SetActive(true);
+        }
         _hitSound.SetActive(true);
         yield return new WaitForSeconds(0.3f);
 
-        _isHit = false;
+        _isHitting = false;
         _hitImage.SetActive(false);
         _hitSound.SetActive(false);
         _animator.SetBool(CommonAnimatorID.HIT, false);
@@ -100,8 +142,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
 
     public void Die(LivingEntity attacker)
     {
-        // 포톤 없이 돌리기 위해서 잠시 주석처리함
-        //GameManager.Instance.SendDieMessage(this, attacker);
+        GameManager.Instance.SendDieMessage(this, attacker);
         _deathSound.SetActive(true);
         
         if (false == IsDead)
@@ -110,4 +151,19 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
             _animator.SetTrigger(CommonAnimatorID.DIE);
         }
     }
+
+    public virtual void UpdateLevelUpInfo(string info)
+    {
+        switch (Type)
+        {
+            case CharacterType.Monster:
+                MonsterData monsterData = _dataManager.FindMonsterData(info);
+                MaxHp = monsterData.MaxHp;
+                CurHp = MaxHp;
+                Attack = monsterData.Attack;
+                Exp = monsterData.Exp;
+                break;
+        }
+    }
+
 }

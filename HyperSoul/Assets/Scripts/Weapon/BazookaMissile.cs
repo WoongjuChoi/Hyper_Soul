@@ -1,14 +1,16 @@
+using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BazookaMissile : MonoBehaviour
+public class BazookaMissile : Projectile
 {
-    private GameObject _misilleOwner = null;
     private Transform _target = null;
     private float _targetDistance = 0f;
     private Vector3 _launchPos;
     private AudioSource _missileLaunch;
+
 
     [SerializeField]
     AudioClip _launchSound = null;
@@ -28,33 +30,27 @@ public class BazookaMissile : MonoBehaviour
     private bool _isLaunched = false;
     private bool _isHitted = false;
 
+    private event Action<GameObject> _missileReturn;
+
     public Transform Target
     {
         set { _target = value; }
     }
-    public GameObject MisilleOwner
-    {
-        get { return _misilleOwner; }
-        set { _misilleOwner = value; }
-    }
 
-    void Start()
+    void OnEnable()
     {
         _missileLaunch = gameObject.AddComponent<AudioSource>();
         _missileLaunch.PlayOneShot(_launchSound);
-
         _launchPos = transform.position;
         if (_target != null)
         {
             StartCoroutine(SoftLaunch());
-            _targetDistance = Vector3.Distance(_misilleOwner.transform.position, _target.transform.position);
-            //Debug.Log(_targetDistance);
+            _targetDistance = Vector3.Distance(ProjectileOwner.transform.position, _target.transform.position);
         }
     }
     private void FixedUpdate()
     {
         GetComponent<Rigidbody>().AddForce(Vector3.up * _gravityForce);
-
         float _curDistMissileAndLaunchPos = Vector3.Distance(_launchPos, transform.position);
 
         if (_isHitted == false && _isLaunched == true)
@@ -72,7 +68,6 @@ public class BazookaMissile : MonoBehaviour
 
             if (_targetDistance + 10f < _curDistMissileAndLaunchPos)
             {
-
                 Explosion();
             }
         }
@@ -80,23 +75,20 @@ public class BazookaMissile : MonoBehaviour
         {
             _isLaunched = true;
             _rocketParticleEffect.SetActive(true);
+
+            if (_curDistMissileAndLaunchPos > 70f)
+            {
+                Explosion();
+                ReturnMissile();
+            }
         }
     }
-    void Update()
-    {
-       
-    }
 
-    private IEnumerator OnCollisionEnter(Collision collision)
+
+    private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("충돌됨");
-        Debug.Log(collision.gameObject.name);
         Explosion();
-        yield return new WaitForSeconds(1f);
-        
-        gameObject.SetActive(false);
-        // 오브젝트 풀링 구현되면 디스트로이 빼고 리턴으로
-        Destroy(this);
+        photonView.RPC("Explosion", RpcTarget.Others, null);
     }
 
     private IEnumerator SoftLaunch()
@@ -105,10 +97,33 @@ public class BazookaMissile : MonoBehaviour
         _rocketParticleEffect.SetActive(true);
         _isLaunched = true;
     }
+
+    [PunRPC]
     private void Explosion()
+    {
+        StartCoroutine(ExplosionCorountine());
+    }
+    private IEnumerator ExplosionCorountine()
     {
         _isHitted = true;
         _explosionEffect.SetActive(true);
+        _rocketParticleEffect.SetActive(false);
         _missilePrefab.SetActive(false);
+
+        yield return new WaitForSeconds(1.0f);
+
+        ReturnMissile();
     }
+
+    private void ReturnMissile()
+    {
+        gameObject.SetActive(false);
+        _missileReturn(this.gameObject);
+    }
+
+    public void ReceiveReturnMissileFunc(Action<GameObject> returnMissile)
+    {
+        _missileReturn = returnMissile;
+    }
+
 }

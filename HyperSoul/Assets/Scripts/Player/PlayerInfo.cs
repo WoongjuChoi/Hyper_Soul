@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerInfo : LivingEntity
 {
-    public int CurExp { get; set; }
-    public int Exp { get; set; }
-    public string NickName { get; set; }
+    public string NickName { get; set; } // 로그인 시 닉네임 넣을 것
 
     [SerializeField]
     private Slider _myHpSlider;
@@ -27,12 +26,18 @@ public class PlayerInfo : LivingEntity
 
     private Weapon _playerWeapon;
 
+    public int MaxExp
+    {
+        get; set;
+    }
+    public int CurExp { get; set; }
+
     private void Start()
     {
+        NickName = photonView.Owner.NickName;
         _playerWeapon = GetComponentInChildren<Weapon>();
-        Attack = 1f;
-        CurExp = 0;
-        Exp = 100;
+        MaxExp = _dataManager.FindPlayerData("Bazooka1").MaxExp;
+        Exp = MaxExp;
 
         _killText.gameObject.SetActive(false);
         _levelUpText.gameObject.SetActive(false);
@@ -41,8 +46,9 @@ public class PlayerInfo : LivingEntity
 
     private void OnEnable()
     {
-        MaxHp = 5;
-        CurHp = 5;
+        MaxHp = _dataManager.FindPlayerData("Bazooka1").MaxHp;
+        Attack = _dataManager.FindPlayerData("Bazooka1").Attack;
+        CurHp = MaxHp;
         IsDead = false;
     }
 
@@ -52,6 +58,7 @@ public class PlayerInfo : LivingEntity
         AmmoUpdate();
         ExpUpdate();
     }
+
 
     private void HpUpdate()
     {

@@ -19,8 +19,6 @@ public class WolfReturnPositionState : BaseState<WolfInformation>
 
     public override void ExitState()
     {
-        base.CreatureInformation.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_IDLE);
-
         base.CreatureInformation.IsTargeting = false;
 
         base.CreatureInformation.MonsterChaser.ResetPath();

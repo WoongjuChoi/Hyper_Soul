@@ -33,9 +33,13 @@ public class MonsterAnimatorID
     public const string HAS_SPAWN = "hasSpawn";
 
     public const string IS_ALERT = "isAlert";
+    public const string IS_ATTACK = "isAttack";
     public const string IS_DAMAGED = "isDamaged";
     public const string IS_DIE = "isDie";
     public const string IS_CHASE = "isChase";
+    public const string IS_RETURN_POSITION = "isReturnPosition";
+    public const string IS_TREANT_ROOT_ATTACK = "isRootAttack";
+    public const string IS_TREANT_STOMP_ATTACK = "isStompAttack";
 }
 
 public class CommonAnimatorID

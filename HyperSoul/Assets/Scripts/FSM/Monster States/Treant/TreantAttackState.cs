@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class TreantAttackState : BaseState<TreantInformation>
 {
+    [SerializeField]
+    private TreantRootAttack _treantRootAttack = null;
+    [SerializeField]
+    private TreantStompAttack _treantStompAttack = null;
+
+    private TreantAttackManager _treantAttackManager = new TreantAttackManager();
+
+    private bool _outOfSight = false;
+
     public override void EnterState()
     {
         base.CreatureInformation.MonsterCurrentState = EStateIDs.RotatePosition;
@@ -11,13 +20,28 @@ public class TreantAttackState : BaseState<TreantInformation>
 
     public override void ExitState()
     {
+        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, false);
+        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, false);
+
+        base.CreatureInformation.StompAttackArea.SetActive(false);
+
+        _outOfSight = false;
     }
 
     public override void UpdateState()
     {
+        SetAttackPattern();
+
         if (base.CreatureInformation.IsDamaged)
         {
             base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
+
+            return;
+        }
+        
+        if (_outOfSight)
+        {
+            base.FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
 
             return;
         }
@@ -29,16 +53,24 @@ public class TreantAttackState : BaseState<TreantInformation>
             return;
         }
 
-        StartCoroutine(AttackMotion());
+        _treantAttackManager.Attack();
     }
 
-    private IEnumerator AttackMotion()
+    private void SetAttackPattern()
     {
-        while (base.CreatureInformation.ExistInSight)
+        if (base.CreatureInformation.DistanceMonsterToTarget < 10f)
         {
-            base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_ATTACK);
+            _treantAttackManager.SetTreantAttack(_treantStompAttack);
 
-            yield return new WaitForSeconds(5f);
+            _treantRootAttack.StopRootAttack();
+        }
+        else if (base.CreatureInformation.DistanceMonsterToTarget < 30f)
+        {
+            _treantAttackManager.SetTreantAttack(_treantRootAttack);
+        }
+        else
+        {
+            _outOfSight = true;
         }
     }
 }

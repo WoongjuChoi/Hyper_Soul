@@ -26,7 +26,7 @@ public class TreantDamagedState : BaseState<TreantInformation>
         // HP <= 0 이면 Die 상태
         if (base.CreatureInformation.MonsterCurrentHP <= 0)
         {
-            base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DIE, true);
+            base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_DIE);
 
             base.FiniteStateMachine.ChangeState(EStateIDs.Die);
 

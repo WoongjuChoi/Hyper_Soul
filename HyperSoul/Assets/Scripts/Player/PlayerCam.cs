@@ -43,6 +43,7 @@ public class PlayerCam : MonoBehaviourPun
                 if (cam.gameObject.name == "AimCamera")
                 {
                     cam.Priority = 15;
+                    cam.gameObject.SetActive(false);
                 }
                 else if (cam.gameObject.name == "PlayerFollowCamera")
                 {

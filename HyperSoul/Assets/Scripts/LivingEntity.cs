@@ -44,10 +44,10 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         _animator = GetComponentInChildren<Animator>();
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
-        if(photonView.IsMine)
-        {
-            _hpBar.gameObject.SetActive(false);
-        }
+        //if(photonView.IsMine)
+        //{
+        //    _hpBar.gameObject.SetActive(false);
+        //}
     }
     private void LateUpdate()
     {
@@ -59,8 +59,8 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     { 
         if(collision.gameObject.GetComponent<Projectile>() != null)
         {
-            TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwner, collision.gameObject.GetComponent<Projectile>().Attack,
-                collision.transform.position, collision.transform.position.normalized);
+            //TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwner, collision.gameObject.GetComponent<Projectile>().Attack,
+             //   collision.transform.position, collision.transform.position.normalized);
         }
         
     }
@@ -80,35 +80,32 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
             CurHp -= damageAmt;
             Hit();
             //photonView.RPC("UpdateHP", RpcTarget.Others, CurHp, IsDead);
-            photonView.RPC("OnDamage", RpcTarget.Others, damageAmt, hitPoint, hitNormal);
+            photonView.RPC("OnDamage", RpcTarget.Others, attacker, damageAmt, hitPoint, hitNormal);
 
             if (false == _isHitting)
             {
                 photonView.RPC("Hit", RpcTarget.Others, null);
             }
         }
-
-        // 디버그용 TakeDamage 코드
-        CurHp -= damageAmt;
-
-        if (CurHp <= 0 && IsDead == false)
-        {
-            Die(attacker);
-        }
-        else if(false == _isHitting)
-        {
-            StartCoroutine(HitCorountine());
-        }
     }
 
     [PunRPC]
-    protected void OnDamage(int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
+    protected void OnDamage(LivingEntity attacker, int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
     {
         if(IsDead)
         {
             return;
         }
         CurHp -= damageAmt;
+
+        if (CurHp <= 0 && IsDead == false)
+        {
+            Die(attacker);
+        }
+        else if (false == _isHitting)
+        {
+            StartCoroutine(HitCorountine());
+        }
     }
 
     //[PunRPC]

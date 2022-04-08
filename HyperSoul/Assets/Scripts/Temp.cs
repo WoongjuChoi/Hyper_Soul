@@ -26,11 +26,11 @@ public class Temp : LivingEntity
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (false == collision.gameObject.GetComponent<LivingEntity>().IsDead)
-        {
-            collision.gameObject.GetComponent<LivingEntity>()?.TakeDamage(this, 1, collision.contacts[0].point, collision.contacts[0].normal);
-        }
-    }
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (false == collision.gameObject.GetComponent<LivingEntity>().IsDead)
+    //    {
+    //        collision.gameObject.GetComponent<LivingEntity>()?.TakeDamage(this, 1, collision.contacts[0].point, collision.contacts[0].normal);
+    //    }
+    //}
 }

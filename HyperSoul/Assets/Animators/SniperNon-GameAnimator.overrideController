@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SniperNon-GameAnimator
+  m_Controller: {fileID: 9100000, guid: db72a724a48dee4458828f76b2efde39, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 54e04a5ca2f25b3419fe1216489bb4f6, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 9c467d91588a49243a6f50f166b59cb3, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: d0abf6cd8332d1740842175d28a87bae, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: d0abf6cd8332d1740842175d28a87bae, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 9d7ff75b4e99149409ed88c36c684634, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 9d7ff75b4e99149409ed88c36c684634, type: 3}

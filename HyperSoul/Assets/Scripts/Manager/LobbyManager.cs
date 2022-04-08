@@ -72,9 +72,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         _joinButton.interactable = false;
         PhotonNetwork.ConnectUsingSettings();
         _connetInfoText.text = "Connecting to Master Server";
-
+        
         if (PhotonNetwork.IsConnected == true)
         {
+            PhotonNetwork.NickName = PhotonNetwork.LocalPlayer.NickName;
+            
             ChangePanel(_roomPanel);
         }
     }
@@ -126,7 +128,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void OnClickRoom(string roomName)
     {
-        PhotonNetwork.NickName = PhotonNetwork.LocalPlayer.NickName;
         PlayerPrefs.SetString("USER_NICKNAME", PhotonNetwork.NickName);
         PhotonNetwork.JoinRoom(roomName, null);
     }

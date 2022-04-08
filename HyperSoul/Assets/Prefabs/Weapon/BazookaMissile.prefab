@@ -9878,9 +9878,6 @@ GameObject:
   - component: {fileID: 6350068018276428692}
   - component: {fileID: 8370944690448479308}
   - component: {fileID: 6886846721663240275}
-  - component: {fileID: 6023977384486195362}
-  - component: {fileID: 1628306903372382712}
-  - component: {fileID: 4896645990858563476}
   m_Layer: 7
   m_Name: BazookaMissile
   m_TagString: Untagged
@@ -9934,67 +9931,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _launchSound: {fileID: 8300000, guid: a2550d7096ad62d4d97266a2072d9408, type: 3}
-  _missilePrefab: {fileID: 3456087214949747122}
-  _rocketParticleEffect: {fileID: 734702495889507368}
-  _explosionEffect: {fileID: 289230306847107765}
+  MissilePrefab: {fileID: 3456087214949747122}
+  RocketParticleEffect: {fileID: 734702495889507368}
+  ExplosionEffect: {fileID: 289230306847107765}
   _maxSpeed: 70
   _gravityForce: 0.8
---- !u!114 &6023977384486195362
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5412352353896642085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 1628306903372382712}
-  - {fileID: 4896645990858563476}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
---- !u!114 &1628306903372382712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5412352353896642085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
---- !u!114 &4896645990858563476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5412352353896642085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 0
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1001 &133719831722333001
 PrefabInstance:
   m_ObjectHideFlags: 0

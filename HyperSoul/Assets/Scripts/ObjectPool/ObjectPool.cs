@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,10 +9,13 @@ public class ObjectPool
     
     private GameObject _obj = null;
 
-    public void Init(GameObject prefab)
+    public void Init(GameObject prefab, int amount)
     {
         _obj = prefab;
-        _objQueue.Enqueue(CreateObj());
+        for (int i = 0; i < amount; ++i)
+        {
+            _objQueue.Enqueue(CreateObj());
+        }
     }
 
     private GameObject CreateObj()
@@ -24,7 +28,7 @@ public class ObjectPool
 
     public GameObject GetObj()
     {
-        GameObject newObj = (_objQueue.Count > 0) ? newObj = _objQueue.Dequeue() : newObj = CreateObj();
+        GameObject newObj = (_objQueue.Count > 0) ? _objQueue.Dequeue() : CreateObj();
 
         return newObj;
     }

@@ -79,43 +79,37 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         {
             CurHp -= damageAmt;
             Hit();
-            //photonView.RPC("UpdateHP", RpcTarget.Others, CurHp, IsDead);
-            photonView.RPC("OnDamage", RpcTarget.Others, damageAmt, hitPoint, hitNormal);
+            photonView.RPC("UpdateHP", RpcTarget.Others, CurHp);
+            photonView.RPC("OnDamage", RpcTarget.Others, attacker, damageAmt, hitPoint, hitNormal);
 
-            if (false == _isHitting)
-            {
-                photonView.RPC("Hit", RpcTarget.Others, null);
-            }
-        }
 
-        // 디버그용 TakeDamage 코드
-        CurHp -= damageAmt;
-
-        if (CurHp <= 0 && IsDead == false)
-        {
-            Die(attacker);
-        }
-        else if(false == _isHitting)
-        {
-            StartCoroutine(HitCorountine());
         }
     }
 
     [PunRPC]
-    protected void OnDamage(int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
+    protected void OnDamage(LivingEntity attacker, int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
     {
         if(IsDead)
         {
             return;
         }
-        CurHp -= damageAmt;
+
+        if (CurHp <= 0 && IsDead == false)
+        {
+            Die(attacker);
+        }
+        else if (false == _isHitting)
+        {
+            photonView.RPC("Hit", RpcTarget.Others, null);
+        }
     }
 
-    //[PunRPC]
-    //public void UpdateHP(int newHp)
-    //{
-    //    CurHp = newHp;
-    //}
+    [PunRPC]
+    public void UpdateHP(int newHp)
+    {
+        CurHp = newHp;
+    }
+
     [PunRPC]
     private void Hit()
     {

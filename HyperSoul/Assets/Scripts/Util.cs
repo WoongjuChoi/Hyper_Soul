@@ -74,7 +74,8 @@ public enum EGunState
 class LayerParameter
 {
     public const int PLAYER = 3;
-    public const int MONSTER = 6;
+    public const int MONSTER = 6; 
+    public const int BULLET = 7;
 }
 
 public enum EPlayerType
@@ -82,4 +83,25 @@ public enum EPlayerType
     Rifle = 0,
     Bazooka = 1,
     Snipers = 2
+}
+    
+
+public enum CharacterType
+{
+    Player,
+    Monster,
+}
+
+public enum PlayerType
+{
+    Bazooka,
+    Rifle,
+    Sniper,
+}
+
+public enum MonsterType
+{
+    Wolf,
+    Tree,
+    Golem,
 }

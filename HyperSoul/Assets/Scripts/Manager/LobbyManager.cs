@@ -85,10 +85,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
     public override void OnCreatedRoom()
     {
-        Debug.Log("Created Room");
-        Debug.Log(PhotonNetwork.CurrentRoom.Name);
+        Debug.Log($"{PhotonNetwork.CurrentRoom.Name} Created Room");
     }
-
     public override void OnRoomListUpdate(List<Photon.Realtime.RoomInfo> roomList)
     {
         GameObject _newRoom = null;
@@ -140,6 +138,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         _connetInfoText.text = "Joined room";
         PhotonNetwork.IsMessageQueueRunning = false; // 통신 일시정지, 플레이어 스폰 후 다시 연결 시켜준다
+        //PhotonNetwork.LoadLevel("MainScene");
+        //PhotonNetwork.LoadLevel("Bajooka Sample Scene");
         PhotonNetwork.LoadLevel("RoomScene");
     }
    

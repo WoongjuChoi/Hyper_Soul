@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
+using Photon.Pun;
 
-public class PlayerCam : MonoBehaviour
+public class PlayerCam : MonoBehaviourPun
 {
     [SerializeField]
     private Transform _playerBody;
@@ -32,14 +34,38 @@ public class PlayerCam : MonoBehaviour
 
     private void Awake()
     {
-        _input = GetComponent<PlayerInputs>();
-        _playerInfo = GetComponent<PlayerInfo>();
 
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        if (photonView.IsMine)
+        {
+            CinemachineVirtualCamera[] followCam = FindObjectsOfType<CinemachineVirtualCamera>();
+            foreach (CinemachineVirtualCamera cam in followCam)
+            {
+                if (cam.gameObject.name == "AimCamera")
+                {
+                    cam.Priority = 15;
+                }
+                else if (cam.gameObject.name == "PlayerFollowCamera")
+                {
+                    cam.Priority = 14;
+                }
+            }
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else
+        {
 
+            // _cameraArm.gameObject.SetActive(false);
+        }
         _defaultCamPos = new Vector3(1.5f, 0.4f, -3.4f);
         _normalRotationSpeed = new Vector2(0.5f, 0.5f);
+        _input = GetComponent<PlayerInputs>();
+        _playerInfo = GetComponent<PlayerInfo>();
+        
+
+
+        //_defaultCamPos = new Vector3(1.5f, 0.4f, -3.4f);
+        //_normalRotationSpeed = new Vector2(0.5f, 0.5f);
         GameManager.Instance.PlayerCamRotationTransform = _cameraArm;
     }
 

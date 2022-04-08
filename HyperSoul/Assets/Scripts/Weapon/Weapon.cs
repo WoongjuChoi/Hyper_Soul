@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public abstract class Weapon : MonoBehaviourPun, IPunObservable
+public abstract class Weapon : MonoBehaviourPun
 {
     public Vector2 ZoomRotationSpeed;
     public GameObject ZoomCam;
@@ -22,30 +22,16 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
     protected bool _canFire = true;
 
     protected Vector3 _mousePos;
+    protected PlayerInfo _playerInfo;
     protected Animator _playerAnimator;
     protected PlayerCam _playerCam;
     protected PlayerInputs _input;
     protected AudioSource _audioSource;
     protected EGunState _gunState;
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if(stream.IsWriting)
-        {
-            stream.SendNext(CurBulletCnt);
-            stream.SendNext(_gunState);
-        }
-        else
-        {
-            CurBulletCnt = (int)stream.ReceiveNext();
-            _gunState = (EGunState)stream.ReceiveNext();
-        }
-    }
-
-
-    [PunRPC]
     private void Awake()
     {
+        _playerInfo = GetComponentInParent<PlayerInfo>();
         _playerAnimator = Player.GetComponentInChildren<Animator>();
         _playerCam = Player.GetComponent<PlayerCam>();
         _input = Player.GetComponent<PlayerInputs>();
@@ -66,7 +52,10 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
             ZoomCam.SetActive(false);
         }
 
-        SetMousePos();
+        if(CurBulletCnt <= 0)
+        {
+            _gunState = EGunState.Empty;
+        }
     }
     public virtual void Fire() { }
     public virtual void Zoom() { }
@@ -98,7 +87,7 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
     {
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-
+        Debug.DrawRay(ray.origin, ray.direction * 200, Color.red);
         RaycastHit[] raycastHits = Physics.RaycastAll(ray).OrderBy(h => h.distance).ToArray();
 
         for (int i = 0; i < raycastHits.Length; ++i)

@@ -1125,7 +1125,6 @@ MonoBehaviour:
   _hitSound: {fileID: 739769758}
   _deathSound: {fileID: 987949751}
   _hitImage: {fileID: 0}
-  _cameraArm: {fileID: 373113709861832450}
   _hpCanvas: {fileID: 1285060676}
   _myHpSlider: {fileID: 0}
   _expSlider: {fileID: 0}

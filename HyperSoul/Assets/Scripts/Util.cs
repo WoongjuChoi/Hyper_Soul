@@ -69,4 +69,25 @@ class LayerParameter
 {
     public const int PLAYER = 3;
     public const int MONSTER = 6;
+    public const int BULLET = 7;
+}
+
+public enum CharacterType
+{
+    Player,
+    Monster,
+}
+
+public enum PlayerType
+{
+    Bazooka,
+    Rifle,
+    Sniper,
+}
+
+public enum MonsterType
+{
+    Wolf,
+    Tree,
+    Golem,
 }

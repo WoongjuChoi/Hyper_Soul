@@ -38,6 +38,7 @@ public class SampleMoveScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("피격당함");
+        Debug.Log($"피격당함\n Attacker : {collision.gameObject.GetComponent<Projectile>().ProjectileOwner.NickName}" +
+            $"\n Damage : {collision.gameObject.GetComponent<Projectile>().Attack}");
     }
 }

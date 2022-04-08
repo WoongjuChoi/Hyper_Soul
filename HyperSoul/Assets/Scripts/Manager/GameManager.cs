@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
+public class GameManager : MonoBehaviourPunCallbacks
 {
     static private GameManager _instance;
     static public GameManager Instance
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
     void Start()
     {
         Init();
-        //SpawnPlayer();
+        SpawnPlayer();
         PhotonNetwork.IsMessageQueueRunning = true;
     }
 
@@ -135,17 +135,17 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(_isSpawned);
-        }
-        else
-        {
-            _isSpawned = (bool[])stream.ReceiveNext();
-        }
-    }
+    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    //{
+    //    if (stream.IsWriting)
+    //    {
+    //        stream.SendNext(_isSpawned);
+    //    }
+    //    else
+    //    {
+    //        _isSpawned = (bool[])stream.ReceiveNext();
+    //    }
+    //}
 
     static private void Init()
     {

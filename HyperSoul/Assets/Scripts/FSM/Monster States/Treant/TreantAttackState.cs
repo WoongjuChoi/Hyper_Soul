@@ -6,6 +6,7 @@ public class TreantAttackState : BaseState<TreantInformation>
 {
     [SerializeField]
     private TreantRootAttack _treantRootAttack = null;
+
     [SerializeField]
     private TreantStompAttack _treantStompAttack = null;
 

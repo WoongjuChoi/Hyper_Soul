@@ -9881,7 +9881,7 @@ GameObject:
   - component: {fileID: 6023977384486195362}
   - component: {fileID: 1628306903372382712}
   - component: {fileID: 4896645990858563476}
-  m_Layer: 7
+  m_Layer: 11
   m_Name: BazookaMissile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

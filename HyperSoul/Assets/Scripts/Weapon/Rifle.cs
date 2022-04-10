@@ -57,7 +57,6 @@ public class Rifle : Weapon
         GameObject bullet = _bulletPool.GetObj();
         bullet.transform.position = _bulletSpawnPos.position;
         bullet.transform.rotation = Quaternion.LookRotation(aimDir, Vector3.up);
-        //bullet.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         bullet.GetComponent<Bullet>().SetBulletReturnFunc(_bulletPool.ReturnObj);
         bullet.GetComponent<Bullet>().ProjectileOwner = _playerInfo;
         bullet.SetActive(true);

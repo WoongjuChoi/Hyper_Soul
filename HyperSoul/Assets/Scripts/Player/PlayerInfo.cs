@@ -23,6 +23,8 @@ public class PlayerInfo : LivingEntity
     private Text _levelUpText;
     [SerializeField]
     private Text _gameOverText;
+    [SerializeField]
+    private GameObject _playerUI;
 
     private Weapon _playerWeapon;
 
@@ -66,7 +68,7 @@ public class PlayerInfo : LivingEntity
     {
         _myHpSlider.value = (float)CurHp / MaxHp;
 
-        if (CurHp <= 0)
+        if (CurHp <= 0 && photonView.IsMine)
         {
             _gameOverText.gameObject.SetActive(true);
         }
@@ -85,7 +87,11 @@ public class PlayerInfo : LivingEntity
 
         if (CurExp >= Exp)
         {
-            StartCoroutine(LevelUp());
+            if (photonView.IsMine)
+            {
+                StartCoroutine(LevelUp());
+            }
+            
             CurExp = 0;
         }
     }

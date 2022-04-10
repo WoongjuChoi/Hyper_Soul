@@ -44,10 +44,10 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         _animator = GetComponentInChildren<Animator>();
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
-        //if(photonView.IsMine)
-        //{
-        //    _hpBar.gameObject.SetActive(false);
-        //}
+        if (photonView.IsMine)
+        {
+            _hpBarOverhead.gameObject.SetActive(false);
+        }
     }
     private void LateUpdate()
     {

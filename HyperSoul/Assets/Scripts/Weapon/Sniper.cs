@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class Sniper : Weapon
     [SerializeField]
     private GameObject _bulletPrefab;
 
-    private bool _isZoom = false;
+    private ObjectPool _sniperPool = new ObjectPool();
 
     private void OnEnable()
     {
@@ -19,13 +20,20 @@ public class Sniper : Weapon
         _reloadTime = 2;
         _gunState = EGunState.Ready;
         ZoomRotationSpeed = new Vector2(0.05f, 0.05f);
+
+        _sniperPool.Init(_bulletPrefab, 10);
     }
 
     public override void Fire()
     {
-        if (CurBulletCnt > 0 && _canFire == true)
+        if (false == photonView.IsMine || _gunState != EGunState.Ready || _canFire == false)
         {
-            StartCoroutine(Shoot());
+            return;
+        }
+
+        if (CurBulletCnt > 0)
+        {
+            photonView.RPC("SniperFire", RpcTarget.All);
         }
     }
     public override void Zoom()
@@ -35,13 +43,35 @@ public class Sniper : Weapon
         _playerCam._rotationSpeedY = ZoomRotationSpeed.y;
     }
 
+    [PunRPC]
+    public void SniperFire()
+    {
+        SetMousePos();
+        StartCoroutine(Shoot());
+    }
     private IEnumerator Shoot()
     {
         --CurBulletCnt;
+
         Vector3 aimDir = (_mousePos - _bulletSpawnPos.position).normalized;
-        Instantiate(_bulletPrefab, _bulletSpawnPos.position, Quaternion.LookRotation(aimDir, Vector3.up));
+        GameObject bullet = _sniperPool.GetObj();
+        bullet.transform.position = _bulletSpawnPos.position;
+        bullet.transform.rotation = Quaternion.LookRotation(aimDir, Vector3.up);
+        bullet.GetComponent<Bullet>().SetBulletReturnFunc(_sniperPool.ReturnObj);
+        bullet.GetComponent<Bullet>().ProjectileOwner = _playerInfo;
+        bullet.SetActive(true);
+
+        Collider bulletCollider = bullet.GetComponent<BoxCollider>();
+        if (false == PhotonNetwork.IsMasterClient)
+        {
+            bulletCollider.enabled = false;
+        }
+        else
+        {
+            bulletCollider.enabled = true;
+        }
+
         _canFire = false;
-        
         _playerAnimator.SetTrigger(PlayerAnimatorID.SINGLESHOT);
 
         _audioSource.PlayOneShot(ShotSound);
@@ -50,6 +80,8 @@ public class Sniper : Weapon
         yield return new WaitForSeconds(0.1f);
 
         MuzzleFlashEffect.SetActive(false);
+        _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, false);
+        _playerAnimator.SetTrigger(PlayerAnimatorID.RELOAD);
 
         yield return new WaitForSeconds(2.9f);
 

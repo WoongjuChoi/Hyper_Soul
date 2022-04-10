@@ -3002,6 +3002,7 @@ MonoBehaviour:
   _killText: {fileID: 1221333724652189594}
   _levelUpText: {fileID: 3522381616358166007}
   _gameOverText: {fileID: 1311604430806981642}
+  _playerUI: {fileID: 2302762841791192007}
 --- !u!114 &5379531540559722048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3097,9 +3098,11 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 0
+  observableSearch: 2
   ObservedComponents:
-  - {fileID: 0}
+  - {fileID: 1367119010856934241}
+  - {fileID: 7925782555196843281}
+  - {fileID: 4158312957882399777}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -3240,7 +3243,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 68208358479551852}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

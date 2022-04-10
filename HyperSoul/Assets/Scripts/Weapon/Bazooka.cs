@@ -31,8 +31,7 @@ public class Bazooka : Weapon
         _reloadTime = 5;
         _gunState = EGunState.Ready;
 
-        _missilePool.Init(_missilePrefab, 2);
-
+        _missilePool.Init(_missilePrefab, 20);
     }
 
     public override void Fire()
@@ -100,12 +99,18 @@ public class Bazooka : Weapon
 
         if(false == PhotonNetwork.IsMasterClient)
         {
-            Collider[] bazookaColliders = _bazookaMissile.GetComponentsInChildren<Collider>();
             foreach(Collider col in bazookaColliders)
             {
                 col.enabled = false;
             }
-        }    
+        }
+        else
+        {
+            foreach (Collider col in bazookaColliders)
+            {
+                col.enabled = true;
+            }
+        }
 
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, true);
         _canFire = false;

@@ -23,6 +23,8 @@ public class PlayerInfo : LivingEntity
     private Text _levelUpText;
     [SerializeField]
     private Text _gameOverText;
+    [SerializeField]
+    private GameObject _playerUI;
 
     private PlayerType _playerType; //
 
@@ -79,6 +81,8 @@ public class PlayerInfo : LivingEntity
         Attack = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
         CurHp = MaxHp;
         IsDead = false;
+        _hitSound.SetActive(false);
+        _deathSound.SetActive(false);
     }
 
     private void Update()
@@ -105,7 +109,7 @@ public class PlayerInfo : LivingEntity
     {
         _myHpSlider.value = (float)CurHp / MaxHp;
 
-        if (CurHp <= 0)
+        if (CurHp <= 0 && photonView.IsMine)
         {
             _gameOverText.gameObject.SetActive(true);
         }
@@ -124,7 +128,11 @@ public class PlayerInfo : LivingEntity
 
         if (CurExp >= MaxExp && Level < MaxLevel)
         {
-            StartCoroutine(LevelUp());
+            if (photonView.IsMine)
+            {
+                StartCoroutine(LevelUp());
+            }
+            
             CurExp = 0;
         }
     }

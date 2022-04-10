@@ -62,7 +62,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
 
             if (false == _isHitting)
             {
-                photonView.RPC("Hit", RpcTarget.Others, null);
+                photonView.RPC("Hit", RpcTarget.Others);
             }
         }
     }

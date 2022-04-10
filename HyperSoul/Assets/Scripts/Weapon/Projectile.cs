@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviourPun
 {
-    public PlayerInfo ProjectileOwner { get; set; }
+    public int ProjectileOwnerID { get; set; }
     public int Attack { get; set; }
-
 }
-

@@ -14,12 +14,11 @@ public class BazookaMissile : Projectile
 
     [SerializeField]
     AudioClip _launchSound = null;
-    [SerializeField]
-    GameObject _missilePrefab = null;
-    [SerializeField]
-    GameObject _rocketParticleEffect = null;
-    [SerializeField]
-    GameObject _explosionEffect = null;
+
+    public GameObject MissilePrefab = null;
+    public GameObject RocketParticleEffect = null;
+    public GameObject ExplosionEffect = null;
+
     [SerializeField]
     private float _maxSpeed = 0f;
     private float _curSpeed = 0f;
@@ -37,6 +36,15 @@ public class BazookaMissile : Projectile
         set { _target = value; }
     }
 
+    Coroutine lunchCoroutine = null;
+    Coroutine explosionCoroutine = null;
+
+    public void Init()
+    {
+        _curSpeed = 0f;
+
+    }
+
     void OnEnable()
     {
         _missileLaunch = gameObject.AddComponent<AudioSource>();
@@ -44,8 +52,8 @@ public class BazookaMissile : Projectile
         _launchPos = transform.position;
         if (_target != null)
         {
-            StartCoroutine(SoftLaunch());
-            _targetDistance = Vector3.Distance(ProjectileOwner.transform.position, _target.transform.position);
+            lunchCoroutine = StartCoroutine(SoftLaunch());
+            _targetDistance = Vector3.Distance(transform.position, _target.transform.position);
         }
     }
     private void FixedUpdate()
@@ -53,7 +61,7 @@ public class BazookaMissile : Projectile
         GetComponent<Rigidbody>().AddForce(Vector3.up * _gravityForce);
         float _curDistMissileAndLaunchPos = Vector3.Distance(_launchPos, transform.position);
 
-        if (_isHitted == false && _isLaunched == true)
+        if (false == _isHitted && _isLaunched == true)
         {
             if (_curSpeed <= _maxSpeed)
             {
@@ -65,7 +73,7 @@ public class BazookaMissile : Projectile
         {
             Vector3 dir = (_target.position - transform.position).normalized;
             transform.forward = Vector3.Lerp(transform.forward, dir, 0.1f);
-
+            //transform.forward = dir;
             if (_targetDistance + 10f < _curDistMissileAndLaunchPos)
             {
                 Explosion();
@@ -74,12 +82,11 @@ public class BazookaMissile : Projectile
         else
         {
             _isLaunched = true;
-            _rocketParticleEffect.SetActive(true);
+            RocketParticleEffect.SetActive(true);
 
             if (_curDistMissileAndLaunchPos > 70f)
             {
                 Explosion();
-                ReturnMissile();
             }
         }
     }
@@ -88,35 +95,49 @@ public class BazookaMissile : Projectile
     private void OnCollisionEnter(Collision collision)
     {
         Explosion();
-        //photonView.RPC("Explosion", RpcTarget.Others, null);
+        photonView.RPC("Explosion", RpcTarget.Others, null);
     }
 
     private IEnumerator SoftLaunch()
     {
         yield return new WaitForSeconds(0.4f);
-        _rocketParticleEffect.SetActive(true);
+        lunchCoroutine = null;
+        RocketParticleEffect.SetActive(true);
         _isLaunched = true;
     }
 
     [PunRPC]
     private void Explosion()
     {
-        StartCoroutine(ExplosionCorountine());
+        explosionCoroutine = StartCoroutine(ExplosionCorountine());
     }
     private IEnumerator ExplosionCorountine()
     {
         _isHitted = true;
-        _explosionEffect.SetActive(true);
-        _rocketParticleEffect.SetActive(false);
-        _missilePrefab.SetActive(false);
+        _isLaunched = false;
+        _curSpeed = 0f;
+        ExplosionEffect.SetActive(true);
+        RocketParticleEffect.SetActive(false);
+        MissilePrefab.SetActive(false);
 
         yield return new WaitForSeconds(1.0f);
-
         ReturnMissile();
+        explosionCoroutine = null;
     }
 
     private void ReturnMissile()
     {
+        if (null != lunchCoroutine)
+        {
+            StopCoroutine(lunchCoroutine);
+        }
+        if (null != explosionCoroutine)
+        {
+            StopCoroutine(explosionCoroutine);
+        }
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        _isHitted = false;
         gameObject.SetActive(false);
         _missileReturn(this.gameObject);
     }

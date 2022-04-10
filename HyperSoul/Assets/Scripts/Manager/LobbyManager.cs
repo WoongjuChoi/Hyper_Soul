@@ -72,9 +72,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         _joinButton.interactable = false;
         PhotonNetwork.ConnectUsingSettings();
         _connetInfoText.text = "Connecting to Master Server";
-
+        
         if (PhotonNetwork.IsConnected == true)
         {
+            PhotonNetwork.NickName = PhotonNetwork.LocalPlayer.NickName;
+            
             ChangePanel(_roomPanel);
         }
     }
@@ -126,7 +128,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void OnClickRoom(string roomName)
     {
-        PhotonNetwork.NickName = PhotonNetwork.LocalPlayer.NickName;
         PlayerPrefs.SetString("USER_NICKNAME", PhotonNetwork.NickName);
         PhotonNetwork.JoinRoom(roomName, null);
     }
@@ -138,8 +139,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         _connetInfoText.text = "Joined room";
         PhotonNetwork.IsMessageQueueRunning = false; // 통신 일시정지, 플레이어 스폰 후 다시 연결 시켜준다
-        PhotonNetwork.LoadLevel("MainScene");
-        //PhotonNetwork.LoadLevel("Bajooka Sample Scene");
+        //PhotonNetwork.LoadLevel("MainScene");
+        PhotonNetwork.LoadLevel("Bajooka Sample Scene");
         //PhotonNetwork.LoadLevel("RoomScene");
     }
    

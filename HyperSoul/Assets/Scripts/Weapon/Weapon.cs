@@ -29,6 +29,7 @@ public abstract class Weapon : MonoBehaviourPun
     protected AudioSource _audioSource;
     protected EGunState _gunState;
 
+    DataManager _dataManager;
     private void Awake()
     {
         _playerInfo = GetComponentInParent<PlayerInfo>();
@@ -36,10 +37,12 @@ public abstract class Weapon : MonoBehaviourPun
         _playerCam = Player.GetComponent<PlayerCam>();
         _input = Player.GetComponent<PlayerInputs>();
         _audioSource = this.gameObject.GetComponent<AudioSource>();
+        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
         _playerAnimator.SetFloat(PlayerAnimatorID.RELOAD_SPEED, _reloadSpeed);
         ZoomRotationSpeed = new Vector2(0.2f, 0.2f);
         ZoomCam.SetActive(false);
+        //MaxBulletAmt = _dataManager.
     }
     protected void Update()
     {

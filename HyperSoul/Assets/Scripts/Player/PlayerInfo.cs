@@ -24,7 +24,11 @@ public class PlayerInfo : LivingEntity
     [SerializeField]
     private Text _gameOverText;
 
+    private PlayerType _playerType; //
+
     private Weapon _playerWeapon;
+
+    public int PhotonViewID;
 
     public int MaxExp
     {
@@ -32,22 +36,47 @@ public class PlayerInfo : LivingEntity
     }
     public int CurExp { get; set; }
 
+    public override void Awake()
+    {
+        _hitSound.SetActive(false);
+        _deathSound.SetActive(false);
+        _animator = GetComponentInChildren<Animator>();
+        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
+
+        //if(photonView.IsMine)
+        //{
+        //    _hpBar.gameObject.SetActive(false);
+        //}
+        
+    }
     private void Start()
     {
+        //Debug.Log("인포 스타트");
+
+        // Temp
+        _playerType = PlayerType.Bazooka;
+        Level = 1;
+        CurExp = 0;
+
+        PhotonViewID = photonView.ViewID;
         NickName = photonView.Owner.NickName;
         _playerWeapon = GetComponentInChildren<Weapon>();
-        MaxExp = _dataManager.FindPlayerData("Bazooka1").MaxExp;
+        
+
         Exp = MaxExp;
 
         _killText.gameObject.SetActive(false);
         _levelUpText.gameObject.SetActive(false);
         _gameOverText.gameObject.SetActive(false);
+        _hitImage.SetActive(false);
     }
 
     private void OnEnable()
     {
-        MaxHp = _dataManager.FindPlayerData("Bazooka1").MaxHp;
-        Attack = _dataManager.FindPlayerData("Bazooka1").Attack;
+        MaxHp = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
+        Debug.Log($"MaxHp : {MaxHp}");
+        MaxExp = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
+        Attack = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
         CurHp = MaxHp;
         IsDead = false;
     }
@@ -59,6 +88,18 @@ public class PlayerInfo : LivingEntity
         ExpUpdate();
     }
 
+    public override void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.GetComponent<Projectile>() != null)
+        {
+            Debug.Log($"피격당함\n Attacker : {collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID}" +
+           $"\n Damage : {collision.gameObject.GetComponent<Projectile>().Attack}" +
+           $"\n HP : {CurHp}");
+
+            TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID, collision.gameObject.GetComponent<Projectile>().Attack,
+                collision.transform.position, collision.transform.position.normalized);
+        }
+    }
 
     private void HpUpdate()
     {
@@ -79,9 +120,9 @@ public class PlayerInfo : LivingEntity
     {
         _expText.text = "Exp : " + CurExp;
 
-        _expSlider.value = (float)CurExp / Exp;
+        _expSlider.value = (float)CurExp / MaxExp;
 
-        if (CurExp >= Exp)
+        if (CurExp >= MaxExp && Level < MaxLevel)
         {
             StartCoroutine(LevelUp());
             CurExp = 0;
@@ -91,6 +132,11 @@ public class PlayerInfo : LivingEntity
     private IEnumerator LevelUp()
     {
         _levelUpText.gameObject.SetActive(true);
+        ++Level;
+        MaxHp = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
+        MaxExp = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
+        Attack = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
+        CurHp = MaxHp;
 
         yield return new WaitForSeconds(3f);
 

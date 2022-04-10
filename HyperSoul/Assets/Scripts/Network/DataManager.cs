@@ -10,7 +10,7 @@ public class DataManager : MonoBehaviour
 
     public bool IsDataReady { get; private set; }
 
-    const string PlayerDataURL = "https://docs.google.com/spreadsheets/d/1smTaItZFLP5k4agzZ8nvxX_KSp0n_y9UjP701PXgMWs/export?format=tsv&range=A2:G";
+    const string PlayerDataURL = "https://docs.google.com/spreadsheets/d/1smTaItZFLP5k4agzZ8nvxX_KSp0n_y9UjP701PXgMWs/export?format=tsv&range=A2:H";
     const string MonsterDataURL = "https://docs.google.com/spreadsheets/d/1smTaItZFLP5k4agzZ8nvxX_KSp0n_y9UjP701PXgMWs/export?format=tsv&range=A2:E&gid=1983254392";
 
     private void Awake()
@@ -58,6 +58,7 @@ public class DataManager : MonoBehaviour
                     playerData.MaxExp = int.Parse(column[4]);
                     playerData.Exp = int.Parse(column[5]);
                     playerData.SkillAttack = int.Parse(column[6]);
+                    playerData.MaxBullet = int.Parse(column[7]);
                     _playerDataDictionary.Add(playerData.PlayerName, playerData);
                     break;
                 case CharacterType.Monster:

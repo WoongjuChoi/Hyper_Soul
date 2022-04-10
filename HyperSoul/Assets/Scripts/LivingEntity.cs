@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public abstract class LivingEntity : MonoBehaviourPun, IDamageable
 {
     [SerializeField]
-    protected Slider _hpBar;
+    protected Slider _hpBarOverhead;
 
     public int CurHp { get; set; }
     public int MaxHp { get; set; }
@@ -23,7 +23,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     [SerializeField]
     protected GameObject _hitImage;
     [SerializeField]
-    protected Canvas _hpCanvas;
+    protected Canvas _hpBarOverheadCanvas;
 
     protected Animator _animator;
     protected bool _isHitting = false;
@@ -51,8 +51,8 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     }
     private void LateUpdate()
     {
-        _hpBar.value = (float)CurHp / MaxHp;
-        _hpCanvas.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;
+        _hpBarOverhead.value = (float)CurHp / MaxHp;
+        _hpBarOverheadCanvas.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -61,6 +61,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         {
             TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwner, collision.gameObject.GetComponent<Projectile>().Attack,
                 collision.transform.position, collision.transform.position.normalized);
+            Debug.Log("Attacker : " + collision.gameObject.GetComponent<Projectile>().ProjectileOwner.NickName);
         }
         
     }
@@ -68,8 +69,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     [PunRPC]
     public void Respawn()
     {
-        IsDead = false;
-        _deathSound.SetActive(false);
         gameObject.SetActive(true);
     }
 
@@ -80,7 +79,8 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
             CurHp -= damageAmt;
             Hit();
             //photonView.RPC("UpdateHP", RpcTarget.Others, CurHp, IsDead);
-            photonView.RPC("OnDamage", RpcTarget.Others, attacker, damageAmt, hitPoint, hitNormal);
+            //photonView.RPC("OnDamage", RpcTarget.Others, attacker, damageAmt, hitPoint, hitNormal);
+            OnDamage(attacker, damageAmt, hitPoint, hitNormal);
 
             if (false == _isHitting)
             {

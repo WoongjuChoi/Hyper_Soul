@@ -50,6 +50,8 @@ public class PlayerInfo : LivingEntity
         Attack = _dataManager.FindPlayerData("Bazooka1").Attack;
         CurHp = MaxHp;
         IsDead = false;
+        _hitSound.SetActive(false);
+        _deathSound.SetActive(false);
     }
 
     private void Update()

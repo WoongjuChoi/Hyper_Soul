@@ -34,7 +34,6 @@ public class PlayerCam : MonoBehaviourPun
 
     private void Awake()
     {
-
         if (photonView.IsMine)
         {
             CinemachineVirtualCamera[] followCam = FindObjectsOfType<CinemachineVirtualCamera>();
@@ -53,20 +52,12 @@ public class PlayerCam : MonoBehaviourPun
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
-        else
-        {
 
-            // _cameraArm.gameObject.SetActive(false);
-        }
         _defaultCamPos = new Vector3(1.5f, 0.4f, -3.4f);
         _normalRotationSpeed = new Vector2(0.5f, 0.5f);
         _input = GetComponent<PlayerInputs>();
         _playerInfo = GetComponent<PlayerInfo>();
         
-
-
-        //_defaultCamPos = new Vector3(1.5f, 0.4f, -3.4f);
-        //_normalRotationSpeed = new Vector2(0.5f, 0.5f);
         GameManager.Instance.PlayerCamRotationTransform = _cameraArm;
     }
 

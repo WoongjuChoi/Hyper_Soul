@@ -97,9 +97,10 @@ public class Bazooka : Weapon
         Debug.DrawRay(_bazookaMissile.transform.position, aimDir, Color.red, 1f);
         _bazookaMissile.gameObject.SetActive(true);
 
+        Collider[] bazookaColliders = _bazookaMissile.GetComponentsInChildren<Collider>();
         if(false == PhotonNetwork.IsMasterClient)
         {
-            foreach(Collider col in bazookaColliders)
+            foreach (Collider col in bazookaColliders)
             {
                 col.enabled = false;
             }

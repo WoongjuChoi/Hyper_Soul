@@ -722,6 +722,7 @@ MonoBehaviour:
   _levelUpText: {fileID: 5022178616290729025}
   _gameOverText: {fileID: 1150792434271517017}
   _playerUI: {fileID: 6186339734304336912}
+  PhotonViewID: 0
 --- !u!114 &580094374002295459
 MonoBehaviour:
   m_ObjectHideFlags: 0

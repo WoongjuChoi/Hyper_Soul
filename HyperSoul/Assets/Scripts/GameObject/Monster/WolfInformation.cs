@@ -22,6 +22,9 @@ public class WolfInformation : MonsterInformation
         //_animator = GetComponentInChildren<Animator>();
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
+        _monsterType = MonsterType.Wolf;
+        Level = 1;
+
         _monsterAlertState = GetComponent<WolfAlertState>();
         _monsterAttackState = GetComponent<WolfAttackState>();
         _monsterChaseState = GetComponent<WolfChaseState>();
@@ -75,7 +78,7 @@ public class WolfInformation : MonsterInformation
 
                 _isDamaged = true;
 
-                _target = PhotonView.Find(collision.gameObject.GetComponent<BazookaMissile>().ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
+                _target = PhotonView.Find(collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
 
                 Vector3 targetPosition = _target.transform.position + new Vector3(0f, 1.3f, 0f);
 

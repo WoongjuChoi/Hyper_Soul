@@ -32,6 +32,7 @@ public abstract class MonsterInformation : LivingEntity
     protected Vector3 _collisionVec = Vector3.zero;
     protected Vector3 _lookAtTargetVec = Vector3.zero;
 
+    protected MonsterType _monsterType;
     protected EStateIDs _monsterCurrentState = EStateIDs.None;
 
     protected float _monsterSpawnDirection = 0f;
@@ -61,10 +62,14 @@ public abstract class MonsterInformation : LivingEntity
     public bool IsTargeting { get { return _isTargeting; } set { _isTargeting = value; } }
     public int MonsterCurrentHP { get { return _monsterCurrentHP; } set { _monsterCurrentHP = value; } }
 
-    public abstract void Awake();
-
     private void OnEnable()
     {
+        MaxHp = _dataManager.FindMonsterData(_monsterType.ToString() + Level.ToString()).MaxHp;
+
+        CurHp = MaxHp;
+
+        IsDead = false;
+
         _monsterFSM.ChangeState(EStateIDs.Spawn);
 
         _monsterCurrentHP = _monsterMaxHP;

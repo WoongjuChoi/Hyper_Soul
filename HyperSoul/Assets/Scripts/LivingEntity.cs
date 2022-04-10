@@ -30,13 +30,13 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
 
     public int Exp { get; set; }
     public int Level { get; set; }
-    public int MaxLevel {get {return 5;} }
+    public int MaxLevel { get { return 5; } }
     public CharacterType Type { get; set; }
 
     protected DataManager _dataManager;
 
     public virtual void Awake() { }
-   
+
     private void LateUpdate()
     {
         _hpBarOverhead.value = (float)CurHp / MaxHp;
@@ -70,7 +70,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     [PunRPC]
     protected void OnDamage(int attackerID, int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
     {
-        if(IsDead)
+        if (IsDead)
         {
             return;
         }
@@ -102,7 +102,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     {
         _isHitting = true;
         _animator.SetBool(CommonAnimatorID.HIT, true);
-        if(photonView.IsMine)
+        if (photonView.IsMine)
         {
             _hitImage.SetActive(true);
         }
@@ -117,9 +117,9 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
 
     public virtual void Die(int attackerID)
     {
-        GameManager.Instance.SendDieMessage(this, PhotonView.Find(attackerID).GetComponent<LivingEntity>());
+        GameManager.Instance.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
         _deathSound.SetActive(true);
-        
+
         if (false == IsDead)
         {
             IsDead = true;

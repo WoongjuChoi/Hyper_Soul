@@ -44,6 +44,9 @@ public class TreantInformation : MonsterInformation
         //_animator = GetComponentInChildren<Animator>();
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
+        _monsterType = MonsterType.Tree;
+        Level = 1;
+
         _treantAttackState = GetComponent<TreantAttackState>();
         _treantDamagedState = GetComponent<TreantDamagedState>();
         _treantDieState = GetComponent<TreantDieState>();
@@ -73,7 +76,7 @@ public class TreantInformation : MonsterInformation
 
                 if (false == _isTargeting)
                 {
-                    _target = PhotonView.Find(collision.gameObject.GetComponent<BazookaMissile>().ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
+                    _target = PhotonView.Find(collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
 
                     _isTargeting = true;
                 }

@@ -91,7 +91,6 @@ public class BazookaMissile : Projectile
         }
     }
 
-
     private void OnCollisionEnter(Collision collision)
     {
         Explosion();

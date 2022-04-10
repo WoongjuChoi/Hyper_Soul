@@ -15,6 +15,12 @@ public class WolfInformation : MonsterInformation
 
     public override void Awake()
     {
+        _hitImage.SetActive(false);
+        _hitSound.SetActive(false);
+        _deathSound.SetActive(false);
+        _animator = GetComponentInChildren<Animator>();
+        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
+
         _monsterAlertState = GetComponent<WolfAlertState>();
         _monsterAttackState = GetComponent<WolfAttackState>();
         _monsterChaseState = GetComponent<WolfChaseState>();
@@ -58,7 +64,7 @@ public class WolfInformation : MonsterInformation
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public override void OnCollisionEnter(Collision collision)
     {
         if (false == _isDamaged && SampleObjectParameterID.LAYER_SAMPLE_AMMO == collision.gameObject.layer)
         {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class MonsterInformation : MonoBehaviour
+public abstract class MonsterInformation : LivingEntity
 {
     [SerializeField]
     protected FiniteStateMachine _monsterFSM = null;

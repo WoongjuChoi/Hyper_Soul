@@ -37,6 +37,12 @@ public class TreantInformation : MonsterInformation
 
     public override void Awake()
     {
+        _hitImage.SetActive(false);
+        _hitSound.SetActive(false);
+        _deathSound.SetActive(false);
+        _animator = GetComponentInChildren<Animator>();
+        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
+
         _treantAttackState = GetComponent<TreantAttackState>();
         _treantDamagedState = GetComponent<TreantDamagedState>();
         _treantDieState = GetComponent<TreantDieState>();
@@ -54,7 +60,7 @@ public class TreantInformation : MonsterInformation
         _monsterFSM.AddState(EStateIDs.Spawn, _treantSpawnState);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public override void OnCollisionEnter(Collision collision)
     {
         if (false == _isDamaged && SampleObjectParameterID.LAYER_SAMPLE_AMMO == collision.gameObject.layer)
         {
@@ -72,9 +78,9 @@ public class TreantInformation : MonsterInformation
                 {
                     _isDamaged = true;
 
-                if (false == _isTargeting)
-                {
-                    //_target = collision.gameObject.GetComponent<BazookaMissile>().ProjectileOwnerID.gameObject;
+                    if (false == _isTargeting)
+                    {
+                        _target = collision.gameObject.GetComponent<BazookaMissile>().ProjectileOwner.gameObject;
 
                         _isTargeting = true;
                     }

@@ -24,6 +24,9 @@ public class TreantAttackState : BaseState<TreantInformation>
         base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, false);
         base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, false);
 
+        _treantRootAttack.StopAttack();
+        _treantStompAttack.StopAttack();
+
         base.CreatureInformation.StompAttackArea.SetActive(false);
 
         _outOfSight = false;
@@ -61,12 +64,14 @@ public class TreantAttackState : BaseState<TreantInformation>
     {
         if (base.CreatureInformation.DistanceMonsterToTarget < 10f)
         {
-            _treantAttackManager.SetTreantAttack(_treantStompAttack);
+            _treantRootAttack.StopAttack();
 
-            _treantRootAttack.StopRootAttack();
+            _treantAttackManager.SetTreantAttack(_treantStompAttack);
         }
         else if (base.CreatureInformation.DistanceMonsterToTarget < 30f)
         {
+            _treantStompAttack.StopAttack();
+
             _treantAttackManager.SetTreantAttack(_treantRootAttack);
         }
         else

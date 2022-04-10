@@ -23,14 +23,8 @@ public class Bullet : Projectile
 
     private void OnEnable()
     {
-        //SetAttackValue(_playerInfo.Attack);
         _bulletRigidbody.velocity = Vector3.zero;
         _bulletRigidbody.velocity = transform.forward * _speed;
-    }
-
-    public void SetAttackValue(float attack)
-    {
-        AttackValue *= attack;
     }
 
     public void SetBulletReturnFunc(Action<GameObject> bulletReturnFunc)
@@ -38,7 +32,7 @@ public class Bullet : Projectile
         _returnBullet = bulletReturnFunc;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
         gameObject.SetActive(false);
         _returnBullet(this.gameObject);

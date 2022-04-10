@@ -59,8 +59,8 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     { 
         if(collision.gameObject.GetComponent<Projectile>() != null)
         {
-            //TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwner, collision.gameObject.GetComponent<Projectile>().Attack,
-             //   collision.transform.position, collision.transform.position.normalized);
+            TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwner, collision.gameObject.GetComponent<Projectile>().Attack,
+                collision.transform.position, collision.transform.position.normalized);
         }
         
     }

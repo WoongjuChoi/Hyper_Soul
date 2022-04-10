@@ -30,7 +30,7 @@ public class Temp : LivingEntity
     {
         if (false == collision.gameObject.GetComponent<LivingEntity>().IsDead)
         {
-            collision.gameObject.GetComponent<LivingEntity>()?.TakeDamage(this, 1, collision.contacts[0].point, collision.contacts[0].normal);
+            //collision.gameObject.GetComponent<LivingEntity>()?.TakeDamage(this, 1, collision.contacts[0].point, collision.contacts[0].normal);
         }
     }
 }

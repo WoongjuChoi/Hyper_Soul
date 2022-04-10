@@ -1410,6 +1410,7 @@ MonoBehaviour:
   _killText: {fileID: 4308544771184054176, guid: 2ccd37ae90091fa4494e7463523747b6, type: 3}
   _levelUpText: {fileID: 4199034508237601109, guid: 5e82225b8e1587848a619b59bd147b9e, type: 3}
   _gameOverText: {fileID: 4775482550414879116, guid: fc9b5346689816d4887bcbe794cabf8d, type: 3}
+  PhotonViewID: 0
 --- !u!114 &5641331980754899857
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -53,7 +53,7 @@ public class BazookaMissile : Projectile
         if (_target != null)
         {
             lunchCoroutine = StartCoroutine(SoftLaunch());
-            _targetDistance = Vector3.Distance(ProjectileOwner.transform.position, _target.transform.position);
+            _targetDistance = Vector3.Distance(transform.position, _target.transform.position);
         }
     }
     private void FixedUpdate()
@@ -95,7 +95,7 @@ public class BazookaMissile : Projectile
     private void OnCollisionEnter(Collision collision)
     {
         Explosion();
-        //photonView.RPC("Explosion", RpcTarget.All);
+        photonView.RPC("Explosion", RpcTarget.Others);
     }
 
     private IEnumerator SoftLaunch()

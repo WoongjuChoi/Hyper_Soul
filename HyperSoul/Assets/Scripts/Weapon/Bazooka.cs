@@ -93,7 +93,7 @@ public class Bazooka : Weapon
         _bazookaMissile.transform.rotation = Quaternion.LookRotation(aimDir, Vector3.up);
         _bazookaMissile.GetComponent<Rigidbody>().velocity = _bazookaMissile.transform.forward * 7f + _bazookaMissile.transform.up * 7f;
         _bazookaMissile.ReceiveReturnMissileFunc(ReturnMissile);
-        _bazookaMissile.ProjectileOwner = _playerInfo;
+        _bazookaMissile.ProjectileOwnerID = _playerInfo.PhotonViewID;
         _bazookaMissile.Attack = _playerInfo.Attack;
         Debug.DrawRay(_bazookaMissile.transform.position, aimDir, Color.red, 1f);
         _bazookaMissile.gameObject.SetActive(true);

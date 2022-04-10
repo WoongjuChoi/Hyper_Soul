@@ -53,7 +53,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LoadLevel("LobbyScene");
     }
-
+    //public void Respawn()
+    //{
+    //    Transform[] spawnPoint = _spawnPosBase.GetComponentsInChildren<Transform>();
+    //}
     private void SpawnPlayer()
     {
         Transform[] spawnPoint = _spawnPosBase.GetComponentsInChildren<Transform>();

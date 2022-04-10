@@ -68,7 +68,7 @@ public class WolfInformation : MonsterInformation
 
                 _isDamaged = true;
 
-                _target = collision.gameObject.GetComponent<BazookaMissile>().ProjectileOwner.gameObject;
+                //_target = collision.gameObject.GetComponent<BazookaMissile>().ProjectileOwnerID.gameObject;
 
                 Vector3 targetPosition = _target.GetComponent<PlayerMovement>().StoreFirePosition + new Vector3(0f, 1.3f, 0f);
 

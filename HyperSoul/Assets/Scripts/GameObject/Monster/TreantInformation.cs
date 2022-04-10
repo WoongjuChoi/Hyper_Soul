@@ -65,7 +65,7 @@ public class TreantInformation : MonsterInformation
 
                 if (false == _isTargeting)
                 {
-                    _target = collision.gameObject.GetComponent<BazookaMissile>().ProjectileOwner.gameObject;
+                    //_target = collision.gameObject.GetComponent<BazookaMissile>().ProjectileOwnerID.gameObject;
 
                     _isTargeting = true;
                 }

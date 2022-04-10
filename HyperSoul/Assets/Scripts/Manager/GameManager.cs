@@ -65,7 +65,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             index = Random.Range(1, 5);
         }
-        GameObject obj = PhotonNetwork.Instantiate("BazookaPlayer", spawnPoint[index].position, Quaternion.identity);
+        //GameObject obj = PhotonNetwork.Instantiate("BazookaPlayer", spawnPoint[index].position, Quaternion.identity);
+        //GameObject obj = PhotonNetwork.Instantiate("RiflePlayer", spawnPoint[index].position, Quaternion.identity);
+        GameObject obj = PhotonNetwork.Instantiate("SniperPlayer", spawnPoint[index].position, Quaternion.identity);
 
         photonView.RPC("SpawnPosMarking", RpcTarget.AllBuffered, index);
     }
@@ -76,10 +78,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         _isSpawned[spawnPosNum] = true;
 
         // µð¹ö±ë¿ë
-        for (int i = 0; i < _isSpawned.Length; ++i)
-        {
-            Debug.Log($"{i} : {_isSpawned[i]}");
-        }
+        //for (int i = 0; i < _isSpawned.Length; ++i)
+        //{
+        //    Debug.Log($"{i} : {_isSpawned[i]}");
+        //}
     }
 
     private void SendChatMessage()

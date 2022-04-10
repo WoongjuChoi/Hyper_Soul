@@ -74,10 +74,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         _isSpawned[spawnPosNum] = true;
 
         // µð¹ö±ë¿ë
-        for (int i = 0; i < _isSpawned.Length; ++i)
-        {
-            Debug.Log($"{i} : {_isSpawned[i]}");
-        }
+        //for (int i = 0; i < _isSpawned.Length; ++i)
+        //{
+        //    Debug.Log($"{i} : {_isSpawned[i]}");
+        //}
     }
 
     private void SendChatMessage()

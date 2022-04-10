@@ -24,6 +24,7 @@ public class Bullet : Projectile
     private void OnEnable()
     {
         //SetAttackValue(_playerInfo.Attack);
+        _bulletRigidbody.velocity = Vector3.zero;
         _bulletRigidbody.velocity = transform.forward * _speed;
     }
 

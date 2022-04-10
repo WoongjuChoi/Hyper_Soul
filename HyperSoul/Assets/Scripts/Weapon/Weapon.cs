@@ -66,7 +66,6 @@ public abstract class Weapon : MonoBehaviourPun
         {
             return false;
         }
-        Debug.Log(_reloadTime);
         StartCoroutine(Reload());
         return true;
     }

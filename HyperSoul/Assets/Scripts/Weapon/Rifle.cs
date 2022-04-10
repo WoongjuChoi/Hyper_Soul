@@ -45,6 +45,7 @@ public class Rifle : Weapon
     [PunRPC]
     public void BulletFire()
     {
+        SetMousePos();
         StartCoroutine(Shoot());
     }
 
@@ -54,10 +55,11 @@ public class Rifle : Weapon
 
         Vector3 aimDir = (_mousePos - _bulletSpawnPos.position).normalized;
         GameObject bullet = _bulletPool.GetObj();
-        bullet.SetActive(true);
         bullet.transform.position = _bulletSpawnPos.position;
         bullet.transform.rotation = Quaternion.LookRotation(aimDir, Vector3.up);
+        //bullet.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         bullet.GetComponent<Bullet>().SetBulletReturnFunc(_bulletPool.ReturnObj);
+        bullet.SetActive(true);
 
         Collider bulletCollider = bullet.GetComponent<BoxCollider>();
         if (false == PhotonNetwork.IsMasterClient)

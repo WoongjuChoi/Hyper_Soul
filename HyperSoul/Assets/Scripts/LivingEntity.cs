@@ -36,38 +36,15 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
 
     protected DataManager _dataManager;
 
-    private void Start()
-    {
-       
-        _hitSound.SetActive(false);
-        _deathSound.SetActive(false);
-        _animator = GetComponentInChildren<Animator>();
-        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
-
-        //if(photonView.IsMine)
-        //{
-        //    _hpBar.gameObject.SetActive(false);
-        //}
-    }
+    public virtual void Awake() { }
+   
     private void LateUpdate()
     {
         _hpBar.value = (float)CurHp / MaxHp;
         _hpCanvas.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    { 
-        if(collision.gameObject.GetComponent<Projectile>() != null)
-        {
-            Debug.Log($"피격당함\n Attacker : {collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID}" +
-           $"\n Damage : {collision.gameObject.GetComponent<Projectile>().Attack}" +
-           $"\n HP : {CurHp}");
-
-            TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID, collision.gameObject.GetComponent<Projectile>().Attack,
-                collision.transform.position, collision.transform.position.normalized);
-        }
-        
-    }
+    public virtual void OnCollisionEnter(Collision collision) { }
 
     [PunRPC]
     public void Respawn()

@@ -36,11 +36,27 @@ public class PlayerInfo : LivingEntity
     }
     public int CurExp { get; set; }
 
+    public override void Awake()
+    {
+        _hitSound.SetActive(false);
+        _deathSound.SetActive(false);
+        _animator = GetComponentInChildren<Animator>();
+        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
+
+        //if(photonView.IsMine)
+        //{
+        //    _hpBar.gameObject.SetActive(false);
+        //}
+        
+    }
     private void Start()
     {
+        //Debug.Log("인포 스타트");
+
         // Temp
         _playerType = PlayerType.Bazooka;
         Level = 1;
+        CurExp = 0;
 
         PhotonViewID = photonView.ViewID;
         NickName = photonView.Owner.NickName;
@@ -58,6 +74,7 @@ public class PlayerInfo : LivingEntity
     private void OnEnable()
     {
         MaxHp = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
+        Debug.Log($"MaxHp : {MaxHp}");
         MaxExp = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
         Attack = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
         CurHp = MaxHp;
@@ -71,6 +88,18 @@ public class PlayerInfo : LivingEntity
         ExpUpdate();
     }
 
+    public override void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.GetComponent<Projectile>() != null)
+        {
+            Debug.Log($"피격당함\n Attacker : {collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID}" +
+           $"\n Damage : {collision.gameObject.GetComponent<Projectile>().Attack}" +
+           $"\n HP : {CurHp}");
+
+            TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID, collision.gameObject.GetComponent<Projectile>().Attack,
+                collision.transform.position, collision.transform.position.normalized);
+        }
+    }
 
     private void HpUpdate()
     {

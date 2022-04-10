@@ -71,7 +71,7 @@ class WolfDamagedState : BaseState<WolfInformation>
 
         RaycastHit hit;
 
-        if (Physics.Raycast(_raycastOriginVec, _lookAtTargetVec, out hit, 1000f))
+        if (Physics.Raycast(_raycastOriginVec, _lookAtTargetVec.normalized, out hit, _lookAtTargetVec.magnitude, 1 << CreatureInformation.Target.layer))
         {
             //// 디버깅용
             //Debug.Log($"_monsterInfo.Target.layer : {_monsterInfo.Target.layer}\nhit.collider.gameObject.layer :{hit.collider.gameObject.layer}");

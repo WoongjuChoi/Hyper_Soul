@@ -7,65 +7,62 @@ public class TreantRootAttack : MonoBehaviour, ITreantAttack
     [SerializeField]
     private GameObject _treantRoot = null;
 
+    private Coroutine _rootAttackCoroutine = null;
+
     private Transform _targetTransform = null;
 
     private bool _isAttack = false;
-    private bool _isTargeting = false;
 
     public void Attack()
     {
         gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, false);
 
-        StartCoroutine(RootAttack());
+        if (false == _isAttack)
+        {
+            _rootAttackCoroutine = StartCoroutine(RootAttack());
+        }
     }
 
     private IEnumerator RootAttack()
     {
-        while (true)
-        {
-            if (false == _isTargeting)
-            {
-                _targetTransform = gameObject.GetComponent<TreantInformation>().Target.transform;
+        _isAttack = true;
 
-                _treantRoot.SetActive(true);
+        _targetTransform = gameObject.GetComponent<TreantInformation>().Target.transform;
 
-                _treantRoot.transform.position = new Vector3(_targetTransform.position.x, _treantRoot.transform.position.y, _targetTransform.position.z);
+        gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, true);
 
-                _isAttack = true;
-                _isTargeting = true;
-            }
+        _treantRoot.SetActive(true);
 
-            yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.2f);
 
-            if (_isAttack)
-            {
-                Vector3 movetargetVec = (_targetTransform.position - _treantRoot.transform.position).normalized;
+        _treantRoot.transform.position = new Vector3(_targetTransform.position.x, _treantRoot.transform.position.y, _targetTransform.position.z);
 
-                float dotrotateToTarget = Vector3.Dot(Vector3.forward, movetargetVec) * Mathf.Rad2Deg;
+        yield return new WaitForSeconds(0.1f);
 
-                _treantRoot.transform.Rotate(0f, dotrotateToTarget, 0f);
+        _treantRoot.GetComponent<Animator>().SetTrigger(MonsterAnimatorID.HAS_SPAWN);
 
-                _isAttack = false;
-            }
+        yield return new WaitForSeconds(0.1f);
 
-            gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, true);
+        gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, false);
 
-            _treantRoot.GetComponent<Animator>().SetTrigger(MonsterAnimatorID.HAS_SPAWN);
+        yield return new WaitForSeconds(4f);
 
-            yield return new WaitForSeconds(0.1f);
+        _treantRoot.SetActive(false);
 
-            gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, false);
+        yield return new WaitForSeconds(1f);
 
-            yield return new WaitForSeconds(5f);
-
-            _treantRoot.SetActive(false);
-
-            _isTargeting = false;
-        }
+        _isAttack = false;
     }
 
-    public void StopRootAttack()
+    public void StopAttack()
     {
-        StopCoroutine(RootAttack());
+        _isAttack = false;
+
+        _treantRoot.SetActive(false);
+
+        if (null != _rootAttackCoroutine)
+        {
+            StopCoroutine(_rootAttackCoroutine);
+        }
     }
 }

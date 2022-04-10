@@ -1317,7 +1317,7 @@ GameObject:
   - component: {fileID: 5641331980754899856}
   - component: {fileID: 9039456690425684840}
   - component: {fileID: 1591210600240758448}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: BazookaPlayer
   m_TagString: Player
   m_Icon: {fileID: 0}

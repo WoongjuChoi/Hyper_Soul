@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,12 @@ public class WolfInformation : MonsterInformation
 
     public override void Awake()
     {
+        //_hitImage.SetActive(false);
+        //_hitSound.SetActive(false);
+        //_deathSound.SetActive(false);
+        //_animator = GetComponentInChildren<Animator>();
+        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
+
         _monsterAlertState = GetComponent<WolfAlertState>();
         _monsterAttackState = GetComponent<WolfAttackState>();
         _monsterChaseState = GetComponent<WolfChaseState>();
@@ -58,19 +65,19 @@ public class WolfInformation : MonsterInformation
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public override void OnCollisionEnter(Collision collision)
     {
         if (false == _isDamaged && SampleObjectParameterID.LAYER_SAMPLE_AMMO == collision.gameObject.layer)
         {
             if (EStateIDs.Alert == _monsterCurrentState || EStateIDs.Attack == _monsterCurrentState || EStateIDs.Chase == _monsterCurrentState || EStateIDs.Idle == _monsterCurrentState)
             {
-                _collisionVec = collision.gameObject.transform.position;
+                _collisionVec = gameObject.transform.position;
 
                 _isDamaged = true;
 
-                //_target = collision.gameObject.GetComponent<BazookaMissile>().ProjectileOwnerID.gameObject;
+                _target = PhotonView.Find(collision.gameObject.GetComponent<BazookaMissile>().ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
 
-                Vector3 targetPosition = _target.GetComponent<PlayerMovement>().StoreFirePosition + new Vector3(0f, 1.3f, 0f);
+                Vector3 targetPosition = _target.transform.position + new Vector3(0f, 1.3f, 0f);
 
                 _lookAtTargetVec = targetPosition - _collisionVec;
             }

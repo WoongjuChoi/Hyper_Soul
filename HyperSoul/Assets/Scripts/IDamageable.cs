@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    void TakeDamage(LivingEntity attacker, int damageAmt, Vector3 hitPoint, Vector3 hitNormal);
+    void TakeDamage(int attackerID, int damageAmt, Vector3 hitPoint, Vector3 hitNormal);
 }

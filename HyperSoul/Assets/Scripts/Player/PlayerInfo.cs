@@ -24,7 +24,11 @@ public class PlayerInfo : LivingEntity
     [SerializeField]
     private Text _gameOverText;
 
+    private PlayerType _playerType; //
+
     private Weapon _playerWeapon;
+
+    public int PhotonViewID;
 
     public int MaxExp
     {
@@ -34,20 +38,28 @@ public class PlayerInfo : LivingEntity
 
     private void Start()
     {
+        // Temp
+        _playerType = PlayerType.Bazooka;
+        Level = 1;
+
+        PhotonViewID = photonView.ViewID;
         NickName = photonView.Owner.NickName;
         _playerWeapon = GetComponentInChildren<Weapon>();
-        MaxExp = _dataManager.FindPlayerData("Bazooka1").MaxExp;
+        
+
         Exp = MaxExp;
 
         _killText.gameObject.SetActive(false);
         _levelUpText.gameObject.SetActive(false);
         _gameOverText.gameObject.SetActive(false);
+        _hitImage.SetActive(false);
     }
 
     private void OnEnable()
     {
-        MaxHp = _dataManager.FindPlayerData("Bazooka1").MaxHp;
-        Attack = _dataManager.FindPlayerData("Bazooka1").Attack;
+        MaxHp = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
+        MaxExp = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
+        Attack = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
         CurHp = MaxHp;
         IsDead = false;
     }
@@ -79,9 +91,9 @@ public class PlayerInfo : LivingEntity
     {
         _expText.text = "Exp : " + CurExp;
 
-        _expSlider.value = (float)CurExp / Exp;
+        _expSlider.value = (float)CurExp / MaxExp;
 
-        if (CurExp >= Exp)
+        if (CurExp >= MaxExp && Level < MaxLevel)
         {
             StartCoroutine(LevelUp());
             CurExp = 0;
@@ -91,6 +103,11 @@ public class PlayerInfo : LivingEntity
     private IEnumerator LevelUp()
     {
         _levelUpText.gameObject.SetActive(true);
+        ++Level;
+        MaxHp = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
+        MaxExp = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
+        Attack = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
+        CurHp = MaxHp;
 
         yield return new WaitForSeconds(3f);
 

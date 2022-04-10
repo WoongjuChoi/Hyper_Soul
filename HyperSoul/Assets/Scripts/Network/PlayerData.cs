@@ -29,5 +29,8 @@ public class PlayerData //: ScriptableObject
     {
         get; set;
     }
-
+    public int MaxBullet
+    {
+        get; set;
+    }
 }

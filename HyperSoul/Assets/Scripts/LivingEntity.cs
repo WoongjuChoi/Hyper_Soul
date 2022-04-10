@@ -28,17 +28,17 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     protected Animator _animator;
     protected bool _isHitting = false;
 
-   
+
     public int Exp { get; set; }
-    public string CharacterName { get; set; } // 바주카인지 라이플인지 이런거 넣기
     public int Level { get; set; }
+    public int MaxLevel {get {return 5;} }
     public CharacterType Type { get; set; }
 
     protected DataManager _dataManager;
 
-    private void Awake()
+    private void Start()
     {
-        _hitImage.SetActive(false);
+       
         _hitSound.SetActive(false);
         _deathSound.SetActive(false);
         _animator = GetComponentInChildren<Animator>();
@@ -59,8 +59,12 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     { 
         if(collision.gameObject.GetComponent<Projectile>() != null)
         {
-            //TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwner, collision.gameObject.GetComponent<Projectile>().Attack,
-             //   collision.transform.position, collision.transform.position.normalized);
+            Debug.Log($"피격당함\n Attacker : {collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID}" +
+           $"\n Damage : {collision.gameObject.GetComponent<Projectile>().Attack}" +
+           $"\n HP : {CurHp}");
+
+            TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID, collision.gameObject.GetComponent<Projectile>().Attack,
+                collision.transform.position, collision.transform.position.normalized);
         }
         
     }
@@ -73,46 +77,41 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         gameObject.SetActive(true);
     }
 
-    public virtual void TakeDamage(LivingEntity attacker, int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
+    public virtual void TakeDamage(int attackerID, int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
     {
         if (PhotonNetwork.IsMasterClient)
         {
             CurHp -= damageAmt;
             Hit();
-            //photonView.RPC("UpdateHP", RpcTarget.Others, CurHp, IsDead);
-            photonView.RPC("OnDamage", RpcTarget.Others, attacker, damageAmt, hitPoint, hitNormal);
-
-            if (false == _isHitting)
-            {
-                photonView.RPC("Hit", RpcTarget.Others, null);
-            }
+            photonView.RPC("UpdateHP", RpcTarget.Others, CurHp);
+            photonView.RPC("OnDamage", RpcTarget.Others, attackerID, damageAmt, hitPoint, hitNormal);
         }
     }
 
     [PunRPC]
-    protected void OnDamage(LivingEntity attacker, int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
+    protected void OnDamage(int attackerID, int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
     {
         if(IsDead)
         {
             return;
         }
-        CurHp -= damageAmt;
 
         if (CurHp <= 0 && IsDead == false)
         {
-            Die(attacker);
+            Die(attackerID);
         }
         else if (false == _isHitting)
         {
-            StartCoroutine(HitCorountine());
+            photonView.RPC("Hit", RpcTarget.Others, null);
         }
     }
 
-    //[PunRPC]
-    //public void UpdateHP(int newHp)
-    //{
-    //    CurHp = newHp;
-    //}
+    [PunRPC]
+    public void UpdateHP(int newHp)
+    {
+        CurHp = newHp;
+    }
+
     [PunRPC]
     private void Hit()
     {
@@ -137,9 +136,9 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         _animator.SetBool(CommonAnimatorID.HIT, false);
     }
 
-    public void Die(LivingEntity attacker)
+    public virtual void Die(int attackerID)
     {
-        GameManager.Instance.SendDieMessage(this, attacker);
+        GameManager.Instance.SendDieMessage(this, PhotonView.Find(attackerID).GetComponent<LivingEntity>());
         _deathSound.SetActive(true);
         
         if (false == IsDead)

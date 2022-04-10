@@ -95,7 +95,7 @@ public class BazookaMissile : Projectile
     private void OnCollisionEnter(Collision collision)
     {
         Explosion();
-        photonView.RPC("Explosion", RpcTarget.Others, null);
+        photonView.RPC("Explosion", RpcTarget.Others);
     }
 
     private IEnumerator SoftLaunch()

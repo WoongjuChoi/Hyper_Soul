@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,10 +16,10 @@ public class WolfInformation : MonsterInformation
 
     public override void Awake()
     {
-        _hitImage.SetActive(false);
-        _hitSound.SetActive(false);
-        _deathSound.SetActive(false);
-        _animator = GetComponentInChildren<Animator>();
+        //_hitImage.SetActive(false);
+        //_hitSound.SetActive(false);
+        //_deathSound.SetActive(false);
+        //_animator = GetComponentInChildren<Animator>();
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
         _monsterAlertState = GetComponent<WolfAlertState>();
@@ -74,7 +75,7 @@ public class WolfInformation : MonsterInformation
 
                 _isDamaged = true;
 
-                //_target = collision.gameObject.GetComponent<BazookaMissile>().ProjectileOwnerID.gameObject;
+                _target = PhotonView.Find(collision.gameObject.GetComponent<BazookaMissile>().ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
 
                 Vector3 targetPosition = _target.transform.position + new Vector3(0f, 1.3f, 0f);
 

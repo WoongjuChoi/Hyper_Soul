@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,10 +38,10 @@ public class TreantInformation : MonsterInformation
 
     public override void Awake()
     {
-        _hitImage.SetActive(false);
-        _hitSound.SetActive(false);
-        _deathSound.SetActive(false);
-        _animator = GetComponentInChildren<Animator>();
+        //_hitImage.SetActive(false);
+        //_hitSound.SetActive(false);
+        //_deathSound.SetActive(false);
+        //_animator = GetComponentInChildren<Animator>();
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
         _treantAttackState = GetComponent<TreantAttackState>();
@@ -68,22 +69,13 @@ public class TreantInformation : MonsterInformation
             {
                 _collisionVec = collision.gameObject.transform.position;
 
-                Vector3 collisionVec = new Vector3(_collisionVec.x, gameObject.transform.position.y, _collisionVec.z);
+                _isDamaged = true;
 
-                collisionVec = (collisionVec - gameObject.transform.position).normalized;
-
-                float internalAngle = Vector3.Dot(gameObject.transform.forward, collisionVec);
-
-                if (internalAngle > DOT_120_DEGREE)
+                if (false == _isTargeting)
                 {
-                    _isDamaged = true;
+                    _target = PhotonView.Find(collision.gameObject.GetComponent<BazookaMissile>().ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
 
-                    if (false == _isTargeting)
-                    {
-                        _target = collision.gameObject.GetComponent<BazookaMissile>().ProjectileOwner.gameObject;
-
-                        _isTargeting = true;
-                    }
+                    _isTargeting = true;
                 }
             }
         }

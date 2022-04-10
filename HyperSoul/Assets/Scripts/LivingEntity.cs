@@ -28,7 +28,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     protected Animator _animator;
     protected bool _isHitting = false;
 
-
     public int Exp { get; set; }
     public int Level { get; set; }
     public int MaxLevel {get {return 5;} }

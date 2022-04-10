@@ -43,25 +43,25 @@ public class PlayerInfo : LivingEntity
         _animator = GetComponentInChildren<Animator>();
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
-        //if(photonView.IsMine)
-        //{
-        //    _hpBar.gameObject.SetActive(false);
-        //}
-        
-    }
-    private void Start()
-    {
-        //Debug.Log("인포 스타트");
-
         // Temp
         _playerType = PlayerType.Bazooka;
         Level = 1;
         CurExp = 0;
 
+        //if(photonView.IsMine)
+        //{
+        //    _hpBar.gameObject.SetActive(false);
+        //}
+
+    }
+
+    private void Start()
+    {
+        //Debug.Log("인포 스타트");
+
         PhotonViewID = photonView.ViewID;
         NickName = photonView.Owner.NickName;
         _playerWeapon = GetComponentInChildren<Weapon>();
-        
 
         Exp = MaxExp;
 

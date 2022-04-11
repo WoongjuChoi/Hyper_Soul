@@ -7,27 +7,25 @@ public class TreantDamagedState : BaseState<TreantInformation>
     public override void EnterState()
     {
         CreatureInformation.MonsterCurrentState = EStateIDs.Damaged;
-
-        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DAMAGED, true);
     }
 
     public override void ExitState()
     {
         CreatureInformation.IsDamaged = false;
-
-        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DAMAGED, false);
     }
 
     public override void UpdateState()
     {
         // 데미지 받고 (수정 필요)
-        CreatureInformation.MonsterCurrentHP -= 20;
+        //CreatureInformation.MonsterCurrentHP -= 20;
+        CreatureInformation.TakeDamage(CreatureInformation.AttackerInfo.ProjectileOwnerID, CreatureInformation.Target.GetComponent<LivingEntity>().Attack, Vector3.zero, Vector3.zero);
+
+        // 최종 결과
+        //CreatureInformation.TakeDamage(CreatureInformation.AttackerInfo.ProjectileOwnerID, CreatureInformation.AttackerInfo.Attack, Vector3.zero, Vector3.zero);
 
         // HP <= 0 이면 Die 상태
-        if (CreatureInformation.MonsterCurrentHP <= 0)
+        if (CreatureInformation.CurHp <= 0)
         {
-            GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_DIE);
-
             FiniteStateMachine.ChangeState(EStateIDs.Die);
 
             return;

@@ -51,14 +51,14 @@ public class PlayerCam : MonoBehaviourPun
             }
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+
+            GameManager.Instance.PlayerCamRotationTransform = _cameraArm;
         }
 
         _defaultCamPos = new Vector3(1.5f, 0.4f, -3.4f);
         _normalRotationSpeed = new Vector2(0.5f, 0.5f);
         _input = GetComponent<PlayerInputs>();
         _playerInfo = GetComponent<PlayerInfo>();
-        
-        GameManager.Instance.PlayerCamRotationTransform = _cameraArm;
     }
 
     private void Update()

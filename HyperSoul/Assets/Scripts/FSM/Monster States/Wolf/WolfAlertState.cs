@@ -4,32 +4,28 @@ using UnityEngine;
 
 public class WolfAlertState : BaseState<WolfInformation>
 {
-    private bool _playAnimation = false;
-
     private float _changeIdleAnimationTime = 4f;
     private float _elapsedTime = 0f;
 
     public override void EnterState()
     {
-        base.CreatureInformation.MonsterCurrentState = EStateIDs.Alert;
+        CreatureInformation.MonsterCurrentState = EStateIDs.Alert;
 
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, true);
+        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, true);
     }
 
     public override void ExitState()
     {
         _elapsedTime = 0;
 
-        _playAnimation = false;
-
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, false);
+        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, false);
     }
 
     public override void UpdateState()
     {
-        if (base.CreatureInformation.IsDamaged)
+        if (CreatureInformation.IsDamaged)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
+            FiniteStateMachine.ChangeState(EStateIDs.Damaged);
 
             return;
         }
@@ -38,7 +34,7 @@ public class WolfAlertState : BaseState<WolfInformation>
 
         if (_elapsedTime >= _changeIdleAnimationTime)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Idle);
+            FiniteStateMachine.ChangeState(EStateIDs.Idle);
 
             return;
         }

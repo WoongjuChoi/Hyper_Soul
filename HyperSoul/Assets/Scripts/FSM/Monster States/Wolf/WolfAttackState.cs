@@ -11,7 +11,7 @@ public class WolfAttackState : BaseState<WolfInformation>
 
     public override void EnterState()
     {
-        if (EStateIDs.Chase == base.CreatureInformation.MonsterCurrentState)
+        if (EStateIDs.Chase == CreatureInformation.MonsterCurrentState)
         {
             _elapsedTime = _changeAttackAnimationTime;
         }
@@ -20,51 +20,51 @@ public class WolfAttackState : BaseState<WolfInformation>
             _elapsedTime = _changeAttackAnimationTime - 0.5f;
         }
 
-        base.CreatureInformation.MonsterCurrentState = EStateIDs.Attack;
+        CreatureInformation.MonsterCurrentState = EStateIDs.Attack;
     }
 
     public override void ExitState()
     {
         _elapsedTime = 0f;
 
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ATTACK, false);
+        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ATTACK, false);
     }
 
     public override void UpdateState()
     {
-        if (base.CreatureInformation.IsDamaged)
+        if (CreatureInformation.IsDamaged)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
+            FiniteStateMachine.ChangeState(EStateIDs.Damaged);
 
             return;
         }
 
-        if (false == base.CreatureInformation.IsWithinAttackRange)
+        if (false == CreatureInformation.IsWithinAttackRange)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Chase);
+            FiniteStateMachine.ChangeState(EStateIDs.Chase);
 
             return;
         }
 
         if (_elapsedTime >= _changeAttackAnimationTime)
         {
-            Vector3 raycastOriginVec = base.CreatureInformation.MonsterRayPoint.position + new Vector3(0f, 0f, 1f);
+            Vector3 raycastOriginVec = CreatureInformation.MonsterRayPoint.position + new Vector3(0f, 0f, 1f);
 
             RaycastHit hit;
 
-            if (Physics.Raycast(raycastOriginVec, base.GameObject.transform.forward, out hit, 100f))
+            if (Physics.Raycast(raycastOriginVec, GameObject.transform.forward, out hit, 100f))
             {
-                if (base.CreatureInformation.Target.layer != hit.collider.gameObject.layer)
+                if (CreatureInformation.Target.layer != hit.collider.gameObject.layer)
                 {
-                    base.GameObject.transform.LookAt(base.CreatureInformation.Target.transform);
+                    GameObject.transform.LookAt(CreatureInformation.Target.transform);
                 }
             }
             else
             {
-                base.GameObject.transform.LookAt(base.CreatureInformation.Target.transform);
+                GameObject.transform.LookAt(CreatureInformation.Target.transform);
             }
 
-            base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ATTACK, true);
+            GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ATTACK, true);
 
             _elapsedTime = 0f;
         }

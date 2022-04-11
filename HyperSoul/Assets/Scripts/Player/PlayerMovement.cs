@@ -54,7 +54,6 @@ public class PlayerMovement : MonoBehaviourPun
 
         MoveAnimation();
         JumpAnimation();
-        AimAnimation();
         MoveSound();
         JumpSound();
         Reload();
@@ -142,13 +141,6 @@ public class PlayerMovement : MonoBehaviourPun
             _storeFirePosition = gameObject.transform.position;
             _weapon.Fire();
         }
-    }
-
-    private void AimAnimation()
-    {
-        // 0 ~ 1 사이의 값을 얻기 위해 -80 ~ 50도의 제약이 있는 playerCam의 eulerAngleX의 값을 조정
-        _aim = (_playerCam._eulerAngleX + 80f) / 130f;
-        _playerAnimator.SetFloat(PlayerAnimatorID.AIM, _aim);
     }
 
     // 점프 애니메이션 처리를 위한 트리거 콜라이더 처리

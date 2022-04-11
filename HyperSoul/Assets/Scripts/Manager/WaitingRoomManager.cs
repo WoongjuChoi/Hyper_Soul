@@ -34,16 +34,20 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
     {
         UpdatePlayerList();
     }
-
-    public override void OnLeftRoom()
+    public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        base.OnLeftRoom();
+        _playerPanal.Remove(otherPlayer.GetHashCode());
     }
 
     public void LeaveRoom()
     {
         //_playerPanal[PhotonNetwork.LocalPlayer]
         PhotonNetwork.LeaveRoom();
+    }
+
+    public void GameStart()
+    {
+        PhotonNetwork.LoadLevel("MainScene");
     }
 
     private void UpdatePlayerList()

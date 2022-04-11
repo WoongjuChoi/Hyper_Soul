@@ -1,9 +1,10 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WaitingRoom : MonoBehaviour
+public class WaitingRoom : MonoBehaviourPun
 {
     public int CurPlayerType { get; private set; }
     public bool IsReady { get; private set; }
@@ -31,15 +32,7 @@ public class WaitingRoom : MonoBehaviour
         _playerCharactor.Add(_bazookaPlayer);
         _playerCharactor.Add(_sniperPlayer);
 
-        CurPlayerType = (int)EPlayerType.Rifle;
         _playerCharactor[CurPlayerType].SetActive(true);
-
-        for (int i = 1; i < _playerCharactor.Count; ++i)
-        {
-            _playerCharactor[i].SetActive(false);
-        }
-
-        IsReady = false;
 
         _readyButtonText = _readyButton.GetComponentInChildren<Text>();
         _readyButtonImage = _readyButton.GetComponent<Image>();
@@ -48,10 +41,23 @@ public class WaitingRoom : MonoBehaviour
     private void OnEnable()
     {
         PlayerName.text = "Player 1";
+        CurPlayerType = (int)EPlayerType.Rifle;
+
+        for (int i = 1; i < _playerCharactor.Count; ++i)
+        {
+            _playerCharactor[i].SetActive(false);
+        }
+
+        IsReady = false;
     }
 
     public void RightClick()
     {
+        if (false == photonView.IsMine)
+        {
+            return;
+        }
+        
         _playerCharactor[CurPlayerType].SetActive(false);
         ++CurPlayerType;
 
@@ -65,6 +71,11 @@ public class WaitingRoom : MonoBehaviour
 
     public void LeftClick()
     {
+        if (false == photonView.IsMine)
+        {
+            return;
+        }
+
         _playerCharactor[CurPlayerType].SetActive(false);
         --CurPlayerType;
 
@@ -78,6 +89,11 @@ public class WaitingRoom : MonoBehaviour
 
     public void ReadyClick()
     {
+        if (false == photonView.IsMine)
+        {
+            return;
+        }
+
         IsReady = !IsReady;
         Debug.Log(IsReady);
 

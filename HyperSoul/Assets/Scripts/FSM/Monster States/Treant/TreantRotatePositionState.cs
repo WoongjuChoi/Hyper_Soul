@@ -12,7 +12,7 @@ public class TreantRotatePositionState : BaseState<TreantInformation>
 
     public override void EnterState()
     {
-        base.CreatureInformation.MonsterCurrentState = EStateIDs.RotatePosition;
+        CreatureInformation.MonsterCurrentState = EStateIDs.RotatePosition;
     }
 
     public override void ExitState()
@@ -20,22 +20,22 @@ public class TreantRotatePositionState : BaseState<TreantInformation>
         _isLocatedLeftSide = false;
         _isLocatedRightSide = false;
 
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(IS_LEFT_ROTATE, _isLocatedLeftSide);
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(IS_RIGHT_ROTATE, _isLocatedRightSide);
+        GameObject.GetComponentInChildren<Animator>().SetBool(IS_LEFT_ROTATE, _isLocatedLeftSide);
+        GameObject.GetComponentInChildren<Animator>().SetBool(IS_RIGHT_ROTATE, _isLocatedRightSide);
     }
 
     public override void UpdateState()
     {
-        if (base.CreatureInformation.IsDamaged)
+        if (CreatureInformation.IsDamaged)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
+            FiniteStateMachine.ChangeState(EStateIDs.Damaged);
 
             return;
         }
 
-        if (base.CreatureInformation.ExistInSight)
+        if (CreatureInformation.ExistInSight)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Attack);
+            FiniteStateMachine.ChangeState(EStateIDs.Attack);
 
             return;
         }
@@ -49,7 +49,7 @@ public class TreantRotatePositionState : BaseState<TreantInformation>
 
     private void CheckTargetPosition()
     {
-        Vector3 crossMonsterToTarget = Vector3.Cross(base.GameObject.transform.forward, base.CreatureInformation.VectorMonsterToTarget);
+        Vector3 crossMonsterToTarget = Vector3.Cross(GameObject.transform.forward, CreatureInformation.VectorMonsterToTarget);
 
         if (crossMonsterToTarget.y > 0f)
         {
@@ -65,20 +65,20 @@ public class TreantRotatePositionState : BaseState<TreantInformation>
 
     private IEnumerator RotatePosition()
     {
-        while (false == base.CreatureInformation.ExistInSight)
+        while (false == CreatureInformation.ExistInSight)
         {
-            float rotateSpeed = base.CreatureInformation.RotateSpeed * Time.deltaTime;
+            float rotateSpeed = CreatureInformation.RotateSpeed * Time.deltaTime;
 
-            base.GameObject.GetComponentInChildren<Animator>().SetBool(IS_LEFT_ROTATE, _isLocatedLeftSide);
-            base.GameObject.GetComponentInChildren<Animator>().SetBool(IS_RIGHT_ROTATE, _isLocatedRightSide);
+            GameObject.GetComponentInChildren<Animator>().SetBool(IS_LEFT_ROTATE, _isLocatedLeftSide);
+            GameObject.GetComponentInChildren<Animator>().SetBool(IS_RIGHT_ROTATE, _isLocatedRightSide);
 
             if (_isLocatedRightSide)
             {
-                base.GameObject.transform.Rotate(0f, rotateSpeed, 0f);
+                GameObject.transform.Rotate(0f, rotateSpeed, 0f);
             }
             else if (_isLocatedLeftSide)
             {
-                base.GameObject.transform.Rotate(0f, -rotateSpeed, 0f);
+                GameObject.transform.Rotate(0f, -rotateSpeed, 0f);
             }
 
             yield return new WaitForSeconds(1f);

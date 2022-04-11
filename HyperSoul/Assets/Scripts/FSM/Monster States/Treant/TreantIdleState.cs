@@ -8,29 +8,29 @@ public class TreantIdleState : BaseState<TreantInformation>
 
     public override void EnterState()
     {
-        base.CreatureInformation.MonsterCurrentState = EStateIDs.Idle;
+        CreatureInformation.MonsterCurrentState = EStateIDs.Idle;
     }
 
     public override void ExitState()
     {
         _increaseHealing = 0;
 
-        base.CreatureInformation.OriginVec = base.GameObject.transform.forward;
+        CreatureInformation.OriginVec = GameObject.transform.forward;
     }
 
     public override void UpdateState()
     {
-        if (base.CreatureInformation.IsDamaged)
+        if (CreatureInformation.IsDamaged)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
+            FiniteStateMachine.ChangeState(EStateIDs.Damaged);
 
             return;
         }
 
         // 현재 체력이 최대 체력이 아니라면 서서히 증가
-        if (base.CreatureInformation.MonsterCurrentHP >= base.CreatureInformation.MonsterMaxHP)
+        if (CreatureInformation.MonsterCurrentHP >= CreatureInformation.MonsterMaxHP)
         {
-            base.CreatureInformation.MonsterCurrentHP = base.CreatureInformation.MonsterMaxHP;
+            CreatureInformation.MonsterCurrentHP = CreatureInformation.MonsterMaxHP;
 
             _increaseHealing = 0;
         }
@@ -40,7 +40,7 @@ public class TreantIdleState : BaseState<TreantInformation>
 
             _increaseHealing += (int)Mathf.Round(increaseHealing * 10);
 
-            base.CreatureInformation.MonsterCurrentHP += _increaseHealing;
+            CreatureInformation.MonsterCurrentHP += _increaseHealing;
         }
     }
 }

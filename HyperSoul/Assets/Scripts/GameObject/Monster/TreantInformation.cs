@@ -38,11 +38,14 @@ public class TreantInformation : MonsterInformation
 
     public override void Awake()
     {
-        //_hitImage.SetActive(false);
-        //_hitSound.SetActive(false);
-        //_deathSound.SetActive(false);
-        //_animator = GetComponentInChildren<Animator>();
+        _hitImage.SetActive(false);
+        _hitSound.SetActive(false);
+        _deathSound.SetActive(false);
+        _animator = GetComponentInChildren<Animator>();
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
+
+        _monsterType = MonsterType.Tree;
+        Level = 1;
 
         _treantAttackState = GetComponent<TreantAttackState>();
         _treantDamagedState = GetComponent<TreantDamagedState>();
@@ -73,7 +76,9 @@ public class TreantInformation : MonsterInformation
 
                 if (false == _isTargeting)
                 {
-                    _target = PhotonView.Find(collision.gameObject.GetComponent<BazookaMissile>().ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
+                    _attackerInfo = collision.gameObject.GetComponent<Projectile>();
+
+                    _target = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
 
                     _isTargeting = true;
                 }

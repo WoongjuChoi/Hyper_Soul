@@ -9,7 +9,7 @@ public class TreantDieState : BaseState<TreantInformation>
 
     public override void EnterState()
     {
-        base.CreatureInformation.MonsterCurrentState = EStateIDs.Die;
+        CreatureInformation.MonsterCurrentState = EStateIDs.Die;
     }
 
     public override void ExitState()
@@ -24,16 +24,16 @@ public class TreantDieState : BaseState<TreantInformation>
 
     private void DieTreant()
     {
-        if (base.CreatureInformation.IsDie)
+        if (CreatureInformation.IsDie)
         {
             return;
         }
 
         if (_elapsedTime >= _monsterDieTime)
         {
-            base.CreatureInformation.IsDie = true;
+            CreatureInformation.IsDie = true;
 
-            base.GameObject.SetActive(false);
+            GameObject.SetActive(false);
 
             return;
         }

@@ -6,42 +6,40 @@ public class TreantDamagedState : BaseState<TreantInformation>
 {
     public override void EnterState()
     {
-        base.CreatureInformation.MonsterCurrentState = EStateIDs.Damaged;
-
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DAMAGED, true);
+        CreatureInformation.MonsterCurrentState = EStateIDs.Damaged;
     }
 
     public override void ExitState()
     {
-        base.CreatureInformation.IsDamaged = false;
-
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DAMAGED, false);
+        CreatureInformation.IsDamaged = false;
     }
 
     public override void UpdateState()
     {
         // 데미지 받고 (수정 필요)
-        base.CreatureInformation.MonsterCurrentHP -= 20;
+        //CreatureInformation.MonsterCurrentHP -= 20;
+        CreatureInformation.TakeDamage(CreatureInformation.AttackerInfo.ProjectileOwnerID, CreatureInformation.Target.GetComponent<LivingEntity>().Attack, Vector3.zero, Vector3.zero);
+
+        // 최종 결과
+        //CreatureInformation.TakeDamage(CreatureInformation.AttackerInfo.ProjectileOwnerID, CreatureInformation.AttackerInfo.Attack, Vector3.zero, Vector3.zero);
 
         // HP <= 0 이면 Die 상태
-        if (base.CreatureInformation.MonsterCurrentHP <= 0)
+        if (CreatureInformation.CurHp <= 0)
         {
-            base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_DIE);
-
-            base.FiniteStateMachine.ChangeState(EStateIDs.Die);
+            FiniteStateMachine.ChangeState(EStateIDs.Die);
 
             return;
         }
 
-        if (base.CreatureInformation.ExistInSight)
+        if (CreatureInformation.ExistInSight)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Attack);
+            FiniteStateMachine.ChangeState(EStateIDs.Attack);
 
             return;
         }
         else
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.RotatePosition);
+            FiniteStateMachine.ChangeState(EStateIDs.RotatePosition);
 
             return;
         }

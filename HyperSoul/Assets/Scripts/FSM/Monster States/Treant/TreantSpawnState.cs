@@ -8,11 +8,11 @@ public class TreantSpawnState : BaseState<TreantInformation>
 
     public override void EnterState()
     {
-        base.CreatureInformation.MonsterCurrentState = EStateIDs.Spawn;
+        CreatureInformation.MonsterCurrentState = EStateIDs.Spawn;
 
-        base.CreatureInformation.StompAttackArea.SetActive(false);
+        CreatureInformation.StompAttackArea.SetActive(false);
 
-        base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_SPAWN);
+        GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_SPAWN);
     }
 
     public override void ExitState()
@@ -24,9 +24,9 @@ public class TreantSpawnState : BaseState<TreantInformation>
     {
         _elapsedTime += Time.deltaTime;
 
-        if (_elapsedTime >= base.CreatureInformation.MonsterInvincibleTime)
+        if (_elapsedTime >= CreatureInformation.MonsterInvincibleTime)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Idle);
+            FiniteStateMachine.ChangeState(EStateIDs.Idle);
 
             return;
         }

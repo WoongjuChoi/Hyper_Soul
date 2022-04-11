@@ -16,18 +16,18 @@ public class TreantAttackState : BaseState<TreantInformation>
 
     public override void EnterState()
     {
-        base.CreatureInformation.MonsterCurrentState = EStateIDs.RotatePosition;
+        CreatureInformation.MonsterCurrentState = EStateIDs.RotatePosition;
     }
 
     public override void ExitState()
     {
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, false);
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, false);
+        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, false);
+        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, false);
 
         _treantRootAttack.StopAttack();
         _treantStompAttack.StopAttack();
 
-        base.CreatureInformation.StompAttackArea.SetActive(false);
+        CreatureInformation.StompAttackArea.SetActive(false);
 
         _outOfSight = false;
     }
@@ -36,23 +36,23 @@ public class TreantAttackState : BaseState<TreantInformation>
     {
         SetAttackPattern();
 
-        if (base.CreatureInformation.IsDamaged)
+        if (CreatureInformation.IsDamaged)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
+            FiniteStateMachine.ChangeState(EStateIDs.Damaged);
 
             return;
         }
         
         if (_outOfSight)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
+            FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
 
             return;
         }
 
-        if (false == base.CreatureInformation.ExistInSight)
+        if (false == CreatureInformation.ExistInSight)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.RotatePosition);
+            FiniteStateMachine.ChangeState(EStateIDs.RotatePosition);
 
             return;
         }
@@ -62,13 +62,13 @@ public class TreantAttackState : BaseState<TreantInformation>
 
     private void SetAttackPattern()
     {
-        if (base.CreatureInformation.DistanceMonsterToTarget < 10f)
+        if (CreatureInformation.DistanceMonsterToTarget < 10f)
         {
             _treantRootAttack.StopAttack();
 
             _treantAttackManager.SetTreantAttack(_treantStompAttack);
         }
-        else if (base.CreatureInformation.DistanceMonsterToTarget < 30f)
+        else if (CreatureInformation.DistanceMonsterToTarget < 30f)
         {
             _treantStompAttack.StopAttack();
 

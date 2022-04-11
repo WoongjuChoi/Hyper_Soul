@@ -14,7 +14,7 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
 
     public override void EnterState()
     {
-        base.CreatureInformation.MonsterCurrentState = EStateIDs.ReturnPosition;
+        CreatureInformation.MonsterCurrentState = EStateIDs.ReturnPosition;
     }
 
     public override void ExitState()
@@ -24,24 +24,24 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
         _isLocatedLeftSide = false;
         _isLocatedRightSide = false;
 
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(IS_LEFT_ROTATE, _isLocatedLeftSide);
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(IS_RIGHT_ROTATE, _isLocatedRightSide);
+        GameObject.GetComponentInChildren<Animator>().SetBool(IS_LEFT_ROTATE, _isLocatedLeftSide);
+        GameObject.GetComponentInChildren<Animator>().SetBool(IS_RIGHT_ROTATE, _isLocatedRightSide);
     }
 
     public override void UpdateState()
     {
         // 회전 다 하면 Idle 상태로 돌아감
-        if (base.CreatureInformation.OriginVec == base.GameObject.transform.forward)
+        if (CreatureInformation.OriginVec == GameObject.transform.forward)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Idle);
+            FiniteStateMachine.ChangeState(EStateIDs.Idle);
 
             return;
         }
 
         // 현재 체력이 최대 체력이 아니라면 서서히 증가
-        if (base.CreatureInformation.MonsterCurrentHP >= base.CreatureInformation.MonsterMaxHP)
+        if (CreatureInformation.CurHp >= CreatureInformation.MaxHp)
         {
-            base.CreatureInformation.MonsterCurrentHP = base.CreatureInformation.MonsterMaxHP;
+            CreatureInformation.CurHp = CreatureInformation.MaxHp;
 
             _increaseHealing = 0;
         }
@@ -51,7 +51,7 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
 
             _increaseHealing += (int)Mathf.Round(increaseHealing * 10);
 
-            base.CreatureInformation.MonsterCurrentHP += _increaseHealing;
+            CreatureInformation.CurHp += _increaseHealing;
         }
 
         // 현재 바라보는 방향을 확인
@@ -63,7 +63,7 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
 
     private void CheckCurrentPosition()
     {
-        Vector3 crossCurrentVec = Vector3.Cross(base.CreatureInformation.OriginVec, base.GameObject.transform.forward);
+        Vector3 crossCurrentVec = Vector3.Cross(CreatureInformation.OriginVec, GameObject.transform.forward);
 
         if (crossCurrentVec.y > 0f)
         {
@@ -79,20 +79,20 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
 
     private IEnumerator ReturnPosition()
     {
-        while (base.CreatureInformation.OriginVec != base.GameObject.transform.forward)
+        while (CreatureInformation.OriginVec != GameObject.transform.forward)
         {
-            float rotateSpeed = base.CreatureInformation.RotateSpeed * Time.deltaTime;
+            float rotateSpeed = CreatureInformation.RotateSpeed * Time.deltaTime;
 
-            base.GameObject.GetComponentInChildren<Animator>().SetBool(IS_LEFT_ROTATE, _isLocatedLeftSide);
-            base.GameObject.GetComponentInChildren<Animator>().SetBool(IS_RIGHT_ROTATE, _isLocatedRightSide);
+            GameObject.GetComponentInChildren<Animator>().SetBool(IS_LEFT_ROTATE, _isLocatedLeftSide);
+            GameObject.GetComponentInChildren<Animator>().SetBool(IS_RIGHT_ROTATE, _isLocatedRightSide);
 
             if (_isLocatedRightSide)
             {
-                base.GameObject.transform.Rotate(0f, rotateSpeed, 0f);
+                GameObject.transform.Rotate(0f, rotateSpeed, 0f);
             }
             else if (_isLocatedLeftSide)
             {
-                base.GameObject.transform.Rotate(0f, -rotateSpeed, 0f);
+                GameObject.transform.Rotate(0f, -rotateSpeed, 0f);
             }
 
             yield return new WaitForSeconds(1f);

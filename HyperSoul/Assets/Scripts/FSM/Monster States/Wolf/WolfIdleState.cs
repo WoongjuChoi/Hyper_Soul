@@ -13,9 +13,9 @@ public class WolfIdleState : BaseState<WolfInformation>
 
     public override void EnterState()
     {
-        base.CreatureInformation.MonsterCurrentState = EStateIDs.Idle;
+        CreatureInformation.MonsterCurrentState = EStateIDs.Idle;
 
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_RETURN_POSITION, true);
+        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_RETURN_POSITION, true);
     }
 
     public override void ExitState()
@@ -26,16 +26,16 @@ public class WolfIdleState : BaseState<WolfInformation>
 
         _increaseHealing = 0;
 
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_RETURN_POSITION, false);
+        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_RETURN_POSITION, false);
     }
 
     public override void UpdateState()
     {
         InitializeDirection();
 
-        if (base.CreatureInformation.IsDamaged)
+        if (CreatureInformation.IsDamaged)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Damaged);
+            FiniteStateMachine.ChangeState(EStateIDs.Damaged);
 
             return;
         }
@@ -56,7 +56,7 @@ public class WolfIdleState : BaseState<WolfInformation>
 
         if (_elapsedTime >= _changeRestingAnimationTime)
         {
-            base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_RESTING);
+            GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_RESTING);
             
             _playAnimation = true;
         }
@@ -64,24 +64,24 @@ public class WolfIdleState : BaseState<WolfInformation>
 
     private void InitializeDirection()
     {
-        Vector3 InitializeAngle = new Vector3(0f, base.CreatureInformation.MonsterSpawnDirection, 0f);
+        Vector3 InitializeAngle = new Vector3(0f, CreatureInformation.MonsterSpawnDirection, 0f);
 
-        if (InitializeAngle != base.GameObject.transform.eulerAngles)
+        if (InitializeAngle != GameObject.transform.eulerAngles)
         {
-            base.GameObject.transform.rotation = Quaternion.identity;
+            GameObject.transform.rotation = Quaternion.identity;
 
-            Quaternion monsterInitializeDirection = Quaternion.Euler(0f, base.CreatureInformation.MonsterSpawnDirection, 0f);
+            Quaternion monsterInitializeDirection = Quaternion.Euler(0f, CreatureInformation.MonsterSpawnDirection, 0f);
 
-            base.GameObject.transform.rotation = monsterInitializeDirection;
+            GameObject.transform.rotation = monsterInitializeDirection;
         }
     }
 
     private void IncreaseHealing()
     {
         // 현재 체력이 최대 체력이 아니라면 서서히 증가
-        if (base.CreatureInformation.MonsterCurrentHP >= base.CreatureInformation.MonsterMaxHP)
+        if (CreatureInformation.CurHp >= CreatureInformation.MaxHp)
         {
-            base.CreatureInformation.MonsterCurrentHP = base.CreatureInformation.MonsterMaxHP;
+            CreatureInformation.CurHp = CreatureInformation.MaxHp;
 
             _increaseHealing = 0;
         }
@@ -91,7 +91,7 @@ public class WolfIdleState : BaseState<WolfInformation>
 
             _increaseHealing += (int)Mathf.Round(increaseHealing * 10);
 
-            base.CreatureInformation.MonsterCurrentHP += _increaseHealing;
+            CreatureInformation.CurHp += _increaseHealing;
         }
     }
 }

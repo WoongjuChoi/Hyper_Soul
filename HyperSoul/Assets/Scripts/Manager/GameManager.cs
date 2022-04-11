@@ -66,8 +66,8 @@ public class GameManager : MonoBehaviourPunCallbacks
             index = Random.Range(1, 5);
         }
         //GameObject obj = PhotonNetwork.Instantiate("BazookaPlayer", spawnPoint[index].position, Quaternion.identity);
-        //GameObject obj = PhotonNetwork.Instantiate("RiflePlayer", spawnPoint[index].position, Quaternion.identity);
-        GameObject obj = PhotonNetwork.Instantiate("SniperPlayer", spawnPoint[index].position, Quaternion.identity);
+        GameObject obj = PhotonNetwork.Instantiate("RiflePlayer", spawnPoint[index].position, Quaternion.identity);
+        //GameObject obj = PhotonNetwork.Instantiate("SniperPlayer", spawnPoint[index].position, Quaternion.identity);
 
         photonView.RPC("SpawnPosMarking", RpcTarget.AllBuffered, index);
     }
@@ -93,8 +93,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void SendDieMessage(LivingEntity attacker, LivingEntity victim)
     {
         string msg = "";
-        PlayerInfo attackerInfo = attacker.GetComponent<PlayerInfo>();
-        PlayerInfo victimPlayerInfo = victim.GetComponent<PlayerInfo>();
+        LivingEntity attackerInfo = attacker.GetComponent<LivingEntity>();
+        LivingEntity victimPlayerInfo = victim.GetComponent<LivingEntity>();
         // MonsterInfo victimMonsterInfo =  victim.GetComponent<MonsterInfo>(); ¸¸µé±â
         if (victimPlayerInfo != null)
         {

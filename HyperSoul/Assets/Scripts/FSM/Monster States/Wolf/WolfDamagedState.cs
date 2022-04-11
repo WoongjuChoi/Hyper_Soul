@@ -11,52 +11,52 @@ class WolfDamagedState : BaseState<WolfInformation>
 
     public override void EnterState()
     {
-        base.CreatureInformation.MonsterCurrentState = EStateIDs.Damaged;
+        CreatureInformation.MonsterCurrentState = EStateIDs.Damaged;
 
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DAMAGED, true);
+        CreatureInformation.MonsterAttackRangeCollider.enabled = false;
 
-        base.CreatureInformation.MonsterAttackRangeCollider.enabled = false;
+        _raycastOriginVec = CreatureInformation.CollisionVec;
 
-        _raycastOriginVec = base.CreatureInformation.CollisionVec;
-
-        _lookAtTargetVec = base.CreatureInformation.LookAtTargetVec;
+        _lookAtTargetVec = CreatureInformation.LookAtTargetVec;
     }
 
     public override void ExitState()
     {
-        base.CreatureInformation.IsDamaged = false;
+        CreatureInformation.IsDamaged = false;
 
-        base.GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_DAMAGED, false);
-
-        base.CreatureInformation.MonsterAttackRangeCollider.enabled = true;
+        CreatureInformation.MonsterAttackRangeCollider.enabled = true;
     }
 
     public override void UpdateState()
     {
         // 데미지 받고 (수정 필요)
-        base.CreatureInformation.MonsterCurrentHP -= 20;
+        //CreatureInformation.MonsterCurrentHP -= 20;
+        CreatureInformation.TakeDamage(CreatureInformation.AttackerInfo.ProjectileOwnerID, CreatureInformation.Target.GetComponent<LivingEntity>().Attack, Vector3.zero, Vector3.zero);
+        
+        // 최종 결과
+        //CreatureInformation.TakeDamage(CreatureInformation.AttackerInfo.ProjectileOwnerID, CreatureInformation.AttackerInfo.Attack, Vector3.zero, Vector3.zero);
 
         // HP <= 0 이면 Die 상태
-        if (base.CreatureInformation.MonsterCurrentHP <= 0)
+        if (CreatureInformation.CurHp <= 0)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Die);
+            FiniteStateMachine.ChangeState(EStateIDs.Die);
 
             return;
         }
 
         // 적을 한번 타겟팅 하면 이후 갱신 X
         // (활동 범위를 벗어나 되돌아 가거나 죽었을 때 타겟팅 해제)
-        if (base.CreatureInformation.IsTargeting)
+        if (CreatureInformation.IsTargeting)
         {
-            if (base.CreatureInformation.IsWithinAttackRange)
+            if (CreatureInformation.IsWithinAttackRange)
             {
-                base.FiniteStateMachine.ChangeState(EStateIDs.Attack);
+                FiniteStateMachine.ChangeState(EStateIDs.Attack);
 
                 return;
             }
             else
             {
-                base.FiniteStateMachine.ChangeState(EStateIDs.Chase);
+                FiniteStateMachine.ChangeState(EStateIDs.Chase);
 
                 return;
             }
@@ -76,35 +76,35 @@ class WolfDamagedState : BaseState<WolfInformation>
             //// 디버깅용
             //Debug.Log($"_monsterInfo.Target.layer : {_monsterInfo.Target.layer}\nhit.collider.gameObject.layer :{hit.collider.gameObject.layer}");
 
-            if (base.CreatureInformation.Target.layer == hit.collider.gameObject.layer)
+            if (CreatureInformation.Target.layer == hit.collider.gameObject.layer)
             {
-                base.CreatureInformation.MonsterChaser.IsTarget = base.CreatureInformation.Target.transform;
+                CreatureInformation.MonsterChaser.IsTarget = CreatureInformation.Target.transform;
 
-                base.CreatureInformation.IsTargeting = true;
+                CreatureInformation.IsTargeting = true;
 
-                if (base.CreatureInformation.IsWithinAttackRange)
+                if (CreatureInformation.IsWithinAttackRange)
                 {
-                    base.FiniteStateMachine.ChangeState(EStateIDs.Attack);
+                    FiniteStateMachine.ChangeState(EStateIDs.Attack);
 
                     return;
                 }
                 else
                 {
-                    base.FiniteStateMachine.ChangeState(EStateIDs.Chase);
+                    FiniteStateMachine.ChangeState(EStateIDs.Chase);
 
                     return;
                 }
             }
             else
             {
-                base.FiniteStateMachine.ChangeState(EStateIDs.Alert);
+                FiniteStateMachine.ChangeState(EStateIDs.Alert);
 
                 return;
             }
         }
         else
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Alert);
+            FiniteStateMachine.ChangeState(EStateIDs.Alert);
 
             return;
         }

@@ -29,9 +29,12 @@ public abstract class MonsterInformation : LivingEntity
 
     protected Transform _initializePosition = null;
 
+    protected Projectile _attackerInfo = null;
+
     protected Vector3 _collisionVec = Vector3.zero;
     protected Vector3 _lookAtTargetVec = Vector3.zero;
 
+    protected MonsterType _monsterType;
     protected EStateIDs _monsterCurrentState = EStateIDs.None;
 
     protected float _monsterSpawnDirection = 0f;
@@ -45,11 +48,13 @@ public abstract class MonsterInformation : LivingEntity
 
     public GameObject Target { get { return _target; } }
     public Chaser MonsterChaser { get { return _monsterChaser; } }
+    public Projectile AttackerInfo { get { return _attackerInfo; } }
     public Collider MonsterAttackRangeCollider { get { return _attackRangeCollider; } }
     public Transform InitializePosition { get { return _initializePosition; } }
     public Transform MonsterRayPoint { get { return _monsterRayPoint; } }
     public Vector3 CollisionVec { get { return _collisionVec; } }
     public Vector3 LookAtTargetVec { get { return _lookAtTargetVec; } }
+    public MonsterType MonsterType { get { return _monsterType; } }
     public bool IsWithinAttackRange { get { return _isWithinAttackRange; } }
     public float MonsterInvincibleTime { get { return _monsterInvincibleTime; } }
     public float MonsterSpawnDirection { get { return _monsterSpawnDirection; } }
@@ -61,10 +66,14 @@ public abstract class MonsterInformation : LivingEntity
     public bool IsTargeting { get { return _isTargeting; } set { _isTargeting = value; } }
     public int MonsterCurrentHP { get { return _monsterCurrentHP; } set { _monsterCurrentHP = value; } }
 
-    public abstract void Awake();
-
     private void OnEnable()
     {
+        MaxHp = _dataManager.FindMonsterData(_monsterType.ToString() + Level.ToString()).MaxHp;
+
+        CurHp = MaxHp;
+
+        IsDead = false;
+
         _monsterFSM.ChangeState(EStateIDs.Spawn);
 
         _monsterCurrentHP = _monsterMaxHP;
@@ -82,5 +91,10 @@ public abstract class MonsterInformation : LivingEntity
         _isDie = false;
         _isTargeting = false;
         _isWithinAttackRange = false;
+    }
+
+    private void Start()
+    {
+        NickName = gameObject.name;
     }
 }

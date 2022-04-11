@@ -8,9 +8,9 @@ public class WolfSpawnState : BaseState<WolfInformation>
 
     public override void EnterState()
     {
-        base.CreatureInformation.MonsterCurrentState = EStateIDs.Spawn;
+        CreatureInformation.MonsterCurrentState = EStateIDs.Spawn;
 
-        base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_SPAWN);
+        GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_SPAWN);
     }
 
     public override void ExitState()
@@ -22,9 +22,9 @@ public class WolfSpawnState : BaseState<WolfInformation>
     {
         _elapsedTime += Time.deltaTime;
 
-        if (_elapsedTime >= base.CreatureInformation.MonsterInvincibleTime)
+        if (_elapsedTime >= CreatureInformation.MonsterInvincibleTime)
         {
-            base.FiniteStateMachine.ChangeState(EStateIDs.Idle);
+            FiniteStateMachine.ChangeState(EStateIDs.Idle);
 
             return;
         }

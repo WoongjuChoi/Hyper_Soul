@@ -1061,5 +1061,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a7f202bf3fa524688390270866e507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _treant: {fileID: 0}
+  _treant: {fileID: 443558094318640254}
   _attackCollider: {fileID: 5988300857131470341}

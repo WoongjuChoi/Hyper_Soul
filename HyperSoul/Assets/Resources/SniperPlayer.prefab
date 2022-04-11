@@ -8242,7 +8242,7 @@ GameObject:
   - component: {fileID: 7060348392004654635}
   - component: {fileID: -2634603877442135035}
   - component: {fileID: -4240242056975203509}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: SniperPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

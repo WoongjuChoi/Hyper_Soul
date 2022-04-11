@@ -27,25 +27,43 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        _playerList = PhotonNetwork.CurrentRoom.Players;
+       
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
+        _playerList = PhotonNetwork.CurrentRoom.Players;
         UpdatePlayerList();
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        _playerPanal.Remove(otherPlayer.GetHashCode());
+        int playerPanalKey = 0;
+
+        foreach(KeyValuePair<int, Player> player in _playerList)
+        {
+            if (player.Value == otherPlayer)
+            {
+                playerPanalKey = player.Key;
+            }
+        }
+
+        _playerPanal.Remove(playerPanalKey);
+        _playerList = PhotonNetwork.CurrentRoom.Players;
     }
 
     public void LeaveRoom()
     {
-        //_playerPanal[PhotonNetwork.LocalPlayer]
         PhotonNetwork.LeaveRoom();
     }
 
     public void GameStart()
+    {
+        photonView.RPC("StartMainScene", RpcTarget.All);
+    }
+
+    [PunRPC]
+
+    private void StartMainScene()
     {
         PhotonNetwork.LoadLevel("MainScene");
     }

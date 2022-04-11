@@ -50,11 +50,14 @@ public class PlayerInfo : LivingEntity
         Level = 1;
         CurExp = 0;
 
-        //if(photonView.IsMine)
-        //{
-        //    _hpBar.gameObject.SetActive(false);
-        //}
-
+        if (photonView.IsMine)
+        {
+            _hpBarOverhead.gameObject.SetActive(false);
+        }
+        else
+        {
+            _playerUI.SetActive(false);
+        }
     }
 
     private void Start()

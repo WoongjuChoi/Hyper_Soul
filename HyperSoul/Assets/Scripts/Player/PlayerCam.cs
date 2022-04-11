@@ -31,6 +31,7 @@ public class PlayerCam : MonoBehaviourPun
     private RaycastHit _hit;
     private float _rayDistance = 3f;
     private Vector3 _defaultCamPos;
+    private Animator _playerAnimator;
 
     private void Awake()
     {
@@ -59,6 +60,7 @@ public class PlayerCam : MonoBehaviourPun
         _normalRotationSpeed = new Vector2(0.5f, 0.5f);
         _input = GetComponent<PlayerInputs>();
         _playerInfo = GetComponent<PlayerInfo>();
+        _playerAnimator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -76,6 +78,8 @@ public class PlayerCam : MonoBehaviourPun
 
         MouseRotate(_input.MousePos.x, _input.MousePos.y);
         camCollisionFix();
+
+        PlayerRotation();
     }
 
     public void MouseRotate(float mouseX, float mouseY)
@@ -87,7 +91,6 @@ public class PlayerCam : MonoBehaviourPun
         _eulerAngleX = clampAngle(_eulerAngleX, _limitMinX, _limitMaxX);
 
         _cameraArm.rotation = Quaternion.Euler(_eulerAngleX, _eulerAngleY, 0);
-        _playerBody.rotation = Quaternion.Euler(0, _eulerAngleY, 0);
     }
 
     private float clampAngle(float angle, float min, float max)
@@ -112,4 +115,12 @@ public class PlayerCam : MonoBehaviourPun
             _followCameraPos.localPosition = _defaultCamPos;
         }
     }
+
+    private void PlayerRotation()
+    {
+        // 0 ~ 1 사이의 값을 얻기 위해 -80 ~ 50도의 제약이 있는 playerCam의 eulerAngleX의 값을 조정
+        _playerAnimator.SetFloat(PlayerAnimatorID.AIM, (_eulerAngleX + 80f) / 130f);
+        _playerBody.rotation = Quaternion.Euler(0, _eulerAngleY, 0);
+    }
+
 }

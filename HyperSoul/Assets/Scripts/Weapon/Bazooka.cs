@@ -18,7 +18,7 @@ public class Bazooka : Weapon
     [SerializeField]
     private float _rayDist = 200f;
 
-    private ObjectPool _missilePool = new ObjectPool();
+    private ObjectPool _objectPool;
 
     private Vector3 _targetPos;
 
@@ -26,13 +26,17 @@ public class Bazooka : Weapon
 
     private void OnEnable()
     {
+        _objectPool = GameManager.ObjPool;
+
         CurBulletCnt = 100;
         MaxBulletAmt = 100;
         _reloadTime = 5;
         _gunState = EGunState.Ready;
 
-        _missilePool.Init(_missilePrefab, 2);
-
+        if(PhotonNetwork.IsMasterClient)
+        {
+            _objectPool.Init("BazookaMissile", 50);
+        }
     }
 
     public override void Fire()
@@ -74,7 +78,7 @@ public class Bazooka : Weapon
     {
         --CurBulletCnt;
 
-        BazookaMissile _bazookaMissile = _missilePool.GetObj().GetComponent<BazookaMissile>();
+        BazookaMissile _bazookaMissile = _objectPool.GetObj("BazookaMissile").GetComponent<BazookaMissile>();
 
         _bazookaMissile.MissilePrefab.SetActive(true);
         _bazookaMissile.RocketParticleEffect.SetActive(false);
@@ -95,7 +99,6 @@ public class Bazooka : Weapon
         _bazookaMissile.ReceiveReturnMissileFunc(ReturnMissile);
         _bazookaMissile.ProjectileOwnerID = _playerInfo.PhotonViewID;
         _bazookaMissile.Attack = _playerInfo.Attack;
-        Debug.DrawRay(_bazookaMissile.transform.position, aimDir, Color.red, 1f);
         _bazookaMissile.gameObject.SetActive(true);
 
         if(false == PhotonNetwork.IsMasterClient)
@@ -127,7 +130,7 @@ public class Bazooka : Weapon
             Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 1f);
             if (target.transform.gameObject.layer == 3 || target.transform.gameObject.layer == 6)
             {
-                Debug.Log($"Target is {target.transform.gameObject.layer}");
+                //Debug.Log($"Target is {target.transform.gameObject.layer}");
                 return target.transform.gameObject;
             }
         }
@@ -136,21 +139,21 @@ public class Bazooka : Weapon
 
     private void ReturnMissile(GameObject missile)
     {
-        _missilePool.ReturnObj(missile);
+        _objectPool.ReturnObj(missile);
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(CurBulletCnt);
-            stream.SendNext(_gunState);
-        }
-        else
-        {
-            CurBulletCnt = (int)stream.ReceiveNext();
-            _gunState = (EGunState)stream.ReceiveNext();
+    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    //{
+    //    if (stream.IsWriting)
+    //    {
+    //        stream.SendNext(CurBulletCnt);
+    //        stream.SendNext(_gunState);
+    //    }
+    //    else
+    //    {
+    //        CurBulletCnt = (int)stream.ReceiveNext();
+    //        _gunState = (EGunState)stream.ReceiveNext();
 
-        }
-    }
+    //    }
+    //}
 }

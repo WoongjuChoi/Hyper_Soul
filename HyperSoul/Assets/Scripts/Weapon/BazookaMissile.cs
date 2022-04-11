@@ -50,6 +50,7 @@ public class BazookaMissile : Projectile
         _missileLaunch = gameObject.AddComponent<AudioSource>();
         _missileLaunch.PlayOneShot(_launchSound);
         _launchPos = transform.position;
+
         if (_target != null)
         {
             lunchCoroutine = StartCoroutine(SoftLaunch());
@@ -73,10 +74,10 @@ public class BazookaMissile : Projectile
         {
             Vector3 dir = (_target.position - transform.position).normalized;
             transform.forward = Vector3.Lerp(transform.forward, dir, 0.1f);
-            //transform.forward = dir;
             if (_targetDistance + 10f < _curDistMissileAndLaunchPos)
             {
-                Explosion();
+                Explosion(transform.position);
+                photonView.RPC("Explosion", RpcTarget.Others, transform.position);
             }
         }
         else
@@ -86,7 +87,8 @@ public class BazookaMissile : Projectile
 
             if (_curDistMissileAndLaunchPos > 70f)
             {
-                Explosion();
+                Explosion(transform.position);
+                photonView.RPC("Explosion", RpcTarget.Others, transform.position);
             }
         }
     }
@@ -94,8 +96,8 @@ public class BazookaMissile : Projectile
 
     private void OnCollisionEnter(Collision collision)
     {
-        Explosion();
-        photonView.RPC("Explosion", RpcTarget.Others, null);
+        Explosion(transform.position);
+        photonView.RPC("Explosion", RpcTarget.Others, transform.position);
     }
 
     private IEnumerator SoftLaunch()
@@ -107,20 +109,22 @@ public class BazookaMissile : Projectile
     }
 
     [PunRPC]
-    private void Explosion()
+    private void Explosion(Vector3 pos)
     {
-        explosionCoroutine = StartCoroutine(ExplosionCorountine());
+        explosionCoroutine = StartCoroutine(ExplosionCorountine(pos));
     }
-    private IEnumerator ExplosionCorountine()
+    private IEnumerator ExplosionCorountine(Vector3 pos)
     {
+        transform.position = pos;
         _isHitted = true;
         _isLaunched = false;
         _curSpeed = 0f;
+        GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         ExplosionEffect.SetActive(true);
         RocketParticleEffect.SetActive(false);
         MissilePrefab.SetActive(false);
 
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(1.3f);
         ReturnMissile();
         explosionCoroutine = null;
     }
@@ -138,7 +142,7 @@ public class BazookaMissile : Projectile
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         _isHitted = false;
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
         _missileReturn(this.gameObject);
     }
 
@@ -146,5 +150,4 @@ public class BazookaMissile : Projectile
     {
         _missileReturn = returnMissile;
     }
-
 }

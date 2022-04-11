@@ -13,6 +13,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         get { Init(); return _instance; }
     }
 
+    ObjectPool _objPool = new ObjectPool();
+    DataManager _dataManager = new DataManager();
+    public static ObjectPool ObjPool { get { return Instance._objPool; } }
+    public static DataManager DataManager { get { return Instance._dataManager; } }
+
     public Transform PlayerCamRotationTransform { get; set; }
 
     [SerializeField]
@@ -76,10 +81,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         _isSpawned[spawnPosNum] = true;
 
         // 디버깅용
-        for (int i = 0; i < _isSpawned.Length; ++i)
-        {
-            Debug.Log($"{i} : {_isSpawned[i]}");
-        }
+        //for (int i = 0; i < _isSpawned.Length; ++i)
+        //{
+        //    Debug.Log($"{i} : {_isSpawned[i]}");
+        //}
     }
 
     private void SendChatMessage()
@@ -103,8 +108,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         //    msg = $"{attackerInfo.NickName}이(가) {victimMonsterInfo.NickName}을(를) 처치";
         //}
 
-        photonView.RPC("Chat", RpcTarget.OthersBuffered, msg);
         Chat(msg);
+        photonView.RPC("Chat", RpcTarget.OthersBuffered, msg);
     }
 
     [PunRPC]
@@ -125,6 +130,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                 }
                 _input = true;
                 _chatList[0].text = msg;
+                
                 break;
             }
         }

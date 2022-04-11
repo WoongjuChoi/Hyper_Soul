@@ -35,7 +35,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     public CharacterType Type { get; set; }
 
     protected DataManager _dataManager;
-
     public virtual void Awake() { }
    
     private void LateUpdate()
@@ -58,35 +57,44 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     {
         if (PhotonNetwork.IsMasterClient)
         {
+            if (IsDead)
+            {
+                return;
+            }
             CurHp -= damageAmt;
-            Hit();
-            photonView.RPC("UpdateHP", RpcTarget.Others, CurHp);
-            photonView.RPC("OnDamage", RpcTarget.Others, attackerID, damageAmt, hitPoint, hitNormal);
+            
+            if (CurHp <= 0 && IsDead == false)
+            {
+                CurHp = 0;
+                GameManager.Instance.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
+                Die(attackerID);
+                photonView.RPC("Die", RpcTarget.Others, attackerID);
+            }
+            else if (false == _isHitting)
+            {
+                Hit();
+                photonView.RPC("Hit", RpcTarget.Others);
+            }
+            photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
+            //photonView.RPC("TakeDamage", RpcTarget.Others, attackerID, damageAmt, hitPoint, hitNormal);
         }
     }
 
     [PunRPC]
-    protected void OnDamage(int attackerID, int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
+    private void UpdateHp(int hp)
     {
-        if(IsDead)
-        {
-            return;
-        }
-
-        if (CurHp <= 0 && IsDead == false)
-        {
-            Die(attackerID);
-        }
-        else if (false == _isHitting)
-        {
-            photonView.RPC("Hit", RpcTarget.Others, null);
-        }
+        CurHp = hp;
     }
-
     [PunRPC]
-    public void UpdateHP(int newHp)
+    public void Die(int attackerID)
     {
-        CurHp = newHp;
+        _deathSound.SetActive(true);
+
+        if (false == IsDead)
+        {
+            IsDead = true;
+            _animator.SetTrigger(CommonAnimatorID.DIE);
+        }
     }
 
     [PunRPC]
@@ -113,24 +121,14 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         _animator.SetBool(CommonAnimatorID.HIT, false);
     }
 
-    public virtual void Die(int attackerID)
-    {
-        GameManager.Instance.SendDieMessage(this, PhotonView.Find(attackerID).GetComponent<LivingEntity>());
-        _deathSound.SetActive(true);
-        
-        if (false == IsDead)
-        {
-            IsDead = true;
-            _animator.SetTrigger(CommonAnimatorID.DIE);
-        }
-    }
+  
 
     public virtual void UpdateLevelUpInfo(string info)
     {
         switch (Type)
         {
             case CharacterType.Monster:
-                MonsterData monsterData = _dataManager.FindMonsterData(info);
+                MonsterData monsterData = GameManager.DataManager.FindMonsterData(info);
                 MaxHp = monsterData.MaxHp;
                 CurHp = MaxHp;
                 Attack = monsterData.Attack;

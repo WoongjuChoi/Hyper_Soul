@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
-
+using UnityEngine.InputSystem;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
@@ -54,6 +54,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         // 입력 없을 시 랜덤 생성
         _nickNameInput.text = PlayerPrefs.GetString("USER_NICKNAME", "USER_" + Random.Range(1, 1000));
         _roomNameInput.text = PlayerPrefs.GetString("ROOM_NAME", "ROOM_" + Random.Range(1, 1000));
+    }
+
+    private void Update()
+    {
+        if (Keyboard.current[Key.Space].wasPressedThisFrame)
+        {
+            OnClickRoom("1");
+        }
     }
 
     public override void OnConnectedToMaster()
@@ -143,7 +151,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("Bajooka Sample Scene");
         //PhotonNetwork.LoadLevel("RoomScene");
     }
-   
 
     public override void OnDisconnected(DisconnectCause cause)
     {

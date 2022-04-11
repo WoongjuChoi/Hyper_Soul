@@ -50,6 +50,7 @@ public class PlayerCam : MonoBehaviourPun
                     cam.Priority = 14;
                 }
             }
+
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
@@ -65,6 +66,11 @@ public class PlayerCam : MonoBehaviourPun
 
     private void Update()
     {
+        if (false == photonView.IsMine)
+        {
+            return;
+        }
+
         if (_playerInfo.IsDead)
         {
             return;
@@ -123,4 +129,17 @@ public class PlayerCam : MonoBehaviourPun
         _playerBody.rotation = Quaternion.Euler(0, _eulerAngleY, 0);
     }
 
+    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    //{
+    //    if (stream.IsWriting)
+    //    {
+    //        stream.SendNext(_playerBody.rotation);
+    //        stream.SendNext(_playerAnimator);
+    //    }
+    //    else
+    //    {
+    //        _playerBody = (Transform)stream.ReceiveNext();
+    //        _playerAnimator = (Animator)stream.ReceiveNext();
+    //    }
+    //}
 }

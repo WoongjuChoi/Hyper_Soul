@@ -16,10 +16,10 @@ public class WolfInformation : MonsterInformation
 
     public override void Awake()
     {
-        //_hitImage.SetActive(false);
-        //_hitSound.SetActive(false);
-        //_deathSound.SetActive(false);
-        //_animator = GetComponentInChildren<Animator>();
+        _hitImage.SetActive(false);
+        _hitSound.SetActive(false);
+        _deathSound.SetActive(false);
+        _animator = GetComponentInChildren<Animator>();
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
         _monsterType = MonsterType.Wolf;
@@ -78,7 +78,9 @@ public class WolfInformation : MonsterInformation
 
                 _isDamaged = true;
 
-                _target = PhotonView.Find(collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
+                _attackerInfo = collision.gameObject.GetComponent<Projectile>();
+
+                _target = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
 
                 Vector3 targetPosition = _target.transform.position + new Vector3(0f, 1.3f, 0f);
 

@@ -9,16 +9,14 @@ public class WolfDieState : BaseState<WolfInformation>
 
     public override void EnterState()
     {
-        base.CreatureInformation.MonsterCurrentState = EStateIDs.Die;
-
-        base.GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_DIE);
+        CreatureInformation.MonsterCurrentState = EStateIDs.Die;
     }
 
     public override void ExitState()
     {
         _elapsedTime = 0f;
 
-        base.GameObject.transform.rotation = Quaternion.identity;
+        GameObject.transform.rotation = Quaternion.identity;
     }
 
     public override void UpdateState()
@@ -28,16 +26,16 @@ public class WolfDieState : BaseState<WolfInformation>
 
     private void DieWolf()
     {
-        if (base.CreatureInformation.IsDie)
+        if (CreatureInformation.IsDie)
         {
             return;
         }
 
         if (_elapsedTime >= _monsterDieTime)
         {
-            base.CreatureInformation.IsDie = true;
+            CreatureInformation.IsDie = true;
 
-            base.GameObject.SetActive(false);
+            GameObject.SetActive(false);
 
             return;
         }

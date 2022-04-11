@@ -2702,7 +2702,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1480935859}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: -3.4}
+  m_LocalPosition: {x: 1.5, y: 2, z: -3.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -5680,7 +5680,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6068179599428863120, guid: 3f69a4ba3fa990a4faa2facc396f7285, type: 3}
       propertyPath: sceneViewId
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6488815984270406672, guid: 3f69a4ba3fa990a4faa2facc396f7285, type: 3}
       propertyPath: m_RootOrder
@@ -5739,6 +5739,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1774594505, guid: 6c61463cd1dc7524685f822036281df2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4939154762754565353, guid: 6c61463cd1dc7524685f822036281df2, type: 3}
       propertyPath: m_Name
       value: Black Wolf Spawn
@@ -5850,7 +5854,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 584820680393443128, guid: 27a839987fdfe994cb275a23ebbf4103, type: 3}
       propertyPath: sceneViewId
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5988300857131470340, guid: 27a839987fdfe994cb275a23ebbf4103, type: 3}
       propertyPath: _treant

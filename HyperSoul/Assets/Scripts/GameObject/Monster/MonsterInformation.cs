@@ -29,6 +29,8 @@ public abstract class MonsterInformation : LivingEntity
 
     protected Transform _initializePosition = null;
 
+    protected Projectile _attackerInfo = null;
+
     protected Vector3 _collisionVec = Vector3.zero;
     protected Vector3 _lookAtTargetVec = Vector3.zero;
 
@@ -46,11 +48,13 @@ public abstract class MonsterInformation : LivingEntity
 
     public GameObject Target { get { return _target; } }
     public Chaser MonsterChaser { get { return _monsterChaser; } }
+    public Projectile AttackerInfo { get { return _attackerInfo; } }
     public Collider MonsterAttackRangeCollider { get { return _attackRangeCollider; } }
     public Transform InitializePosition { get { return _initializePosition; } }
     public Transform MonsterRayPoint { get { return _monsterRayPoint; } }
     public Vector3 CollisionVec { get { return _collisionVec; } }
     public Vector3 LookAtTargetVec { get { return _lookAtTargetVec; } }
+    public MonsterType MonsterType { get { return _monsterType; } }
     public bool IsWithinAttackRange { get { return _isWithinAttackRange; } }
     public float MonsterInvincibleTime { get { return _monsterInvincibleTime; } }
     public float MonsterSpawnDirection { get { return _monsterSpawnDirection; } }

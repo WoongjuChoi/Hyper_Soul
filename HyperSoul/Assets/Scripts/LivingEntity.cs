@@ -117,7 +117,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
 
     public virtual void Die(int attackerID)
     {
-        GameManager.Instance.SendDieMessage(this, PhotonView.Find(attackerID).GetComponent<LivingEntity>());
+        GameManager.Instance.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
         _deathSound.SetActive(true);
         
         if (false == IsDead)

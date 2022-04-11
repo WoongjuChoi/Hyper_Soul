@@ -59,6 +59,7 @@ public class Rifle : Weapon
         bullet.transform.rotation = Quaternion.LookRotation(aimDir, Vector3.up);
         bullet.GetComponent<Bullet>().SetBulletReturnFunc(_bulletPool.ReturnObj);
         bullet.GetComponent<Bullet>().ProjectileOwnerID = _playerInfo.PhotonViewID;
+        bullet.GetComponent<Bullet>().Attack = _playerInfo.Attack;
         bullet.SetActive(true);
 
         Collider bulletCollider = bullet.GetComponent<BoxCollider>();

@@ -39,9 +39,9 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
         }
 
         // 현재 체력이 최대 체력이 아니라면 서서히 증가
-        if (CreatureInformation.MonsterCurrentHP >= CreatureInformation.MonsterMaxHP)
+        if (CreatureInformation.CurHp >= CreatureInformation.MaxHp)
         {
-            CreatureInformation.MonsterCurrentHP = CreatureInformation.MonsterMaxHP;
+            CreatureInformation.CurHp = CreatureInformation.MaxHp;
 
             _increaseHealing = 0;
         }
@@ -51,7 +51,7 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
 
             _increaseHealing += (int)Mathf.Round(increaseHealing * 10);
 
-            CreatureInformation.MonsterCurrentHP += _increaseHealing;
+            CreatureInformation.CurHp += _increaseHealing;
         }
 
         // 현재 바라보는 방향을 확인

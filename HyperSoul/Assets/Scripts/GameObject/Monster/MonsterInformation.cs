@@ -92,4 +92,9 @@ public abstract class MonsterInformation : LivingEntity
         _isTargeting = false;
         _isWithinAttackRange = false;
     }
+
+    private void Start()
+    {
+        NickName = gameObject.name;
+    }
 }

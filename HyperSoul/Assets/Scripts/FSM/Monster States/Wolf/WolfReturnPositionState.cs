@@ -49,9 +49,9 @@ public class WolfReturnPositionState : BaseState<WolfInformation>
         }
 
         // 현재 체력이 최대 체력이 아니라면 서서히 증가
-        if (CreatureInformation.MonsterCurrentHP >= CreatureInformation.MonsterMaxHP)
+        if (CreatureInformation.CurHp >= CreatureInformation.MaxHp)
         {
-            CreatureInformation.MonsterCurrentHP = CreatureInformation.MonsterMaxHP;
+            CreatureInformation.CurHp = CreatureInformation.MaxHp;
 
             _increaseHealing = 0;
         }
@@ -61,7 +61,7 @@ public class WolfReturnPositionState : BaseState<WolfInformation>
 
             _increaseHealing += (int)Mathf.Round(increaseHealing * 10);
 
-            CreatureInformation.MonsterCurrentHP += _increaseHealing;
+            CreatureInformation.CurHp += _increaseHealing;
         }
 
         CreatureInformation.MonsterChaser.IsTarget = CreatureInformation.InitializePosition;

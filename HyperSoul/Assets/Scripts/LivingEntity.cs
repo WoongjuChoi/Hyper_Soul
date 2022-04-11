@@ -10,6 +10,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     [SerializeField]
     protected Slider _hpBarOverhead;
 
+    public string NickName { get; set; } // 로그인 시 닉네임 넣을 것
     public int CurHp { get; set; }
     public int MaxHp { get; set; }
     public int Attack { get; set; }
@@ -112,7 +113,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
 
     public virtual void Die(int attackerID)
     {
-        GameManager.Instance.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
         _deathSound.SetActive(true);
 
         if (false == IsDead)

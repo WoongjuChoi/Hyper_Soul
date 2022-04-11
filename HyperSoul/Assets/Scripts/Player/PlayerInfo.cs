@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class PlayerInfo : LivingEntity
 {
-    public string NickName { get; set; } // 로그인 시 닉네임 넣을 것
-
     [SerializeField]
     private Slider _myHpSlider;
     [SerializeField]

@@ -59,6 +59,7 @@ public class Sniper : Weapon
         bullet.transform.rotation = Quaternion.LookRotation(aimDir, Vector3.up);
         bullet.GetComponent<Bullet>().SetBulletReturnFunc(_sniperPool.ReturnObj);
         bullet.GetComponent<Bullet>().ProjectileOwnerID = _playerInfo.PhotonViewID;
+        bullet.GetComponent<Bullet>().Attack = _playerInfo.Attack;
         bullet.SetActive(true);
 
         Collider bulletCollider = bullet.GetComponent<BoxCollider>();

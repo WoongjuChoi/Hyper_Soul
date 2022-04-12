@@ -85,7 +85,7 @@ public class BazookaMissile : Projectile
             _isLaunched = true;
             RocketParticleEffect.SetActive(true);
 
-            if (_curDistMissileAndLaunchPos > 70f)
+            if (_curDistMissileAndLaunchPos > 200f)
             {
                 Explosion(transform.position);
                 photonView.RPC("Explosion", RpcTarget.Others, transform.position);
@@ -96,8 +96,12 @@ public class BazookaMissile : Projectile
 
     private void OnCollisionEnter(Collision collision)
     {
-        Explosion(transform.position);
-        photonView.RPC("Explosion", RpcTarget.Others, transform.position);
+        if(true == gameObject.activeSelf)
+        {
+            Explosion(transform.position);
+            photonView.RPC("Explosion", RpcTarget.Others, transform.position);
+        }
+        
     }
 
     private IEnumerator SoftLaunch()
@@ -142,8 +146,8 @@ public class BazookaMissile : Projectile
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         _isHitted = false;
-        //gameObject.SetActive(false);
-        _missileReturn(this.gameObject);
+
+        GameManager.ObjPool.ReturnObj(gameObject, "BazookaMissile");
     }
 
     public void ReceiveReturnMissileFunc(Action<GameObject> returnMissile)

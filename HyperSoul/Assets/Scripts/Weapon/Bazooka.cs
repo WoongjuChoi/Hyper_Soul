@@ -32,11 +32,6 @@ public class Bazooka : Weapon
         MaxBulletAmt = 100;
         _reloadTime = 5;
         _gunState = EGunState.Ready;
-
-        if(PhotonNetwork.IsMasterClient)
-        {
-            _objectPool.Init("BazookaMissile", 50);
-        }
     }
 
     public override void Fire()
@@ -79,7 +74,7 @@ public class Bazooka : Weapon
         --CurBulletCnt;
 
         BazookaMissile _bazookaMissile = _objectPool.GetObj("BazookaMissile").GetComponent<BazookaMissile>();
-
+       
         _bazookaMissile.MissilePrefab.SetActive(true);
         _bazookaMissile.RocketParticleEffect.SetActive(false);
         _bazookaMissile.ExplosionEffect.SetActive(false);
@@ -99,7 +94,8 @@ public class Bazooka : Weapon
         _bazookaMissile.ReceiveReturnMissileFunc(ReturnMissile);
         _bazookaMissile.ProjectileOwnerID = _playerInfo.PhotonViewID;
         _bazookaMissile.Attack = _playerInfo.Attack;
-        _bazookaMissile.gameObject.SetActive(true);
+        _bazookaMissile.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.AllBufferedViaServer, true);
+        //_bazookaMissile.gameObject.SetActive(true);
 
         if(false == PhotonNetwork.IsMasterClient)
         {
@@ -139,7 +135,7 @@ public class Bazooka : Weapon
 
     private void ReturnMissile(GameObject missile)
     {
-        _objectPool.ReturnObj(missile);
+        _objectPool.ReturnObj(missile, "BazookaMissile");
     }
 
     //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

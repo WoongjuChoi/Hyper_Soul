@@ -40,6 +40,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private byte _maxPlayer = 4;
 
+    DataManager _dataManager;
+
 
     private void Awake()
     {
@@ -47,6 +49,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true; // 마스터클라이언트와 같은 방 동기화
         _joinButton.interactable = true;
         _curPanel = _loginPanel;
+
+        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
     }
     private void Start()
@@ -56,19 +60,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         _roomNameInput.text = PlayerPrefs.GetString("ROOM_NAME", "ROOM_" + Random.Range(1, 1000));
     }
 
-    private void Update()
-    {
-        if (Keyboard.current[Key.Space].wasPressedThisFrame)
-        {
-            OnClickRoom("1");
-        }
-    }
 
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.LocalPlayer.NickName = _nickNameInput.text;
+
         PhotonNetwork.JoinLobby();
         _connetInfoText.text = "Join Lobby";
+
     }
 
     public override void OnJoinedLobby()
@@ -77,11 +76,16 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
     public void Connect()
     {
+        if (false == _dataManager.IsDataReady)
+        {
+            _connetInfoText.text = "Data Loading...Please try again";
+            return;
+        }
         _joinButton.interactable = false;
         PhotonNetwork.ConnectUsingSettings();
         _connetInfoText.text = "Connecting to Master Server";
         
-        if (PhotonNetwork.IsConnected == true)
+            if (PhotonNetwork.IsConnected == true)
         {
             PhotonNetwork.NickName = PhotonNetwork.LocalPlayer.NickName;
             

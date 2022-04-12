@@ -41,7 +41,7 @@ public class PlayerInfo : LivingEntity
         _hitSound.SetActive(false);
         _deathSound.SetActive(false);
         _animator = GetComponentInChildren<Animator>();
-        _dataManager = GameManager.DataManager;
+        //_dataManager = GameManager.DataManager;
 
         //if(photonView.IsMine)
         //{
@@ -71,9 +71,9 @@ public class PlayerInfo : LivingEntity
 
     private void OnEnable()
     {
-        MaxHp = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
-        MaxExp = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
-        Attack = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
+        MaxHp = GameManager.DataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
+        MaxExp = GameManager.DataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
+        Attack = GameManager.DataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
         CurHp = MaxHp;
         IsDead = false;
     }

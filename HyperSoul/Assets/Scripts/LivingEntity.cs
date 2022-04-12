@@ -73,7 +73,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
             else if (false == _isHitting)
             {
                 Hit();
-                photonView.RPC("Hit", RpcTarget.Others);
+                photonView.RPC(nameof(Hit), RpcTarget.Others);
             }
             photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
             //photonView.RPC("TakeDamage", RpcTarget.Others, attackerID, damageAmt, hitPoint, hitNormal);
@@ -81,7 +81,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     }
 
     [PunRPC]
-    private void UpdateHp(int hp)
+    public void UpdateHp(int hp)
     {
         CurHp = hp;
     }
@@ -98,7 +98,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     }
 
     [PunRPC]
-    private void Hit()
+    public void Hit()
     {
         StartCoroutine(HitCorountine());
     }

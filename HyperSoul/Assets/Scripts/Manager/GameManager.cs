@@ -13,8 +13,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         get { Init(); return _instance; }
     }
 
-    ObjectPool _objPool = new ObjectPool();
-    DataManager _dataManager = new DataManager();
+    ObjectPool _objPool;
+    DataManager _dataManager;
     public static ObjectPool ObjPool { get { return Instance._objPool; } }
     public static DataManager DataManager { get { return Instance._dataManager; } }
 
@@ -29,7 +29,11 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private bool[] _isSpawned = new bool[5];
 
-
+    private void Awake()
+    {
+        _objPool = GameObject.Find("ObjectPool").GetComponent<ObjectPool>();
+        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
+    }
 
     void Start()
     {
@@ -72,7 +76,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         GameObject obj = PhotonNetwork.Instantiate("BazookaPlayer", spawnPoint[index].position, Quaternion.identity);
 
-        photonView.RPC("SpawnPosMarking", RpcTarget.AllBuffered, index);
+        photonView.RPC(nameof(SpawnPosMarking), RpcTarget.AllBufferedViaServer, index);
     }
 
     [PunRPC]

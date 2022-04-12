@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerInfo : LivingEntity
+public class PlayerInfo : LivingEntity, IGiveExp
 {
     [SerializeField]
     private Slider _myHpSlider;
@@ -30,11 +30,11 @@ public class PlayerInfo : LivingEntity
 
     public int PhotonViewID;
 
+    public int CurExp { get; set; }
     public int MaxExp
     {
         get; set;
     }
-    public int CurExp { get; set; }
 
     public override void Awake()
     {
@@ -66,8 +66,6 @@ public class PlayerInfo : LivingEntity
         NickName = photonView.Owner.NickName;
         _playerWeapon = GetComponentInChildren<Weapon>();
 
-        Exp = MaxExp;
-
         _killText.gameObject.SetActive(false);
         _levelUpText.gameObject.SetActive(false);
         _gameOverText.gameObject.SetActive(false);
@@ -88,6 +86,9 @@ public class PlayerInfo : LivingEntity
 
     private void Update()
     {
+        //// µð¹ö±ë¿ë
+        //Debug.Log($"CurExp : {CurExp}");
+
         HpUpdate();
         AmmoUpdate();
         ExpUpdate();
@@ -121,6 +122,22 @@ public class PlayerInfo : LivingEntity
         _ammoText.text = _playerWeapon.CurBulletCnt + " \\ " + _playerWeapon.MaxBulletAmt;
     }
 
+    public void GiveExp(int expAmt)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            CurExp += expAmt;
+
+            photonView.RPC("UpdateExp", RpcTarget.Others, CurExp);
+        }
+    }
+
+    [PunRPC]
+    public void UpdateExp(int newExp)
+    {
+        CurExp = newExp;
+    }
+
     private void ExpUpdate()
     {
         _expText.text = "Exp : " + CurExp;
@@ -151,4 +168,5 @@ public class PlayerInfo : LivingEntity
 
         _levelUpText.gameObject.SetActive(false);
     }
+
 }

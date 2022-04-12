@@ -35,6 +35,13 @@ public class WolfDieState : BaseState<WolfInformation>
         {
             CreatureInformation.IsDie = true;
 
+            ++CreatureInformation.Level;
+
+            if (CreatureInformation.Level > CreatureInformation.MonsterMaxLevel)
+            {
+                CreatureInformation.Level = CreatureInformation.MonsterMaxLevel;
+            }
+
             GameObject.SetActive(false);
 
             return;

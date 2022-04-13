@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine.UI;
 public class WaitingRoom : MonoBehaviourPun
 {
     public int CurPlayerType { get; private set; }
+    public int Index { get; set; }
     public bool IsReady { get; private set; }
     public Text PlayerName;
 
@@ -24,6 +26,7 @@ public class WaitingRoom : MonoBehaviourPun
     private List<GameObject> _playerCharactor = new List<GameObject>();
     private Text _readyButtonText;
     private Image _readyButtonImage;
+    private event Action<int, string> _charactorSelectFunc;
 
 
     private void Awake()
@@ -40,7 +43,6 @@ public class WaitingRoom : MonoBehaviourPun
 
     private void OnEnable()
     {
-        PlayerName.text = "Player 1";
         CurPlayerType = (int)EPlayerType.Rifle;
 
         for (int i = 1; i < _playerCharactor.Count; ++i)
@@ -57,7 +59,12 @@ public class WaitingRoom : MonoBehaviourPun
         {
             return;
         }
-        
+
+        _charactorSelectFunc(Index, "Right");
+    }
+
+    public void Right()
+    {
         _playerCharactor[CurPlayerType].SetActive(false);
         ++CurPlayerType;
 
@@ -76,6 +83,11 @@ public class WaitingRoom : MonoBehaviourPun
             return;
         }
 
+        _charactorSelectFunc(Index, "Left");
+    }
+
+    public void Left()
+    {
         _playerCharactor[CurPlayerType].SetActive(false);
         --CurPlayerType;
 
@@ -94,7 +106,7 @@ public class WaitingRoom : MonoBehaviourPun
             return;
         }
 
-        photonView.RPC("ReadySwitching", RpcTarget.All);
+        IsReady = !IsReady;
 
         if (IsReady)
         {
@@ -108,9 +120,8 @@ public class WaitingRoom : MonoBehaviourPun
         }
     }
 
-    [PunRPC]
-    private void ReadySwitching()
+    public void SetCharactorSelectFunc(Action<int, string> func)
     {
-        IsReady = !IsReady;
+        _charactorSelectFunc = func;
     }
 }

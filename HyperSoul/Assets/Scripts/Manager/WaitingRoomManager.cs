@@ -32,11 +32,11 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         {
             AddPlayer(PhotonNetwork.LocalPlayer.NickName);
         }
-    }
 
-    private void Update()
-    {
-       
+        for (int i = 0; i < _roomList.Length; ++i)
+        {
+            _roomList[i].SetCharactorSelectFunc(SelectCharactor);
+        }
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -114,7 +114,35 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void UpdateRoomInfo(int index, string name, bool isActive)
     {
+        _roomList[index].Index = index;
         _roomList[index].gameObject.SetActive(isActive);
         _roomList[index].PlayerName.text = name;
+    }
+
+    private void SelectCharactor(int index, string dir)
+    {
+        switch (dir)
+        {
+            case "Right":
+                photonView.RPC("RightButton", RpcTarget.AllBuffered, index);
+                break;
+            case "Left":
+                photonView.RPC("LeftButton", RpcTarget.AllBuffered, index);
+                break;
+            default:
+                break;
+        }
+    }
+
+    [PunRPC]
+    private void RightButton(int index)
+    {
+        _roomList[index].Right();
+    }
+
+    [PunRPC]
+    private void LeftButton(int index)
+    {
+        _roomList[index].Left();
     }
 }

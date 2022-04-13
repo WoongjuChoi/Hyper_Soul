@@ -93,8 +93,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void SendDieMessage(LivingEntity attacker, LivingEntity victim)
     {
         string msg = "";
-        LivingEntity attackerInfo = attacker.GetComponent<LivingEntity>();
-        LivingEntity victimPlayerInfo = victim.GetComponent<LivingEntity>();
+        PlayerInfo attackerInfo = attacker.GetComponent<PlayerInfo>();
+        PlayerInfo victimPlayerInfo = victim.GetComponent<PlayerInfo>();
         // MonsterInfo victimMonsterInfo =  victim.GetComponent<MonsterInfo>(); ¸¸µé±â
         if (victimPlayerInfo != null)
         {

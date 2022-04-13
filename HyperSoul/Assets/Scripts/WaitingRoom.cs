@@ -53,7 +53,7 @@ public class WaitingRoom : MonoBehaviourPun
 
     public void RightClick()
     {
-        if (false == photonView.IsMine)
+        if (PlayerName.text != PhotonNetwork.LocalPlayer.NickName)
         {
             return;
         }
@@ -71,7 +71,7 @@ public class WaitingRoom : MonoBehaviourPun
 
     public void LeftClick()
     {
-        if (false == photonView.IsMine)
+        if (PlayerName.text != PhotonNetwork.LocalPlayer.NickName)
         {
             return;
         }
@@ -89,13 +89,12 @@ public class WaitingRoom : MonoBehaviourPun
 
     public void ReadyClick()
     {
-        if (false == photonView.IsMine)
+        if (PlayerName.text != PhotonNetwork.LocalPlayer.NickName)
         {
             return;
         }
 
-        IsReady = !IsReady;
-        Debug.Log(IsReady);
+        photonView.RPC("ReadySwitching", RpcTarget.All);
 
         if (IsReady)
         {
@@ -107,5 +106,11 @@ public class WaitingRoom : MonoBehaviourPun
             _readyButtonImage.color = new Color(255, 255, 255, 255);
             _readyButtonText.color = new Color(255, 255, 255, 255);
         }
+    }
+
+    [PunRPC]
+    private void ReadySwitching()
+    {
+        IsReady = !IsReady;
     }
 }

@@ -9,11 +9,16 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     private GameObject _waitingRoomPrefab;
+    [SerializeField]
+    private WaitingRoom[] _roomList;
 
     private GameObject _roomPanal;
     private Text _roomNameText;
     private Dictionary<int, Player> _playerList;
-    private Dictionary<int, GameObject> _playerPanal = new Dictionary<int, GameObject>();
+
+    // 이 아래는 Master만 사용하는 변수들
+    private bool[] _emptyRoomCheck = new bool[4];
+
 
     private void Awake()
     {
@@ -22,7 +27,11 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         _roomNameText.text = PhotonNetwork.CurrentRoom.Name;
 
         _playerList = PhotonNetwork.CurrentRoom.Players;
-        UpdatePlayerList();
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            AddPlayer(PhotonNetwork.LocalPlayer.NickName);
+        }
     }
 
     private void Update()
@@ -33,27 +42,26 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         _playerList = PhotonNetwork.CurrentRoom.Players;
-        UpdatePlayerList();
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            AddPlayer(newPlayer.NickName);
+        }
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        int playerPanalKey = 0;
-
-        foreach(KeyValuePair<int, Player> player in _playerList)
-        {
-            if (player.Value == otherPlayer)
-            {
-                playerPanalKey = player.Key;
-            }
-        }
-
-        _playerPanal.Remove(playerPanalKey);
         _playerList = PhotonNetwork.CurrentRoom.Players;
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            RemovePlayer(otherPlayer.NickName);
+        }
     }
 
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LoadLevel("LobbyScene");
     }
 
     public void GameStart()
@@ -68,15 +76,45 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("MainScene");
     }
 
-    private void UpdatePlayerList()
+    private void AddPlayer(string playerName)
     {
-        foreach (var player in _playerList)
+        for (int i = 0; i < _roomList.Length; ++i) // 방에 같은 이름의 플레이어가 있는지 확인
         {
-            if (false == _playerPanal.ContainsKey(player.Key))
+            if (_roomList[i].PlayerName.text == playerName)
             {
-                _playerPanal.Add(player.Key, Instantiate(_waitingRoomPrefab, _roomPanal.transform));
-                _playerPanal[player.Key].GetComponent<WaitingRoom>().PlayerName.text = player.Value.NickName;
+                return;
             }
         }
+
+        for (int i = 0; i < _emptyRoomCheck.Length; ++i) // 빈 칸이 있는지 체크
+        {
+            if (_emptyRoomCheck[i] == false)
+            {
+                _emptyRoomCheck[i] = true;
+                photonView.RPC("UpdateRoomInfo", RpcTarget.AllBuffered, i, playerName, true);
+
+                return;
+            }
+        }
+    }
+
+    private void RemovePlayer(string playerName)
+    {
+        for (int i = 0; i < _roomList.Length; ++i)
+        {
+            if (_roomList[i].PlayerName.text == playerName)
+            {
+                _emptyRoomCheck[i] = false;
+
+                photonView.RPC("UpdateRoomInfo", RpcTarget.AllBuffered, i, " ", false);
+            }
+        }
+    }
+
+    [PunRPC]
+    private void UpdateRoomInfo(int index, string name, bool isActive)
+    {
+        _roomList[index].gameObject.SetActive(isActive);
+        _roomList[index].PlayerName.text = name;
     }
 }

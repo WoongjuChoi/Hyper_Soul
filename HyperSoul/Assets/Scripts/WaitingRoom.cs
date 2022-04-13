@@ -27,6 +27,7 @@ public class WaitingRoom : MonoBehaviourPun
     private Text _readyButtonText;
     private Image _readyButtonImage;
     private event Action<int, string> _charactorSelectFunc;
+    private event Action<int> _readyFunc;
 
 
     private void Awake()
@@ -106,6 +107,11 @@ public class WaitingRoom : MonoBehaviourPun
             return;
         }
 
+        _readyFunc(Index);
+    }
+
+    public void SetReadyState()
+    {
         IsReady = !IsReady;
 
         if (IsReady)
@@ -123,5 +129,10 @@ public class WaitingRoom : MonoBehaviourPun
     public void SetCharactorSelectFunc(Action<int, string> func)
     {
         _charactorSelectFunc = func;
+    }
+
+    public void SetReadyButtonFunc(Action<int> func)
+    {
+        _readyFunc = func;
     }
 }

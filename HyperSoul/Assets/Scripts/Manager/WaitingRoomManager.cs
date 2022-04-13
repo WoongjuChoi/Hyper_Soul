@@ -36,6 +36,7 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         for (int i = 0; i < _roomList.Length; ++i)
         {
             _roomList[i].SetCharactorSelectFunc(SelectCharactor);
+            _roomList[i].SetReadyButtonFunc(SetReadyState);
         }
     }
 
@@ -66,11 +67,24 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
 
     public void GameStart()
     {
+        if (false == PhotonNetwork.IsMasterClient)
+        {
+            return;
+        }
+
+        for (int i = 0; i < _playerList.Count; ++i)
+        {
+            if (_roomList[i].IsReady == false) // 한 명이라도 레디를 안했다면 리턴
+            {
+                return;
+            }
+        }
+
         photonView.RPC("StartMainScene", RpcTarget.All);
     }
 
-    [PunRPC]
 
+    [PunRPC]
     private void StartMainScene()
     {
         PhotonNetwork.LoadLevel("MainScene");
@@ -134,6 +148,11 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         }
     }
 
+    private void SetReadyState(int index)
+    {
+        photonView.RPC("ReadyButton", RpcTarget.AllBuffered, index);
+    }
+
     [PunRPC]
     private void RightButton(int index)
     {
@@ -144,5 +163,11 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
     private void LeftButton(int index)
     {
         _roomList[index].Left();
+    }
+
+    [PunRPC]
+    private void ReadyButton(int index)
+    {
+        _roomList[index].SetReadyState();
     }
 }

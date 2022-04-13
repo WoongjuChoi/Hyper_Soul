@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class WolfInformation : MonsterInformation
 {
+    [SerializeField]
+    private GameObject _attackCollider = null;
+
+    [SerializeField]
+    private GameObject _startPoint = null;
+
     private WolfAlertState _monsterAlertState = null;
     private WolfAttackState _monsterAttackState = null;
     private WolfChaseState _monsterChaseState = null;
@@ -13,6 +19,9 @@ public class WolfInformation : MonsterInformation
     private WolfIdleState _monsterIdleState = null;
     private WolfReturnPositionState _monsterReturnPositionState = null;
     private WolfSpawnState _monsterSpawnState = null;
+
+    public GameObject AttackCollider { get { return _attackCollider; } }
+    public GameObject StartPoint { get { return _startPoint; } }
 
     public override void Awake()
     {
@@ -24,6 +33,8 @@ public class WolfInformation : MonsterInformation
 
         _monsterType = MonsterType.Wolf;
         Level = 1;
+
+        _attackCollider.SetActive(false);
 
         _monsterAlertState = GetComponent<WolfAlertState>();
         _monsterAttackState = GetComponent<WolfAttackState>();

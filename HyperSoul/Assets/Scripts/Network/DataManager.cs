@@ -10,8 +10,8 @@ public class DataManager : MonoBehaviour
 
     public bool IsDataReady { get; private set; }
 
-    const string PlayerDataURL = "https://docs.google.com/spreadsheets/d/1smTaItZFLP5k4agzZ8nvxX_KSp0n_y9UjP701PXgMWs/export?format=tsv&range=A2:H";
-    const string MonsterDataURL = "https://docs.google.com/spreadsheets/d/1smTaItZFLP5k4agzZ8nvxX_KSp0n_y9UjP701PXgMWs/export?format=tsv&range=A2:E&gid=1983254392";
+    const string PlayerDataURL = "https://docs.google.com/spreadsheets/d/1smTaItZFLP5k4agzZ8nvxX_KSp0n_y9UjP701PXgMWs/export?format=tsv&range=A2:J";
+    const string MonsterDataURL = "https://docs.google.com/spreadsheets/d/1smTaItZFLP5k4agzZ8nvxX_KSp0n_y9UjP701PXgMWs/export?format=tsv&range=A2:F&gid=1983254392";
 
     private void Awake()
     {
@@ -23,10 +23,8 @@ public class DataManager : MonoBehaviour
     {
         UnityWebRequest playerDB = UnityWebRequest.Get(PlayerDataURL);
         UnityWebRequest monsterDB = UnityWebRequest.Get(MonsterDataURL);
-
         yield return playerDB.SendWebRequest();
         yield return monsterDB.SendWebRequest();
-
         if (playerDB.isDone && monsterDB.isDone)
         {
             SetData(CharacterType.Player, playerDB.downloadHandler.text);
@@ -37,17 +35,14 @@ public class DataManager : MonoBehaviour
         {
             print("웹 응답 없음");
         }
-
     }
 
     private void SetData(CharacterType characterType, string tsvFile)
     {
         string[] row = tsvFile.Split('\n');
-
         for (int i = 0; i < row.Length; ++i)
         {
             string[] column = row[i].Split('\t');
-
             switch (characterType)
             {
                 case CharacterType.Player:
@@ -59,6 +54,8 @@ public class DataManager : MonoBehaviour
                     playerData.Exp = int.Parse(column[5]);
                     playerData.SkillAttack = int.Parse(column[6]);
                     playerData.MaxBullet = int.Parse(column[7]);
+                    playerData.Score = int.Parse(column[8]);
+                    playerData.MoveSpeed = int.Parse(column[9]);
                     _playerDataDictionary.Add(playerData.PlayerName, playerData);
                     break;
                 case CharacterType.Monster:
@@ -67,11 +64,11 @@ public class DataManager : MonoBehaviour
                     monsterData.MaxHp = int.Parse(column[2]);
                     monsterData.Attack = int.Parse(column[3]);
                     monsterData.Exp = int.Parse(column[4]);
+                    monsterData.Score = int.Parse(column[5]);
                     _monsterDataDictionary.Add(monsterData.MonsterName, monsterData);
                     break;
                 default:
                     break;
-
             }
         }
     }
@@ -80,7 +77,6 @@ public class DataManager : MonoBehaviour
     {
         PlayerData data;
         _playerDataDictionary.TryGetValue(name, out data);
-
         return data;
     }
 

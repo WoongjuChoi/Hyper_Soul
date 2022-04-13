@@ -8,23 +8,38 @@ using UnityEngine.InputSystem;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     static private GameManager _instance;
+
     static public GameManager Instance
     {
         get { Init(); return _instance; }
     }
 
+    ObjectPool _objPool;
+
+    DataManager _dataManager;
+
+    public static ObjectPool ObjPool { get { return Instance._objPool; } }
+
+    public static DataManager DataManager { get { return Instance._dataManager; } }
+
     public Transform PlayerCamRotationTransform { get; set; }
 
     [SerializeField]
     private Transform _spawnPosBase;
+
     [SerializeField]
     private InputField _chatMsg;
+
     [SerializeField]
     private Text[] _chatList;
 
     private bool[] _isSpawned = new bool[5];
 
-
+    private void Awake()
+    {
+        //_objPool = GameObject.Find("ObjectPool").GetComponent<ObjectPool>();
+        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
+    }
 
     void Start()
     {
@@ -53,6 +68,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LoadLevel("LobbyScene");
     }
+
     //public void Respawn()
     //{
     //    Transform[] spawnPoint = _spawnPosBase.GetComponentsInChildren<Transform>();
@@ -65,25 +81,22 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             index = Random.Range(1, 5);
         }
-        //GameObject obj = PhotonNetwork.Instantiate("BazookaPlayer", spawnPoint[index].position, Quaternion.identity);
         GameObject obj = PhotonNetwork.Instantiate("RiflePlayer", spawnPoint[index].position, Quaternion.identity);
+        //GameObject obj = PhotonNetwork.Instantiate("BazookaPlayer", spawnPoint[index].position, Quaternion.identity);
         //GameObject obj = PhotonNetwork.Instantiate("SniperPlayer", spawnPoint[index].position, Quaternion.identity);
-
-        photonView.RPC("SpawnPosMarking", RpcTarget.AllBuffered, index);
+        photonView.RPC(nameof(SpawnPosMarking), RpcTarget.AllBufferedViaServer, index);
     }
 
     [PunRPC]
     private void SpawnPosMarking(int spawnPosNum)
     {
         _isSpawned[spawnPosNum] = true;
-
         // 디버깅용
         //for (int i = 0; i < _isSpawned.Length; ++i)
         //{
         //    Debug.Log($"{i} : {_isSpawned[i]}");
         //}
     }
-
     private void SendChatMessage()
     {
         string msg = $"[{PhotonNetwork.LocalPlayer.NickName}] \n {_chatMsg.text}";
@@ -93,8 +106,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void SendDieMessage(LivingEntity attacker, LivingEntity victim)
     {
         string msg = "";
-        LivingEntity attackerInfo = attacker.GetComponent<LivingEntity>();
-        LivingEntity victimPlayerInfo = victim.GetComponent<LivingEntity>();
+        PlayerInfo attackerInfo = attacker.GetComponent<PlayerInfo>();
+        PlayerInfo victimPlayerInfo = victim.GetComponent<PlayerInfo>();
         // MonsterInfo victimMonsterInfo =  victim.GetComponent<MonsterInfo>(); 만들기
         if (victimPlayerInfo != null)
         {
@@ -104,9 +117,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         //{
         //    msg = $"{attackerInfo.NickName}이(가) {victimMonsterInfo.NickName}을(를) 처치";
         //}
-
-        photonView.RPC("Chat", RpcTarget.OthersBuffered, msg);
         Chat(msg);
+        photonView.RPC("Chat", RpcTarget.OthersBuffered, msg);
     }
 
     [PunRPC]
@@ -127,9 +139,11 @@ public class GameManager : MonoBehaviourPunCallbacks
                 }
                 _input = true;
                 _chatList[0].text = msg;
+
                 break;
             }
         }
+
         if (_input == false)
         {
             for (int i = _chatList.Length - 1; i >= 1; --i)
@@ -151,7 +165,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     //        _isSpawned = (bool[])stream.ReceiveNext();
     //    }
     //}
-
     static private void Init()
     {
         if (_instance == null)
@@ -165,6 +178,5 @@ public class GameManager : MonoBehaviourPunCallbacks
             DontDestroyOnLoad(gameManager);
             _instance = gameManager.GetComponent<GameManager>();
         }
-
     }
 }

@@ -21,4 +21,8 @@ public class MonsterData //: ScriptableObject
     {
         get; set;
     }
+    public int Score
+    {
+        get; set;
+    }
 }

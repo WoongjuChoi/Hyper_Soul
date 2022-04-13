@@ -509,7 +509,7 @@ GameObject:
   - component: {fileID: 7396338544874843868}
   - component: {fileID: 3125689160270221052}
   - component: {fileID: 4813482757080466971}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Attack Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1032,6 +1032,10 @@ PrefabInstance:
     - target: {fileID: 1624368403487492, guid: 9cb5a6f6c9a97f24da2012a45f8f9908, type: 3}
       propertyPath: m_Name
       value: Root Blue
+      objectReference: {fileID: 0}
+    - target: {fileID: 1624368403487492, guid: 9cb5a6f6c9a97f24da2012a45f8f9908, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 1624368403487492, guid: 9cb5a6f6c9a97f24da2012a45f8f9908, type: 3}
       propertyPath: m_IsActive

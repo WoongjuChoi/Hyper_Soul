@@ -36,6 +36,8 @@ public class PlayerInfo : LivingEntity, IGiveExp
         get; set;
     }
 
+    private const int MONSTER_ATTACK_COLLIDER = 13;
+
     public override void Awake()
     {
         _hitSound.SetActive(false);
@@ -104,6 +106,15 @@ public class PlayerInfo : LivingEntity, IGiveExp
 
             TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID, collision.gameObject.GetComponent<Projectile>().Attack,
                 collision.transform.position, collision.transform.position.normalized);
+        }
+
+        if (MONSTER_ATTACK_COLLIDER == collision.gameObject.layer)
+        {
+            Debug.Log($"피격당함\n Attacker : {collision.gameObject.GetComponentInParent<LivingEntity>().gameObject.name}" +
+                    $"\n Damage : {collision.gameObject.GetComponentInParent<LivingEntity>().Attack}" +
+                    $"\n HP : {CurHp}");
+
+            TakeDamage(collision.gameObject.GetComponentInParent<LivingEntity>().Attack);
         }
     }
 

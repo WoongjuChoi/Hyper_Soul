@@ -11,7 +11,7 @@ public class WolfAttackState : BaseState<WolfInformation>
 
     private float _distance = 0f;
 
-    private const float MOVE_SPEED = 3f;
+    private const float MOVE_SPEED = 10f;
 
     public override void EnterState()
     {
@@ -77,11 +77,13 @@ public class WolfAttackState : BaseState<WolfInformation>
 
         GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ATTACK, true);
 
-        CreatureInformation.AttackCollider.SetActive(true);
+        CreatureInformation.MonsterAttackRangeCollider.enabled = false;
 
         yield return new WaitForSeconds(0.1f);
 
         GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ATTACK, false);
+
+        CreatureInformation.AttackCollider.SetActive(true);
 
         while (_distance > 1f)
         {
@@ -99,6 +101,8 @@ public class WolfAttackState : BaseState<WolfInformation>
         _distance = (_endPoint.transform.position - CreatureInformation.StartPoint.transform.position).magnitude;
         
         CreatureInformation.AttackCollider.SetActive(false);
+
+        CreatureInformation.MonsterAttackRangeCollider.enabled = true;
 
         yield return new WaitForSeconds(3f);
 

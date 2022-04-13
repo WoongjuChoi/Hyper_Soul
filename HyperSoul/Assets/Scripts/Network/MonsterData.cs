@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//[CreateAssetMenu(fileName = "MonsterData", menuName = "Scriptable Object/MonsterData", order = int.MaxValue)]
-public class MonsterData //: ScriptableObject
+
+public class MonsterData
 {
     public string MonsterName
     {
@@ -18,6 +18,10 @@ public class MonsterData //: ScriptableObject
         get; set;
     }
     public int Exp
+    {
+        get; set;
+    }
+    public int Score
     {
         get; set;
     }

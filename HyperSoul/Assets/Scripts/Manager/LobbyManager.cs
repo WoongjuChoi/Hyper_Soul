@@ -40,7 +40,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private byte _maxPlayer = 4;
 
-    DataManager _dataManager;
+    private DataManager _dataManager;
 
 
     private void Awake()

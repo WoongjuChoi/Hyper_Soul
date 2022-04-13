@@ -33,4 +33,12 @@ public class PlayerData //: ScriptableObject
     {
         get; set;
     }
+    public int Score
+    {
+        get; set;
+    }
+    public int MoveSpeed
+    {
+        get; set;
+    }
 }

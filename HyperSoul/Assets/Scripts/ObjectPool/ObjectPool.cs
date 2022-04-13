@@ -9,8 +9,7 @@ public class ObjectPool : MonoBehaviourPun
 
     private void Awake()
     {
-        Init("BazookaMissile", 5);
-
+        Init("BazookaMissile", 7);
     }
 
     public void Init(string prefabName, int amount)
@@ -27,9 +26,8 @@ public class ObjectPool : MonoBehaviourPun
     {
         GameObject newObject = null;
 
-        newObject = PhotonNetwork.Instantiate(prefabName, Vector3.zero, Quaternion.identity);
+        newObject = PhotonNetwork.InstantiateRoomObject(prefabName, new Vector3(0, 5, 0), Quaternion.identity);
         newObject.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.AllBuffered, false);
-        //newObject.SetActive(false);
 
         return newObject;
     }
@@ -37,6 +35,11 @@ public class ObjectPool : MonoBehaviourPun
 
     public GameObject GetObj(string prefabName)
     {
+        if(false == _objPoolDictionary.ContainsKey(prefabName))
+        {
+            Debug.Log($"{prefabName} 키값없음");
+            return null;
+        }
         GameObject newObj = (_objPoolDictionary[prefabName].Count > 0) ? _objPoolDictionary[prefabName].Dequeue() : CreateObj(prefabName);
 
         return newObj;
@@ -44,8 +47,10 @@ public class ObjectPool : MonoBehaviourPun
 
     public void ReturnObj(GameObject obj, string prefabName)
     {
-        obj.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.AllBuffered, false);
+        obj.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.All, false);
 
         _objPoolDictionary[prefabName].Enqueue(obj);
+
+        Debug.Log($"{prefabName} {obj.GetComponent<BazookaMissile>().GetComponent<PhotonView>().ViewID} 리턴됨");
     }
 }

@@ -29,7 +29,7 @@ public class BazookaMissile : Projectile
     private bool _isLaunched = false;
     private bool _isHitted = false;
 
-    private event Action<GameObject> _missileReturn;
+    //Action<GameObject> _missileReturn;
 
     public Transform Target
     {
@@ -47,6 +47,8 @@ public class BazookaMissile : Projectile
 
     void OnEnable()
     {
+        Debug.Log($"활성화됨 포톤번호 {photonView.ViewID} \n {ProjectileOwnerID}가 활성화");
+
         _missileLaunch = gameObject.AddComponent<AudioSource>();
         _missileLaunch.PlayOneShot(_launchSound);
         _launchPos = transform.position;
@@ -96,11 +98,10 @@ public class BazookaMissile : Projectile
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(true == gameObject.activeSelf)
-        {
-            Explosion(transform.position);
-            photonView.RPC("Explosion", RpcTarget.Others, transform.position);
-        }
+        Debug.Log($"{collision.gameObject.name}과 충돌함");
+        Explosion(transform.position);
+        photonView.RPC("Explosion", RpcTarget.Others, transform.position);
+
         
     }
 
@@ -150,8 +151,8 @@ public class BazookaMissile : Projectile
         GameManager.ObjPool.ReturnObj(gameObject, "BazookaMissile");
     }
 
-    public void ReceiveReturnMissileFunc(Action<GameObject> returnMissile)
-    {
-        _missileReturn = returnMissile;
-    }
+    //public void ReceiveReturnMissileFunc(Action<GameObject> returnMissile)
+    //{
+    //    _missileReturn = returnMissile;
+    //}
 }

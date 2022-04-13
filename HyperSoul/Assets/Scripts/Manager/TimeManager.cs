@@ -1,9 +1,10 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TimeManager : MonoBehaviour
+public class TimeManager : MonoBehaviourPun, IPunObservable
 {
     static public TimeManager Instance
     {
@@ -43,6 +44,8 @@ public class TimeManager : MonoBehaviour
 
     private int _minutesNum = 0;
     private int _secondsNum = 0;
+
+    private int _timerText = 0;
 
     private bool _isReady = true;
 
@@ -87,25 +90,29 @@ public class TimeManager : MonoBehaviour
 
         _inGameTimeText.text = $"{_minutesNum} : {_secondsNum}";
 
-        _currTime = Time.time - _startTime;
-
-        if (_currTime >= 1f)
+        if (PhotonNetwork.IsMasterClient)
         {
-            --_secondsNum;
+            _currTime = Time.time - _startTime;
 
-            ResetTimer();
-        }
+            if (_currTime >= 1f)
+            {
+                --_secondsNum;
 
-        if (_secondsNum < 0)
-        {
-            _secondsNum = 59;
+                ResetTimer();
+            }
 
-            --_minutesNum;
-        }
+            if (_secondsNum < 0)
+            {
+                _secondsNum = 59;
 
-        if (_minutesNum < 0)
-        {
-            StartGame = false;
+                --_minutesNum;
+            }
+
+            if (_minutesNum < 0)
+            {
+                StartGame = false;
+                //photonView.RPC("SetStartGame", RpcTarget.All, false);
+            }
         }
     }
 
@@ -116,15 +123,22 @@ public class TimeManager : MonoBehaviour
             return;
         }
 
-        _currTime = Time.time - _startTime;
-
-        int timerText = (int)(_maxReadyTime - _currTime);
-
-        _startTimeText.text = $"{timerText}";
-
-        if (0 == timerText)
+        if (PhotonNetwork.IsMasterClient)
         {
-            _isReady = false;
+            _currTime = Time.time - _startTime;
+
+            _timerText = (int)(_maxReadyTime - _currTime);
+        }
+
+        _startTimeText.text = $"{_timerText}";
+
+        if (0 == _timerText)
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                _isReady = false;
+                //photonView.RPC("SetIsReady", RpcTarget.All, false);
+            }
 
             _startTimeText.gameObject.SetActive(false);
 
@@ -132,7 +146,11 @@ public class TimeManager : MonoBehaviour
 
             ResetTimer();
 
-            StartGame = true;
+            if (PhotonNetwork.IsMasterClient)
+            {
+                StartGame = true;
+                //photonView.RPC("SetStartGame", RpcTarget.All, true);
+            }
 
             _inGameTimeText.gameObject.SetActive(true);
         }
@@ -142,6 +160,18 @@ public class TimeManager : MonoBehaviour
     {
         _startTime = Time.time;
         _currTime = Time.time;
+    }
+
+    [PunRPC]
+    private void SetIsReady(bool isReady)
+    {
+        _isReady = isReady;
+    }
+
+    [PunRPC]
+    private void SetStartGame(bool startGame)
+    {
+        StartGame = startGame;
     }
 
     private void ShowGameOverText()
@@ -168,5 +198,21 @@ public class TimeManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         _startGameText.gameObject.SetActive(false);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (PhotonNetwork.IsMasterClient && stream.IsWriting)
+        {
+            stream.SendNext(_timerText);
+            stream.SendNext(_minutesNum);
+            stream.SendNext(_minutesNum);
+        }
+        else if (stream.IsReading)
+        {
+            _timerText = (int)stream.ReceiveNext();
+            _minutesNum = (int)stream.ReceiveNext();
+            _minutesNum = (int)stream.ReceiveNext();
+        }
     }
 }

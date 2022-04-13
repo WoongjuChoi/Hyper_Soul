@@ -44,7 +44,7 @@ public class PlayerInfo : LivingEntity, IGiveExp
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
         // Temp
-        _playerType = PlayerType.Bazooka;
+        _playerType = PlayerType.Rifle;
         Level = 1;
         CurExp = 0;
 

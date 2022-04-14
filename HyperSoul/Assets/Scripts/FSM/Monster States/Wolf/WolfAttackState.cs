@@ -33,6 +33,15 @@ public class WolfAttackState : BaseState<WolfInformation>
 
     public override void UpdateState()
     {
+        if (CreatureInformation.Target.GetComponent<LivingEntity>().IsDead)
+        {
+            CreatureInformation.IsTargeting = false;
+
+            FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
+
+            return;
+        }
+
         if (CreatureInformation.IsDamaged)
         {
             FiniteStateMachine.ChangeState(EStateIDs.Damaged);
@@ -77,8 +86,6 @@ public class WolfAttackState : BaseState<WolfInformation>
 
         GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ATTACK, true);
 
-        CreatureInformation.MonsterAttackRangeCollider.enabled = false;
-
         yield return new WaitForSeconds(0.1f);
 
         GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ATTACK, false);
@@ -101,8 +108,6 @@ public class WolfAttackState : BaseState<WolfInformation>
         _distance = (_endPoint.transform.position - CreatureInformation.StartPoint.transform.position).magnitude;
         
         CreatureInformation.AttackCollider.SetActive(false);
-
-        CreatureInformation.MonsterAttackRangeCollider.enabled = true;
 
         yield return new WaitForSeconds(3f);
 

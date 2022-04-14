@@ -22,6 +22,15 @@ public class WolfChaseState : BaseState<WolfInformation>
 
     public override void UpdateState()
     {
+        if (CreatureInformation.Target.GetComponent<LivingEntity>().IsDead)
+        {
+            CreatureInformation.IsTargeting = false;
+
+            FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
+
+            return;
+        }
+
         if (CreatureInformation.IsDamaged)
         {
             FiniteStateMachine.ChangeState(EStateIDs.Damaged);

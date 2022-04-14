@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public abstract class Weapon : MonoBehaviourPun
+public abstract class Weapon : MonoBehaviourPun, IPunObservable
 {
     public Vector2 ZoomRotationSpeed;
     public GameObject ZoomCam;
@@ -13,7 +13,7 @@ public abstract class Weapon : MonoBehaviourPun
     public GameObject MuzzleFlashEffect;
     public AudioClip ShotSound;
     public AudioClip ReloadSound;
-
+    
     public int CurBulletCnt = 0;
     public int MaxBulletAmt = 0;
 
@@ -29,6 +29,8 @@ public abstract class Weapon : MonoBehaviourPun
     protected AudioSource _audioSource;
     protected EGunState _gunState;
 
+    protected ObjectPool _objectPool = new ObjectPool();
+
     DataManager _dataManager;
     private void Awake()
     {
@@ -39,10 +41,16 @@ public abstract class Weapon : MonoBehaviourPun
         _audioSource = this.gameObject.GetComponent<AudioSource>();
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
+
         _playerAnimator.SetFloat(PlayerAnimatorID.RELOAD_SPEED, _reloadSpeed);
         ZoomRotationSpeed = new Vector2(0.2f, 0.2f);
         ZoomCam.SetActive(false);
         //MaxBulletAmt = _dataManager.
+
+        if (photonView.IsMine)
+        {
+            _objectPool.Init("BazookaMissile", 3);
+        }
     }
     protected void Update()
     {
@@ -101,6 +109,21 @@ public abstract class Weapon : MonoBehaviourPun
                 _mousePos = hit.point;
                 break;
             }
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(CurBulletCnt);
+            stream.SendNext(_gunState);
+        }
+        else
+        {
+            CurBulletCnt = (int)stream.ReceiveNext();
+            _gunState = (EGunState)stream.ReceiveNext();
+
         }
     }
 }

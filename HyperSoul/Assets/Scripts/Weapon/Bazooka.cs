@@ -18,11 +18,11 @@ public class Bazooka : Weapon
     [SerializeField]
     private float _rayDist = 200f;
 
-    private ObjectPool _missilePool = new ObjectPool();
-
     private Vector3 _targetPos;
 
     private Coroutine _shootCotountine;
+
+
 
     private void OnEnable()
     {
@@ -30,8 +30,6 @@ public class Bazooka : Weapon
         MaxBulletAmt = 100;
         _reloadTime = 5;
         _gunState = EGunState.Ready;
-
-        _missilePool.Init(_missilePrefab, 20);
     }
 
     public override void Fire()
@@ -47,10 +45,11 @@ public class Bazooka : Weapon
         GameObject target = AimTarget();
         int targetViewID = (target != null) ? target.GetComponent<PhotonView>().ViewID : -1;
 
-        photonView.RPC("MissileFire", RpcTarget.All, aimDir, targetViewID);
+        photonView.RPC(nameof(MissileFire), RpcTarget.All, aimDir, targetViewID);
+
     }
 
-
+    
     public override void Zoom()
     {
         ZoomCam.SetActive(true);
@@ -65,21 +64,26 @@ public class Bazooka : Weapon
         {
             StopCoroutine(_shootCotountine);
         }
+        if (false == photonView.IsMine)
+        {
+            return;
+        }
         _shootCotountine = StartCoroutine(Shoot(aimDir, targetViewID));
     }
 
 
     private IEnumerator Shoot(Vector3 aimDir, int aimedTargetID)
     {
+
         --CurBulletCnt;
 
-        BazookaMissile _bazookaMissile = _missilePool.GetObj().GetComponent<BazookaMissile>();
+        BazookaMissile _bazookaMissile = _objectPool.GetObj("BazookaMissile").GetComponent<BazookaMissile>();
 
         _bazookaMissile.MissilePrefab.SetActive(true);
         _bazookaMissile.RocketParticleEffect.SetActive(false);
         _bazookaMissile.ExplosionEffect.SetActive(false);
 
-        if(aimedTargetID == -1)
+        if (aimedTargetID == -1)
         {
             _bazookaMissile.Target = null;
         }
@@ -91,25 +95,20 @@ public class Bazooka : Weapon
         _bazookaMissile.transform.position = _missileSpawnPos.position;
         _bazookaMissile.transform.rotation = Quaternion.LookRotation(aimDir, Vector3.up);
         _bazookaMissile.GetComponent<Rigidbody>().velocity = _bazookaMissile.transform.forward * 7f + _bazookaMissile.transform.up * 7f;
-        _bazookaMissile.ReceiveReturnMissileFunc(ReturnMissile);
         _bazookaMissile.ProjectileOwnerID = _playerInfo.PhotonViewID;
         _bazookaMissile.Attack = _playerInfo.Attack;
-        Debug.DrawRay(_bazookaMissile.transform.position, aimDir, Color.red, 1f);
-        _bazookaMissile.gameObject.SetActive(true);
+        _bazookaMissile.GetComponent<PoolObject>().SetActiveObj(true);
+        _bazookaMissile.ReceiveReturnMissileFunc(ReturnMissile);
+        _bazookaMissile.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.All, true);
 
-        Collider[] bazookaColliders = _bazookaMissile.GetComponentsInChildren<Collider>();
-        if(false == PhotonNetwork.IsMasterClient)
+
+
+        if (false == PhotonNetwork.IsMasterClient)
         {
+            Collider[] bazookaColliders = _bazookaMissile.GetComponentsInChildren<Collider>();
             foreach (Collider col in bazookaColliders)
             {
                 col.enabled = false;
-            }
-        }
-        else
-        {
-            foreach (Collider col in bazookaColliders)
-            {
-                col.enabled = true;
             }
         }
 
@@ -120,6 +119,8 @@ public class Bazooka : Weapon
         _shootCotountine = null;
         _canFire = true;
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, false);
+
+       
 
     }
 
@@ -133,7 +134,7 @@ public class Bazooka : Weapon
             Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 1f);
             if (target.transform.gameObject.layer == 3 || target.transform.gameObject.layer == 6 || target.transform.gameObject.layer == 12)
             {
-                Debug.Log($"Target is {target.transform.gameObject.layer}");
+                //Debug.Log($"Target is {target.transform.gameObject.layer}");
                 return target.transform.gameObject;
             }
         }
@@ -142,21 +143,21 @@ public class Bazooka : Weapon
 
     private void ReturnMissile(GameObject missile)
     {
-        _missilePool.ReturnObj(missile);
+        _objectPool.Destroy(missile);
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(CurBulletCnt);
-            stream.SendNext(_gunState);
-        }
-        else
-        {
-            CurBulletCnt = (int)stream.ReceiveNext();
-            _gunState = (EGunState)stream.ReceiveNext();
+    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    //{
+    //    if (stream.IsWriting)
+    //    {
+    //        stream.SendNext(CurBulletCnt);
+    //        stream.SendNext(_gunState);
+    //    }
+    //    else
+    //    {
+    //        CurBulletCnt = (int)stream.ReceiveNext();
+    //        _gunState = (EGunState)stream.ReceiveNext();
 
-        }
-    }
+    //    }
+    //}
 }

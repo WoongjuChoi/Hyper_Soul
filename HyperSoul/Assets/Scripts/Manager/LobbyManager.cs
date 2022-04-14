@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
-
+using UnityEngine.InputSystem;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
@@ -59,11 +59,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         _roomNameInput.text = PlayerPrefs.GetString("ROOM_NAME", "ROOM_" + Random.Range(1, 1000));
     }
 
+
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.LocalPlayer.NickName = _nickNameInput.text;
+
         PhotonNetwork.JoinLobby();
         _connetInfoText.text = "Join Lobby";
+
     }
 
     public override void OnJoinedLobby()
@@ -153,7 +156,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("RoomScene");
         //PhotonNetwork.LoadLevel("FSM Scene");
     }
-   
 
     public override void OnDisconnected(DisconnectCause cause)
     {

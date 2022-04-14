@@ -121,7 +121,7 @@ RectTransform:
   m_Children:
   - {fileID: 537874742}
   m_Father: {fileID: 6504689496865234752}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -496,7 +496,7 @@ Transform:
   - {fileID: 1627426952}
   - {fileID: 1509460211}
   m_Father: {fileID: 6504689496865234752}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &357951418581368657
 GameObject:
@@ -526,7 +526,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 6504689496865234752}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &644907161448856365
 GameObject:
@@ -556,7 +556,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 6504689496865234752}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4587062087237599316
 GameObject:
@@ -590,7 +590,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0.5}
   m_Children: []
   m_Father: {fileID: 6504689496865234752}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5280507957859286111
 MeshFilter:
@@ -976,7 +976,7 @@ Transform:
   m_LocalScale: {x: 1, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 6504689496865234752}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6504689495801067066
 GameObject:
@@ -1760,13 +1760,13 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
-  - {fileID: 6504689497117896049}
   - {fileID: 6504689495799932597}
   - {fileID: 622968382}
   - {fileID: 2107252395}
   - {fileID: 2242901778032948838}
   - {fileID: 7067615958415600955}
   - {fileID: 2150689073038801695}
+  - {fileID: 6504689497117896049}
   m_Father: {fileID: 6504689497433525173}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2326,7 +2326,7 @@ Transform:
   - {fileID: 6504689495832384540}
   - {fileID: 6504689497596233137}
   m_Father: {fileID: 6504689496865234752}
-  m_RootOrder: 0
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6504689497117896054
 Animator:

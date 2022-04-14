@@ -13,6 +13,9 @@ public class TreantStompAttack : MonoBehaviour, ITreantAttack
     [SerializeField]
     private GameObject _endPoint = null;
 
+    [SerializeField]
+    private Animator _animator = null;
+
     private Coroutine _stompAttackCoroutine = null;
 
     private bool _isAttack = false;
@@ -33,7 +36,7 @@ public class TreantStompAttack : MonoBehaviour, ITreantAttack
 
     public void Attack()
     {
-        gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, false);
+        _animator.SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, false);
 
         if (false == _isAttack)
         {
@@ -47,11 +50,11 @@ public class TreantStompAttack : MonoBehaviour, ITreantAttack
 
         yield return new WaitForSeconds(0.1f);
 
-        gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, true);
+        _animator.SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, true);
 
         yield return new WaitForSeconds(0.5f);
 
-        gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, false);
+        _animator.SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, false);
 
         _attackCollider.SetActive(true);
         

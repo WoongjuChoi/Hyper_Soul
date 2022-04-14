@@ -13,9 +13,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         get { Init(); return _instance; }
     }
 
-    ObjectPool _objPool;
     DataManager _dataManager;
-    public static ObjectPool ObjPool { get { return Instance._objPool; } }
     public static DataManager DataManager { get { return Instance._dataManager; } }
 
     public Transform PlayerCamRotationTransform { get; set; }
@@ -31,7 +29,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        _objPool = GameObject.Find("ObjectPool").GetComponent<ObjectPool>();
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
     }
 

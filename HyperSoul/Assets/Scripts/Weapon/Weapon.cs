@@ -29,6 +29,8 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
     protected AudioSource _audioSource;
     protected EGunState _gunState;
 
+    protected ObjectPool _objectPool = new ObjectPool();
+
     DataManager _dataManager;
     private void Awake()
     {
@@ -39,10 +41,16 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
         _audioSource = this.gameObject.GetComponent<AudioSource>();
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
+
         _playerAnimator.SetFloat(PlayerAnimatorID.RELOAD_SPEED, _reloadSpeed);
         ZoomRotationSpeed = new Vector2(0.2f, 0.2f);
         ZoomCam.SetActive(false);
         //MaxBulletAmt = _dataManager.
+
+        if (photonView.IsMine)
+        {
+            _objectPool.Init("BazookaMissile", 3);
+        }
     }
     protected void Update()
     {

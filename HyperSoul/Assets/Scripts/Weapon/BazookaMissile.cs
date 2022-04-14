@@ -29,7 +29,7 @@ public class BazookaMissile : Projectile
     private bool _isLaunched = false;
     private bool _isHitted = false;
 
-    //Action<GameObject> _missileReturn;
+    Action<GameObject> _missileReturn;
 
     public Transform Target
     {
@@ -47,7 +47,7 @@ public class BazookaMissile : Projectile
 
     void OnEnable()
     {
-        Debug.Log($"활성화됨 포톤번호 {photonView.ViewID} \n {ProjectileOwnerID}가 활성화");
+        //Debug.Log($"활성화됨 포톤번호 {photonView.ViewID} \n {ProjectileOwnerID}가 활성화");
 
         _missileLaunch = gameObject.AddComponent<AudioSource>();
         _missileLaunch.PlayOneShot(_launchSound);
@@ -98,11 +98,8 @@ public class BazookaMissile : Projectile
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log($"{collision.gameObject.name}과 충돌함");
         Explosion(transform.position);
-        photonView.RPC("Explosion", RpcTarget.Others, transform.position);
-
-        
+        GetComponent<PhotonView>().RPC("Explosion", RpcTarget.Others, transform.position);
     }
 
     private IEnumerator SoftLaunch()
@@ -130,7 +127,11 @@ public class BazookaMissile : Projectile
         MissilePrefab.SetActive(false);
 
         yield return new WaitForSeconds(1.3f);
-        ReturnMissile();
+
+        if(photonView.IsMine)
+        {
+            ReturnMissile();
+        }
         explosionCoroutine = null;
     }
 
@@ -148,11 +149,25 @@ public class BazookaMissile : Projectile
         GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         _isHitted = false;
 
-        GameManager.ObjPool.ReturnObj(gameObject, "BazookaMissile");
+        _missileReturn(gameObject);
     }
 
-    //public void ReceiveReturnMissileFunc(Action<GameObject> returnMissile)
-    //{
-    //    _missileReturn = returnMissile;
-    //}
+    public void ReceiveReturnMissileFunc(Action<GameObject> returnMissile)
+    {
+        _missileReturn = returnMissile;
+    }
+
+    public override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if(photonView.IsMine)
+        {
+            stream.SendNext(ProjectileOwnerID);
+            stream.SendNext(Attack);
+        }
+        else
+        {
+            ProjectileOwnerID = (int)stream.ReceiveNext();
+            Attack = (int)stream.ReceiveNext();
+        }
+    }
 }

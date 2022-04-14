@@ -67,8 +67,8 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
             {
                 CurHp = 0;
                 GameManager.Instance.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
-                Die(attackerID);
-                photonView.RPC("Die", RpcTarget.Others, attackerID);
+                Die();
+                photonView.RPC("Die", RpcTarget.Others);
             }
             else if (false == _isHitting)
             {
@@ -86,7 +86,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         CurHp = hp;
     }
     [PunRPC]
-    public void Die(int attackerID)
+    public void Die()
     {
         _deathSound.SetActive(true);
 

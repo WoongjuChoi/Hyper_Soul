@@ -9,17 +9,23 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     static private GameManager _instance;
+
     static public GameManager Instance
     {
         get { Init(); return _instance; }
     }
 
-    private DataManager _dataManager;
+    ObjectPool _objPool;
 
-    static public DataManager Datamanager
-    {
-        get { return Instance._dataManager; }
-    }
+    DataManager _dataManager;
+
+    TimeManager _timeManager;
+
+    public static ObjectPool ObjPool { get { return Instance._objPool; } }
+
+    public static DataManager DataManager { get { return Instance._dataManager; } }
+
+    public static TimeManager TimeManager { get { return Instance._timeManager; } }
 
     public Transform PlayerCamRotationTransform { get; set; }
 
@@ -32,8 +38,19 @@ public class GameManager : MonoBehaviourPunCallbacks
     private GameObject _player;
     private GameObject _spawnPosBase;
 
+    Transform[] _spawnPoint;
     private bool _isMainScene;
 
+    private GameObject _player = null;
+
+    private bool _isRespawn = false;
+
+    private void Awake()
+    {
+        //_objPool = GameObject.Find("ObjectPool").GetComponent<ObjectPool>();
+        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
+        _timeManager = GameObject.Find("TimeManager").GetComponent<TimeManager>();
+    }
 
     void Start()
     {
@@ -50,11 +67,28 @@ public class GameManager : MonoBehaviourPunCallbacks
             _isMainScene = true;
             SpawnPlayer();
         }
+        if (Keyboard.current[Key.Enter].wasPressedThisFrame && _chatMsg.text != "")
+        {
+            SendChatMessage();
+            _chatMsg.text = "";
+        }
+        if (Keyboard.current[Key.Escape].wasPressedThisFrame)
+        {
+            //PhotonNetwork.LeaveRoom();
+        }
+
+        if (_player.GetComponent<LivingEntity>().IsDead && false == _isRespawn)
+        {
+            _isRespawn = true;
+
+            Invoke(nameof(RespawnPlayer), 5f);
+        }
     }
     public override void OnLeftRoom()
     {
         PhotonNetwork.LoadLevel("LobbyScene");
     }
+
     //public void Respawn()
     //{
     //    Transform[] spawnPoint = _spawnPosBase.GetComponentsInChildren<Transform>();
@@ -85,6 +119,31 @@ public class GameManager : MonoBehaviourPunCallbacks
                 _player = PhotonNetwork.Instantiate("SniperPlayer", spawnPoint[index].position, Quaternion.identity);
                 break;
         }
+
+    }
+
+    public void RespawnPlayer()
+    {
+        int index = Random.Range(1, 5);
+
+        while (_isSpawned[index])
+        {
+            index = Random.Range(1, 5);
+        }
+
+        _player.SetActive(true);
+
+        _player.transform.position = _spawnPoint[index].position;
+
+        _isRespawn = false;
+
+        photonView.RPC(nameof(Respawn), RpcTarget.Others);
+    }
+
+    [PunRPC]
+    public void Respawn()
+    {
+        _player.SetActive(true);
     }
 
     [PunRPC]
@@ -160,7 +219,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     //        _isSpawned = (bool[])stream.ReceiveNext();
     //    }
     //}
-
     static private void Init()
     {
         if (_instance == null)
@@ -174,6 +232,5 @@ public class GameManager : MonoBehaviourPunCallbacks
             DontDestroyOnLoad(gameManager);
             _instance = gameManager.GetComponent<GameManager>();
         }
-
     }
 }

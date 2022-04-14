@@ -6,9 +6,6 @@ using UnityEngine;
 public class TreantInformation : MonsterInformation
 {
     [SerializeField]
-    private GameObject _stompAttackArea = null;
-
-    [SerializeField]
     private float _viewAngle = 0f;
 
     [SerializeField]
@@ -27,9 +24,6 @@ public class TreantInformation : MonsterInformation
 
     private bool _existInSight = false;
 
-    private const float DOT_120_DEGREE = -0.5f;
-
-    public GameObject StompAttackArea { get { return _stompAttackArea; } }
     public Vector3 VectorMonsterToTarget { get { return _vecMonsterToTarget; } }
     public Vector3 OriginVec { get; set; }
     public bool ExistInSight { get { return _existInSight; } }

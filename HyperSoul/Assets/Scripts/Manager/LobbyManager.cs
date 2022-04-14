@@ -40,6 +40,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private byte _maxPlayer = 4;
 
+    private DataManager _dataManager = null;
+
 
     private void Awake()
     {
@@ -48,6 +50,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         _joinButton.interactable = true;
         _curPanel = _loginPanel;
 
+        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
     }
     private void Start()
     {
@@ -69,14 +72,20 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
     public void Connect()
     {
+        if (false == _dataManager.IsDataReady)
+        {
+            _connetInfoText.text = "Data Loading...Please try again";
+            return;
+        }
+
         _joinButton.interactable = false;
         PhotonNetwork.ConnectUsingSettings();
         _connetInfoText.text = "Connecting to Master Server";
-        
+
         if (PhotonNetwork.IsConnected == true)
         {
             PhotonNetwork.NickName = PhotonNetwork.LocalPlayer.NickName;
-            
+
             ChangePanel(_roomPanel);
         }
     }

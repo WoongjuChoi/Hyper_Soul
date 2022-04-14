@@ -27,8 +27,6 @@ public class TreantAttackState : BaseState<TreantInformation>
         _treantRootAttack.StopAttack();
         _treantStompAttack.StopAttack();
 
-        CreatureInformation.StompAttackArea.SetActive(false);
-
         _outOfSight = false;
     }
 

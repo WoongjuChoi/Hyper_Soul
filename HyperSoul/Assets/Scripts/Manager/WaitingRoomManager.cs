@@ -62,6 +62,10 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom()
+    {
         PhotonNetwork.LoadLevel("LobbyScene");
     }
 
@@ -78,16 +82,15 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
             {
                 return;
             }
+
+            if (_roomList[i].PlayerName.text == PhotonNetwork.LocalPlayer.NickName) // 본인의 패널인 경우 데이터매니저에 정보 전달
+            {
+                GameManager.Datamanager.PlayerIndex = i;
+                GameManager.Datamanager.PlayerType = (EPlayerType)_roomList[i].CurPlayerType;
+            }
         }
 
-        photonView.RPC("StartMainScene", RpcTarget.All);
-    }
-
-
-    [PunRPC]
-    private void StartMainScene()
-    {
-        PhotonNetwork.LoadLevel("MainScene");
+        GameManager.Instance.GameStartButton();
     }
 
     private void AddPlayer(string playerName)

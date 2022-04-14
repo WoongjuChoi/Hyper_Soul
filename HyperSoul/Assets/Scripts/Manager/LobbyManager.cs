@@ -139,9 +139,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         _connetInfoText.text = "Joined room";
         PhotonNetwork.IsMessageQueueRunning = false; // 통신 일시정지, 플레이어 스폰 후 다시 연결 시켜준다
-        PhotonNetwork.LoadLevel("MainScene");
+        //PhotonNetwork.LoadLevel("MainScene");
         //PhotonNetwork.LoadLevel("Bajooka Sample Scene");
-        //PhotonNetwork.LoadLevel("RoomScene");
+        PhotonNetwork.LoadLevel("RoomScene");
         //PhotonNetwork.LoadLevel("FSM Scene");
     }
    

@@ -9,6 +9,8 @@ public class DataManager : MonoBehaviour
     private Dictionary<string, MonsterData> _monsterDataDictionary = new Dictionary<string, MonsterData>();
 
     public bool IsDataReady { get; private set; }
+    public int PlayerIndex { get; set; }
+    public EPlayerType PlayerType { get; set; }
 
     const string PlayerDataURL = "https://docs.google.com/spreadsheets/d/1smTaItZFLP5k4agzZ8nvxX_KSp0n_y9UjP701PXgMWs/export?format=tsv&range=A2:H";
     const string MonsterDataURL = "https://docs.google.com/spreadsheets/d/1smTaItZFLP5k4agzZ8nvxX_KSp0n_y9UjP701PXgMWs/export?format=tsv&range=A2:E&gid=1983254392";

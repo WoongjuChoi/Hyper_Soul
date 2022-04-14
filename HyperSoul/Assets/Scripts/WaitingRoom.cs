@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine.UI;
 public class WaitingRoom : MonoBehaviourPun
 {
     public int CurPlayerType { get; private set; }
+    public int Index { get; set; }
     public bool IsReady { get; private set; }
     public Text PlayerName;
 
@@ -24,6 +26,8 @@ public class WaitingRoom : MonoBehaviourPun
     private List<GameObject> _playerCharactor = new List<GameObject>();
     private Text _readyButtonText;
     private Image _readyButtonImage;
+    private event Action<int, string> _charactorSelectFunc;
+    private event Action<int> _readyFunc;
 
 
     private void Awake()
@@ -40,7 +44,6 @@ public class WaitingRoom : MonoBehaviourPun
 
     private void OnEnable()
     {
-        PlayerName.text = "Player 1";
         CurPlayerType = (int)EPlayerType.Rifle;
 
         for (int i = 1; i < _playerCharactor.Count; ++i)
@@ -53,11 +56,16 @@ public class WaitingRoom : MonoBehaviourPun
 
     public void RightClick()
     {
-        if (false == photonView.IsMine)
+        if (PlayerName.text != PhotonNetwork.LocalPlayer.NickName)
         {
             return;
         }
-        
+
+        _charactorSelectFunc(Index, "Right");
+    }
+
+    public void Right()
+    {
         _playerCharactor[CurPlayerType].SetActive(false);
         ++CurPlayerType;
 
@@ -71,11 +79,16 @@ public class WaitingRoom : MonoBehaviourPun
 
     public void LeftClick()
     {
-        if (false == photonView.IsMine)
+        if (PlayerName.text != PhotonNetwork.LocalPlayer.NickName)
         {
             return;
         }
 
+        _charactorSelectFunc(Index, "Left");
+    }
+
+    public void Left()
+    {
         _playerCharactor[CurPlayerType].SetActive(false);
         --CurPlayerType;
 
@@ -89,13 +102,17 @@ public class WaitingRoom : MonoBehaviourPun
 
     public void ReadyClick()
     {
-        if (false == photonView.IsMine)
+        if (PlayerName.text != PhotonNetwork.LocalPlayer.NickName)
         {
             return;
         }
 
+        _readyFunc(Index);
+    }
+
+    public void SetReadyState()
+    {
         IsReady = !IsReady;
-        Debug.Log(IsReady);
 
         if (IsReady)
         {
@@ -107,5 +124,15 @@ public class WaitingRoom : MonoBehaviourPun
             _readyButtonImage.color = new Color(255, 255, 255, 255);
             _readyButtonText.color = new Color(255, 255, 255, 255);
         }
+    }
+
+    public void SetCharactorSelectFunc(Action<int, string> func)
+    {
+        _charactorSelectFunc = func;
+    }
+
+    public void SetReadyButtonFunc(Action<int> func)
+    {
+        _readyFunc = func;
     }
 }

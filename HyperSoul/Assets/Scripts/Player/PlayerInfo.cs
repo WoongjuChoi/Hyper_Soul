@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerInfo : LivingEntity
+public class PlayerInfo : LivingEntity, IGiveExp
 {
     [SerializeField]
     private Slider _myHpSlider;
@@ -19,8 +19,7 @@ public class PlayerInfo : LivingEntity
     private Text _killText;
     [SerializeField]
     private Text _levelUpText;
-    [SerializeField]
-    private Text _gameOverText;
+
     [SerializeField]
     private GameObject _playerUI;
 
@@ -30,11 +29,13 @@ public class PlayerInfo : LivingEntity
 
     public int PhotonViewID;
 
+    public int CurExp { get; set; }
     public int MaxExp
     {
         get; set;
     }
-    public int CurExp { get; set; }
+
+    private const int MONSTER_ATTACK_COLLIDER = 13;
 
     public override void Awake()
     {
@@ -44,7 +45,7 @@ public class PlayerInfo : LivingEntity
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
         // Temp
-        _playerType = PlayerType.Bazooka;
+        _playerType = PlayerType.Rifle;
         Level = 1;
         CurExp = 0;
 
@@ -66,11 +67,8 @@ public class PlayerInfo : LivingEntity
         NickName = photonView.Owner.NickName;
         _playerWeapon = GetComponentInChildren<Weapon>();
 
-        Exp = MaxExp;
-
         _killText.gameObject.SetActive(false);
         _levelUpText.gameObject.SetActive(false);
-        _gameOverText.gameObject.SetActive(false);
         _hitImage.SetActive(false);
     }
 
@@ -88,6 +86,9 @@ public class PlayerInfo : LivingEntity
 
     private void Update()
     {
+        //// 디버깅용
+        //Debug.Log($"CurExp : {CurExp}");
+
         HpUpdate();
         AmmoUpdate();
         ExpUpdate();
@@ -104,21 +105,41 @@ public class PlayerInfo : LivingEntity
             TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID, collision.gameObject.GetComponent<Projectile>().Attack,
                 collision.transform.position, collision.transform.position.normalized);
         }
+
+        if (MONSTER_ATTACK_COLLIDER == collision.gameObject.layer)
+        {
+            Debug.Log($"피격당함\nAttacker : {collision.gameObject.GetComponentInParent<LivingEntity>().gameObject.name}" +
+                    $"\nDamage : {collision.gameObject.GetComponentInParent<LivingEntity>().Attack}" +
+                    $"\nHP : {CurHp}");
+
+            TakeDamage(collision.gameObject.GetComponentInParent<LivingEntity>().Attack);
+        }
     }
 
     private void HpUpdate()
     {
         _myHpSlider.value = (float)CurHp / MaxHp;
-
-        if (CurHp <= 0 && photonView.IsMine)
-        {
-            _gameOverText.gameObject.SetActive(true);
-        }
     }
 
     private void AmmoUpdate()
     {
         _ammoText.text = _playerWeapon.CurBulletCnt + " \\ " + _playerWeapon.MaxBulletAmt;
+    }
+
+    public void GiveExp(int expAmt)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            CurExp += expAmt;
+
+            photonView.RPC("UpdateExp", RpcTarget.Others, CurExp);
+        }
+    }
+
+    [PunRPC]
+    public void UpdateExp(int newExp)
+    {
+        CurExp = newExp;
     }
 
     private void ExpUpdate()
@@ -151,4 +172,5 @@ public class PlayerInfo : LivingEntity
 
         _levelUpText.gameObject.SetActive(false);
     }
+
 }

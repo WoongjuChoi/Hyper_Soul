@@ -10,8 +10,6 @@ public class TreantSpawnState : BaseState<TreantInformation>
     {
         CreatureInformation.MonsterCurrentState = EStateIDs.Spawn;
 
-        CreatureInformation.StompAttackArea.SetActive(false);
-
         GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_SPAWN);
     }
 

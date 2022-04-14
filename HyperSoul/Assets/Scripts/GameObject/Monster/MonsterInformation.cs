@@ -59,6 +59,7 @@ public abstract class MonsterInformation : LivingEntity
     public float MonsterInvincibleTime { get { return _monsterInvincibleTime; } }
     public float MonsterSpawnDirection { get { return _monsterSpawnDirection; } }
     public int MonsterMaxHP { get { return _monsterMaxHP; } }
+    public int MonsterMaxLevel { get { return 5; } }
 
     public EStateIDs MonsterCurrentState { get { return _monsterCurrentState; } set { _monsterCurrentState = value; } }
     public bool IsDamaged { get { return _isDamaged; } set { _isDamaged = value; } }
@@ -69,6 +70,11 @@ public abstract class MonsterInformation : LivingEntity
     private void OnEnable()
     {
         MaxHp = _dataManager.FindMonsterData(_monsterType.ToString() + Level.ToString()).MaxHp;
+        Attack = _dataManager.FindMonsterData(_monsterType.ToString() + Level.ToString()).Attack;
+        Exp = _dataManager.FindMonsterData(_monsterType.ToString() + Level.ToString()).Exp;
+
+        //// µð¹ö±ë¿ë
+        //Debug.Log($"MonsterInfo MaxHp : {MaxHp}\nMonsterInfo Attack : {Attack}\nMonsterInfo Exp : {Exp}");
 
         CurHp = MaxHp;
 

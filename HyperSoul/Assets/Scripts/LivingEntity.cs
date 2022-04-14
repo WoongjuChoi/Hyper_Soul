@@ -48,10 +48,29 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
 
     public virtual void OnCollisionEnter(Collision collision) { }
 
-    [PunRPC]
-    public void Respawn()
+    public void TakeDamage(int damageAmt)
     {
-        gameObject.SetActive(true);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if (IsDead)
+            {
+                return;
+            }
+            CurHp -= damageAmt;
+
+            if (CurHp <= 0 && IsDead == false)
+            {
+                CurHp = 0;
+                Die();
+                photonView.RPC("Die", RpcTarget.Others);
+            }
+            else if (false == _isHitting)
+            {
+                Hit();
+                photonView.RPC("Hit", RpcTarget.Others, null);
+            }
+            photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
+        }
     }
 
     public virtual void TakeDamage(int attackerID, int damageAmt, Vector3 hitPoint, Vector3 hitNormal)
@@ -68,8 +87,8 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
             {
                 CurHp = 0;
                 //GameManager.Instance.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
-                Die(attackerID);
-                photonView.RPC("Die", RpcTarget.Others, attackerID);
+                Die();
+                photonView.RPC("Die", RpcTarget.Others);
             }
             else if (false == _isHitting)
             {
@@ -111,7 +130,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         _animator.SetBool(CommonAnimatorID.HIT, false);
     }
 
-    public virtual void Die(int attackerID)
+    public virtual void Die()
     {
         _deathSound.SetActive(true);
 
@@ -120,6 +139,13 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
             IsDead = true;
             _animator.SetTrigger(CommonAnimatorID.DIE);
         }
+
+        Invoke(nameof(RespawnPlayer), 1.5f);
+    }
+
+    private void RespawnPlayer()
+    {
+        gameObject.SetActive(false);
     }
 
     public virtual void UpdateLevelUpInfo(string info)
@@ -135,5 +161,4 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
                 break;
         }
     }
-
 }

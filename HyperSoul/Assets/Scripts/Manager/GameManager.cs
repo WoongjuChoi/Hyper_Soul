@@ -9,17 +9,23 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     static private GameManager _instance;
+
     static public GameManager Instance
     {
         get { Init(); return _instance; }
     }
 
-    private DataManager _dataManager;
+    ObjectPool _objPool;
 
-    static public DataManager Datamanager
-    {
-        get { return Instance._dataManager; }
-    }
+    DataManager _dataManager;
+
+    TimeManager _timeManager;
+
+    public static ObjectPool ObjPool { get { return Instance._objPool; } }
+
+    public static DataManager DataManager { get { return Instance._dataManager; } }
+
+    public static TimeManager TimeManager { get { return Instance._timeManager; } }
 
     public Transform PlayerCamRotationTransform { get; set; }
 
@@ -32,8 +38,16 @@ public class GameManager : MonoBehaviourPunCallbacks
     private GameObject _player;
     private GameObject _spawnPosBase;
 
+    Transform[] _spawnPoint;
     private bool _isMainScene;
 
+    private bool _isRespawn = false;
+
+    private void Awake()
+    {
+        //_objPool = GameObject.Find("ObjectPool").GetComponent<ObjectPool>();
+        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
+    }
 
     void Start()
     {
@@ -45,46 +59,78 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if("MainScene" == SceneManager.GetActiveScene().name && false ==_isMainScene)
+        if ("MainScene" == SceneManager.GetActiveScene().name)
         {
-            _isMainScene = true;
-            SpawnPlayer();
+            if (false == _isMainScene)
+            {
+                _isMainScene = true;
+                _timeManager = GameObject.Find("TimeManager").GetComponent<TimeManager>();
+                SpawnPlayer();
+            }
+            else if (_player.GetComponent<LivingEntity>().IsDead && false == _isRespawn)
+            {
+                _isRespawn = true;
+
+                Invoke(nameof(RespawnPlayer), 5f);
+            }
         }
     }
     public override void OnLeftRoom()
     {
         PhotonNetwork.LoadLevel("LobbyScene");
     }
-    //public void Respawn()
-    //{
-    //    Transform[] spawnPoint = _spawnPosBase.GetComponentsInChildren<Transform>();
-    //}
+
 
     public void GameStartButton()
     {
         photonView.RPC("StartMainScene", RpcTarget.All);
 
-        
+
     }
 
     private void SpawnPlayer()
     {
         _spawnPosBase = GameObject.Find("SpawnPosition");
-        Transform[] spawnPoint = _spawnPosBase.GetComponentsInChildren<Transform>();
+        _spawnPoint = _spawnPosBase.GetComponentsInChildren<Transform>();
         int index = _dataManager.PlayerIndex + 1;
 
         switch (_dataManager.PlayerType)
         {
             case EPlayerType.Rifle:
-                _player = PhotonNetwork.Instantiate("RiflePlayer", spawnPoint[index].position, Quaternion.identity);
+                _player = PhotonNetwork.Instantiate("RiflePlayer", _spawnPoint[index].position, Quaternion.identity);
                 break;
             case EPlayerType.Bazooka:
-                _player = PhotonNetwork.Instantiate("BazookaPlayer", spawnPoint[index].position, Quaternion.identity);
+                _player = PhotonNetwork.Instantiate("BazookaPlayer", _spawnPoint[index].position, Quaternion.identity);
                 break;
             case EPlayerType.Snipers:
-                _player = PhotonNetwork.Instantiate("SniperPlayer", spawnPoint[index].position, Quaternion.identity);
+                _player = PhotonNetwork.Instantiate("SniperPlayer", _spawnPoint[index].position, Quaternion.identity);
                 break;
         }
+
+    }
+
+    public void RespawnPlayer()
+    {
+        int index = Random.Range(1, 5);
+
+        while (_isSpawned[index])
+        {
+            index = Random.Range(1, 5);
+        }
+
+        _player.SetActive(true);
+
+        _player.transform.position = _spawnPoint[index].position;
+
+        _isRespawn = false;
+
+        photonView.RPC(nameof(Respawn), RpcTarget.Others);
+    }
+
+    [PunRPC]
+    public void Respawn()
+    {
+        _player.SetActive(true);
     }
 
     [PunRPC]
@@ -160,7 +206,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     //        _isSpawned = (bool[])stream.ReceiveNext();
     //    }
     //}
-
     static private void Init()
     {
         if (_instance == null)
@@ -174,6 +219,5 @@ public class GameManager : MonoBehaviourPunCallbacks
             DontDestroyOnLoad(gameManager);
             _instance = gameManager.GetComponent<GameManager>();
         }
-
     }
 }

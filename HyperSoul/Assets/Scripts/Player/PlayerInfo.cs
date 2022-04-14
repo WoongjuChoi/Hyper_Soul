@@ -19,8 +19,7 @@ public class PlayerInfo : LivingEntity, IGiveExp
     private Text _killText;
     [SerializeField]
     private Text _levelUpText;
-    [SerializeField]
-    private Text _gameOverText;
+
     [SerializeField]
     private GameObject _playerUI;
 
@@ -70,7 +69,6 @@ public class PlayerInfo : LivingEntity, IGiveExp
 
         _killText.gameObject.SetActive(false);
         _levelUpText.gameObject.SetActive(false);
-        _gameOverText.gameObject.SetActive(false);
         _hitImage.SetActive(false);
     }
 
@@ -121,11 +119,6 @@ public class PlayerInfo : LivingEntity, IGiveExp
     private void HpUpdate()
     {
         _myHpSlider.value = (float)CurHp / MaxHp;
-
-        if (CurHp <= 0 && photonView.IsMine)
-        {
-            _gameOverText.gameObject.SetActive(true);
-        }
     }
 
     private void AmmoUpdate()

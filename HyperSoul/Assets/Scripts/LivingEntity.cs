@@ -48,11 +48,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
 
     public virtual void OnCollisionEnter(Collision collision) { }
 
-    [PunRPC]
-    public void Respawn()
-    {
-        gameObject.SetActive(true);
-    }
     public void TakeDamage(int damageAmt)
     {
         if (PhotonNetwork.IsMasterClient)
@@ -144,6 +139,13 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
             IsDead = true;
             _animator.SetTrigger(CommonAnimatorID.DIE);
         }
+
+        Invoke(nameof(RespawnPlayer), 1.5f);
+    }
+
+    private void RespawnPlayer()
+    {
+        gameObject.SetActive(false);
     }
 
     public virtual void UpdateLevelUpInfo(string info)

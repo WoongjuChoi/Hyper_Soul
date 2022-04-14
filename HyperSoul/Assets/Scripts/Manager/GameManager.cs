@@ -18,9 +18,13 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     DataManager _dataManager;
 
+    TimeManager _timeManager;
+
     public static ObjectPool ObjPool { get { return Instance._objPool; } }
 
     public static DataManager DataManager { get { return Instance._dataManager; } }
+
+    public static TimeManager TimeManager { get { return Instance._timeManager; } }
 
     public Transform PlayerCamRotationTransform { get; set; }
 
@@ -35,10 +39,17 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private bool[] _isSpawned = new bool[5];
 
+    Transform[] _spawnPoint;
+
+    private GameObject _player = null;
+
+    private bool _isRespawn = false;
+
     private void Awake()
     {
         //_objPool = GameObject.Find("ObjectPool").GetComponent<ObjectPool>();
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
+        _timeManager = GameObject.Find("TimeManager").GetComponent<TimeManager>();
     }
 
     void Start()
@@ -63,6 +74,13 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             //PhotonNetwork.LeaveRoom();
         }
+
+        if (_player.GetComponent<LivingEntity>().IsDead && false == _isRespawn)
+        {
+            _isRespawn = true;
+
+            Invoke(nameof(RespawnPlayer), 5f);
+        }
     }
     public override void OnLeftRoom()
     {
@@ -73,18 +91,42 @@ public class GameManager : MonoBehaviourPunCallbacks
     //{
     //    Transform[] spawnPoint = _spawnPosBase.GetComponentsInChildren<Transform>();
     //}
-    private void SpawnPlayer()
+    public void SpawnPlayer()
     {
-        Transform[] spawnPoint = _spawnPosBase.GetComponentsInChildren<Transform>();
+        _spawnPoint = _spawnPosBase.GetComponentsInChildren<Transform>();
         int index = Random.Range(1, 5);
         while (_isSpawned[index])
         {
             index = Random.Range(1, 5);
         }
-        GameObject obj = PhotonNetwork.Instantiate("RiflePlayer", spawnPoint[index].position, Quaternion.identity);
+        _player = PhotonNetwork.Instantiate("RiflePlayer", _spawnPoint[index].position, Quaternion.identity);
         //GameObject obj = PhotonNetwork.Instantiate("BazookaPlayer", spawnPoint[index].position, Quaternion.identity);
         //GameObject obj = PhotonNetwork.Instantiate("SniperPlayer", spawnPoint[index].position, Quaternion.identity);
         photonView.RPC(nameof(SpawnPosMarking), RpcTarget.AllBufferedViaServer, index);
+    }
+
+    public void RespawnPlayer()
+    {
+        int index = Random.Range(1, 5);
+
+        while (_isSpawned[index])
+        {
+            index = Random.Range(1, 5);
+        }
+
+        _player.SetActive(true);
+
+        _player.transform.position = _spawnPoint[index].position;
+
+        _isRespawn = false;
+
+        photonView.RPC(nameof(Respawn), RpcTarget.Others);
+    }
+
+    [PunRPC]
+    public void Respawn()
+    {
+        _player.SetActive(true);
     }
 
     [PunRPC]

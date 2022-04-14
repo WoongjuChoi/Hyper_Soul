@@ -6,21 +6,6 @@ using UnityEngine.UI;
 
 public class TimeManager : MonoBehaviourPun, IPunObservable
 {
-    static public TimeManager Instance
-    {
-        get
-        {
-            if (null == _instance)
-            {
-                _instance = FindObjectOfType<TimeManager>();
-            }
-
-            return _instance;
-        }
-    }
-
-    static private TimeManager _instance = null;
-
     [SerializeField]
     private Text _GameOverText = null;
 
@@ -50,14 +35,6 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
     private bool _isReady = true;
 
     public bool StartGame { get; private set; }
-
-    private void Awake()
-    {
-        if (this != Instance)
-        {
-            Destroy(gameObject);
-        }
-    }
 
     private void Start()
     {

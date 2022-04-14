@@ -82,15 +82,24 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
             {
                 return;
             }
+        }
 
+        photonView.RPC("SendPlayerData", RpcTarget.AllBuffered);
+
+        GameManager.Instance.GameStartButton();
+    }
+
+    [PunRPC]
+    private void SendPlayerData()
+    {
+        for (int i = 0; i < _playerList.Count; ++i)
+        {
             if (_roomList[i].PlayerName.text == PhotonNetwork.LocalPlayer.NickName) // 본인의 패널인 경우 데이터매니저에 정보 전달
             {
                 GameManager.Datamanager.PlayerIndex = i;
                 GameManager.Datamanager.PlayerType = (EPlayerType)_roomList[i].CurPlayerType;
             }
         }
-
-        GameManager.Instance.GameStartButton();
     }
 
     private void AddPlayer(string playerName)

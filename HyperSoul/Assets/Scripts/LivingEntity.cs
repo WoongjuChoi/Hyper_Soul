@@ -86,7 +86,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
             if (CurHp <= 0 && IsDead == false)
             {
                 CurHp = 0;
-                GameManager.Instance.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
+                //GameManager.Instance.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
                 Die();
                 photonView.RPC("Die", RpcTarget.Others);
             }

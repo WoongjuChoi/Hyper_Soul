@@ -41,15 +41,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     Transform[] _spawnPoint;
     private bool _isMainScene;
 
-    private GameObject _player = null;
-
     private bool _isRespawn = false;
 
     private void Awake()
     {
         //_objPool = GameObject.Find("ObjectPool").GetComponent<ObjectPool>();
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
-        _timeManager = GameObject.Find("TimeManager").GetComponent<TimeManager>();
     }
 
     void Start()
@@ -62,26 +59,20 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if("MainScene" == SceneManager.GetActiveScene().name && false ==_isMainScene)
+        if ("MainScene" == SceneManager.GetActiveScene().name)
         {
-            _isMainScene = true;
-            SpawnPlayer();
-        }
-        if (Keyboard.current[Key.Enter].wasPressedThisFrame && _chatMsg.text != "")
-        {
-            SendChatMessage();
-            _chatMsg.text = "";
-        }
-        if (Keyboard.current[Key.Escape].wasPressedThisFrame)
-        {
-            //PhotonNetwork.LeaveRoom();
-        }
+            if (false == _isMainScene)
+            {
+                _isMainScene = true;
+                _timeManager = GameObject.Find("TimeManager").GetComponent<TimeManager>();
+                SpawnPlayer();
+            }
+            else if (_player.GetComponent<LivingEntity>().IsDead && false == _isRespawn)
+            {
+                _isRespawn = true;
 
-        if (_player.GetComponent<LivingEntity>().IsDead && false == _isRespawn)
-        {
-            _isRespawn = true;
-
-            Invoke(nameof(RespawnPlayer), 5f);
+                Invoke(nameof(RespawnPlayer), 5f);
+            }
         }
     }
     public override void OnLeftRoom()
@@ -89,34 +80,30 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("LobbyScene");
     }
 
-    //public void Respawn()
-    //{
-    //    Transform[] spawnPoint = _spawnPosBase.GetComponentsInChildren<Transform>();
-    //}
 
     public void GameStartButton()
     {
         photonView.RPC("StartMainScene", RpcTarget.All);
 
-        
+
     }
 
     private void SpawnPlayer()
     {
         _spawnPosBase = GameObject.Find("SpawnPosition");
-        Transform[] spawnPoint = _spawnPosBase.GetComponentsInChildren<Transform>();
+        _spawnPoint = _spawnPosBase.GetComponentsInChildren<Transform>();
         int index = _dataManager.PlayerIndex + 1;
 
         switch (_dataManager.PlayerType)
         {
             case EPlayerType.Rifle:
-                _player = PhotonNetwork.Instantiate("RiflePlayer", spawnPoint[index].position, Quaternion.identity);
+                _player = PhotonNetwork.Instantiate("RiflePlayer", _spawnPoint[index].position, Quaternion.identity);
                 break;
             case EPlayerType.Bazooka:
-                _player = PhotonNetwork.Instantiate("BazookaPlayer", spawnPoint[index].position, Quaternion.identity);
+                _player = PhotonNetwork.Instantiate("BazookaPlayer", _spawnPoint[index].position, Quaternion.identity);
                 break;
             case EPlayerType.Snipers:
-                _player = PhotonNetwork.Instantiate("SniperPlayer", spawnPoint[index].position, Quaternion.identity);
+                _player = PhotonNetwork.Instantiate("SniperPlayer", _spawnPoint[index].position, Quaternion.identity);
                 break;
         }
 

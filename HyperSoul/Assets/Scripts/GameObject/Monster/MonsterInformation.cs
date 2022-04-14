@@ -40,7 +40,6 @@ public abstract class MonsterInformation : LivingEntity
     protected float _monsterSpawnDirection = 0f;
 
     protected bool _isDamaged = false;
-    protected bool _isDie = false;
     protected bool _isTargeting = false;
     protected bool _isWithinAttackRange = false;
 
@@ -63,7 +62,6 @@ public abstract class MonsterInformation : LivingEntity
 
     public EStateIDs MonsterCurrentState { get { return _monsterCurrentState; } set { _monsterCurrentState = value; } }
     public bool IsDamaged { get { return _isDamaged; } set { _isDamaged = value; } }
-    public bool IsDie { get { return _isDie; } set { _isDie = value; } }
     public bool IsTargeting { get { return _isTargeting; } set { _isTargeting = value; } }
     public int MonsterCurrentHP { get { return _monsterCurrentHP; } set { _monsterCurrentHP = value; } }
 
@@ -94,7 +92,6 @@ public abstract class MonsterInformation : LivingEntity
 
         gameObject.transform.rotation = monsterInitializeDirection;
 
-        _isDie = false;
         _isTargeting = false;
         _isWithinAttackRange = false;
     }

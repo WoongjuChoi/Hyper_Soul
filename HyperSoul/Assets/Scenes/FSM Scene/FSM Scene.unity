@@ -2380,19 +2380,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcba81e9c342f2d469944e6386630917, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnPosBase: {fileID: 1776278490}
-  _chatMsg: {fileID: 1979235699}
-  _chatList:
-  - {fileID: 949395074}
-  - {fileID: 9480295}
-  - {fileID: 664102825}
-  - {fileID: 1650480410}
-  - {fileID: 645800003}
-  - {fileID: 287789862}
-  - {fileID: 981309248}
-  - {fileID: 455775072}
-  - {fileID: 369274100}
-  - {fileID: 517557114}
 --- !u!4 &1189486796
 Transform:
   m_ObjectHideFlags: 0
@@ -3328,7 +3315,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1776278490}
   m_Layer: 0
-  m_Name: SpawnPos
+  m_Name: SpawnPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

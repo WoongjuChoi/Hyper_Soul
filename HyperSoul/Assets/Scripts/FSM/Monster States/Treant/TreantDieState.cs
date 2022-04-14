@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class TreantDieState : BaseState<TreantInformation>
 {
-    private float _monsterDieTime = 2f;
-    private float _elapsedTime = 0f;
+    private bool _isDie = false;
 
     public override void EnterState()
     {
@@ -14,39 +13,28 @@ public class TreantDieState : BaseState<TreantInformation>
 
     public override void ExitState()
     {
-        _elapsedTime = 0f;
+        _isDie = false;
     }
 
     public override void UpdateState()
     {
-        DieTreant();
+        if (false == _isDie)
+        {
+            StartCoroutine(Die());
+        }
     }
 
-    private void DieTreant()
+    private IEnumerator Die()
     {
-        if (CreatureInformation.IsDie)
+        _isDie = true;
+
+        yield return new WaitForSeconds(0.5f);
+
+        CreatureInformation.Target.GetComponent<PlayerInfo>().GiveExp(CreatureInformation.Exp);
+
+        if (CreatureInformation.Level < CreatureInformation.MonsterMaxLevel)
         {
-            return;
-        }
-
-        if (_elapsedTime >= _monsterDieTime)
-        {
-            CreatureInformation.IsDie = true;
-
-            CreatureInformation.Target.GetComponent<PlayerInfo>().GiveExp(CreatureInformation.Exp);
-
             ++CreatureInformation.Level;
-
-            if (CreatureInformation.Level > CreatureInformation.MonsterMaxLevel)
-            {
-                CreatureInformation.Level = CreatureInformation.MonsterMaxLevel;
-            }
-
-            GameObject.SetActive(false);
-
-            return;
         }
-
-        _elapsedTime += Time.deltaTime;
     }
 }

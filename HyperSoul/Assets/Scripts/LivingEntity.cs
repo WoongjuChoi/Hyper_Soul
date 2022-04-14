@@ -134,16 +134,13 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     {
         _deathSound.SetActive(true);
 
-        if (false == IsDead)
-        {
-            IsDead = true;
-            _animator.SetTrigger(CommonAnimatorID.DIE);
-        }
+        IsDead = true;
+        _animator.SetTrigger(CommonAnimatorID.DIE);
 
-        Invoke(nameof(RespawnPlayer), 1.5f);
+        Invoke(nameof(Respawn), 1.5f);
     }
 
-    private void RespawnPlayer()
+    private void Respawn()
     {
         gameObject.SetActive(false);
     }

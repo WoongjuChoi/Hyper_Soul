@@ -7323,7 +7323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _monster: {fileID: 6488815983946440662}
   _initializeDirection: -90
-  _spawnTime: 2
+  _spawnTime: 3
 --- !u!1 &6488815985390001957
 GameObject:
   m_ObjectHideFlags: 0

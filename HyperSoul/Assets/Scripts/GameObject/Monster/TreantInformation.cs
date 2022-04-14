@@ -92,13 +92,6 @@ public class TreantInformation : MonsterInformation
 
             DistanceMonsterToTarget = (_targetPosition - gameObjecPosition).magnitude;
         }
-
-        // µð¹ö±ë¿ë
-        Debug.DrawRay(_collisionVec, _lookAtTargetVec * 1000f, Color.red);
-        Debug.DrawRay(_monsterRayPoint.position, gameObject.transform.forward * 1000f, Color.black);
-
-        //Debug.Log($"_monsterCurrentHP : {_monsterCurrentHP}");
-        //Debug.Log($"gameObject.transform.eulerAngles: {gameObject.transform.eulerAngles}");
     }
 
     private void ExistInTreantSight()

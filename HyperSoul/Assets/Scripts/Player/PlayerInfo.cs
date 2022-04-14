@@ -108,10 +108,9 @@ public class PlayerInfo : LivingEntity, IGiveExp
 
         if (MONSTER_ATTACK_COLLIDER == collision.gameObject.layer)
         {
-            Debug.Log($"피격당함\nAttacker Layer : {collision.gameObject.layer}");
-            Debug.Log($"Attacker : {collision.gameObject.GetComponentInParent<LivingEntity>().gameObject.name}");
-            Debug.Log($"Damage : {collision.gameObject.GetComponentInParent<LivingEntity>().Attack}");
-            Debug.Log($"HP : {CurHp}");
+            Debug.Log($"피격당함\nAttacker : {collision.gameObject.GetComponentInParent<LivingEntity>().gameObject.name}" +
+                    $"\nDamage : {collision.gameObject.GetComponentInParent<LivingEntity>().Attack}" +
+                    $"\nHP : {CurHp}");
 
             TakeDamage(collision.gameObject.GetComponentInParent<LivingEntity>().Attack);
         }

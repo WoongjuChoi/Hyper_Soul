@@ -540,6 +540,7 @@ GameObject:
   - component: {fileID: 1089831134888398549}
   - component: {fileID: 6958994862116957219}
   - component: {fileID: 1367658444483876693}
+  - component: {fileID: 6448425236664880498}
   m_Layer: 13
   m_Name: Attack Collider
   m_TagString: Untagged
@@ -598,6 +599,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &6448425236664880498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4077744492383850357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &6376465336253883028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1078,6 +1095,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8888225179874750749}
   - component: {fileID: 8888225179874750754}
+  - component: {fileID: 4262534590712844737}
   m_Layer: 0
   m_Name: Polygonal Wolf Brown
   m_TagString: Untagged
@@ -1134,6 +1152,57 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4262534590712844737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8888225179874750748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 9
+    SynchronizeType: 2
+    Name: hasDie
+  - Type: 9
+    SynchronizeType: 2
+    Name: hasResting
+  - Type: 9
+    SynchronizeType: 2
+    Name: hasSpawn
+  - Type: 4
+    SynchronizeType: 2
+    Name: isAlert
+  - Type: 4
+    SynchronizeType: 2
+    Name: isAttack
+  - Type: 4
+    SynchronizeType: 2
+    Name: isChase
+  - Type: 4
+    SynchronizeType: 2
+    Name: isDamaged
+  - Type: 4
+    SynchronizeType: 2
+    Name: isReturnPosition
+  - Type: 4
+    SynchronizeType: 2
+    Name: isWalk
+  - Type: 4
+    SynchronizeType: 2
+    Name: Hit
+  - Type: 9
+    SynchronizeType: 2
+    Name: Die
+  m_SynchronizeLayers:
+  - SynchronizeType: 2
+    LayerIndex: 0
 --- !u!1 &8888225179891670299
 GameObject:
   m_ObjectHideFlags: 0
@@ -2145,6 +2214,7 @@ GameObject:
   - component: {fileID: 8888225181122757837}
   - component: {fileID: 8888225181122757836}
   - component: {fileID: 1038067003195325885}
+  - component: {fileID: 5358016436291330401}
   m_Layer: 12
   m_Name: Brown Wolf
   m_TagString: Untagged
@@ -2412,10 +2482,29 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 5358016436291330401}
+  - {fileID: 4262534590712844737}
+  - {fileID: 6448425236664880498}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &5358016436291330401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8888225181122757839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &8888225181185135520
 GameObject:
   m_ObjectHideFlags: 0

@@ -570,6 +570,7 @@ GameObject:
   - component: {fileID: 5280507957859286111}
   - component: {fileID: 7978074745811845102}
   - component: {fileID: 7108546032417756800}
+  - component: {fileID: 1870254781808541575}
   m_Layer: 13
   m_Name: Attack Collider
   m_TagString: Untagged
@@ -628,6 +629,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &1870254781808541575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4587062087237599316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &6504689495512872250
 GameObject:
   m_ObjectHideFlags: 0
@@ -1724,6 +1741,7 @@ GameObject:
   - component: {fileID: 6504689496865234809}
   - component: {fileID: 6504689496865234808}
   - component: {fileID: 700798461778603766}
+  - component: {fileID: 6726101482425060601}
   m_Layer: 12
   m_Name: White Wolf
   m_TagString: Untagged
@@ -1991,10 +2009,29 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 6726101482425060601}
+  - {fileID: 6269568107315915858}
+  - {fileID: 1870254781808541575}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &6726101482425060601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6504689496865234811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &6504689496892990210
 GameObject:
   m_ObjectHideFlags: 0
@@ -2253,6 +2290,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6504689497117896049}
   - component: {fileID: 6504689497117896054}
+  - component: {fileID: 6269568107315915858}
   m_Layer: 0
   m_Name: Polygonal Wolf White
   m_TagString: Untagged
@@ -2309,6 +2347,57 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6269568107315915858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6504689497117896048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 9
+    SynchronizeType: 2
+    Name: hasDie
+  - Type: 9
+    SynchronizeType: 2
+    Name: hasResting
+  - Type: 9
+    SynchronizeType: 2
+    Name: hasSpawn
+  - Type: 4
+    SynchronizeType: 2
+    Name: isAlert
+  - Type: 4
+    SynchronizeType: 2
+    Name: isAttack
+  - Type: 4
+    SynchronizeType: 2
+    Name: isChase
+  - Type: 4
+    SynchronizeType: 2
+    Name: isDamaged
+  - Type: 4
+    SynchronizeType: 2
+    Name: isReturnPosition
+  - Type: 4
+    SynchronizeType: 2
+    Name: isWalk
+  - Type: 4
+    SynchronizeType: 2
+    Name: Hit
+  - Type: 9
+    SynchronizeType: 2
+    Name: Die
+  m_SynchronizeLayers:
+  - SynchronizeType: 2
+    LayerIndex: 0
 --- !u!1 &6504689497171689175
 GameObject:
   m_ObjectHideFlags: 0

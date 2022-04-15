@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         _spawnPosBase = GameObject.Find("SpawnPosition");
         _spawnPoint = _spawnPosBase.GetComponentsInChildren<Transform>();
-        int index = DataManager.Instance.PlayerOrderIndex + 1;
+        int index = DataManager.Instance.MyPlayerOrderIndex + 1;
 
         switch (DataManager.Instance.PlayerType)
         {

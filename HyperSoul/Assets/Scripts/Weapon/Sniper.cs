@@ -13,15 +13,23 @@ public class Sniper : Weapon
 
     private ObjectPool _sniperPool = new ObjectPool();
 
+    private Coroutine _shootCotountine;
+
+    private void Start()
+    {
+        if (photonView.IsMine)
+        {
+            _objectPool.Init("Bullet", 7);
+        }
+    }
+
     private void OnEnable()
     {
-        CurBulletCnt = 7;
-        MaxBulletAmt = 7;
+        MaxBulletAmt = DataManager.Instance.FindPlayerData("Sniper" + _playerInfo.Level.ToString()).MaxBullet;
+        CurBulletCnt = MaxBulletAmt;
         _reloadTime = 2;
         _gunState = EGunState.Ready;
         ZoomRotationSpeed = new Vector2(0.05f, 0.05f);
-
-        _sniperPool.Init(_bulletPrefab, 10);
     }
 
     public override void Fire()
@@ -33,7 +41,7 @@ public class Sniper : Weapon
 
         if (CurBulletCnt > 0)
         {
-            photonView.RPC("SniperFire", RpcTarget.All);
+            photonView.RPC(nameof(SniperFire), RpcTarget.All);
         }
     }
     public override void Zoom()
@@ -46,30 +54,33 @@ public class Sniper : Weapon
     [PunRPC]
     public void SniperFire()
     {
+        if (null != _shootCotountine)
+        {
+            StopCoroutine(_shootCotountine);
+        }
+        if (false == photonView.IsMine)
+        {
+            return;
+        }
         SetMousePos();
-        StartCoroutine(Shoot());
+        _shootCotountine = StartCoroutine(Shoot());
     }
     private IEnumerator Shoot()
     {
         --CurBulletCnt;
 
         Vector3 aimDir = (_mousePos - _bulletSpawnPos.position).normalized;
-        GameObject bullet = _sniperPool.GetObj();
+        GameObject bullet = _objectPool.GetObj("Bullet");
         bullet.transform.position = _bulletSpawnPos.position;
         bullet.transform.rotation = Quaternion.LookRotation(aimDir, Vector3.up);
-        bullet.GetComponent<Bullet>().SetBulletReturnFunc(_sniperPool.ReturnObj);
+        bullet.GetComponent<Bullet>().ReceiveReturnProjectileFunc(ReturnProjectile);
         bullet.GetComponent<Bullet>().ProjectileOwnerID = _playerInfo.PhotonViewID;
         bullet.GetComponent<Bullet>().Attack = _playerInfo.Attack;
-        bullet.SetActive(true);
+        bullet.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.All, true);
 
-        Collider bulletCollider = bullet.GetComponent<BoxCollider>();
-        if (false == PhotonNetwork.IsMasterClient)
+        if (true == PhotonNetwork.IsMasterClient)
         {
-            bulletCollider.enabled = false;
-        }
-        else
-        {
-            bulletCollider.enabled = true;
+            photonView.RPC(nameof(RemoveCollider), RpcTarget.OthersBuffered, bullet.GetComponent<PhotonView>().ViewID);
         }
 
         _canFire = false;
@@ -87,5 +98,21 @@ public class Sniper : Weapon
         yield return new WaitForSeconds(2.9f);
 
         _canFire = true;
+        _shootCotountine = null;
+    }
+
+    public override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(CurBulletCnt);
+            stream.SendNext(_gunState);
+        }
+        else
+        {
+            CurBulletCnt = (int)stream.ReceiveNext();
+            _gunState = (EGunState)stream.ReceiveNext();
+
+        }
     }
 }

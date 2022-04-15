@@ -3,13 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviourPun, IPunObservable
+public class Projectile : MonoBehaviourPun
 {
     public int ProjectileOwnerID { get; set; }
     public int Attack { get; set; }
 
-    public virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    protected System.Action<GameObject> _projectileReturn;
+
+    public void ReceiveReturnProjectileFunc(System.Action<GameObject> returnProjectile)
     {
-        throw new System.NotImplementedException();
+        _projectileReturn = returnProjectile;
     }
+
+    [PunRPC]
+    protected void ReceiveInfo(int ownerID, int attack)
+    {
+        ProjectileOwnerID = ownerID;
+        Attack = attack;
+    }
+
 }

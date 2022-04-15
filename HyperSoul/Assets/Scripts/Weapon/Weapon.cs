@@ -31,6 +31,7 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
 
     protected ObjectPool _objectPool = new ObjectPool();
 
+
     DataManager _dataManager;
     private void Awake()
     {
@@ -47,10 +48,6 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
         ZoomCam.SetActive(false);
         //MaxBulletAmt = _dataManager.
 
-        if (photonView.IsMine)
-        {
-            _objectPool.Init("BazookaMissile", 3);
-        }
     }
     protected void Update()
     {
@@ -68,8 +65,22 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
             _gunState = EGunState.Empty;
         }
     }
-    public virtual void Fire() { }
-    public virtual void Zoom() { }
+
+    protected bool canFire()
+    {
+        if (false == photonView.IsMine || _gunState != EGunState.Ready || _canFire == false)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public abstract void Fire();
+
+    public abstract void Zoom();
 
     public bool HasReloaded()
     {
@@ -93,6 +104,7 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
         _gunState = EGunState.Ready;
     }
 
+    
     public void SetMousePos()
     {
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
@@ -104,7 +116,7 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
         {
             RaycastHit hit = raycastHits[i];
 
-            if (hit.distance > 4)
+            if (hit.distance > 4) 
             {
                 _mousePos = hit.point;
                 break;
@@ -112,18 +124,34 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
         }
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(CurBulletCnt);
-            stream.SendNext(_gunState);
-        }
-        else
-        {
-            CurBulletCnt = (int)stream.ReceiveNext();
-            _gunState = (EGunState)stream.ReceiveNext();
 
+
+    [PunRPC]
+    protected void RemoveCollider(int projectileId)
+    {
+        //if(null != projectile.GetComponent<Collider>())
+        //{
+        //    Collider Collider = projectile.GetComponent<Collider>();
+        //    Collider.enabled = false;
+        //}
+        //else
+        //{
+        GameObject projectile = PhotonNetwork.GetPhotonView(projectileId).gameObject;
+        Collider[] Colliders = projectile.GetComponentsInChildren<Collider>();
+        foreach (Collider col in Colliders)
+        {
+            col.enabled = false;
         }
+        //}
+    }
+
+    protected void ReturnProjectile(GameObject projectile)
+    {
+        _objectPool.Destroy(projectile);
+    }
+
+    public virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        throw new System.NotImplementedException();
     }
 }

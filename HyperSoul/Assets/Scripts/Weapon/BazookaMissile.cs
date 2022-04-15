@@ -27,9 +27,7 @@ public class BazookaMissile : Projectile
     private float _gravityForce = 10f;
 
     private bool _isLaunched = false;
-    private bool _isHitted = false;
-
-    Action<GameObject> _missileReturn;
+    private bool _isHit = false;
 
     public Transform Target
     {
@@ -48,6 +46,10 @@ public class BazookaMissile : Projectile
     void OnEnable()
     {
         //Debug.Log($"활성화됨 포톤번호 {photonView.ViewID} \n {ProjectileOwnerID}가 활성화");
+        if (photonView.IsMine)
+        {
+            photonView.RPC(nameof(ReceiveInfo), RpcTarget.Others, ProjectileOwnerID, Attack);
+        }
 
         _missileLaunch = gameObject.AddComponent<AudioSource>();
         _missileLaunch.PlayOneShot(_launchSound);
@@ -64,7 +66,7 @@ public class BazookaMissile : Projectile
         GetComponent<Rigidbody>().AddForce(Vector3.up * _gravityForce);
         float _curDistMissileAndLaunchPos = Vector3.Distance(_launchPos, transform.position);
 
-        if (false == _isHitted && _isLaunched == true)
+        if (false == _isHit && _isLaunched == true)
         {
             if (_curSpeed <= _maxSpeed)
             {
@@ -95,7 +97,7 @@ public class BazookaMissile : Projectile
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collider)
     {
         Explosion(transform.position);
         GetComponent<PhotonView>().RPC("Explosion", RpcTarget.Others, transform.position);
@@ -117,7 +119,7 @@ public class BazookaMissile : Projectile
     private IEnumerator ExplosionCorountine(Vector3 pos)
     {
         transform.position = pos;
-        _isHitted = true;
+        _isHit = true;
         _isLaunched = false;
         _curSpeed = 0f;
         GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
@@ -140,33 +142,16 @@ public class BazookaMissile : Projectile
         {
             StopCoroutine(lunchCoroutine);
         }
+
         if (null != explosionCoroutine)
         {
             StopCoroutine(explosionCoroutine);
         }
+
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-        _isHitted = false;
+        _isHit = false;
 
-        _missileReturn(gameObject);
-    }
-
-    public void ReceiveReturnMissileFunc(Action<GameObject> returnMissile)
-    {
-        _missileReturn = returnMissile;
-    }
-
-    public override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if(photonView.IsMine)
-        {
-            stream.SendNext(ProjectileOwnerID);
-            stream.SendNext(Attack);
-        }
-        else
-        {
-            ProjectileOwnerID = (int)stream.ReceiveNext();
-            Attack = (int)stream.ReceiveNext();
-        }
+        _projectileReturn(gameObject);
     }
 }

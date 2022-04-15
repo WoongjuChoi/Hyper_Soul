@@ -11,16 +11,22 @@ public class Rifle : Weapon
     [SerializeField]
     private GameObject _bulletPrefab;
 
-    private ObjectPool _bulletPool = new ObjectPool();
+
+    private Coroutine _shootCotountine;
+    private void Start()
+    {
+        if (photonView.IsMine)
+        {
+            _objectPool.Init("Bullet", 30);
+        }
+    }
 
     private void OnEnable()
     {
-        CurBulletCnt = 20;
-        MaxBulletAmt = 20;
+        MaxBulletAmt = DataManager.Instance.FindPlayerData("Rifle" + _playerInfo.Level.ToString()).MaxBullet;
+        CurBulletCnt = MaxBulletAmt;
         _reloadTime = 2;
         _gunState = EGunState.Ready;
-
-        _bulletPool.Init(_bulletPrefab, 40);
     }
 
     public override void Fire()
@@ -32,8 +38,9 @@ public class Rifle : Weapon
 
         if (CurBulletCnt > 0)
         {
-            photonView.RPC("BulletFire", RpcTarget.All);
+            photonView.RPC(nameof(BulletFire), RpcTarget.All);
         }
+
     }
     public override void Zoom()
     {
@@ -45,8 +52,16 @@ public class Rifle : Weapon
     [PunRPC]
     public void BulletFire()
     {
+        if (null != _shootCotountine)
+        {
+            StopCoroutine(_shootCotountine);
+        }
+        if (false == photonView.IsMine)
+        {
+            return;
+        }
         SetMousePos();
-        StartCoroutine(Shoot());
+        _shootCotountine = StartCoroutine(Shoot());
     }
 
     private IEnumerator Shoot()
@@ -54,23 +69,19 @@ public class Rifle : Weapon
         --CurBulletCnt;
 
         Vector3 aimDir = (_mousePos - _bulletSpawnPos.position).normalized;
-        GameObject bullet = _bulletPool.GetObj();
+        GameObject bullet = _objectPool.GetObj("Bullet");
         bullet.transform.position = _bulletSpawnPos.position;
         bullet.transform.rotation = Quaternion.LookRotation(aimDir, Vector3.up);
-        bullet.GetComponent<Bullet>().SetBulletReturnFunc(_bulletPool.ReturnObj);
+        bullet.GetComponent<Bullet>().ReceiveReturnProjectileFunc(ReturnProjectile);
         bullet.GetComponent<Bullet>().ProjectileOwnerID = _playerInfo.PhotonViewID;
         bullet.GetComponent<Bullet>().Attack = _playerInfo.Attack;
-        bullet.SetActive(true);
+        bullet.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.All, true);
 
-        Collider bulletCollider = bullet.GetComponent<BoxCollider>();
-        if (false == PhotonNetwork.IsMasterClient)
+        if (true == PhotonNetwork.IsMasterClient)
         {
-            bulletCollider.enabled = false;
+            photonView.RPC(nameof(RemoveCollider), RpcTarget.Others, bullet.GetComponent<PhotonView>().ViewID);
         }
-        else
-        {
-            bulletCollider.enabled = true;
-        }
+
 
         _canFire = false;
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, true);
@@ -81,9 +92,24 @@ public class Rifle : Weapon
         MuzzleFlashEffect.SetActive(true);
 
         yield return new WaitForSeconds(0.1f);
-
         _canFire = true;
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, false);
         MuzzleFlashEffect.SetActive(false);
+        _shootCotountine = null;
+    }
+
+    public override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(CurBulletCnt);
+            stream.SendNext(_gunState);
+        }
+        else
+        {
+            CurBulletCnt = (int)stream.ReceiveNext();
+            _gunState = (EGunState)stream.ReceiveNext();
+
+        }
     }
 }

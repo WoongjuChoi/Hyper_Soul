@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2071,19 +2071,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcba81e9c342f2d469944e6386630917, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnPosBase: {fileID: 2030104840}
-  _chatMsg: {fileID: 875521733}
-  _chatList:
-  - {fileID: 336981148}
-  - {fileID: 2055987042}
-  - {fileID: 1338582181}
-  - {fileID: 197683113}
-  - {fileID: 1947947794}
-  - {fileID: 491610731}
-  - {fileID: 1784291311}
-  - {fileID: 38777360}
-  - {fileID: 1999430778}
-  - {fileID: 1764212451}
 --- !u!4 &478511249
 Transform:
   m_ObjectHideFlags: 0
@@ -2376,7 +2363,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &533088698
 MonoBehaviour:

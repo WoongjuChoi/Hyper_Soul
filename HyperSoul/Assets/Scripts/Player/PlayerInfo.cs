@@ -74,9 +74,9 @@ public class PlayerInfo : LivingEntity, IGiveExp
 
     private void OnEnable()
     {
-        MaxHp = GameManager.DataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
-        MaxExp = GameManager.DataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
-        Attack = GameManager.DataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
+        MaxHp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
+        MaxExp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
+        Attack = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
         CurHp = MaxHp;
         IsDead = false;
         _hitSound.SetActive(false);
@@ -111,7 +111,7 @@ public class PlayerInfo : LivingEntity, IGiveExp
                     $"\nDamage : {collision.gameObject.GetComponentInParent<LivingEntity>().Attack}" +
                     $"\nHP : {CurHp}");
 
-            TakeDamage(collision.gameObject.GetComponentInParent<LivingEntity>().Attack);
+            TakeMonsterDamage(collision.gameObject.GetComponentInParent<LivingEntity>().Attack);
         }
     }
 

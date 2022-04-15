@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    void TakeDamage(int damageAmt);
+    void TakeMonsterDamage(int damageAmt);
     void TakeDamage(int attackerID, int damageAmt, Vector3 hitPoint, Vector3 hitNormal);
 }

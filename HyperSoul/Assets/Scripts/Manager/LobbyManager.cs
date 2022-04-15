@@ -40,17 +40,24 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private byte _maxPlayer = 4;
 
-    private DataManager _dataManager = null;
-
+    
 
     private void Awake()
     {
         Screen.SetResolution(1920, 1080, false);
-        PhotonNetwork.AutomaticallySyncScene = true; // 마스터클라이언트와 같은 방 동기화
+        PhotonNetwork.AutomaticallySyncScene = true; // 마스터클라이언트와 씬 동기화
         _joinButton.interactable = true;
         _curPanel = _loginPanel;
+        _joinButton.interactable = false;
+        _connetInfoText.text = "Data Loading...Please wait a seconds";
 
-        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
+        DataManager.Instance.DataReady -= DataIsReady;
+        DataManager.Instance.DataReady += DataIsReady;
+    }
+    private void DataIsReady()
+    {
+        _joinButton.interactable = true;
+        _connetInfoText.text = "";
     }
     private void Start()
     {
@@ -75,7 +82,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
     public void Connect()
     {
-        if (false == _dataManager.IsDataReady)
+        if (false == DataManager.Instance.IsDataReady)
         {
             _connetInfoText.text = "Data Loading...Please try again";
             return;

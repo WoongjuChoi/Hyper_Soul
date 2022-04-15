@@ -41,14 +41,15 @@ public class PlayerInputs : MonoBehaviourPun
 			IsZoom = value.isPressed;
 		}
 	}
+
 	public void OnReload(InputValue value)
 	{
 		if (photonView.IsMine)
 		{
 			IsReload = value.isPressed;
 		}
-
 	}
+
 	public void OnShoot(InputValue value)
 	{
 		if (photonView.IsMine)

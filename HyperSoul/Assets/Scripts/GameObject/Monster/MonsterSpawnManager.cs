@@ -27,7 +27,7 @@ public class MonsterSpawnManager : MonoBehaviour
 
     private void Update()
     {
-        if (_monster.GetComponent<MonsterInformation>().IsDie)
+        if (_monster.GetComponent<LivingEntity>().IsDead)
         {
             _isSpawned = false;
         }

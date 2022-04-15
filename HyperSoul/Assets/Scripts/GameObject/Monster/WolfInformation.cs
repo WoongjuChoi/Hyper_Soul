@@ -104,14 +104,4 @@ public class WolfInformation : MonsterInformation
             _isWithinAttackRange = true;
         }
     }
-
-    private void Update()
-    {
-        // 디버깅용(몬스터가 맞은 위치로부터 플레이어가 쏜 방향의 반대로 레이)
-        Debug.DrawRay(_collisionVec, _lookAtTargetVec * 1000f, Color.red);
-        Debug.DrawRay(_monsterRayPoint.position, gameObject.transform.forward * 1000f, Color.black);
-
-        //Debug.Log($"_monsterCurrentHP : {_monsterCurrentHP}");
-        //Debug.Log($"gameObject.transform.eulerAngles: {gameObject.transform.eulerAngles}");
-    }
 }

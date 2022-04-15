@@ -46,6 +46,7 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
         _minutesNum = _maxInGameTime / 60;
         _secondsNum = _maxInGameTime % 60;
 
+        _inGameTimeText.text = $"{_minutesNum} : {_secondsNum}";
         _startGameText.text = "START GAME";
     }
 
@@ -67,6 +68,9 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
 
         _inGameTimeText.text = $"{_minutesNum} : {_secondsNum}";
 
+        Debug.Log($"_minutesNum : {_minutesNum}\n" +
+            $"_secondsNum : {_secondsNum}");
+
         if (PhotonNetwork.IsMasterClient)
         {
             _currTime = Time.time - _startTime;
@@ -87,8 +91,12 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
 
             if (_minutesNum < 0)
             {
-                StartGame = false;
-                //photonView.RPC("SetStartGame", RpcTarget.All, false);
+                _minutesNum = 0;
+                _secondsNum = 0;
+
+                photonView.RPC(nameof(SetStartGame), RpcTarget.AllViaServer, false);
+
+                Debug.Log($"StartGame2 : {StartGame}");
             }
         }
     }
@@ -109,12 +117,15 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
 
         _startTimeText.text = $"{_timerText}";
 
+        Debug.Log($"_timerText : {_timerText}");
+
         if (0 == _timerText)
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                _isReady = false;
-                //photonView.RPC("SetIsReady", RpcTarget.All, false);
+                photonView.RPC(nameof(SetIsReady), RpcTarget.AllViaServer, false);
+
+                Debug.Log($"_isReady : {_isReady}");
             }
 
             _startTimeText.gameObject.SetActive(false);
@@ -125,8 +136,9 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
 
             if (PhotonNetwork.IsMasterClient)
             {
-                StartGame = true;
-                //photonView.RPC("SetStartGame", RpcTarget.All, true);
+                photonView.RPC(nameof(SetStartGame), RpcTarget.AllViaServer, true);
+
+                Debug.Log($"StartGame1 : {StartGame}");
             }
 
             _inGameTimeText.gameObject.SetActive(true);
@@ -183,13 +195,13 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
         {
             stream.SendNext(_timerText);
             stream.SendNext(_minutesNum);
-            stream.SendNext(_minutesNum);
+            stream.SendNext(_secondsNum);
         }
         else if (stream.IsReading)
         {
             _timerText = (int)stream.ReceiveNext();
             _minutesNum = (int)stream.ReceiveNext();
-            _minutesNum = (int)stream.ReceiveNext();
+            _secondsNum = (int)stream.ReceiveNext();
         }
     }
 }

@@ -248,7 +248,7 @@ RectTransform:
   m_Children:
   - {fileID: 2143084312}
   m_Father: {fileID: 8888225181122757844}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -347,7 +347,7 @@ Transform:
   - {fileID: 895261607}
   - {fileID: 1501887473}
   m_Father: {fileID: 8888225181122757844}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1501887472
 GameObject:
@@ -526,7 +526,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 8888225181122757844}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4077744492383850357
 GameObject:
@@ -560,7 +560,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0.5}
   m_Children: []
   m_Father: {fileID: 8888225181122757844}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1089831134888398549
 MeshFilter:
@@ -643,7 +643,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 8888225181122757844}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8888225179593364831
 GameObject:
@@ -902,7 +902,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _monster: {fileID: 8888225181122757839}
   _initializeDirection: 145
-  _spawnTime: 2
+  _spawnTime: 3
 --- !u!1 &8888225179721668607
 GameObject:
   m_ObjectHideFlags: 0
@@ -1131,7 +1131,7 @@ Transform:
   - {fileID: 8888225179736897644}
   - {fileID: 8888225181099599552}
   m_Father: {fileID: 8888225181122757844}
-  m_RootOrder: 0
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &8888225179874750754
 Animator:
@@ -1571,7 +1571,7 @@ Transform:
   m_LocalScale: {x: 1, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 8888225181122757844}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8888225180256314586
 GameObject:
@@ -2215,6 +2215,7 @@ GameObject:
   - component: {fileID: 8888225181122757836}
   - component: {fileID: 1038067003195325885}
   - component: {fileID: 5358016436291330401}
+  - component: {fileID: 1173303802652708111}
   m_Layer: 12
   m_Name: Brown Wolf
   m_TagString: Untagged
@@ -2233,13 +2234,13 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
-  - {fileID: 8888225179874750749}
   - {fileID: 8888225180239441249}
   - {fileID: 1276728919}
   - {fileID: 1365346280}
   - {fileID: 4057950132927677989}
   - {fileID: 1616024433706674775}
   - {fileID: 5495945076416970100}
+  - {fileID: 8888225179874750749}
   m_Father: {fileID: 8888225179718890055}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2484,8 +2485,9 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 5358016436291330401}
-  - {fileID: 4262534590712844737}
+  - {fileID: 1173303802652708111}
   - {fileID: 6448425236664880498}
+  - {fileID: 4262534590712844737}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -2505,6 +2507,22 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &1173303802652708111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8888225181122757839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &8888225181185135520
 GameObject:
   m_ObjectHideFlags: 0

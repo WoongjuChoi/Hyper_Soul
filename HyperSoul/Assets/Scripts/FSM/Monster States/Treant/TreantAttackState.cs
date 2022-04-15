@@ -10,8 +10,11 @@ public class TreantAttackState : BaseState<TreantInformation>
     [SerializeField]
     private TreantStompAttack _treantStompAttack = null;
 
-    private TreantAttackManager _treantAttackManager = new TreantAttackManager();
+    [SerializeField]
+    private Animator _animator = null;
 
+    private ITreantAttack _treantAttack;
+    
     private bool _outOfSight = false;
 
     public override void EnterState()
@@ -21,8 +24,8 @@ public class TreantAttackState : BaseState<TreantInformation>
 
     public override void ExitState()
     {
-        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, false);
-        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, false);
+        _animator.SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, false);
+        _animator.SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, false);
 
         _treantRootAttack.StopAttack();
         _treantStompAttack.StopAttack();
@@ -32,7 +35,14 @@ public class TreantAttackState : BaseState<TreantInformation>
 
     public override void UpdateState()
     {
-        SetAttackPattern();
+        if (CreatureInformation.Target.GetComponent<LivingEntity>().IsDead)
+        {
+            CreatureInformation.IsTargeting = false;
+
+            FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
+
+            return;
+        }
 
         if (CreatureInformation.IsDamaged)
         {
@@ -55,7 +65,9 @@ public class TreantAttackState : BaseState<TreantInformation>
             return;
         }
 
-        _treantAttackManager.Attack();
+        SetAttackPattern();
+
+        _treantAttack.Attack();
     }
 
     private void SetAttackPattern()
@@ -64,13 +76,13 @@ public class TreantAttackState : BaseState<TreantInformation>
         {
             _treantRootAttack.StopAttack();
 
-            _treantAttackManager.SetTreantAttack(_treantStompAttack);
+            _treantAttack = _treantStompAttack;
         }
         else if (CreatureInformation.DistanceMonsterToTarget < 30f)
         {
             _treantStompAttack.StopAttack();
 
-            _treantAttackManager.SetTreantAttack(_treantRootAttack);
+            _treantAttack = _treantRootAttack;
         }
         else
         {

@@ -7,6 +7,9 @@ public class TreantRootAttack : MonoBehaviour, ITreantAttack
     [SerializeField]
     private GameObject _treantRoot = null;
 
+    [SerializeField]
+    private Animator _animator = null;
+
     private Coroutine _rootAttackCoroutine = null;
 
     private Transform _targetTransform = null;
@@ -15,7 +18,7 @@ public class TreantRootAttack : MonoBehaviour, ITreantAttack
 
     public void Attack()
     {
-        gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, false);
+        _animator.SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, false);
 
         if (false == _isAttack)
         {
@@ -29,9 +32,13 @@ public class TreantRootAttack : MonoBehaviour, ITreantAttack
 
         _targetTransform = gameObject.GetComponent<TreantInformation>().Target.transform;
 
-        gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, true);
+        _animator.SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, true);
 
         _treantRoot.SetActive(true);
+
+        yield return new WaitForSeconds(0.1f);
+
+        _animator.SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, false);
 
         yield return new WaitForSeconds(0.2f);
 
@@ -40,10 +47,6 @@ public class TreantRootAttack : MonoBehaviour, ITreantAttack
         yield return new WaitForSeconds(0.1f);
 
         _treantRoot.GetComponent<Animator>().SetTrigger(MonsterAnimatorID.HAS_SPAWN);
-
-        yield return new WaitForSeconds(0.1f);
-
-        gameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, false);
 
         yield return new WaitForSeconds(4f);
 

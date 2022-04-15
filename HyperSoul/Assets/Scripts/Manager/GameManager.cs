@@ -53,17 +53,24 @@ public class GameManager : MonoBehaviourPunCallbacks
                 _player = PhotonNetwork.Instantiate("SniperPlayer", _spawnPoint[index].position, Quaternion.identity);
                 break;
         }
-
     }
 
     public void RespawnPlayer()
     {
+        StartCoroutine(CoroutineRespawn());
+    }
+
+    private IEnumerator CoroutineRespawn()
+    {
+        yield return new WaitForSeconds(5f);
+
         int index = Random.Range(1, 5);
 
         while (_isSpawned[index])
         {
             index = Random.Range(1, 5);
         }
+        _player.SetActive(false);
 
         _player.SetActive(true);
 

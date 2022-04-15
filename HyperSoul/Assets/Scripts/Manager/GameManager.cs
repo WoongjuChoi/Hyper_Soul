@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     //[SerializeField]
     //private Text[] _chatList;
 
-    private bool[] _isSpawned = new bool[5];
     private GameObject _player;
     private GameObject _spawnPosBase;
 
@@ -63,8 +62,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void GameStartButton()
     {
         photonView.RPC("StartMainScene", RpcTarget.All);
-
-        
     }
 
     private void SpawnPlayer()

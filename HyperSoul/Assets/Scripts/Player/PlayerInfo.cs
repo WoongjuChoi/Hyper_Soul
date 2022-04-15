@@ -188,4 +188,8 @@ public class PlayerInfo : LivingEntity, IGiveExp
         _levelUpText.gameObject.SetActive(false);
     }
 
+    public override void Respawn()
+    {
+        GameManager.Instance.RespawnPlayer();
+    }
 }

@@ -67,12 +67,6 @@ public class GameManager : MonoBehaviourPunCallbacks
                 _timeManager = GameObject.Find("TimeManager").GetComponent<TimeManager>();
                 SpawnPlayer();
             }
-            else if (null != _player && _player.GetComponent<LivingEntity>().IsDead && false == _isRespawn)
-            {
-                _isRespawn = true;
-
-                Invoke(nameof(RespawnPlayer), 5f);
-            }
         }
     }
     public override void OnLeftRoom()
@@ -111,12 +105,20 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void RespawnPlayer()
     {
+        StartCoroutine(CoroutineRespawn());
+    }
+
+    private IEnumerator CoroutineRespawn()
+    {
+        yield return new WaitForSeconds(5f);
+
         int index = Random.Range(1, 5);
 
         while (_isSpawned[index])
         {
             index = Random.Range(1, 5);
         }
+        _player.SetActive(false);
 
         _player.SetActive(true);
 

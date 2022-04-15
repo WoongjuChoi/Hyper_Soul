@@ -140,7 +140,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         Invoke(nameof(Respawn), 1.5f);
     }
 
-    private void Respawn()
+    public virtual void Respawn()
     {
         gameObject.SetActive(false);
     }

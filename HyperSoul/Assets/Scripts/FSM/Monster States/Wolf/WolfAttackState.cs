@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -90,7 +91,10 @@ public class WolfAttackState : BaseState<WolfInformation>
 
         GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ATTACK, false);
 
-        CreatureInformation.AttackCollider.SetActive(true);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            CreatureInformation.AttackCollider.SetActive(true);
+        }
 
         while (_distance > 1f)
         {

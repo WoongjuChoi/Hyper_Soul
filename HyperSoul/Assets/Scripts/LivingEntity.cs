@@ -15,6 +15,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     public int MaxHp { get; set; }
     public int Attack { get; set; }
     public bool IsDead { get; set; }
+    public int Score { get; set; }
 
     // 새로 추가된 변수들
     [SerializeField]

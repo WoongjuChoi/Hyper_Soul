@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerInfo : LivingEntity, IGiveExp
+public class PlayerInfo : LivingEntity, IGiveExp, IGiveScore
 {
+    [SerializeField]
+    private Text _myHpText;
     [SerializeField]
     private Slider _myHpSlider;
     [SerializeField]
@@ -14,6 +16,8 @@ public class PlayerInfo : LivingEntity, IGiveExp
     private Text _ammoText;
     [SerializeField]
     private Text _expText;
+    [SerializeField]
+    private Text _scoreText;
 
     [SerializeField]
     private Text _killText;
@@ -34,6 +38,7 @@ public class PlayerInfo : LivingEntity, IGiveExp
     {
         get; set;
     }
+    public int CurScore { get; set; }
 
     private const int MONSTER_ATTACK_COLLIDER = 13;
 
@@ -77,7 +82,9 @@ public class PlayerInfo : LivingEntity, IGiveExp
         MaxHp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
         MaxExp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
         Attack = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
+        Score = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Score;
         CurHp = MaxHp;
+        CurScore = 0;
         IsDead = false;
         _hitSound.SetActive(false);
         _deathSound.SetActive(false);
@@ -91,6 +98,7 @@ public class PlayerInfo : LivingEntity, IGiveExp
         HpUpdate();
         AmmoUpdate();
         ExpUpdate();
+        ScoreUpdate();
     }
 
     public override void OnCollisionEnter(Collision collision)
@@ -107,16 +115,6 @@ public class PlayerInfo : LivingEntity, IGiveExp
                 collision.transform.position, collision.transform.position.normalized);
         }
 
-        //if (collision.gameObject.GetComponent<Projectile>() != null)
-        //{
-        //   Debug.Log($"피격당함\n Attacker : {collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID}" +
-        //   $"\n Damage : {collision.gameObject.GetComponent<Projectile>().Attack}" +
-        //   $"\n HP : {CurHp}");
-
-        //    TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID, collision.gameObject.GetComponent<Projectile>().Attack,
-        //        collision.transform.position, collision.transform.position.normalized);
-        //}
-
         LivingEntity livingEntity = collision.gameObject.GetComponentInParent<LivingEntity>();
 
         if (MONSTER_ATTACK_COLLIDER == collision.gameObject.layer)
@@ -132,6 +130,7 @@ public class PlayerInfo : LivingEntity, IGiveExp
 
     private void HpUpdate()
     {
+        _myHpText.text = $"HP : {CurHp} / {MaxHp}";
         _myHpSlider.value = (float)CurHp / MaxHp;
     }
 
@@ -140,7 +139,7 @@ public class PlayerInfo : LivingEntity, IGiveExp
         _ammoText.text = _playerWeapon.CurBulletCnt + " \\ " + _playerWeapon.MaxBulletAmt;
     }
 
-    public void GiveExp(int expAmt)
+    public void GiveMonsterExp(int expAmt)
     {
         if (PhotonNetwork.IsMasterClient)
         {
@@ -171,6 +170,15 @@ public class PlayerInfo : LivingEntity, IGiveExp
             
             CurExp = 0;
         }
+    }
+    public void GiveMonsterScore(int score)
+    {
+        CurScore += score;
+    }
+
+    private void ScoreUpdate()
+    {
+        _scoreText.text = $"Score : {CurScore}";
     }
 
     private IEnumerator LevelUp()

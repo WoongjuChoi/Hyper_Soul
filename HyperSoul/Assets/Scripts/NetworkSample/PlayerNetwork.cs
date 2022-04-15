@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
+[System.Obsolete("이것은 임시스크립트로 더 이상 사용되지 않음")]
 public class PlayerNetwork : MonoBehaviourPun, IPunObservable
 {
     // 테스트용 값

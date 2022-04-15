@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// 임시 스크립트(삭제예정)
+[System.Obsolete("테스트씬용 스크립트로 삭제예정")]
+
 public class BulletCntUI : MonoBehaviour
 {
     [SerializeField]

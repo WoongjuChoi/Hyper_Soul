@@ -53,7 +53,6 @@ public class GameManager : MonoBehaviourPunCallbacks
                 _player = PhotonNetwork.Instantiate("SniperPlayer", _spawnPoint[index].position, Quaternion.identity);
                 break;
         }
-
     }
 
     public void RespawnPlayer()

@@ -2215,6 +2215,7 @@ GameObject:
   - component: {fileID: 8888225181122757836}
   - component: {fileID: 1038067003195325885}
   - component: {fileID: 5358016436291330401}
+  - component: {fileID: 1173303802652708111}
   m_Layer: 12
   m_Name: Brown Wolf
   m_TagString: Untagged
@@ -2484,8 +2485,9 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 5358016436291330401}
-  - {fileID: 4262534590712844737}
+  - {fileID: 1173303802652708111}
   - {fileID: 6448425236664880498}
+  - {fileID: 4262534590712844737}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -2505,6 +2507,22 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &1173303802652708111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8888225181122757839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &8888225181185135520
 GameObject:
   m_ObjectHideFlags: 0

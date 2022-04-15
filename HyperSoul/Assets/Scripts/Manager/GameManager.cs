@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                 _timeManager = GameObject.Find("TimeManager").GetComponent<TimeManager>();
                 SpawnPlayer();
             }
-            else if (_player.GetComponent<LivingEntity>().IsDead && false == _isRespawn)
+            else if (null != _player && _player.GetComponent<LivingEntity>().IsDead && false == _isRespawn)
             {
                 _isRespawn = true;
 
@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void GameStartButton()
     {
-        photonView.RPC("StartMainScene", RpcTarget.All);
+        photonView.RPC("StartMainScene", RpcTarget.AllViaServer);
 
 
     }

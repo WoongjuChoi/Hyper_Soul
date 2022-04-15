@@ -2282,7 +2282,6 @@ MonoBehaviour:
   _expText: {fileID: 8549204397090009498}
   _killText: {fileID: 1221333724652189594}
   _levelUpText: {fileID: 3522381616358166007}
-  _gameOverText: {fileID: 1311604430806981642}
   _playerUI: {fileID: 2302762841791192007}
   PhotonViewID: 0
 --- !u!114 &5379531540559722048

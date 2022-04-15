@@ -37,7 +37,7 @@ public class PlayerCam : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            CinemachineVirtualCamera[] followCam = FindObjectsOfType<CinemachineVirtualCamera>();
+            CinemachineVirtualCamera[] followCam = _cameraArm.GetComponentsInChildren<CinemachineVirtualCamera>();
             foreach (CinemachineVirtualCamera cam in followCam)
             {
                 if (cam.gameObject.name == "AimCamera")

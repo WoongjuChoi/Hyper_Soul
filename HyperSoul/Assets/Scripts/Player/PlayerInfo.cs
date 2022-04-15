@@ -96,24 +96,39 @@ public class PlayerInfo : LivingEntity, IGiveExp
 
     public override void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.GetComponent<Projectile>() != null)
+        Projectile projectile = collision.gameObject.GetComponent<Projectile>();
+
+        if (null != projectile)
         {
-            Debug.Log($"피격당함\n Attacker : {collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID}" +
-           $"\n Damage : {collision.gameObject.GetComponent<Projectile>().Attack}" +
+            Debug.Log($"피격당함\n Attacker : {projectile.ProjectileOwnerID}" +
+           $"\n Damage : {projectile.Attack}" +
            $"\n HP : {CurHp}");
 
-            TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID, collision.gameObject.GetComponent<Projectile>().Attack,
+            TakeDamage(projectile.ProjectileOwnerID, projectile.Attack,
                 collision.transform.position, collision.transform.position.normalized);
         }
 
+        //if (collision.gameObject.GetComponent<Projectile>() != null)
+        //{
+        //   Debug.Log($"피격당함\n Attacker : {collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID}" +
+        //   $"\n Damage : {collision.gameObject.GetComponent<Projectile>().Attack}" +
+        //   $"\n HP : {CurHp}");
+
+        //    TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID, collision.gameObject.GetComponent<Projectile>().Attack,
+        //        collision.transform.position, collision.transform.position.normalized);
+        //}
+
+        LivingEntity livingEntity = collision.gameObject.GetComponentInParent<LivingEntity>();
+
         if (MONSTER_ATTACK_COLLIDER == collision.gameObject.layer)
         {
-            Debug.Log($"피격당함\nAttacker : {collision.gameObject.GetComponentInParent<LivingEntity>().gameObject.name}" +
-                    $"\nDamage : {collision.gameObject.GetComponentInParent<LivingEntity>().Attack}" +
+            Debug.Log($"피격당함\nAttacker : {livingEntity.gameObject.name}" +
+                    $"\nDamage : {livingEntity.Attack}" +
                     $"\nHP : {CurHp}");
 
-            TakeDamage(collision.gameObject.GetComponentInParent<LivingEntity>().Attack);
+            TakeDamage(livingEntity.Attack);
         }
+
     }
 
     private void HpUpdate()

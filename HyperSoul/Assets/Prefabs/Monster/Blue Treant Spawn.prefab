@@ -735,6 +735,7 @@ GameObject:
   - component: {fileID: 8395446566500109117}
   - component: {fileID: 1094803074169919112}
   - component: {fileID: 8276266078007415441}
+  - component: {fileID: 1617706983548900399}
   - component: {fileID: 8411753778056126849}
   m_Layer: 13
   m_Name: Root Blue
@@ -838,6 +839,22 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &1617706983548900399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1095571814870666673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!114 &8411753778056126849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6899,6 +6916,7 @@ GameObject:
   - component: {fileID: 4813482757080466971}
   - component: {fileID: 4111681592621727035}
   - component: {fileID: 4793054630817444729}
+  - component: {fileID: 2797340483203510730}
   m_Layer: 13
   m_Name: Attack Collider
   m_TagString: Untagged
@@ -6973,6 +6991,22 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &2797340483203510730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1312100048555606888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &2494061063570784275
 GameObject:
   m_ObjectHideFlags: 0
@@ -7057,6 +7091,7 @@ GameObject:
   - component: {fileID: 6488815983946440666}
   - component: {fileID: 6068179599428863120}
   - component: {fileID: 4626750541981759025}
+  - component: {fileID: 6480281220257383882}
   m_Layer: 12
   m_Name: Blue Treant
   m_TagString: Untagged
@@ -7291,8 +7326,11 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 4626750541981759025}
+  - {fileID: 6480281220257383882}
   - {fileID: 4793054630817444729}
+  - {fileID: 2797340483203510730}
   - {fileID: 8276266078007415441}
+  - {fileID: 1617706983548900399}
   - {fileID: 8411753778056126849}
   - {fileID: 8883823401286617740}
   sceneViewId: 0
@@ -7314,6 +7352,22 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &6480281220257383882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6488815983946440662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &6488815984270406673
 GameObject:
   m_ObjectHideFlags: 0

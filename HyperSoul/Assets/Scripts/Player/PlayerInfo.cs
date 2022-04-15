@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerInfo : LivingEntity, IGiveExp, IGiveScore
+public class PlayerInfo : LivingEntity
 {
     [SerializeField]
     private Text _myHpText;
@@ -33,12 +33,10 @@ public class PlayerInfo : LivingEntity, IGiveExp, IGiveScore
 
     public int PhotonViewID;
 
-    public int CurExp { get; set; }
     public int MaxExp
     {
         get; set;
     }
-    public int CurScore { get; set; }
 
     private const int MONSTER_ATTACK_COLLIDER = 13;
 
@@ -139,22 +137,6 @@ public class PlayerInfo : LivingEntity, IGiveExp, IGiveScore
         _ammoText.text = _playerWeapon.CurBulletCnt + " \\ " + _playerWeapon.MaxBulletAmt;
     }
 
-    public void GiveMonsterExp(int expAmt)
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            CurExp += expAmt;
-
-            photonView.RPC("UpdateExp", RpcTarget.Others, CurExp);
-        }
-    }
-
-    [PunRPC]
-    public void UpdateExp(int newExp)
-    {
-        CurExp = newExp;
-    }
-
     private void ExpUpdate()
     {
         _expText.text = "Exp : " + CurExp;
@@ -170,10 +152,6 @@ public class PlayerInfo : LivingEntity, IGiveExp, IGiveScore
             
             CurExp = 0;
         }
-    }
-    public void GiveMonsterScore(int score)
-    {
-        CurScore += score;
     }
 
     private void ScoreUpdate()

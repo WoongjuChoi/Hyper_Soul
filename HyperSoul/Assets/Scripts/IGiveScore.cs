@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IGiveScore
 {
-    public void GiveMonsterScore(int score);
+    public void GiveScore(int attackerID, int score);
 }

@@ -5,17 +5,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class LivingEntity : MonoBehaviourPun, IDamageable
+public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IGiveScore
 {
     [SerializeField]
     protected Slider _hpBarOverhead;
 
     public string NickName { get; set; } // 로그인 시 닉네임 넣을 것
-    public int CurHp { get; set; }
     public int MaxHp { get; set; }
     public int Attack { get; set; }
     public bool IsDead { get; set; }
     public int Score { get; set; }
+
+    public int CurHp { get; set; }
+    public int CurExp { get; set; }
+    public int CurScore { get; set; }
 
     // 새로 추가된 변수들
     [SerializeField]
@@ -87,6 +90,8 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
                 //GameManager.Instance.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
                 Die();
                 photonView.RPC("Die", RpcTarget.Others);
+                GiveScore(attackerID, Score);
+                GiveExp(attackerID, Exp);
             }
             else if (false == _isHitting)
             {
@@ -157,4 +162,41 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
                 break;
         }
     }
+
+    public void GiveScore(int attackerID, int score)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            LivingEntity attacker = PhotonView.Find(attackerID).GetComponent<LivingEntity>();
+
+            attacker.CurScore += score;
+
+            photonView.RPC(nameof(UpdateScore), RpcTarget.Others, attacker.CurScore);
+        }
+    }
+
+    [PunRPC]
+    public void UpdateScore(int score)
+    {
+        CurScore = score;
+    }
+
+    public void GiveExp(int attackerID, int expAmt)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            LivingEntity attacker = PhotonView.Find(attackerID).GetComponent<LivingEntity>();
+
+            attacker.CurExp += expAmt;
+
+            photonView.RPC(nameof(UpdateExp), RpcTarget.Others, attacker.Exp);
+        }
+    }
+
+    [PunRPC]
+    public void UpdateExp(int newExp)
+    {
+        CurExp = newExp;
+    }
+
 }

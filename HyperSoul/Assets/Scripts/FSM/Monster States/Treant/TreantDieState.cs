@@ -32,10 +32,6 @@ public class TreantDieState : BaseState<TreantInformation>
 
         PlayerInfo targetInfo = CreatureInformation.Target.GetComponent<PlayerInfo>();
 
-        targetInfo.GiveMonsterExp(CreatureInformation.Exp);
-
-        targetInfo.GiveMonsterScore(CreatureInformation.Score);
-
         if (CreatureInformation.Level < CreatureInformation.MonsterMaxLevel)
         {
             ++CreatureInformation.Level;

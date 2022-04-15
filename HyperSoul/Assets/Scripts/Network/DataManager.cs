@@ -1,14 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public struct OtherPlayerInfos
+public struct OtherPlayerInfos : IComparable
 {
     public string playerName;
     public int score;
     public int playerOrderIndex;
     public EPlayerType playerType;
+
+    public int CompareTo(object obj)
+    {
+        OtherPlayerInfos infos = (OtherPlayerInfos)obj;
+
+        return score.CompareTo(infos.score);
+    }
 }
 
 public class DataManager : MonoBehaviour

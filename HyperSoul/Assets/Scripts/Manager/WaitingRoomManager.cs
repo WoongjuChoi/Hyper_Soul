@@ -63,11 +63,13 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
+        PhotonNetwork.IsMessageQueueRunning = false;
+        PhotonNetwork.LoadLevel("LobbyScene");
     }
 
     public override void OnLeftRoom()
     {
-        PhotonNetwork.LoadLevel("LobbyScene");
+        
     }
 
     public void GameStart()
@@ -105,6 +107,7 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
             DataManager.Instance.PlayerInfos[i].playerOrderIndex = i;
             DataManager.Instance.PlayerInfos[i].playerType = (EPlayerType)_roomList[i].CurPlayerType;
             DataManager.Instance.PlayerInfos[i].score = 0;
+            //DataManager.Instance.PlayerInfos[i].score = i * 100;
         }
     }
 
@@ -196,7 +199,8 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.IsMessageQueueRunning = false;
             PhotonNetwork.LoadLevel("MainScene");
-        }
 
+            //PhotonNetwork.LoadLevel("ResultScene");
+        }
     }
 }

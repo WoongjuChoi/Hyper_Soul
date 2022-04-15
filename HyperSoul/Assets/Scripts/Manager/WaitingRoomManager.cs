@@ -96,8 +96,8 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         {
             if (_roomList[i].PlayerName.text == PhotonNetwork.LocalPlayer.NickName) // 본인의 패널인 경우 데이터매니저에 정보 전달
             {
-                GameManager.Datamanager.PlayerIndex = i;
-                GameManager.Datamanager.PlayerType = (EPlayerType)_roomList[i].CurPlayerType;
+                DataManager.Instance.PlayerIndex = i;
+                DataManager.Instance.PlayerType = (EPlayerType)_roomList[i].CurPlayerType;
             }
         }
     }

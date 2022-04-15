@@ -14,13 +14,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         get { Init(); return _instance; }
     }
 
-    private DataManager _dataManager;
-
-    static public DataManager Datamanager
-    {
-        get { return Instance._dataManager; }
-    }
-
     public Transform PlayerCamRotationTransform { get; set; }
 
     //[SerializeField]
@@ -37,7 +30,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     void Start()
     {
         Init();
-        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
         PhotonNetwork.IsMessageQueueRunning = true;
         _isMainScene = false;
     }
@@ -68,9 +60,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         _spawnPosBase = GameObject.Find("SpawnPosition");
         Transform[] spawnPoint = _spawnPosBase.GetComponentsInChildren<Transform>();
-        int index = _dataManager.PlayerIndex + 1;
+        int index = DataManager.Instance.PlayerIndex + 1;
 
-        switch (_dataManager.PlayerType)
+        switch (DataManager.Instance.PlayerType)
         {
             case EPlayerType.Rifle:
                 _player = PhotonNetwork.Instantiate("RiflePlayer", spawnPoint[index].position, Quaternion.identity);

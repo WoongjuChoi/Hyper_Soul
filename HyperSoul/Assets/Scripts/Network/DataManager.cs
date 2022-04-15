@@ -5,6 +5,12 @@ using UnityEngine.Networking;
 
 public class DataManager : MonoBehaviour
 {
+    static private DataManager _instance;
+    static public DataManager Instance
+    {
+        get { Init(); return _instance; }
+    }
+
     private Dictionary<string, PlayerData> _playerDataDictionary = new Dictionary<string, PlayerData>();
     private Dictionary<string, MonsterData> _monsterDataDictionary = new Dictionary<string, MonsterData>();
 
@@ -91,6 +97,21 @@ public class DataManager : MonoBehaviour
         MonsterData data;
         _monsterDataDictionary.TryGetValue(name, out data);
         return data;
+    }
+
+    static private void Init()
+    {
+        if (_instance == null)
+        {
+            GameObject _dataManager = GameObject.Find("DataManager");
+            if (_dataManager == null)
+            {
+                _dataManager = new GameObject { name = "DataManager" };
+                _dataManager.AddComponent<DataManager>();
+            }
+            DontDestroyOnLoad(_dataManager);
+            _instance = _dataManager.GetComponent<DataManager>();
+        }
     }
 }
 

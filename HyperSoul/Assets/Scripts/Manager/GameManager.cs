@@ -23,9 +23,13 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     Transform[] _spawnPoint;
 
-    void Start()
+    private void Awake()
     {
         Init();
+    }
+
+    void Start()
+    {
         PhotonNetwork.IsMessageQueueRunning = true;
         SpawnPlayer();
     }

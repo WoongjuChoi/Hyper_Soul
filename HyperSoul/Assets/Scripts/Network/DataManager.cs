@@ -104,10 +104,10 @@ public class DataManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            GameObject dataManager = GameObject.Find("GameManager");
+            GameObject dataManager = GameObject.Find("DataManager");
             if (dataManager == null)
             {
-                dataManager = new GameObject { name = "GameManager" };
+                dataManager = new GameObject { name = "DataManager" };
                 dataManager.AddComponent<DataManager>();
             }
             DontDestroyOnLoad(dataManager);

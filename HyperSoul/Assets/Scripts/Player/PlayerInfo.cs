@@ -162,9 +162,9 @@ public class PlayerInfo : LivingEntity, IGiveExp
     {
         _levelUpText.gameObject.SetActive(true);
         ++Level;
-        MaxHp = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
-        MaxExp = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
-        Attack = _dataManager.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
+        MaxHp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
+        MaxExp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
+        Attack = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
         CurHp = MaxHp;
 
         yield return new WaitForSeconds(3f);

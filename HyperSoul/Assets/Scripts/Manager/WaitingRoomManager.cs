@@ -22,6 +22,7 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
+        PhotonNetwork.IsMessageQueueRunning = true;
         _roomPanal = GameObject.Find("RoomPanel");
         _roomNameText = GameObject.Find("RoomNameText").GetComponent<Text>();
         _roomNameText.text = PhotonNetwork.CurrentRoom.Name;

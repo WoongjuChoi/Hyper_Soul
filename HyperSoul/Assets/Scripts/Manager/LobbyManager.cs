@@ -40,7 +40,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private byte _maxPlayer = 4;
 
-    
+
 
     private void Awake()
     {
@@ -111,9 +111,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnRoomListUpdate(List<Photon.Realtime.RoomInfo> roomList)
     {
         GameObject _newRoom = null;
-        foreach(RoomInfo room in roomList)
+        foreach (RoomInfo room in roomList)
         {
-            if(room.RemovedFromList == true)
+            if (room.RemovedFromList == true)
             {
                 _roomList.TryGetValue(room.Name, out _newRoom);
                 Destroy(_newRoom);
@@ -121,7 +121,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                if(_roomList.ContainsKey(room.Name) == false)
+                if (_roomList.ContainsKey(room.Name) == false)
                 {
                     _newRoom = Instantiate(_roomInfo, _roomPos);
                     Room _room = _newRoom.GetComponent<Room>();
@@ -158,11 +158,16 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         _connetInfoText.text = "Joined room";
         PhotonNetwork.IsMessageQueueRunning = false; // 통신 일시정지, 플레이어 스폰 후 다시 연결 시켜준다
-        //PhotonNetwork.LoadLevel("MainScene");
-        //PhotonNetwork.LoadLevel("Bajooka Sample Scene");
-        PhotonNetwork.LoadLevel("RoomScene");
-        //PhotonNetwork.LoadLevel("FSM Scene");
+        if (true == PhotonNetwork.AutomaticallySyncScene)
+        {
+            //PhotonNetwork.LoadLevel("MainScene");
+            //PhotonNetwork.LoadLevel("Bajooka Sample Scene");
+            PhotonNetwork.LoadLevel("RoomScene");
+            //PhotonNetwork.LoadLevel("FSM Scene");
+
+        }
     }
+
 
     public override void OnDisconnected(DisconnectCause cause)
     {

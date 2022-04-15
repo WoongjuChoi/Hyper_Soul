@@ -35,9 +35,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     public CharacterType Type { get; set; }
 
     protected DataManager _dataManager;
-
-    public DataManager DataManager { get { return _dataManager; } }
-
     public virtual void Awake() { }
 
     private void LateUpdate()
@@ -48,7 +45,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
 
     public virtual void OnCollisionEnter(Collision collision) { }
 
-    public void TakeDamage(int damageAmt)
+    public void TakeMonsterDamage(int damageAmt)
     {
         if (PhotonNetwork.IsMasterClient)
         {
@@ -101,13 +98,26 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     }
 
     [PunRPC]
-    public void UpdateHP(int newHp)
+    public void UpdateHp(int hp)
     {
-        CurHp = newHp;
+        CurHp = hp;
+    }
+    [PunRPC]
+    public virtual void Die()
+    {
+        _deathSound.SetActive(true);
+
+        if (false == IsDead)
+        {
+            IsDead = true;
+            _animator.SetTrigger(CommonAnimatorID.DIE);
+        }
+
+        Invoke(nameof(RespawnPlayer), 1.5f);
     }
 
     [PunRPC]
-    private void Hit()
+    public void Hit()
     {
         StartCoroutine(HitCorountine());
     }
@@ -150,7 +160,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         switch (Type)
         {
             case CharacterType.Monster:
-                MonsterData monsterData = _dataManager.FindMonsterData(info);
+                MonsterData monsterData = DataManager.Instance.FindMonsterData(info);
                 MaxHp = monsterData.MaxHp;
                 CurHp = MaxHp;
                 Attack = monsterData.Attack;

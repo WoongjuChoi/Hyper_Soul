@@ -22,6 +22,7 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
+        PhotonNetwork.IsMessageQueueRunning = true;
         _roomPanal = GameObject.Find("RoomPanel");
         _roomNameText = GameObject.Find("RoomNameText").GetComponent<Text>();
         _roomNameText.text = PhotonNetwork.CurrentRoom.Name;
@@ -84,9 +85,9 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
             }
         }
 
-        photonView.RPC("SendPlayerData", RpcTarget.AllBuffered);
+        photonView.RPC(nameof(SendPlayerData), RpcTarget.AllBuffered);
 
-        GameManager.Instance.GameStartButton();
+        photonView.RPC(nameof(StartMainScene), RpcTarget.All);
     }
 
     [PunRPC]
@@ -96,8 +97,8 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         {
             if (_roomList[i].PlayerName.text == PhotonNetwork.LocalPlayer.NickName) // 본인의 패널인 경우 데이터매니저에 정보 전달
             {
-                GameManager.DataManager.PlayerIndex = i;
-                GameManager.DataManager.PlayerType = (EPlayerType)_roomList[i].CurPlayerType;
+                DataManager.Instance.PlayerOrderIndex = i;
+                DataManager.Instance.PlayerType = (EPlayerType)_roomList[i].CurPlayerType;
             }
         }
     }
@@ -181,5 +182,16 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
     private void ReadyButton(int index)
     {
         _roomList[index].SetReadyState();
+    }
+
+    [PunRPC]
+    private void StartMainScene()
+    {
+        if (true == PhotonNetwork.AutomaticallySyncScene)
+        {
+            PhotonNetwork.IsMessageQueueRunning = false;
+            PhotonNetwork.LoadLevel("MainScene");
+        }
+
     }
 }

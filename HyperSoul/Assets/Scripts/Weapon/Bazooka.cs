@@ -18,26 +18,29 @@ public class Bazooka : Weapon
     [SerializeField]
     private float _rayDist = 200f;
 
-    private ObjectPool _missilePool = new ObjectPool();
-
     private Vector3 _targetPos;
 
     private Coroutine _shootCotountine;
 
+    private void Start()
+    {
+        if (photonView.IsMine)
+        {
+            _objectPool.Init("BazookaMissile", 3);
+        }
+    }
+
     private void OnEnable()
     {
-        CurBulletCnt = 100;
-        MaxBulletAmt = 100;
+        MaxBulletAmt = DataManager.Instance.FindPlayerData("Bazooka" + _playerInfo.Level.ToString()).MaxBullet;
+        CurBulletCnt = MaxBulletAmt;
         _reloadTime = 5;
         _gunState = EGunState.Ready;
-
-        _missilePool.Init(_missilePrefab, 20);
     }
 
     public override void Fire()
     {
-        // 발사 가능한지 여부 체크 후, 가능하다면 RayCast후 맞는 처리 실시
-        if (false == photonView.IsMine || _gunState != EGunState.Ready || _canFire == false)
+        if (false == canFire())
         {
             return;
         }
@@ -45,12 +48,19 @@ public class Bazooka : Weapon
         SetMousePos();
         Vector3 aimDir = (_mousePos - _missileSpawnPos.position).normalized;
         GameObject target = AimTarget();
-        int targetViewID = (target != null) ? target.GetComponent<PhotonView>().ViewID : -1;
+        int targetViewID = -1;
+        if (target != null)
+        { 
+            targetViewID = target.GetComponent<PhotonView>().ViewID;
+        }
 
-        photonView.RPC("MissileFire", RpcTarget.All, aimDir, targetViewID);
+        if (CurBulletCnt > 0)
+        {
+            photonView.RPC(nameof(MissileFire), RpcTarget.All, aimDir, targetViewID);
+        }
     }
 
-
+    
     public override void Zoom()
     {
         ZoomCam.SetActive(true);
@@ -65,52 +75,48 @@ public class Bazooka : Weapon
         {
             StopCoroutine(_shootCotountine);
         }
+        if (false == photonView.IsMine)
+        {
+            return;
+        }
         _shootCotountine = StartCoroutine(Shoot(aimDir, targetViewID));
     }
 
 
     private IEnumerator Shoot(Vector3 aimDir, int aimedTargetID)
     {
+
         --CurBulletCnt;
 
-        BazookaMissile _bazookaMissile = _missilePool.GetObj().GetComponent<BazookaMissile>();
+        BazookaMissile bazookaMissile = _objectPool.GetObj("BazookaMissile").GetComponent<BazookaMissile>();
 
-        _bazookaMissile.MissilePrefab.SetActive(true);
-        _bazookaMissile.RocketParticleEffect.SetActive(false);
-        _bazookaMissile.ExplosionEffect.SetActive(false);
+        bazookaMissile.MissilePrefab.SetActive(true);
+        bazookaMissile.RocketParticleEffect.SetActive(false);
+        bazookaMissile.ExplosionEffect.SetActive(false);
 
-        if(aimedTargetID == -1)
+        if (aimedTargetID == -1)
         {
-            _bazookaMissile.Target = null;
+            bazookaMissile.Target = null;
         }
         else
         {
-            _bazookaMissile.Target = PhotonView.Find(aimedTargetID).gameObject.transform;
+            bazookaMissile.Target = PhotonView.Find(aimedTargetID).gameObject.transform;
         }
 
-        _bazookaMissile.transform.position = _missileSpawnPos.position;
-        _bazookaMissile.transform.rotation = Quaternion.LookRotation(aimDir, Vector3.up);
-        _bazookaMissile.GetComponent<Rigidbody>().velocity = _bazookaMissile.transform.forward * 7f + _bazookaMissile.transform.up * 7f;
-        _bazookaMissile.ReceiveReturnMissileFunc(ReturnMissile);
-        _bazookaMissile.ProjectileOwnerID = _playerInfo.PhotonViewID;
-        _bazookaMissile.Attack = _playerInfo.Attack;
-        Debug.DrawRay(_bazookaMissile.transform.position, aimDir, Color.red, 1f);
-        _bazookaMissile.gameObject.SetActive(true);
+        bazookaMissile.transform.position = _missileSpawnPos.position;
+        bazookaMissile.transform.rotation = Quaternion.LookRotation(aimDir, Vector3.up);
+        bazookaMissile.GetComponent<Rigidbody>().velocity = bazookaMissile.transform.forward * 7f + bazookaMissile.transform.up * 7f;
+        bazookaMissile.ProjectileOwnerID = _playerInfo.PhotonViewID;
+        bazookaMissile.Attack = _playerInfo.Attack;
+        bazookaMissile.GetComponent<PoolObject>().SetActiveObj(true);
+        bazookaMissile.ReceiveReturnProjectileFunc(ReturnProjectile);
+        bazookaMissile.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.All, true);
 
-        Collider[] bazookaColliders = _bazookaMissile.GetComponentsInChildren<Collider>();
-        if(false == PhotonNetwork.IsMasterClient)
+
+
+        if (true == PhotonNetwork.IsMasterClient)
         {
-            foreach (Collider col in bazookaColliders)
-            {
-                col.enabled = false;
-            }
-        }
-        else
-        {
-            foreach (Collider col in bazookaColliders)
-            {
-                col.enabled = true;
-            }
+            photonView.RPC("RemoveCollider", RpcTarget.OthersBuffered, bazookaMissile.GetComponent<PhotonView>().ViewID);
         }
 
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, true);
@@ -120,7 +126,6 @@ public class Bazooka : Weapon
         _shootCotountine = null;
         _canFire = true;
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, false);
-
     }
 
     private GameObject AimTarget()
@@ -133,30 +138,27 @@ public class Bazooka : Weapon
             Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 1f);
             if (target.transform.gameObject.layer == 3 || target.transform.gameObject.layer == 6 || target.transform.gameObject.layer == 12)
             {
-                Debug.Log($"Target is {target.transform.gameObject.layer}");
+                //Debug.Log($"Target is {target.transform.gameObject.layer}");
                 return target.transform.gameObject;
             }
         }
         return null;
     }
 
-    private void ReturnMissile(GameObject missile)
-    {
-        _missilePool.ReturnObj(missile);
-    }
+    
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(CurBulletCnt);
-            stream.SendNext(_gunState);
-        }
-        else
-        {
-            CurBulletCnt = (int)stream.ReceiveNext();
-            _gunState = (EGunState)stream.ReceiveNext();
+    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    //{
+    //    if (stream.IsWriting)
+    //    {
+    //        stream.SendNext(CurBulletCnt);
+    //        stream.SendNext(_gunState);
+    //    }
+    //    else
+    //    {
+    //        CurBulletCnt = (int)stream.ReceiveNext();
+    //        _gunState = (EGunState)stream.ReceiveNext();
 
-        }
-    }
+    //    }
+    //}
 }

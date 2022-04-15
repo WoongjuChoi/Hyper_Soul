@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviourPun
 
     private void Update()
     {
-        if (false == GameManager.TimeManager.StartGame || _playerInfo.IsDead)
+        if (/*false == GameManager.TimeManager.StartGame || */_playerInfo.IsDead)
         {
             _walkingSound.SetActive(false);
             _jumpSound.SetActive(false);
@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviourPun
 
     private void FixedUpdate()
     {
-        if (false == GameManager.TimeManager.StartGame || _playerInfo.IsDead)
+        if (/*false == GameManager.TimeManager.StartGame || */_playerInfo.IsDead)
         {
             return;
         }

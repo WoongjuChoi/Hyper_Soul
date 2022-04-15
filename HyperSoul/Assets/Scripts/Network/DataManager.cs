@@ -5,11 +5,21 @@ using UnityEngine.Networking;
 
 public class DataManager : MonoBehaviour
 {
+    static private DataManager _instance;
+
+    static public DataManager Instance
+    {
+        get { Init(); return _instance; }
+    }
+
+
     private Dictionary<string, PlayerData> _playerDataDictionary = new Dictionary<string, PlayerData>();
     private Dictionary<string, MonsterData> _monsterDataDictionary = new Dictionary<string, MonsterData>();
 
     public bool IsDataReady { get; private set; }
-    public int PlayerIndex { get; set; }
+
+    public event System.Action DataReady = null;
+    public int PlayerOrderIndex { get; set; }
     public EPlayerType PlayerType { get; set; }
 
     const string PlayerDataURL = "https://docs.google.com/spreadsheets/d/1smTaItZFLP5k4agzZ8nvxX_KSp0n_y9UjP701PXgMWs/export?format=tsv&range=A2:J";
@@ -31,6 +41,7 @@ public class DataManager : MonoBehaviour
         {
             SetData(CharacterType.Player, playerDB.downloadHandler.text);
             SetData(CharacterType.Monster, monsterDB.downloadHandler.text);
+            DataReady.Invoke();
             IsDataReady = true;
         }
         else
@@ -87,6 +98,21 @@ public class DataManager : MonoBehaviour
         MonsterData data;
         _monsterDataDictionary.TryGetValue(name, out data);
         return data;
+    }
+
+    static private void Init()
+    {
+        if (_instance == null)
+        {
+            GameObject dataManager = GameObject.Find("DataManager");
+            if (dataManager == null)
+            {
+                dataManager = new GameObject { name = "DataManager" };
+                dataManager.AddComponent<DataManager>();
+            }
+            DontDestroyOnLoad(dataManager);
+            _instance = dataManager.GetComponent<DataManager>();
+        }
     }
 }
 

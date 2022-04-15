@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 삭제할 것
+[System.Obsolete("테스트씬용 스크립트로 삭제예정")]
 public class SampleMoveScript : MonoBehaviour
 {
     float maxDist = 50f;

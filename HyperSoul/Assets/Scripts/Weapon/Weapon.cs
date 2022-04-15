@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public abstract class Weapon : MonoBehaviourPun
+public abstract class Weapon : MonoBehaviourPun, IPunObservable
 {
     public Vector2 ZoomRotationSpeed;
     public GameObject ZoomCam;
@@ -13,7 +13,7 @@ public abstract class Weapon : MonoBehaviourPun
     public GameObject MuzzleFlashEffect;
     public AudioClip ShotSound;
     public AudioClip ReloadSound;
-
+    
     public int CurBulletCnt = 0;
     public int MaxBulletAmt = 0;
 
@@ -29,6 +29,9 @@ public abstract class Weapon : MonoBehaviourPun
     protected AudioSource _audioSource;
     protected EGunState _gunState;
 
+    protected ObjectPool _objectPool = new ObjectPool();
+
+
     DataManager _dataManager;
     private void Awake()
     {
@@ -39,10 +42,12 @@ public abstract class Weapon : MonoBehaviourPun
         _audioSource = this.gameObject.GetComponent<AudioSource>();
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
+
         _playerAnimator.SetFloat(PlayerAnimatorID.RELOAD_SPEED, _reloadSpeed);
         ZoomRotationSpeed = new Vector2(0.2f, 0.2f);
         ZoomCam.SetActive(false);
         //MaxBulletAmt = _dataManager.
+
     }
     protected void Update()
     {
@@ -60,8 +65,22 @@ public abstract class Weapon : MonoBehaviourPun
             _gunState = EGunState.Empty;
         }
     }
-    public virtual void Fire() { }
-    public virtual void Zoom() { }
+
+    protected bool canFire()
+    {
+        if (false == photonView.IsMine || _gunState != EGunState.Ready || _canFire == false)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public abstract void Fire();
+
+    public abstract void Zoom();
 
     public bool HasReloaded()
     {
@@ -85,6 +104,7 @@ public abstract class Weapon : MonoBehaviourPun
         _gunState = EGunState.Ready;
     }
 
+    
     public void SetMousePos()
     {
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
@@ -96,11 +116,42 @@ public abstract class Weapon : MonoBehaviourPun
         {
             RaycastHit hit = raycastHits[i];
 
-            if (hit.distance > 4)
+            if (hit.distance > 4) 
             {
                 _mousePos = hit.point;
                 break;
             }
         }
+    }
+
+
+
+    [PunRPC]
+    protected void RemoveCollider(int projectileId)
+    {
+        //if(null != projectile.GetComponent<Collider>())
+        //{
+        //    Collider Collider = projectile.GetComponent<Collider>();
+        //    Collider.enabled = false;
+        //}
+        //else
+        //{
+        GameObject projectile = PhotonNetwork.GetPhotonView(projectileId).gameObject;
+        Collider[] Colliders = projectile.GetComponentsInChildren<Collider>();
+        foreach (Collider col in Colliders)
+        {
+            col.enabled = false;
+        }
+        //}
+    }
+
+    protected void ReturnProjectile(GameObject projectile)
+    {
+        _objectPool.Destroy(projectile);
+    }
+
+    public virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -102,19 +102,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     {
         CurHp = hp;
     }
-    [PunRPC]
-    public virtual void Die()
-    {
-        _deathSound.SetActive(true);
-
-        if (false == IsDead)
-        {
-            IsDead = true;
-            _animator.SetTrigger(CommonAnimatorID.DIE);
-        }
-
-        Invoke(nameof(RespawnPlayer), 1.5f);
-    }
 
     [PunRPC]
     public void Hit()
@@ -140,6 +127,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         _animator.SetBool(CommonAnimatorID.HIT, false);
     }
 
+    [PunRPC]
     public virtual void Die()
     {
         _deathSound.SetActive(true);

@@ -67,9 +67,9 @@ public abstract class MonsterInformation : LivingEntity
 
     private void OnEnable()
     {
-        MaxHp = _dataManager.FindMonsterData(_monsterType.ToString() + Level.ToString()).MaxHp;
-        Attack = _dataManager.FindMonsterData(_monsterType.ToString() + Level.ToString()).Attack;
-        Exp = _dataManager.FindMonsterData(_monsterType.ToString() + Level.ToString()).Exp;
+        MaxHp = DataManager.Instance.FindMonsterData(_monsterType.ToString() + Level.ToString()).MaxHp;
+        Attack = DataManager.Instance.FindMonsterData(_monsterType.ToString() + Level.ToString()).Attack;
+        Exp = DataManager.Instance.FindMonsterData(_monsterType.ToString() + Level.ToString()).Exp;
 
         //// µð¹ö±ë¿ë
         //Debug.Log($"MonsterInfo MaxHp : {MaxHp}\nMonsterInfo Attack : {Attack}\nMonsterInfo Exp : {Exp}");

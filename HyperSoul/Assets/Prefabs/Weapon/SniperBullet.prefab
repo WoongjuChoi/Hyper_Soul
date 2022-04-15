@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1355721253567623748}
   - component: {fileID: 1355721253567623749}
   - component: {fileID: 5568134566471815148}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SniperBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,9 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee6983889c600c147a8a6578a85ee9b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerInfo: {fileID: 0}
   _speed: 1000
-  AttackValue: 1
 --- !u!96 &5568134566471815148
 TrailRenderer:
   serializedVersion: 2

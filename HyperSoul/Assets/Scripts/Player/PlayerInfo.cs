@@ -25,6 +25,9 @@ public class PlayerInfo : LivingEntity
     private Text _levelUpText;
 
     [SerializeField]
+    private Text _nickNameText;
+
+    [SerializeField]
     private GameObject _playerUI;
 
     private PlayerType _playerType;
@@ -59,6 +62,8 @@ public class PlayerInfo : LivingEntity
         else
         {
             _playerUI.SetActive(false);
+            _levelText.gameObject.SetActive(false);
+            _nickNameText.gameObject.SetActive(false);
         }
     }
 
@@ -73,6 +78,8 @@ public class PlayerInfo : LivingEntity
         _killText.gameObject.SetActive(false);
         _levelUpText.gameObject.SetActive(false);
         _hitImage.SetActive(false);
+
+        _nickNameText.text = NickName;
     }
 
     private void OnEnable()
@@ -81,11 +88,26 @@ public class PlayerInfo : LivingEntity
         MaxExp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
         Attack = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
         Score = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Score;
+
+        if (photonView.IsMine)
+        {
+            photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, Level, MaxHp, Attack, Score);
+        }
+
         CurHp = MaxHp;
         CurScore = 0;
         IsDead = false;
         _hitSound.SetActive(false);
         _deathSound.SetActive(false);
+    }
+
+    [PunRPC]
+    public void UpdatePlayerInfo(int level, int maxHp, int attack, int score)
+    {
+        Level = level;
+        MaxHp = maxHp;
+        Attack = attack;
+        Score = score;
     }
 
     private void Update()
@@ -97,6 +119,12 @@ public class PlayerInfo : LivingEntity
         AmmoUpdate();
         ExpUpdate();
         ScoreUpdate();
+        LevelUpdate();
+    }
+
+    private void LateUpdate()
+    {
+        _profileCanvas.gameObject.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;    // (22.04.16) 플레이어 레벨 회전
     }
 
     public override void OnCollisionEnter(Collision collision)
@@ -149,7 +177,7 @@ public class PlayerInfo : LivingEntity
             {
                 StartCoroutine(LevelUp());
             }
-            
+
             CurExp = 0;
         }
     }
@@ -163,14 +191,24 @@ public class PlayerInfo : LivingEntity
     {
         _levelUpText.gameObject.SetActive(true);
         ++Level;
+
         MaxHp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
         MaxExp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
         Attack = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
+        Score = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Score;
+
+        photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, Level, MaxHp, Attack, Score);
+
         CurHp = MaxHp;
 
         yield return new WaitForSeconds(3f);
 
         _levelUpText.gameObject.SetActive(false);
+    }
+
+    private void LevelUpdate()
+    {
+        _levelText.text = $"{Level}";
     }
 
     public override void Respawn()

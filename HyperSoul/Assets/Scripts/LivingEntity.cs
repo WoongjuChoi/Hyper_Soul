@@ -39,6 +39,12 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
     public CharacterType Type { get; set; }
 
     protected DataManager _dataManager;
+
+    [SerializeField]
+    protected Canvas _profileCanvas;
+    [SerializeField]
+    protected Text _levelText;
+
     public virtual void Awake() { }
 
     private void LateUpdate()

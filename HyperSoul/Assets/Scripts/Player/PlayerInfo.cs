@@ -5,8 +5,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class PlayerInfo : LivingEntity, IGiveExp
+public class PlayerInfo : LivingEntity
 {
+    [SerializeField]
+    private Text _myHpText;
     [SerializeField]
     private Slider _myHpSlider;
     [SerializeField]
@@ -15,11 +17,16 @@ public class PlayerInfo : LivingEntity, IGiveExp
     private Text _ammoText;
     [SerializeField]
     private Text _expText;
+    [SerializeField]
+    private Text _scoreText;
 
     [SerializeField]
     private Text _killText;
     [SerializeField]
     private Text _levelUpText;
+
+    [SerializeField]
+    private Text _nickNameText;
 
     [SerializeField]
     private GameObject _playerUI;
@@ -30,7 +37,6 @@ public class PlayerInfo : LivingEntity, IGiveExp
 
     public int PhotonViewID;
 
-    public int CurExp { get; set; }
     public int MaxExp
     {
         get; set;
@@ -49,6 +55,7 @@ public class PlayerInfo : LivingEntity, IGiveExp
         _playerType = PlayerType.Rifle;
         Level = 1;
         CurExp = 0;
+        CurScore = 0;
 
         if (photonView.IsMine)
         {
@@ -57,6 +64,8 @@ public class PlayerInfo : LivingEntity, IGiveExp
         else
         {
             _playerUI.SetActive(false);
+            _levelText.gameObject.SetActive(false);
+            _nickNameText.gameObject.SetActive(false);
         }
 
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "loadPlayer", true } });
@@ -73,6 +82,8 @@ public class PlayerInfo : LivingEntity, IGiveExp
         _killText.gameObject.SetActive(false);
         _levelUpText.gameObject.SetActive(false);
         _hitImage.SetActive(false);
+
+        _nickNameText.text = NickName;
     }
 
     private void OnEnable()
@@ -80,20 +91,48 @@ public class PlayerInfo : LivingEntity, IGiveExp
         MaxHp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
         MaxExp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
         Attack = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
+        Score = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Score;
+        Exp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Exp;
+
+        if (photonView.IsMine)
+        {
+            photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, Level, MaxHp, Attack, Score, Exp);
+        }
+
         CurHp = MaxHp;
         IsDead = false;
         _hitSound.SetActive(false);
         _deathSound.SetActive(false);
     }
 
+    [PunRPC]
+    public void UpdatePlayerInfo(int level, int maxHp, int attack, int score, int exp)
+    {
+        Level = level;
+        MaxHp = maxHp;
+        Attack = attack;
+        Score = score;
+        Exp = exp;
+    }
+
     private void Update()
     {
         //// 디버깅용
         //Debug.Log($"CurExp : {CurExp}");
+        _profileCanvas.gameObject.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;    // (22.04.16) 플레이어 레벨 회전
 
+        Debug.Log($"CurExp : {CurExp}\nCurScore : {CurScore}");
+
+        if (false == photonView.IsMine)
+        {
+            return;
+        }
         HpUpdate();
         AmmoUpdate();
         ExpUpdate();
+        ScoreUpdate();
+        LevelUpdate();
+
     }
 
     public override void OnCollisionEnter(Collision collision)
@@ -110,16 +149,6 @@ public class PlayerInfo : LivingEntity, IGiveExp
                 collision.transform.position, collision.transform.position.normalized);
         }
 
-        //if (collision.gameObject.GetComponent<Projectile>() != null)
-        //{
-        //   Debug.Log($"피격당함\n Attacker : {collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID}" +
-        //   $"\n Damage : {collision.gameObject.GetComponent<Projectile>().Attack}" +
-        //   $"\n HP : {CurHp}");
-
-        //    TakeDamage(collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID, collision.gameObject.GetComponent<Projectile>().Attack,
-        //        collision.transform.position, collision.transform.position.normalized);
-        //}
-
         LivingEntity livingEntity = collision.gameObject.GetComponentInParent<LivingEntity>();
 
         if (MONSTER_ATTACK_COLLIDER == collision.gameObject.layer)
@@ -135,6 +164,7 @@ public class PlayerInfo : LivingEntity, IGiveExp
 
     private void HpUpdate()
     {
+        _myHpText.text = $"HP : {CurHp} / {MaxHp}";
         _myHpSlider.value = (float)CurHp / MaxHp;
     }
 
@@ -143,46 +173,40 @@ public class PlayerInfo : LivingEntity, IGiveExp
         _ammoText.text = _playerWeapon.CurBulletCnt + " \\ " + _playerWeapon.MaxBulletAmt;
     }
 
-    public void GiveExp(int expAmt)
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            CurExp += expAmt;
-
-            photonView.RPC("UpdateExp", RpcTarget.Others, CurExp);
-        }
-    }
-
-    [PunRPC]
-    public void UpdateExp(int newExp)
-    {
-        CurExp = newExp;
-    }
-
     private void ExpUpdate()
     {
+
         _expText.text = "Exp : " + CurExp;
 
         _expSlider.value = (float)CurExp / MaxExp;
 
         if (CurExp >= MaxExp && Level < MaxLevel)
         {
-            if (photonView.IsMine)
-            {
-                StartCoroutine(LevelUp());
-            }
-            
+
+            StartCoroutine(LevelUp());
+
             CurExp = 0;
         }
+    }
+
+    private void ScoreUpdate()
+    {
+        _scoreText.text = $"Score : {CurScore}";
     }
 
     private IEnumerator LevelUp()
     {
         _levelUpText.gameObject.SetActive(true);
         ++Level;
+
         MaxHp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
         MaxExp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
         Attack = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
+        Score = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Score;
+        Exp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Exp;
+
+        photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, Level, MaxHp, Attack, Score, Exp);
+
         CurHp = MaxHp;
 
         yield return new WaitForSeconds(3f);
@@ -190,8 +214,19 @@ public class PlayerInfo : LivingEntity, IGiveExp
         _levelUpText.gameObject.SetActive(false);
     }
 
+    private void LevelUpdate()
+    {
+        _levelText.text = $"{Level}";
+    }
+
     public override void Respawn()
     {
         GameManager.Instance.RespawnPlayer();
+    }
+
+    [PunRPC]
+    public void PlayerActive(bool b)
+    {
+        gameObject.SetActive(b);
     }
 }

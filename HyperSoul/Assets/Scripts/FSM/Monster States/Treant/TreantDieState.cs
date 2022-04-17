@@ -30,7 +30,7 @@ public class TreantDieState : BaseState<TreantInformation>
 
         yield return new WaitForSeconds(0.5f);
 
-        CreatureInformation.Target.GetComponent<PlayerInfo>().GiveExp(CreatureInformation.Exp);
+        PlayerInfo targetInfo = CreatureInformation.Target.GetComponent<PlayerInfo>();
 
         if (CreatureInformation.Level < CreatureInformation.MonsterMaxLevel)
         {

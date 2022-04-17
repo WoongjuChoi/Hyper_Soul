@@ -1,7 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+
+public struct OtherPlayerInfos : IComparable
+{
+    public string playerName;
+    public int score;
+    public int playerOrderIndex;
+    public EPlayerType playerType;
+
+    public int CompareTo(object obj)
+    {
+        OtherPlayerInfos infos = (OtherPlayerInfos)obj;
+
+        return score.CompareTo(infos.score);
+    }
+}
 
 public class DataManager : MonoBehaviour
 {
@@ -19,8 +35,9 @@ public class DataManager : MonoBehaviour
     public bool IsDataReady { get; private set; }
 
     public event System.Action DataReady = null;
-    public int PlayerOrderIndex { get; set; }
-    public EPlayerType PlayerType { get; set; }
+    public int MyPlayerOrderIndex { get; set; }
+    public EPlayerType PlayerType { get; set;}
+    public OtherPlayerInfos[] PlayerInfos = new OtherPlayerInfos[4];
 
     const string PlayerDataURL = "https://docs.google.com/spreadsheets/d/1smTaItZFLP5k4agzZ8nvxX_KSp0n_y9UjP701PXgMWs/export?format=tsv&range=A2:J";
     const string MonsterDataURL = "https://docs.google.com/spreadsheets/d/1smTaItZFLP5k4agzZ8nvxX_KSp0n_y9UjP701PXgMWs/export?format=tsv&range=A2:F&gid=1983254392";

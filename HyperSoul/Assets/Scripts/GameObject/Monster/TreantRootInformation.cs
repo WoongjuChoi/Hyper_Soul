@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,15 +13,13 @@ public class TreantRootInformation : MonoBehaviour
 
     private Vector3 _rotateVec = Vector3.zero;
 
-    private const string ENABLED_ATTACK_COLLIDER = "EnabledAttackCollider";
-
     private void OnEnable()
     {
         _rotateVec = _treant.transform.eulerAngles;
 
         gameObject.transform.Rotate(0f, _rotateVec.y, 0f);
 
-        Invoke(ENABLED_ATTACK_COLLIDER, 0.5f);
+        Invoke(nameof(EnabledAttackCollider), 0.5f);
     }
 
     private void OnDisable()
@@ -32,6 +31,9 @@ public class TreantRootInformation : MonoBehaviour
 
     private void EnabledAttackCollider()
     {
-        _attackCollider.enabled = true;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _attackCollider.enabled = true;
+        }
     }
 }

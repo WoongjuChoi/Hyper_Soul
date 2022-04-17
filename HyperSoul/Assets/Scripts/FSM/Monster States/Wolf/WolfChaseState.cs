@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class WolfChaseState : BaseState<WolfInformation>
 {
+    [SerializeField]
+    private AudioSource _chaseAudioSource;
+
     public override void EnterState()
     {
         CreatureInformation.MonsterCurrentState = EStateIDs.Chase;
 
         GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_CHASE, true);
+
+        _chaseAudioSource.Play();
     }
 
     public override void ExitState()
@@ -18,6 +23,8 @@ public class WolfChaseState : BaseState<WolfInformation>
         CreatureInformation.MonsterChaser.ResetPath();
 
         GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_CHASE, false);
+
+        _chaseAudioSource.Stop();
     }
 
     public override void UpdateState()

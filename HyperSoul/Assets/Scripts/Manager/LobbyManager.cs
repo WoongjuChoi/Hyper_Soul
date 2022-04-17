@@ -46,7 +46,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         Screen.SetResolution(1920, 1080, false);
         PhotonNetwork.AutomaticallySyncScene = true; // 마스터클라이언트와 씬 동기화
-        _joinButton.interactable = true;
         _curPanel = _loginPanel;
         _joinButton.interactable = false;
         _connetInfoText.text = "데이터 로딩 중입니다. 잠시 기다려주세요";

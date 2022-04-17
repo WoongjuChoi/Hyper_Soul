@@ -9878,7 +9878,7 @@ GameObject:
   - component: {fileID: 6350068018276428692}
   - component: {fileID: 8370944690448479308}
   - component: {fileID: 6886846721663240275}
-  - component: {fileID: 4988502818039437450}
+  - component: {fileID: 5291299365151892888}
   - component: {fileID: 3136841636401813356}
   - component: {fileID: 2466905187335634039}
   m_Layer: 7
@@ -9939,7 +9939,7 @@ MonoBehaviour:
   ExplosionEffect: {fileID: 289230306847107765}
   _maxSpeed: 70
   _gravityForce: 0.8
---- !u!114 &4988502818039437450
+--- !u!114 &5291299365151892888
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

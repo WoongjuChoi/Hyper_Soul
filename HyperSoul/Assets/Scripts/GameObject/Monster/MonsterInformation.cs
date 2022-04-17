@@ -5,19 +5,19 @@ using UnityEngine;
 public abstract class MonsterInformation : LivingEntity
 {
     [SerializeField]
-    protected FiniteStateMachine _monsterFSM = null;
+    protected FiniteStateMachine _monsterFSM;
 
     [SerializeField]
-    protected MonsterSpawnManager _monsterSpawnManager = null;
+    protected MonsterSpawnManager _monsterSpawnManager;
 
     [SerializeField]
-    protected Chaser _monsterChaser = null;
+    protected Chaser _monsterChaser;
 
     [SerializeField]
-    protected Collider _attackRangeCollider = null;
+    protected Collider _attackRangeCollider;
 
     [SerializeField]
-    protected Transform _monsterRayPoint = null;
+    protected Transform _monsterRayPoint;
 
     [SerializeField]
     protected float _monsterInvincibleTime = 0f;
@@ -25,17 +25,17 @@ public abstract class MonsterInformation : LivingEntity
     [SerializeField]
     protected int _monsterMaxHP = 0;
 
-    protected GameObject _target = null;
+    protected GameObject _target;
 
-    protected Transform _initializePosition = null;
+    protected Transform _initializePosition;
 
-    protected Projectile _attackerInfo = null;
+    protected Projectile _attackerInfo;
 
-    protected Vector3 _collisionVec = Vector3.zero;
-    protected Vector3 _lookAtTargetVec = Vector3.zero;
+    protected Vector3 _collisionVec;
+    protected Vector3 _lookAtTargetVec;
 
     protected MonsterType _monsterType;
-    protected EStateIDs _monsterCurrentState = EStateIDs.None;
+    protected EStateIDs _monsterCurrentState;
 
     protected float _monsterSpawnDirection = 0f;
 

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class WolfReturnPositionState : BaseState<WolfInformation>
 {
+    [SerializeField]
+    private AudioSource _returnPositionAudioSource;
+
     private float _distance = 0f;
 
     private int _increaseHealing = 0;
@@ -15,6 +18,8 @@ public class WolfReturnPositionState : BaseState<WolfInformation>
         CreatureInformation.MonsterCurrentState = EStateIDs.ReturnPosition;
 
         GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_CHASE, true);
+
+        _returnPositionAudioSource.Play();
     }
 
     public override void ExitState()
@@ -30,6 +35,8 @@ public class WolfReturnPositionState : BaseState<WolfInformation>
         GameObject.GetComponentInChildren<Animator>().SetBool(IS_WALK, false);
 
         GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_CHASE, false);
+        
+        _returnPositionAudioSource.Stop();
     }
 
     public override void UpdateState()

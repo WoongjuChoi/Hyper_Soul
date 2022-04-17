@@ -40,7 +40,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     private void LateUpdate()
     {
         _hpBarOverhead.value = (float)CurHp / MaxHp;
-        //_hpBarOverheadCanvas.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;
+        _hpBarOverheadCanvas.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;
     }
 
     public virtual void OnCollisionEnter(Collision collision) { }

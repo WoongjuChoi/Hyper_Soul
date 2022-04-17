@@ -50,7 +50,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
     private void LateUpdate()
     {
         _hpBarOverhead.value = (float)CurHp / MaxHp;
-        //_hpBarOverheadCanvas.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;
+        _hpBarOverheadCanvas.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;
     }
 
     public virtual void OnCollisionEnter(Collision collision) { }
@@ -96,6 +96,9 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
                 //GameManager.Instance.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
                 Die();
                 photonView.RPC("Die", RpcTarget.Others);
+
+                Debug.Log($"Score : {Score}");
+
                 GiveScore(attackerID, Score);
                 GiveExp(attackerID, Exp);
             }
@@ -145,9 +148,12 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
         _deathSound.SetActive(true);
 
         IsDead = true;
-        _animator.SetTrigger(CommonAnimatorID.DIE);
+        if (photonView.IsMine)
+        {
+            _animator.SetTrigger(CommonAnimatorID.DIE);
 
-        Invoke(nameof(Respawn), 1.5f);
+            Invoke(nameof(Respawn), 1.5f);
+        }
     }
 
     public virtual void Respawn()
@@ -171,38 +177,21 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
 
     public void GiveScore(int attackerID, int score)
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (photonView.IsMine)
         {
             LivingEntity attacker = PhotonView.Find(attackerID).GetComponent<LivingEntity>();
 
             attacker.CurScore += score;
-
-            photonView.RPC(nameof(UpdateScore), RpcTarget.Others, attacker.CurScore);
         }
-    }
-
-    [PunRPC]
-    public void UpdateScore(int score)
-    {
-        CurScore = score;
     }
 
     public void GiveExp(int attackerID, int expAmt)
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (photonView.IsMine)
         {
             LivingEntity attacker = PhotonView.Find(attackerID).GetComponent<LivingEntity>();
 
             attacker.CurExp += expAmt;
-
-            photonView.RPC(nameof(UpdateExp), RpcTarget.Others, attacker.Exp);
         }
     }
-
-    [PunRPC]
-    public void UpdateExp(int newExp)
-    {
-        CurExp = newExp;
-    }
-
 }

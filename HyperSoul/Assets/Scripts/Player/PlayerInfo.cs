@@ -55,6 +55,7 @@ public class PlayerInfo : LivingEntity
         _playerType = PlayerType.Rifle;
         Level = 1;
         CurExp = 0;
+        CurScore = 0;
 
         if (photonView.IsMine)
         {
@@ -91,43 +92,47 @@ public class PlayerInfo : LivingEntity
         MaxExp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
         Attack = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
         Score = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Score;
+        Exp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Exp;
 
         if (photonView.IsMine)
         {
-            photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, Level, MaxHp, Attack, Score);
+            photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, Level, MaxHp, Attack, Score, Exp);
         }
 
         CurHp = MaxHp;
-        CurScore = 0;
         IsDead = false;
         _hitSound.SetActive(false);
         _deathSound.SetActive(false);
     }
 
     [PunRPC]
-    public void UpdatePlayerInfo(int level, int maxHp, int attack, int score)
+    public void UpdatePlayerInfo(int level, int maxHp, int attack, int score, int exp)
     {
         Level = level;
         MaxHp = maxHp;
         Attack = attack;
         Score = score;
+        Exp = exp;
     }
 
     private void Update()
     {
         //// 디버깅용
         //Debug.Log($"CurExp : {CurExp}");
+        _profileCanvas.gameObject.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;    // (22.04.16) 플레이어 레벨 회전
 
+        Debug.Log($"CurExp : {CurExp}\nCurScore : {CurScore}");
+
+        if (false == photonView.IsMine)
+        {
+            return;
+        }
         HpUpdate();
         AmmoUpdate();
         ExpUpdate();
         ScoreUpdate();
         LevelUpdate();
-    }
 
-    private void LateUpdate()
-    {
-        _profileCanvas.gameObject.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;    // (22.04.16) 플레이어 레벨 회전
     }
 
     public override void OnCollisionEnter(Collision collision)
@@ -170,16 +175,15 @@ public class PlayerInfo : LivingEntity
 
     private void ExpUpdate()
     {
+
         _expText.text = "Exp : " + CurExp;
 
         _expSlider.value = (float)CurExp / MaxExp;
 
         if (CurExp >= MaxExp && Level < MaxLevel)
         {
-            if (photonView.IsMine)
-            {
-                StartCoroutine(LevelUp());
-            }
+
+            StartCoroutine(LevelUp());
 
             CurExp = 0;
         }
@@ -199,8 +203,9 @@ public class PlayerInfo : LivingEntity
         MaxExp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
         Attack = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
         Score = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Score;
+        Exp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Exp;
 
-        photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, Level, MaxHp, Attack, Score);
+        photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, Level, MaxHp, Attack, Score, Exp);
 
         CurHp = MaxHp;
 
@@ -217,5 +222,11 @@ public class PlayerInfo : LivingEntity
     public override void Respawn()
     {
         GameManager.Instance.RespawnPlayer();
+    }
+
+    [PunRPC]
+    public void PlayerActive(bool b)
+    {
+        gameObject.SetActive(b);
     }
 }

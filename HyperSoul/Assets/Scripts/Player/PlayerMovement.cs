@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviourPun
 {
     [SerializeField]
-    private float _moveSpeed = 8.0f;
+    private float _moveSpeed = 20.0f;
     [SerializeField]
     private float _jumpForce = 10f;
     [SerializeField]
@@ -40,6 +40,8 @@ public class PlayerMovement : MonoBehaviourPun
         _input = GetComponent<PlayerInputs>();
         _playerInfo = GetComponent<PlayerInfo>();
         _walkingSound.SetActive(false);
+
+        
     }
 
     private void Update()

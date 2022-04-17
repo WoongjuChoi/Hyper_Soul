@@ -5,16 +5,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class LivingEntity : MonoBehaviourPun, IDamageable
+public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IGiveScore
 {
     [SerializeField]
     protected Slider _hpBarOverhead;
 
     public string NickName { get; set; } // 로그인 시 닉네임 넣을 것
-    public int CurHp { get; set; }
     public int MaxHp { get; set; }
     public int Attack { get; set; }
     public bool IsDead { get; set; }
+    public int Score { get; set; }
+
+    public int CurHp { get; set; }
+    public int CurExp { get; set; }
+    public int CurScore { get; set; }
 
     // 새로 추가된 변수들
     [SerializeField]
@@ -35,12 +39,18 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
     public CharacterType Type { get; set; }
 
     protected DataManager _dataManager;
+
+    [SerializeField]
+    protected Canvas _profileCanvas;
+    [SerializeField]
+    protected Text _levelText;
+
     public virtual void Awake() { }
 
     private void LateUpdate()
     {
         _hpBarOverhead.value = (float)CurHp / MaxHp;
-        //_hpBarOverheadCanvas.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;
+        _hpBarOverheadCanvas.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;
     }
 
     public virtual void OnCollisionEnter(Collision collision) { }
@@ -86,6 +96,11 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
                 //GameManager.Instance.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
                 Die();
                 photonView.RPC("Die", RpcTarget.Others);
+
+                Debug.Log($"Score : {Score}");
+
+                GiveScore(attackerID, Score);
+                GiveExp(attackerID, Exp);
             }
             else if (false == _isHitting)
             {
@@ -133,9 +148,12 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
         _deathSound.SetActive(true);
 
         IsDead = true;
-        _animator.SetTrigger(CommonAnimatorID.DIE);
+        if (photonView.IsMine)
+        {
+            _animator.SetTrigger(CommonAnimatorID.DIE);
 
-        Invoke(nameof(Respawn), 1.5f);
+            Invoke(nameof(Respawn), 1.5f);
+        }
     }
 
     public virtual void Respawn()
@@ -154,6 +172,26 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable
                 Attack = monsterData.Attack;
                 Exp = monsterData.Exp;
                 break;
+        }
+    }
+
+    public void GiveScore(int attackerID, int score)
+    {
+        if (photonView.IsMine)
+        {
+            LivingEntity attacker = PhotonView.Find(attackerID).GetComponent<LivingEntity>();
+
+            attacker.CurScore += score;
+        }
+    }
+
+    public void GiveExp(int attackerID, int expAmt)
+    {
+        if (photonView.IsMine)
+        {
+            LivingEntity attacker = PhotonView.Find(attackerID).GetComponent<LivingEntity>();
+
+            attacker.CurExp += expAmt;
         }
     }
 }

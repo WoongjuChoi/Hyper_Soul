@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IGiveExp
 {
-    public void GiveExp(int expAmt);
+    public void GiveExp(int attackerID, int expAmt);
 }

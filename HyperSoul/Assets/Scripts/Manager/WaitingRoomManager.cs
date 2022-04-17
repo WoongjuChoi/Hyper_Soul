@@ -15,6 +15,7 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
     private GameObject _roomPanal;
     private Text _roomNameText;
     private Dictionary<int, Player> _playerList;
+    private bool _isSceneLoading = false;
 
     // 이 아래는 Master만 사용하는 변수들
     private bool[] _emptyRoomCheck = new bool[4];
@@ -39,6 +40,8 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
             _roomList[i].SetCharactorSelectFunc(SelectCharactor);
             _roomList[i].SetReadyButtonFunc(SetReadyState);
         }
+
+        _isSceneLoading = false;
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -63,11 +66,13 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
+        PhotonNetwork.IsMessageQueueRunning = false;
+        PhotonNetwork.LoadLevel("LobbyScene");
     }
 
     public override void OnLeftRoom()
     {
-        PhotonNetwork.LoadLevel("LobbyScene");
+        
     }
 
     public void GameStart()
@@ -97,9 +102,15 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         {
             if (_roomList[i].PlayerName.text == PhotonNetwork.LocalPlayer.NickName) // 본인의 패널인 경우 데이터매니저에 정보 전달
             {
-                DataManager.Instance.PlayerOrderIndex = i;
+                DataManager.Instance.MyPlayerOrderIndex = i;
                 DataManager.Instance.PlayerType = (EPlayerType)_roomList[i].CurPlayerType;
             }
+
+            DataManager.Instance.PlayerInfos[i].playerName = _roomList[i].PlayerName.text;
+            DataManager.Instance.PlayerInfos[i].playerOrderIndex = i;
+            DataManager.Instance.PlayerInfos[i].playerType = (EPlayerType)_roomList[i].CurPlayerType;
+            //DataManager.Instance.PlayerInfos[i].score = 0;
+            DataManager.Instance.PlayerInfos[i].score = i * 100;
         }
     }
 
@@ -186,11 +197,11 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
 
     private void StartMainScene()
     {
-        if (true == PhotonNetwork.AutomaticallySyncScene)
+        if (_isSceneLoading == false)
         {
+            _isSceneLoading = true;
             PhotonNetwork.IsMessageQueueRunning = false;
             PhotonNetwork.LoadLevel("MainScene");
         }
-
     }
 }

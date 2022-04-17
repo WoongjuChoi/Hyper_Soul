@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         _spawnPosBase = GameObject.Find("SpawnPosition");
         _spawnPoint = _spawnPosBase.GetComponentsInChildren<Transform>();
-        int index = DataManager.Instance.PlayerOrderIndex + 1;
+        int index = DataManager.Instance.MyPlayerOrderIndex + 1;
 
         switch (DataManager.Instance.PlayerType)
         {
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private IEnumerator CoroutineRespawn()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(1.5f);
 
         int index = Random.Range(1, 5);
 
@@ -125,19 +125,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             index = Random.Range(1, 5);
         }
-        _player.SetActive(false);
+        
+        _player.GetComponent<PlayerInfo>().GetComponent<PhotonView>().RPC("PlayerActive", RpcTarget.All, false);
 
-        _player.SetActive(true);
+        yield return new WaitForSeconds(2.5f);
+
+        _player.GetComponent<PlayerInfo>().GetComponent<PhotonView>().RPC("PlayerActive", RpcTarget.All, true);
 
         _player.transform.position = _spawnPoint[index].position;
-
-        photonView.RPC(nameof(Respawn), RpcTarget.Others);
-    }
-
-    [PunRPC]
-    public void Respawn()
-    {
-        _player.SetActive(true);
     }
 
     // ΩÃ±€≈Ê

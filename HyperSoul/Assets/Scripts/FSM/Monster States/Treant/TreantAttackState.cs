@@ -14,7 +14,7 @@ public class TreantAttackState : BaseState<TreantInformation>
     private Animator _animator = null;
 
     private ITreantAttack _treantAttack;
-    
+
     private bool _outOfSight = false;
 
     public override void EnterState()
@@ -50,13 +50,6 @@ public class TreantAttackState : BaseState<TreantInformation>
 
             return;
         }
-        
-        if (_outOfSight)
-        {
-            FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
-
-            return;
-        }
 
         if (false == CreatureInformation.ExistInSight)
         {
@@ -66,6 +59,13 @@ public class TreantAttackState : BaseState<TreantInformation>
         }
 
         SetAttackPattern();
+
+        if (_outOfSight)
+        {
+            FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
+
+            return;
+        }
 
         _treantAttack.Attack();
     }

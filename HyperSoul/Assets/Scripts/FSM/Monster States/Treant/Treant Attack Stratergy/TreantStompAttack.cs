@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,7 +57,10 @@ public class TreantStompAttack : MonoBehaviour, ITreantAttack
 
         _animator.SetBool(MonsterAnimatorID.IS_TREANT_STOMP_ATTACK, false);
 
-        _attackCollider.SetActive(true);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _attackCollider.SetActive(true);
+        }
         
         while (_distance > 1f)
         {

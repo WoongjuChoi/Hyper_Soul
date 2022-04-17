@@ -5,9 +5,12 @@ using UnityEngine;
 
 class WolfDamagedState : BaseState<WolfInformation>
 {
-    private Vector3 _lookAtTargetVec = Vector3.zero;
+    [SerializeField]
+    private AudioSource _hurtAudioSource;
 
-    private Vector3 _raycastOriginVec = Vector3.zero;
+    private Vector3 _lookAtTargetVec;
+
+    private Vector3 _raycastOriginVec;
 
     public override void EnterState()
     {
@@ -18,6 +21,8 @@ class WolfDamagedState : BaseState<WolfInformation>
         _raycastOriginVec = CreatureInformation.CollisionVec;
 
         _lookAtTargetVec = CreatureInformation.LookAtTargetVec;
+
+        _hurtAudioSource.Play();
     }
 
     public override void ExitState()

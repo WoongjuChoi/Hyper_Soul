@@ -3,23 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool : MonoBehaviourPun, IPunPrefabPool
+public class ObjectPool
 {
     private Dictionary<string, Queue<GameObject>> _objPoolDictionary = new Dictionary<string, Queue<GameObject>>();
-
-    //private Dictionary<string, GameObject> _prefabs = new Dictionary<string, GameObject>();
-
-    //[SerializeField]
-    //private GameObject _bazookaMisille;
-
 
 
     public GameObject Instantiate(string prefabName, Vector3 position, Quaternion rotation)
     {
         GameObject newObject = PhotonNetwork.Instantiate(prefabName, position, rotation);
         newObject.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.AllBuffered, false);
-        //newObject = GameObject.Instantiate(prefabId, position, rotation);
-        //newObject.SetActive(false);
 
         return newObject;
     }

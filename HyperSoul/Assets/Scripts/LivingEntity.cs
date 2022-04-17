@@ -50,7 +50,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
     private void LateUpdate()
     {
         _hpBarOverhead.value = (float)CurHp / MaxHp;
-        _hpBarOverheadCanvas.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;
+        //_hpBarOverheadCanvas.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;
     }
 
     public virtual void OnCollisionEnter(Collision collision) { }
@@ -102,7 +102,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
             else if (false == _isHitting)
             {
                 Hit();
-                photonView.RPC("Hit", RpcTarget.Others, null);
+                photonView.RPC("Hit", RpcTarget.Others);
             }
             photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
             //photonView.RPC("TakeDamage", RpcTarget.Others, attackerID, damageAmt, hitPoint, hitNormal);

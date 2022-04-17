@@ -116,9 +116,9 @@ public class Bazooka : Weapon
 
         if (true == PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("RemoveCollider", RpcTarget.OthersBuffered, bazookaMissile.GetComponent<PhotonView>().ViewID);
+            photonView.RPC(nameof(RemoveCollider), RpcTarget.OthersBuffered, bazookaMissile.GetComponent<PhotonView>().ViewID);
         }
-
+        
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, true);
         _canFire = false;
 
@@ -146,19 +146,4 @@ public class Bazooka : Weapon
     }
 
     
-
-    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    //{
-    //    if (stream.IsWriting)
-    //    {
-    //        stream.SendNext(CurBulletCnt);
-    //        stream.SendNext(_gunState);
-    //    }
-    //    else
-    //    {
-    //        CurBulletCnt = (int)stream.ReceiveNext();
-    //        _gunState = (EGunState)stream.ReceiveNext();
-
-    //    }
-    //}
 }

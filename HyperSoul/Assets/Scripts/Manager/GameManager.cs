@@ -1,10 +1,12 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -23,11 +25,64 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     Transform[] _spawnPoint;
 
-    void Start()
+    // æ¿ µø±‚»≠ ∫Œ∫–
+    [SerializeField]
+    private GameObject _loadingPanel;
+    private List<PlayerInfo> _playerInfoList;
+    public bool IsStart = false;
+    public bool IsGameover = false;
+
+    private void Awake()
     {
-        Init();
         PhotonNetwork.IsMessageQueueRunning = true;
+        Init();
+    }
+
+    IEnumerator Start()
+    {
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "loadScene", true } });
+        yield return Loading();
+
+        if (true == PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(StartGame), RpcTarget.AllViaServer);
+        }
+    }
+
+    IEnumerator Loading()
+    {
+        while (false == AllPlayerCheck("loadScene"))
+        {
+            yield return null;
+        }
+
         SpawnPlayer();
+
+        while (false == AllPlayerCheck("loadPlayer"))
+        {
+            yield return null;
+        }
+    }
+
+    [PunRPC]
+    private void StartGame()
+    {
+        IsStart = true;
+        _loadingPanel.SetActive(false);
+
+    }
+
+    private bool AllPlayerCheck(string key)
+    {
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; ++i)
+        {
+            if (null == PhotonNetwork.PlayerList[i].CustomProperties[key])
+            {
+                return false;
+            }
+        }
+        Debug.Log($"{key} / All players ready");
+        return true;
     }
 
     public override void OnLeftRoom()
@@ -85,7 +140,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         _player.SetActive(true);
     }
 
-   
+    // ΩÃ±€≈Ê
     static private void Init()
     {
         if (_instance == null)

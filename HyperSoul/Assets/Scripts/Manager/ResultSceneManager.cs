@@ -33,7 +33,7 @@ public class ResultSceneManager : MonoBehaviour
 
     private void ResultSceneInit()
     {
-        int countOfPlayers = PhotonNetwork.CountOfPlayers;
+        int countOfPlayers = PhotonNetwork.CurrentRoom.Players.Count;
         _playerInfos = new OtherPlayerInfos[countOfPlayers];
 
         for (int i = 0; i < countOfPlayers; ++i) // 플레이어 수 만큼만 정보를 가져와 정렬하기위해 반복문으로 정보를 받아온다

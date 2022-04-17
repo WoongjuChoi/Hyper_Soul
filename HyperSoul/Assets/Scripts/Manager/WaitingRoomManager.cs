@@ -15,6 +15,7 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
     private GameObject _roomPanal;
     private Text _roomNameText;
     private Dictionary<int, Player> _playerList;
+    private bool _isSceneLoading = false;
 
     // 이 아래는 Master만 사용하는 변수들
     private bool[] _emptyRoomCheck = new bool[4];
@@ -23,6 +24,7 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
     private void Awake()
     {
         PhotonNetwork.IsMessageQueueRunning = true;
+        PhotonNetwork.AutomaticallySyncScene = true;
         _roomPanal = GameObject.Find("RoomPanel");
         _roomNameText = GameObject.Find("RoomNameText").GetComponent<Text>();
         _roomNameText.text = PhotonNetwork.CurrentRoom.Name;
@@ -39,6 +41,8 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
             _roomList[i].SetCharactorSelectFunc(SelectCharactor);
             _roomList[i].SetReadyButtonFunc(SetReadyState);
         }
+
+        _isSceneLoading = false;
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -89,7 +93,7 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
 
         photonView.RPC(nameof(SendPlayerData), RpcTarget.AllBuffered);
 
-        photonView.RPC(nameof(StartMainScene), RpcTarget.All);
+        StartMainScene();
     }
 
     [PunRPC]
@@ -106,8 +110,8 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
             DataManager.Instance.PlayerInfos[i].playerName = _roomList[i].PlayerName.text;
             DataManager.Instance.PlayerInfos[i].playerOrderIndex = i;
             DataManager.Instance.PlayerInfos[i].playerType = (EPlayerType)_roomList[i].CurPlayerType;
-            DataManager.Instance.PlayerInfos[i].score = 0;
-            //DataManager.Instance.PlayerInfos[i].score = i * 100;
+            //DataManager.Instance.PlayerInfos[i].score = 0;
+            DataManager.Instance.PlayerInfos[i].score = i * 100;
         }
     }
 
@@ -192,15 +196,13 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         _roomList[index].SetReadyState();
     }
 
-    [PunRPC]
     private void StartMainScene()
     {
-        if (true == PhotonNetwork.AutomaticallySyncScene)
+        if (_isSceneLoading == false)
         {
+            _isSceneLoading = true;
             PhotonNetwork.IsMessageQueueRunning = false;
             PhotonNetwork.LoadLevel("MainScene");
-
-            //PhotonNetwork.LoadLevel("ResultScene");
         }
     }
 }

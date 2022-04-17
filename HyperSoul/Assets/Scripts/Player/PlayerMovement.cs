@@ -32,6 +32,8 @@ public class PlayerMovement : MonoBehaviourPun
     
     public Vector3 StoreFirePosition { get { return _storeFirePosition; } } // (22.04.01) 슈팅했을 때의 플레이어의 위치값을 저장하는 변수의 프로퍼티 추가
 
+    private bool isLoaded = false;
+
     private void Awake()
     {
         _playerRigidbody = GetComponent<Rigidbody>();
@@ -132,6 +134,12 @@ public class PlayerMovement : MonoBehaviourPun
         {
             _playerAnimator.SetTrigger(PlayerAnimatorID.RELOAD);
             _input.IsReload = false;
+
+            // 결과 씬 디버깅용 코드
+            //if (PhotonNetwork.IsMasterClient && isLoaded == false)
+            //{
+            //    GoResultScene();
+            //}
         }
     }
     private void Fire()
@@ -142,6 +150,13 @@ public class PlayerMovement : MonoBehaviourPun
             _weapon.Fire();
         }
     }
+
+    // 결과 씬 디버깅용
+    //private void GoResultScene()
+    //{
+    //    isLoaded = true;
+    //    PhotonNetwork.LoadLevel("ResultScene");
+    //}
 
     // 점프 애니메이션 처리를 위한 트리거 콜라이더 처리
     private void OnTriggerStay(Collider other)

@@ -29,6 +29,9 @@ public class Bullet : Projectile
 
     private void OnCollisionEnter(Collision collision)
     {
-        _projectileReturn(gameObject);
+        if (photonView.IsMine)
+        {
+            _projectileReturn(gameObject);
+        }
     }
 }

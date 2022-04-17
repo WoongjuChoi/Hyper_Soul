@@ -138,10 +138,10 @@ public class PlayerMovement : MonoBehaviourPun
             _input.IsReload = false;
 
             // °á°ú ¾À µð¹ö±ë¿ë ÄÚµå
-            if (PhotonNetwork.IsMasterClient && isLoaded == false)
-            {
-                GoResultScene();
-            }
+            //if (PhotonNetwork.IsMasterClient && isLoaded == false)
+            //{
+            //    GoResultScene();
+            //}
         }
     }
     private void Fire()

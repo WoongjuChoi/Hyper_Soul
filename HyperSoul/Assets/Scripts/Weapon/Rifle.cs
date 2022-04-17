@@ -97,19 +97,4 @@ public class Rifle : Weapon
         MuzzleFlashEffect.SetActive(false);
         _shootCotountine = null;
     }
-
-    public override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(CurBulletCnt);
-            stream.SendNext(_gunState);
-        }
-        else
-        {
-            CurBulletCnt = (int)stream.ReceiveNext();
-            _gunState = (EGunState)stream.ReceiveNext();
-
-        }
-    }
 }

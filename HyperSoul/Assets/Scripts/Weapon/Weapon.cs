@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public abstract class Weapon : MonoBehaviourPun, IPunObservable
+public abstract class Weapon : MonoBehaviourPun
 {
     public Vector2 ZoomRotationSpeed;
     public GameObject ZoomCam;
@@ -148,10 +148,5 @@ public abstract class Weapon : MonoBehaviourPun, IPunObservable
     protected void ReturnProjectile(GameObject projectile)
     {
         _objectPool.Destroy(projectile);
-    }
-
-    public virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        throw new System.NotImplementedException();
     }
 }

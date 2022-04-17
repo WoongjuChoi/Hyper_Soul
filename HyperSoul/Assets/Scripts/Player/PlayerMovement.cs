@@ -136,10 +136,10 @@ public class PlayerMovement : MonoBehaviourPun
             _input.IsReload = false;
 
             // 결과 씬 디버깅용 코드
-            //if (PhotonNetwork.IsMasterClient && isLoaded == false)
-            //{
-            //    GoResultScene();
-            //}
+            if (PhotonNetwork.IsMasterClient && isLoaded == false)
+            {
+                GoResultScene();
+            }
         }
     }
     private void Fire()
@@ -152,11 +152,11 @@ public class PlayerMovement : MonoBehaviourPun
     }
 
     // 결과 씬 디버깅용
-    //private void GoResultScene()
-    //{
-    //    isLoaded = true;
-    //    PhotonNetwork.LoadLevel("ResultScene");
-    //}
+    private void GoResultScene()
+    {
+        isLoaded = true;
+        PhotonNetwork.LoadLevel("ResultScene");
+    }
 
     // 점프 애니메이션 처리를 위한 트리거 콜라이더 처리
     private void OnTriggerStay(Collider other)

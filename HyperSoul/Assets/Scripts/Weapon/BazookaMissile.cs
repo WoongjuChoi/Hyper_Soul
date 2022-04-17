@@ -87,7 +87,10 @@ public class BazookaMissile : Projectile
         else
         {
             _isLaunched = true;
-            RocketParticleEffect.SetActive(true);
+            if(false == _isHit)
+            {
+                RocketParticleEffect.SetActive(true);
+            }
 
             if (_curDistMissileAndLaunchPos > 200f)
             {
@@ -123,9 +126,9 @@ public class BazookaMissile : Projectile
         _isLaunched = false;
         _curSpeed = 0f;
         GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-        ExplosionEffect.SetActive(true);
-        RocketParticleEffect.SetActive(false);
         MissilePrefab.SetActive(false);
+        RocketParticleEffect.SetActive(false);
+        ExplosionEffect.SetActive(true);
 
         yield return new WaitForSeconds(1.3f);
 

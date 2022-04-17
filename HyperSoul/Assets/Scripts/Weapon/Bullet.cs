@@ -20,7 +20,7 @@ public class Bullet : Projectile
     {
         if (photonView.IsMine)
         {
-            photonView.RPC(nameof(ReceiveInfo), RpcTarget.Others, ProjectileOwnerID, Attack);
+            photonView.RPC(nameof(ReceiveInfo), RpcTarget.MasterClient, ProjectileOwnerID, Attack);
         }
 
         _bulletRigidbody.velocity = Vector3.zero;

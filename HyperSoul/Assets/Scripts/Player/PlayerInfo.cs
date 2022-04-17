@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class PlayerInfo : LivingEntity, IGiveExp
 {
@@ -57,11 +58,13 @@ public class PlayerInfo : LivingEntity, IGiveExp
         {
             _playerUI.SetActive(false);
         }
+
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "loadPlayer", true } });
     }
 
     private void Start()
     {
-        //Debug.Log("인포 스타트");
+
 
         PhotonViewID = photonView.ViewID;
         NickName = photonView.Owner.NickName;

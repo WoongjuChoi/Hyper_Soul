@@ -87,7 +87,7 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
 
         photonView.RPC(nameof(SendPlayerData), RpcTarget.AllBuffered);
 
-        photonView.RPC(nameof(StartMainScene), RpcTarget.All);
+        StartMainScene();
     }
 
     [PunRPC]
@@ -184,7 +184,6 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         _roomList[index].SetReadyState();
     }
 
-    [PunRPC]
     private void StartMainScene()
     {
         if (true == PhotonNetwork.AutomaticallySyncScene)

@@ -40,7 +40,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private byte _maxPlayer = 4;
 
-    
+
 
     private void Awake()
     {
@@ -49,7 +49,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         _joinButton.interactable = true;
         _curPanel = _loginPanel;
         _joinButton.interactable = false;
-        _connetInfoText.text = "Data Loading...Please wait a seconds";
+        _connetInfoText.text = "데이터 로딩 중입니다. 잠시 기다려주세요";
 
         DataManager.Instance.DataReady -= DataIsReady;
         DataManager.Instance.DataReady += DataIsReady;
@@ -72,25 +72,29 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.NickName = _nickNameInput.text;
 
         PhotonNetwork.JoinLobby();
-        _connetInfoText.text = "Join Lobby";
+        _connetInfoText.text = "로비 접속 중입니다.";
 
     }
 
     public override void OnJoinedLobby()
     {
-        _connetInfoText.text = "Joined Lobby";
+        StartCoroutine(LobbyText());
+    }
+
+    IEnumerator LobbyText()
+    {
+        _connetInfoText.text = "로비에 접속했습니다.";
+        yield return new WaitForSeconds(1.0f);
+
+        _connetInfoText.text = "";
     }
     public void Connect()
     {
-        if (false == DataManager.Instance.IsDataReady)
-        {
-            _connetInfoText.text = "Data Loading...Please try again";
-            return;
-        }
+        Debug.Assert(true == DataManager.Instance.IsDataReady);
 
         _joinButton.interactable = false;
         PhotonNetwork.ConnectUsingSettings();
-        _connetInfoText.text = "Connecting to Master Server";
+        _connetInfoText.text = "마스터 서버에 접속 중입니다.";
 
         if (PhotonNetwork.IsConnected == true)
         {
@@ -111,9 +115,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnRoomListUpdate(List<Photon.Realtime.RoomInfo> roomList)
     {
         GameObject _newRoom = null;
-        foreach(RoomInfo room in roomList)
+        foreach (RoomInfo room in roomList)
         {
-            if(room.RemovedFromList == true)
+            if (room.RemovedFromList == true)
             {
                 _roomList.TryGetValue(room.Name, out _newRoom);
                 Destroy(_newRoom);
@@ -121,7 +125,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                if(_roomList.ContainsKey(room.Name) == false)
+                if (_roomList.ContainsKey(room.Name) == false)
                 {
                     _newRoom = Instantiate(_roomInfo, _roomPos);
                     Room _room = _newRoom.GetComponent<Room>();
@@ -156,13 +160,18 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
     public override void OnJoinedRoom()
     {
-        _connetInfoText.text = "Joined room";
+        _connetInfoText.text = "방에 입장하였습니다.";
         PhotonNetwork.IsMessageQueueRunning = false; // 통신 일시정지, 플레이어 스폰 후 다시 연결 시켜준다
-        //PhotonNetwork.LoadLevel("MainScene");
-        //PhotonNetwork.LoadLevel("Bajooka Sample Scene");
-        PhotonNetwork.LoadLevel("RoomScene");
-        //PhotonNetwork.LoadLevel("FSM Scene");
+        if (true == PhotonNetwork.AutomaticallySyncScene)
+        {
+            //PhotonNetwork.LoadLevel("MainScene");
+            //PhotonNetwork.LoadLevel("Bajooka Sample Scene");
+            PhotonNetwork.LoadLevel("RoomScene");
+            //PhotonNetwork.LoadLevel("FSM Scene");
+
+        }
     }
+
 
     public override void OnDisconnected(DisconnectCause cause)
     {

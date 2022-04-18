@@ -31,7 +31,13 @@ public class Bullet : Projectile
     {
         if (photonView.IsMine)
         {
-            _projectileReturn(gameObject);
+            photonView.RPC(nameof(ReturnBullet), RpcTarget.All, transform.position);
         }
+    }
+
+    [PunRPC]
+    private void ReturnBullet()
+    {
+        _projectileReturn(gameObject);
     }
 }

@@ -134,6 +134,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         _player.transform.position = _spawnPoint[index].position;
     }
 
+
     // ΩÃ±€≈Ê
     static private void Init()
     {

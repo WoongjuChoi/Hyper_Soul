@@ -20,7 +20,7 @@ public class SampleMoveScript : MonoBehaviour
         if(leftOrRight == false)
         {
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
-            if(transform.position.x >= 50f)
+            if(transform.position.x >= 330f)
             {
                 leftOrRight = true;
             }
@@ -28,7 +28,7 @@ public class SampleMoveScript : MonoBehaviour
         else
         {
             transform.Translate(Vector3.left * Time.deltaTime * moveSpeed);
-            if (transform.position.x <= -50f)
+            if (transform.position.x <= 130f)
             {
                 leftOrRight = false;
             }

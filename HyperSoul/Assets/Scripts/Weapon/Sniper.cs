@@ -78,9 +78,9 @@ public class Sniper : Weapon
         bullet.GetComponent<Bullet>().Attack = _playerInfo.Attack;
         bullet.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.All, true);
 
-        if (true == PhotonNetwork.IsMasterClient)
+        if (false == PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC(nameof(RemoveCollider), RpcTarget.OthersBuffered, bullet.GetComponent<PhotonView>().ViewID);
+            photonView.RPC(nameof(CreateCollider), RpcTarget.MasterClient, bullet.GetComponent<PhotonView>().ViewID);
         }
 
         _canFire = false;

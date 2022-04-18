@@ -53,7 +53,7 @@ public class BazookaMissile : Projectile
             return;
         }
 
-        photonView.RPC(nameof(ReceiveInfo), RpcTarget.Others, ProjectileOwnerID, Attack);
+        photonView.RPC(nameof(ReceiveInfo), RpcTarget.MasterClient, ProjectileOwnerID, Attack);
 
         _launchPos = transform.position;
 
@@ -65,15 +65,14 @@ public class BazookaMissile : Projectile
     }
     private void FixedUpdate()
     {
-        if (false == photonView.IsMine)
+        if (false == photonView.IsMine || true == _isHit)
         {
             return;
         }
 
         GetComponent<Rigidbody>().AddForce(Vector3.up * _gravityForce);
         float _curDistMissileAndLaunchPos = Vector3.Distance(_launchPos, transform.position);
-
-        if (false == _isHit && _isLaunched == true)
+        if (_isLaunched == true)
         {
             if (_curSpeed <= _maxSpeed)
             {
@@ -85,7 +84,7 @@ public class BazookaMissile : Projectile
         {
             Vector3 dir = (_target.position - transform.position).normalized;
             transform.forward = Vector3.Lerp(transform.forward, dir, 0.1f);
-            if (_targetDistance + 10f < _curDistMissileAndLaunchPos)
+            if (_targetDistance + 30f < _curDistMissileAndLaunchPos)
             {
                 Explosion(transform.position);
                 photonView.RPC(nameof(Explosion), RpcTarget.Others, transform.position);
@@ -98,19 +97,13 @@ public class BazookaMissile : Projectile
             {
                 RocketParticleEffect.SetActive(true);
             }
-
-            if (_curDistMissileAndLaunchPos > 200f)
-            {
-                Explosion(transform.position);
-                photonView.RPC(nameof(Explosion), RpcTarget.Others, transform.position);
-            }
         }
     }
 
     private void OnTriggerEnter(Collider collider)
     {
-        //Explosion(transform.position);
-        GetComponent<PhotonView>().RPC(nameof(Explosion), RpcTarget.All, transform.position);
+        Explosion(transform.position);
+        photonView.RPC(nameof(Explosion), RpcTarget.Others, transform.position);
     }
 
     private IEnumerator SoftLaunch()

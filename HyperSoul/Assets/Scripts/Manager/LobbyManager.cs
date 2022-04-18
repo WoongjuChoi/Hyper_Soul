@@ -40,8 +40,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private byte _maxPlayer = 4;
 
-
-
     private void Awake()
     {
         Screen.SetResolution(1920, 1080, false);

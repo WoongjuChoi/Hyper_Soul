@@ -46,7 +46,7 @@ public class PlayerMovement : MonoBehaviourPun
 
     private void Update()
     {
-        if (/*false == GameManager.TimeManager.StartGame || */_playerInfo.IsDead)
+        if (_playerInfo.IsDead)
         {
             _walkingSound.SetActive(false);
             _jumpSound.SetActive(false);

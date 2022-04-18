@@ -31,17 +31,13 @@ public class PlayerInfo : LivingEntity
     [SerializeField]
     private GameObject _playerUI;
 
-    public EPlayerType _playerType;
+    private EPlayerType _playerType;
 
     private Weapon _playerWeapon;
 
     public int PhotonViewID;
 
     public int MaxExp
-    {
-        get; set;
-    }
-    public float MoveSpeed
     {
         get; set;
     }
@@ -53,6 +49,7 @@ public class PlayerInfo : LivingEntity
         _hitSound.SetActive(false);
         _deathSound.SetActive(false);
         _animator = GetComponentInChildren<Animator>();
+
         _playerType = DataManager.Instance.PlayerType;
 
         Level = 1;
@@ -66,8 +63,8 @@ public class PlayerInfo : LivingEntity
         else
         {
             _playerUI.SetActive(false);
-            _levelText.gameObject.SetActive(false);
-            _nickNameText.gameObject.SetActive(false);
+            //_levelText.gameObject.SetActive(false);
+            //_nickNameText.gameObject.SetActive(false);
         }
 
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "loadPlayer", true } });
@@ -76,15 +73,16 @@ public class PlayerInfo : LivingEntity
     private void Start()
     {
 
-
         PhotonViewID = photonView.ViewID;
         NickName = photonView.Owner.NickName;
+
         _playerWeapon = GetComponentInChildren<Weapon>();
 
         _killText.gameObject.SetActive(false);
         _levelUpText.gameObject.SetActive(false);
         _hitImage.SetActive(false);
 
+        //_levelText.text = $"{Level}";
         _nickNameText.text = NickName;
     }
 
@@ -95,7 +93,6 @@ public class PlayerInfo : LivingEntity
         Attack = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
         Score = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Score;
         Exp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Exp;
-        MoveSpeed = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MoveSpeed;
 
         if (photonView.IsMine)
         {
@@ -124,18 +121,18 @@ public class PlayerInfo : LivingEntity
         //Debug.Log($"CurExp : {CurExp}");
         _profileCanvas.gameObject.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;    // (22.04.16) 플레이어 레벨 회전
 
-        //Debug.Log($"CurExp : {CurExp}\nCurScore : {CurScore}");
+        Debug.Log($"CurExp : {CurExp}\nCurScore : {CurScore}");
 
         if (false == photonView.IsMine)
         {
             return;
         }
+
         HpUpdate();
         AmmoUpdate();
         ExpUpdate();
         ScoreUpdate();
         LevelUpdate();
-
     }
 
     public override void OnCollisionEnter(Collision collision)
@@ -207,7 +204,6 @@ public class PlayerInfo : LivingEntity
         Attack = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
         Score = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Score;
         Exp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Exp;
-        MoveSpeed = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MoveSpeed;
 
         photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, Level, MaxHp, Attack, Score, Exp);
 

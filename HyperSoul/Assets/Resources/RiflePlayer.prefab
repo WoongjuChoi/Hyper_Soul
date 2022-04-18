@@ -573,6 +573,7 @@ MonoBehaviour:
   _levelUpText: {fileID: 5022178616290729025}
   _nickNameText: {fileID: 4662847216909428382}
   _playerUI: {fileID: 6186339734304336912}
+  _playerType: 0
   PhotonViewID: 0
 --- !u!114 &580094374002295459
 MonoBehaviour:
@@ -598,7 +599,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ef8acc97e1cd084099a198e69886c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 20
   _jumpForce: 10
   _cameraArm: {fileID: 580094372236106193}
   _weapon: {fileID: 4473785474879874835}

@@ -109,7 +109,6 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
             DataManager.Instance.PlayerInfos[i].playerName = _roomList[i].PlayerName.text;
             DataManager.Instance.PlayerInfos[i].playerOrderIndex = i;
             DataManager.Instance.PlayerInfos[i].playerType = (EPlayerType)_roomList[i].CurPlayerType;
-            //DataManager.Instance.PlayerInfos[i].score = 0;
             DataManager.Instance.PlayerInfos[i].score = i * 100;
         }
     }

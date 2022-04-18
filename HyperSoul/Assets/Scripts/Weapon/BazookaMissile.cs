@@ -45,14 +45,16 @@ public class BazookaMissile : Projectile
 
     void OnEnable()
     {
-        //Debug.Log($"활성화됨 포톤번호 {photonView.ViewID} \n {ProjectileOwnerID}가 활성화");
-        if (photonView.IsMine)
-        {
-            photonView.RPC(nameof(ReceiveInfo), RpcTarget.Others, ProjectileOwnerID, Attack);
-        }
-
         _missileLaunch = gameObject.AddComponent<AudioSource>();
         _missileLaunch.PlayOneShot(_launchSound);
+
+        if (false == photonView.IsMine)
+        {
+            return;
+        }
+
+        photonView.RPC(nameof(ReceiveInfo), RpcTarget.Others, ProjectileOwnerID, Attack);
+
         _launchPos = transform.position;
 
         if (_target != null)
@@ -63,6 +65,11 @@ public class BazookaMissile : Projectile
     }
     private void FixedUpdate()
     {
+        if (false == photonView.IsMine)
+        {
+            return;
+        }
+
         GetComponent<Rigidbody>().AddForce(Vector3.up * _gravityForce);
         float _curDistMissileAndLaunchPos = Vector3.Distance(_launchPos, transform.position);
 
@@ -81,13 +88,13 @@ public class BazookaMissile : Projectile
             if (_targetDistance + 10f < _curDistMissileAndLaunchPos)
             {
                 Explosion(transform.position);
-                photonView.RPC("Explosion", RpcTarget.Others, transform.position);
+                photonView.RPC(nameof(Explosion), RpcTarget.Others, transform.position);
             }
         }
         else
         {
             _isLaunched = true;
-            if(false == _isHit)
+            if (false == _isHit)
             {
                 RocketParticleEffect.SetActive(true);
             }
@@ -95,15 +102,15 @@ public class BazookaMissile : Projectile
             if (_curDistMissileAndLaunchPos > 200f)
             {
                 Explosion(transform.position);
-                photonView.RPC("Explosion", RpcTarget.Others, transform.position);
+                photonView.RPC(nameof(Explosion), RpcTarget.Others, transform.position);
             }
         }
     }
 
     private void OnTriggerEnter(Collider collider)
     {
-        Explosion(transform.position);
-        GetComponent<PhotonView>().RPC("Explosion", RpcTarget.Others, transform.position);
+        //Explosion(transform.position);
+        GetComponent<PhotonView>().RPC(nameof(Explosion), RpcTarget.All, transform.position);
     }
 
     private IEnumerator SoftLaunch()
@@ -132,7 +139,7 @@ public class BazookaMissile : Projectile
 
         yield return new WaitForSeconds(1.3f);
 
-        if(photonView.IsMine)
+        if (photonView.IsMine)
         {
             ReturnMissile();
         }
@@ -150,6 +157,10 @@ public class BazookaMissile : Projectile
         {
             StopCoroutine(explosionCoroutine);
         }
+
+        MissilePrefab.SetActive(true);
+        RocketParticleEffect.SetActive(false);
+        ExplosionEffect.SetActive(false);
 
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         GetComponent<Rigidbody>().angularVelocity = Vector3.zero;

@@ -136,9 +136,9 @@ public class Bazooka : Weapon
         if (Physics.Raycast(ray, out target, _rayDist))
         {
             Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 1f);
-            if (target.transform.gameObject.layer == 3 || target.transform.gameObject.layer == 6 || target.transform.gameObject.layer == 12)
+            if (target.transform.gameObject.layer == 10 || target.transform.gameObject.layer == 12)
             {
-                //Debug.Log($"Target is {target.transform.gameObject.layer}");
+                Debug.Log($"Target is {target.transform.gameObject.layer}");
                 return target.transform.gameObject;
             }
         }

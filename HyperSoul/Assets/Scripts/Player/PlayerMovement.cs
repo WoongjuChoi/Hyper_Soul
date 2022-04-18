@@ -7,8 +7,6 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviourPun
 {
     [SerializeField]
-    private float _moveSpeed = 20.0f;
-    [SerializeField]
     private float _jumpForce = 10f;
     [SerializeField]
     private Transform _cameraArm;
@@ -83,7 +81,7 @@ public class PlayerMovement : MonoBehaviourPun
 
     private void Move()
     {
-        float dtMoveSpeed = _moveSpeed * Time.deltaTime;
+        float dtMoveSpeed = _playerInfo.MoveSpeed * Time.deltaTime;
         // 캐릭터의 로컬 전방을 알기 위한 Vector3 변수
         Vector3 lookForward = new Vector3(_cameraArm.forward.x, 0f, _cameraArm.forward.z).normalized;
         Vector3 lookRight = new Vector3(_cameraArm.right.x, 0f, _cameraArm.right.z).normalized;

@@ -1237,7 +1237,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2446344342490065383}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -0.015, z: 1.085}
+  m_LocalPosition: {x: 0, y: -0.015, z: 1.244}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3935497200933008178}
@@ -2622,6 +2622,7 @@ MonoBehaviour:
   _levelUpText: {fileID: 3522381616358166007}
   _nickNameText: {fileID: 9063685862057431096}
   _playerUI: {fileID: 2302762841791192007}
+  _playerType: 0
   PhotonViewID: 0
 --- !u!114 &5379531540559722048
 MonoBehaviour:
@@ -2653,7 +2654,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ef8acc97e1cd084099a198e69886c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 8
   _jumpForce: 10
   _cameraArm: {fileID: 4640153929139642222}
   _weapon: {fileID: 2446344341763531347}

@@ -86,7 +86,7 @@ public class ResultSceneManager : MonoBehaviour
             case EPlayerType.Bazooka:
                 player = Instantiate(_bazookaPlayerPrefab, spawnPosition, spawnRotation);
                 break;
-            case EPlayerType.Snipers:
+            case EPlayerType.Sniper:
                 player = Instantiate(_sniperPlayerPrefab, spawnPosition, spawnRotation);
                 break;
         }

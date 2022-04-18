@@ -34,6 +34,10 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         {
             AddPlayer(PhotonNetwork.LocalPlayer.NickName);
         }
+        else
+        {
+            GameObject.Find("GameStartButton").GetComponent<Button>().interactable = false;
+        }
 
         for (int i = 0; i < _roomList.Length; ++i)
         {

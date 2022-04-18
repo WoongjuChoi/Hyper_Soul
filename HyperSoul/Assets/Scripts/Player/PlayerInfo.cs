@@ -31,7 +31,7 @@ public class PlayerInfo : LivingEntity
     [SerializeField]
     private GameObject _playerUI;
 
-    private PlayerType _playerType;
+    private EPlayerType _playerType;
 
     private Weapon _playerWeapon;
 
@@ -49,10 +49,9 @@ public class PlayerInfo : LivingEntity
         _hitSound.SetActive(false);
         _deathSound.SetActive(false);
         _animator = GetComponentInChildren<Animator>();
-        //_dataManager = GameManager.DataManager;
 
         // Temp
-        _playerType = PlayerType.Rifle;
+        _playerType = DataManager.Instance.PlayerType;
         Level = 1;
         CurExp = 0;
         CurScore = 0;
@@ -64,8 +63,8 @@ public class PlayerInfo : LivingEntity
         else
         {
             _playerUI.SetActive(false);
-            _levelText.gameObject.SetActive(false);
-            _nickNameText.gameObject.SetActive(false);
+            //_levelText.gameObject.SetActive(false);
+            //_nickNameText.gameObject.SetActive(false);
         }
 
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "loadPlayer", true } });
@@ -73,8 +72,6 @@ public class PlayerInfo : LivingEntity
 
     private void Start()
     {
-
-
         PhotonViewID = photonView.ViewID;
         NickName = photonView.Owner.NickName;
         _playerWeapon = GetComponentInChildren<Weapon>();

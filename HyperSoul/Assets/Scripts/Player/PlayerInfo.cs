@@ -66,6 +66,8 @@ public class PlayerInfo : LivingEntity
         }
 
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "loadPlayer", true } });
+
+        photonView.RPC(nameof(LevelTextUpdate), RpcTarget.AllBuffered);
     }
 
     private void Start()
@@ -79,7 +81,6 @@ public class PlayerInfo : LivingEntity
         _hitImage.SetActive(false);
 
         _nickNameText.text = NickName;
-        LevelUpdate();
     }
 
     private void OnEnable()
@@ -127,7 +128,6 @@ public class PlayerInfo : LivingEntity
         AmmoUpdate();
         ExpUpdate();
         ScoreUpdate();
-
     }
 
     public override void OnCollisionEnter(Collision collision)
@@ -136,9 +136,9 @@ public class PlayerInfo : LivingEntity
 
         if (null != projectile)
         {
-            Debug.Log($"피격당함\n Attacker : {projectile.ProjectileOwnerID}" +
-           $"\n Damage : {projectile.Attack}" +
-           $"\n HP : {CurHp}");
+           //Debug.Log($"피격당함\n Attacker : {projectile.ProjectileOwnerID}" +
+           //$"\n Damage : {projectile.Attack}" +
+           //$"\n HP : {CurHp}");
 
             TakeDamage(projectile.ProjectileOwnerID, projectile.Attack,
                 collision.transform.position, collision.transform.position.normalized);
@@ -193,7 +193,6 @@ public class PlayerInfo : LivingEntity
     {
         _levelUpText.gameObject.SetActive(true);
         ++Level;
-        LevelUpdate();
 
         MaxHp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
         MaxExp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
@@ -202,6 +201,7 @@ public class PlayerInfo : LivingEntity
         Exp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Exp;
 
         photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, Level, MaxHp, Attack, Score, Exp);
+        photonView.RPC(nameof(LevelTextUpdate), RpcTarget.AllBuffered);
 
         CurHp = MaxHp;
 
@@ -218,7 +218,10 @@ public class PlayerInfo : LivingEntity
 
     public void LevelUpdate()
     {
-        photonView.RPC(nameof(LevelTextUpdate), RpcTarget.AllBuffered);
+        if (Level < 5)
+        {
+            StartCoroutine(LevelUp());
+        }
     }
 
     public override void Respawn()

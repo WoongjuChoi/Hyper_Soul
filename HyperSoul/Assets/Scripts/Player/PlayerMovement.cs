@@ -143,7 +143,6 @@ public class PlayerMovement : MonoBehaviourPun
             //    GoResultScene();
             //}
 
-            _playerInfo.Level++;
             _playerInfo.LevelUpdate();
         }
     }

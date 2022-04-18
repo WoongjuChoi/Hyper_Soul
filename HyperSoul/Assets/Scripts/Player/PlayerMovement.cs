@@ -148,14 +148,6 @@ public class PlayerMovement : MonoBehaviourPun
         {
             _playerAnimator.SetTrigger(PlayerAnimatorID.RELOAD);
             _input.IsReload = false;
-
-            // °á°ú ¾À µð¹ö±ë¿ë ÄÚµå
-            //if (PhotonNetwork.IsMasterClient && isLoaded == false)
-            //{
-            //    GoResultScene();
-            //}
-
-            _playerInfo.LevelUpdate();
         }
     }
     private void Fire()

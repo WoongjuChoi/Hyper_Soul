@@ -229,7 +229,7 @@ public class PlayerInfo : LivingEntity
         Exp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Exp;
         MoveSpeed = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MoveSpeed;
 
-        photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, Level, MaxHp, Attack, Score, Exp);
+        photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, MaxHp, Attack, Score, Exp);
         photonView.RPC(nameof(LevelTextUpdate), RpcTarget.AllBuffered);
 
         CurHp = MaxHp;
@@ -245,14 +245,6 @@ public class PlayerInfo : LivingEntity
     private void LevelTextUpdate()
     {
         _levelText.text = $"{Level}";
-    }
-
-    public void LevelUpdate()
-    {
-        if (Level < 5)
-        {
-            StartCoroutine(LevelUp());
-        }
     }
 
     public override void Respawn()

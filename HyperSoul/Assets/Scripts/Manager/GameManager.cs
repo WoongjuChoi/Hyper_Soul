@@ -30,12 +30,15 @@ public class GameManager : MonoBehaviourPunCallbacks
     private GameObject _loadingPanel;
     private List<PlayerInfo> _playerInfoList;
     public bool IsStart = false;
-    public bool IsGameover = false;
+    public bool IsGameOver { get; set; }
+
+    private GameObject _timeManager;
 
     private void Awake()
     {
         PhotonNetwork.IsMessageQueueRunning = true;
         Init();
+        IsGameOver = false;
     }
 
     IEnumerator Start()
@@ -56,6 +59,13 @@ public class GameManager : MonoBehaviourPunCallbacks
             yield return null;
         }
 
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _timeManager = PhotonNetwork.InstantiateRoomObject("TimeManager", Vector3.zero, Quaternion.identity);
+
+            _timeManager.GetComponent<TimeManager>().photonView.RPC("ObjectActive", RpcTarget.AllViaServer, false);
+        }
+
         SpawnPlayer();
 
         while (false == AllPlayerCheck("loadPlayer"))
@@ -70,6 +80,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         IsStart = true;
         _loadingPanel.SetActive(false);
 
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _timeManager.GetComponent<TimeManager>().photonView.RPC("ObjectActive", RpcTarget.AllViaServer, true);
+        }
     }
 
     private bool AllPlayerCheck(string key)
@@ -125,7 +139,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             index = Random.Range(1, 5);
         }
-        
+
         _player.GetComponent<PlayerInfo>().GetComponent<PhotonView>().RPC("PlayerActive", RpcTarget.All, false);
 
         yield return new WaitForSeconds(2.5f);

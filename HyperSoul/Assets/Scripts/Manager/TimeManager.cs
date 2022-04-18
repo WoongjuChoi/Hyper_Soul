@@ -7,16 +7,16 @@ using UnityEngine.UI;
 public class TimeManager : MonoBehaviourPun, IPunObservable
 {
     [SerializeField]
-    private Text _GameOverText = null;
+    private Text _GameOverText;
 
     [SerializeField]
-    private Text _startGameText = null;
+    private Text _startGameText;
 
     [SerializeField]
-    private Text _startTimeText = null;
+    private Text _startTimeText;
 
     [SerializeField]
-    private Text _inGameTimeText = null;
+    private Text _inGameTimeText;
 
     [SerializeField]
     private float _maxReadyTime = 0f;
@@ -34,71 +34,78 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
 
     private bool _isReady = true;
 
-    public bool StartGame { get; private set; }
-
-    private void Start()
+    private void OnEnable()
     {
         ResetTimer();
 
         _isReady = true;
-        StartGame = false;
 
         _minutesNum = _maxInGameTime / 60;
         _secondsNum = _maxInGameTime % 60;
 
+        _startTimeText.text = $"{_timerText}";
         _inGameTimeText.text = $"{_minutesNum} : {_secondsNum}";
         _startGameText.text = "START GAME";
+
+        _startTimeText.gameObject.SetActive(true);
+        _inGameTimeText.gameObject.SetActive(false);
+        _startGameText.gameObject.SetActive(false);
+    }
+
+    [PunRPC]
+    public void ObjectActive(bool b)
+    {
+        gameObject.SetActive(b);
     }
 
     private void Update()
     {
+        if (GameManager.Instance.IsGameOver)
+        {
+            return;
+        }
+
         CheckReadyTimer();
 
         CheckInGameTimer();
-
-        ShowGameOverText();
     }
 
     private void CheckInGameTimer()
     {
-        if (false == StartGame)
+        if (_isReady)
         {
             return;
         }
 
         _inGameTimeText.text = $"{_minutesNum} : {_secondsNum}";
 
-        Debug.Log($"_minutesNum : {_minutesNum}\n" +
-            $"_secondsNum : {_secondsNum}");
+        //Debug.Log($"_minutesNum : {_minutesNum}\n" +
+        //    $"_secondsNum : {_secondsNum}");
 
-        if (PhotonNetwork.IsMasterClient)
+        _currTime = Time.time - _startTime;
+
+        if (_currTime >= 1f)
         {
-            _currTime = Time.time - _startTime;
+            --_secondsNum;
 
-            if (_currTime >= 1f)
-            {
-                --_secondsNum;
-
-                ResetTimer();
-            }
-
-            if (_secondsNum < 0)
-            {
-                _secondsNum = 59;
-
-                --_minutesNum;
-            }
-
-            if (_minutesNum < 0)
-            {
-                _minutesNum = 0;
-                _secondsNum = 0;
-
-                photonView.RPC(nameof(SetStartGame), RpcTarget.AllViaServer, false);
-
-                Debug.Log($"StartGame2 : {StartGame}");
-            }
+            ResetTimer();
         }
+
+        if (_secondsNum < 0)
+        {
+            _secondsNum = 59;
+
+            --_minutesNum;
+        }
+
+        if (_minutesNum < 0)
+        {
+            _minutesNum = 0;
+            _secondsNum = 0;
+
+            photonView.RPC(nameof(SetGameOver), RpcTarget.AllViaServer, true);
+        }
+
     }
 
     private void CheckReadyTimer()
@@ -108,38 +115,23 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
             return;
         }
 
-        if (PhotonNetwork.IsMasterClient)
-        {
-            _currTime = Time.time - _startTime;
+        _currTime = Time.time - _startTime;
 
-            _timerText = (int)(_maxReadyTime - _currTime);
-        }
+        _timerText = (int)(_maxReadyTime - _currTime);
 
         _startTimeText.text = $"{_timerText}";
 
-        Debug.Log($"_timerText : {_timerText}");
+        //Debug.Log($"_timerText : {_timerText}");
 
         if (0 == _timerText)
         {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                photonView.RPC(nameof(SetIsReady), RpcTarget.AllViaServer, false);
-
-                Debug.Log($"_isReady : {_isReady}");
-            }
+            photonView.RPC(nameof(SetIsReady), RpcTarget.AllViaServer, false);
 
             _startTimeText.gameObject.SetActive(false);
 
             ShowStartGameText();
 
             ResetTimer();
-
-            if (PhotonNetwork.IsMasterClient)
-            {
-                photonView.RPC(nameof(SetStartGame), RpcTarget.AllViaServer, true);
-
-                Debug.Log($"StartGame1 : {StartGame}");
-            }
 
             _inGameTimeText.gameObject.SetActive(true);
         }
@@ -158,21 +150,14 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
     }
 
     [PunRPC]
-    private void SetStartGame(bool startGame)
+    private void SetGameOver(bool gameOver)
     {
-        StartGame = startGame;
-    }
-
-    private void ShowGameOverText()
-    {
-        if (_isReady || StartGame)
-        {
-            return;
-        }
+        GameManager.Instance.IsGameOver = gameOver;
 
         _GameOverText.gameObject.SetActive(true);
     }
 
+    [PunRPC]
     private void ShowStartGameText()
     {
         StartCoroutine(ShowText());

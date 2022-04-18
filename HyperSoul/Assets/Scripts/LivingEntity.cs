@@ -90,24 +90,28 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
             }
             CurHp -= damageAmt;
 
-            if (CurHp <= 0 && IsDead == false)
-            {
-                CurHp = 0;
-                //GameManager.Instance.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
-                Die();
-                photonView.RPC("Die", RpcTarget.Others);
-
-                GiveScore(attackerID, Score);
-                GiveExp(attackerID, Exp);
-            }
-            else if (false == _isHitting)
-            {
-                Hit();
-                photonView.RPC("Hit", RpcTarget.Others);
-            }
-            photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
+           
             //photonView.RPC("TakeDamage", RpcTarget.Others, attackerID, damageAmt, hitPoint, hitNormal);
         }
+
+        if (CurHp <= 0 && IsDead == false)
+        {
+            CurHp = 0;
+            //GameManager.Instance.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
+            
+            photonView.RPC("Die", RpcTarget.AllBuffered);
+
+            Debug.Log($"Score : {Score}");
+
+            GiveScore(attackerID, Score);
+            GiveExp(attackerID, Exp);
+        }
+        else if (false == _isHitting && IsDead)
+        {
+            Hit();
+            photonView.RPC("Hit", RpcTarget.Others);
+        }
+        photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
     }
 
     [PunRPC]
@@ -132,7 +136,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
             _hitImage.SetActive(true);
         }
         _hitSound.SetActive(true);
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.01f);
 
         _isHitting = false;
         _hitImage.SetActive(false);

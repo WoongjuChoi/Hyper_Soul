@@ -72,11 +72,11 @@ public class PlayerInfo : LivingEntity
         else
         {
             _playerUI.SetActive(false);
-            //_levelText.gameObject.SetActive(false);
-            //_nickNameText.gameObject.SetActive(false);
         }
 
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "loadPlayer", true } });
+
+        photonView.RPC(nameof(LevelTextUpdate), RpcTarget.AllBuffered);
     }
 
     [PunRPC]
@@ -103,7 +103,6 @@ public class PlayerInfo : LivingEntity
         _levelUpText.gameObject.SetActive(false);
         _hitImage.SetActive(false);
 
-        _levelText.text = $"{Level}";
         _nickNameText.text = NickName;
     }
 
@@ -153,14 +152,10 @@ public class PlayerInfo : LivingEntity
         {
             return;
         }
-
-        //Debug.Log($"CurExp : {CurExp}\nCurScore : {CurScore}");
-
         HpUpdate();
         AmmoUpdate();
         ExpUpdate();
         ScoreUpdate();
-        LevelUpdate();
     }
 
     public override void OnCollisionEnter(Collision collision)
@@ -169,9 +164,9 @@ public class PlayerInfo : LivingEntity
 
         if (null != projectile)
         {
-            Debug.Log($"피격당함\n Attacker : {projectile.ProjectileOwnerID}" +
-           $"\n Damage : {projectile.Attack}" +
-           $"\n HP : {CurHp}");
+           //Debug.Log($"피격당함\n Attacker : {projectile.ProjectileOwnerID}" +
+           //$"\n Damage : {projectile.Attack}" +
+           //$"\n HP : {CurHp}");
 
             TakeDamage(projectile.ProjectileOwnerID, projectile.Attack,
                 collision.transform.position, collision.transform.position.normalized);
@@ -234,7 +229,8 @@ public class PlayerInfo : LivingEntity
         Exp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Exp;
         MoveSpeed = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MoveSpeed;
 
-        photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, MaxHp, Attack, Score, Exp);
+        photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, Level, MaxHp, Attack, Score, Exp);
+        photonView.RPC(nameof(LevelTextUpdate), RpcTarget.AllBuffered);
 
         CurHp = MaxHp;
 
@@ -245,9 +241,18 @@ public class PlayerInfo : LivingEntity
         _levelUpText.gameObject.SetActive(false);
     }
 
-    private void LevelUpdate()
+    [PunRPC]
+    private void LevelTextUpdate()
     {
         _levelText.text = $"{Level}";
+    }
+
+    public void LevelUpdate()
+    {
+        if (Level < 5)
+        {
+            StartCoroutine(LevelUp());
+        }
     }
 
     public override void Respawn()

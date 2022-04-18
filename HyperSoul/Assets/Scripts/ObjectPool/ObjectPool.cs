@@ -51,7 +51,7 @@ public class ObjectPool
 
         _objPoolDictionary[prefabName[0]].Enqueue(gameObject);
 
-        Debug.Log($"{prefabName[0]} {gameObject.GetComponent<PhotonView>().ViewID} ∏Æ≈œµ ");
+        //Debug.Log($"{prefabName[0]} {gameObject.GetComponent<PhotonView>().ViewID} ∏Æ≈œµ ");
     }
 }
 

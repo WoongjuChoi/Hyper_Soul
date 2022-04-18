@@ -121,7 +121,7 @@ public class PlayerMovement : MonoBehaviourPun
     }
     private void JumpSound()
     {
-        if (_playerAnimator.GetBool(PlayerAnimatorID.ISJUMP))
+        if (_playerAnimator.GetBool(PlayerAnimatorID.ISJUMP) && photonView.IsMine)
         {
             _jumpSound.SetActive(true);
         }
@@ -142,6 +142,9 @@ public class PlayerMovement : MonoBehaviourPun
             //{
             //    GoResultScene();
             //}
+
+            _playerInfo.Level++;
+            _playerInfo.LevelUpdate();
         }
     }
     private void Fire()

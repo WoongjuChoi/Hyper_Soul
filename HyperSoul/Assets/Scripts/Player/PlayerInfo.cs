@@ -63,8 +63,6 @@ public class PlayerInfo : LivingEntity
         else
         {
             _playerUI.SetActive(false);
-            //_levelText.gameObject.SetActive(false);
-            //_nickNameText.gameObject.SetActive(false);
         }
 
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "loadPlayer", true } });
@@ -81,6 +79,7 @@ public class PlayerInfo : LivingEntity
         _hitImage.SetActive(false);
 
         _nickNameText.text = NickName;
+        LevelUpdate();
     }
 
     private void OnEnable()
@@ -128,7 +127,6 @@ public class PlayerInfo : LivingEntity
         AmmoUpdate();
         ExpUpdate();
         ScoreUpdate();
-        LevelUpdate();
 
     }
 
@@ -195,6 +193,7 @@ public class PlayerInfo : LivingEntity
     {
         _levelUpText.gameObject.SetActive(true);
         ++Level;
+        LevelUpdate();
 
         MaxHp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
         MaxExp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
@@ -211,9 +210,15 @@ public class PlayerInfo : LivingEntity
         _levelUpText.gameObject.SetActive(false);
     }
 
-    private void LevelUpdate()
+    [PunRPC]
+    private void LevelTextUpdate()
     {
         _levelText.text = $"{Level}";
+    }
+
+    public void LevelUpdate()
+    {
+        photonView.RPC(nameof(LevelTextUpdate), RpcTarget.AllBuffered);
     }
 
     public override void Respawn()

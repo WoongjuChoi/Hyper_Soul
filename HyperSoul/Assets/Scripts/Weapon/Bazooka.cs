@@ -32,8 +32,11 @@ public class Bazooka : Weapon
 
     private void OnEnable()
     {
-        MaxBulletAmt = DataManager.Instance.FindPlayerData("Bazooka" + _playerInfo.Level.ToString()).MaxBullet;
-        CurBulletCnt = MaxBulletAmt;
+        if (photonView.IsMine)
+        {
+            MaxBulletAmt = DataManager.Instance.FindPlayerData("Bazooka" + _playerInfo.Level.ToString()).MaxBullet;
+            CurBulletCnt = MaxBulletAmt;
+        }
         _reloadTime = 5;
         _gunState = EGunState.Ready;
     }
@@ -50,7 +53,7 @@ public class Bazooka : Weapon
         GameObject target = AimTarget();
         int targetViewID = -1;
         if (target != null)
-        { 
+        {
             targetViewID = target.GetComponent<PhotonView>().ViewID;
         }
 
@@ -60,7 +63,7 @@ public class Bazooka : Weapon
         }
     }
 
-    
+
     public override void Zoom()
     {
         ZoomCam.SetActive(true);
@@ -71,7 +74,7 @@ public class Bazooka : Weapon
     [PunRPC]
     public void MissileFire(Vector3 aimDir, int targetViewID)
     {
-        if(null != _shootCotountine)
+        if (null != _shootCotountine)
         {
             StopCoroutine(_shootCotountine);
         }
@@ -118,7 +121,7 @@ public class Bazooka : Weapon
         {
             photonView.RPC(nameof(RemoveCollider), RpcTarget.OthersBuffered, bazookaMissile.GetComponent<PhotonView>().ViewID);
         }
-        
+
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, true);
         _canFire = false;
 
@@ -145,5 +148,5 @@ public class Bazooka : Weapon
         return null;
     }
 
-    
+
 }

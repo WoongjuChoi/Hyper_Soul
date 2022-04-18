@@ -39,14 +39,28 @@ public class PlayerMovement : MonoBehaviourPun
         _playerCam = GetComponent<PlayerCam>();
         _input = GetComponent<PlayerInputs>();
         _playerInfo = GetComponent<PlayerInfo>();
-        _walkingSound.SetActive(false);
+        _walkingSound.SetActive(false);       
+    }
 
-        
+    private bool Continuing()
+    {
+        if (GameManager.Instance.IsReady || false == GameManager.Instance.IsStart || GameManager.Instance.IsGameOver || _playerInfo.IsDead)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private void Update()
     {
-        if (/*false == GameManager.TimeManager.StartGame || */_playerInfo.IsDead)
+        //Debug.Log($"GameManager.Instance.IsStart : {GameManager.Instance.IsStart}\n" +
+        //    $"GameManager.Instance.IsGameOver : {GameManager.Instance.IsGameOver}\n" +
+        //    $"_playerInfo.IsDead : {_playerInfo.IsDead}");
+
+        if (Continuing())
         {
             _walkingSound.SetActive(false);
             _jumpSound.SetActive(false);
@@ -64,7 +78,7 @@ public class PlayerMovement : MonoBehaviourPun
 
     private void FixedUpdate()
     {
-        if (/*false == GameManager.TimeManager.StartGame || */_playerInfo.IsDead)
+        if (Continuing())
         {
             return;
         }

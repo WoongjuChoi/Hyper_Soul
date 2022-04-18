@@ -23,8 +23,14 @@ public class Rifle : Weapon
 
     private void OnEnable()
     {
-        MaxBulletAmt = DataManager.Instance.FindPlayerData("Rifle" + _playerInfo.Level.ToString()).MaxBullet;
-        CurBulletCnt = MaxBulletAmt;
+        if (photonView.IsMine)
+        {
+            //Debug.Log($"_playerInfo.Level : {_playerInfo.Level}");
+
+            MaxBulletAmt = DataManager.Instance.FindPlayerData("Rifle" + _playerInfo.Level.ToString()).MaxBullet;
+
+            CurBulletCnt = MaxBulletAmt;
+        }
         _reloadTime = 2;
         _gunState = EGunState.Ready;
     }
@@ -98,5 +104,5 @@ public class Rifle : Weapon
         _shootCotountine = null;
     }
 
-  
+
 }

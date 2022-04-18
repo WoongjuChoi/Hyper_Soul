@@ -2041,7 +2041,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4640153929063469881
 Transform:
   m_ObjectHideFlags: 0
@@ -2622,7 +2622,6 @@ MonoBehaviour:
   _levelUpText: {fileID: 3522381616358166007}
   _nickNameText: {fileID: 9063685862057431096}
   _playerUI: {fileID: 2302762841791192007}
-  _playerType: 0
   PhotonViewID: 0
 --- !u!114 &5379531540559722048
 MonoBehaviour:

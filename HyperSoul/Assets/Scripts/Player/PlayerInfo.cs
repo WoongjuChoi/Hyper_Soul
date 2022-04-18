@@ -31,7 +31,7 @@ public class PlayerInfo : LivingEntity
     [SerializeField]
     private GameObject _playerUI;
 
-    public EPlayerType _playerType;
+    private EPlayerType _playerType;
 
     private Weapon _playerWeapon;
 
@@ -53,65 +53,92 @@ public class PlayerInfo : LivingEntity
         _hitSound.SetActive(false);
         _deathSound.SetActive(false);
         _animator = GetComponentInChildren<Animator>();
-        _playerType = DataManager.Instance.PlayerType;
 
-        Level = 1;
-        CurExp = 0;
-        CurScore = 0;
+        _playerType = DataManager.Instance.PlayerType;
 
         if (photonView.IsMine)
         {
+            Level = 1;
+
+            photonView.RPC(nameof(SetPlayerLevel), RpcTarget.Others, Level);
+
+            CurExp = 0;
+            CurScore = 0;
+
+            photonView.RPC(nameof(SetPlayerInformations), RpcTarget.Others, CurScore, CurExp);
+
             _hpBarOverhead.gameObject.SetActive(false);
         }
         else
         {
             _playerUI.SetActive(false);
-            _levelText.gameObject.SetActive(false);
-            _nickNameText.gameObject.SetActive(false);
+            //_levelText.gameObject.SetActive(false);
+            //_nickNameText.gameObject.SetActive(false);
         }
 
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "loadPlayer", true } });
     }
 
+    [PunRPC]
+    public void SetPlayerLevel(int level)
+    {
+        Level = level;
+    }
+
+    [PunRPC]
+    public void SetPlayerInformations(int curScore, int curExp)
+    {
+        CurScore = curScore;
+        CurExp = curExp;
+    }
+
     private void Start()
     {
-
-
         PhotonViewID = photonView.ViewID;
         NickName = photonView.Owner.NickName;
+
         _playerWeapon = GetComponentInChildren<Weapon>();
 
         _killText.gameObject.SetActive(false);
         _levelUpText.gameObject.SetActive(false);
         _hitImage.SetActive(false);
 
+        _levelText.text = $"{Level}";
         _nickNameText.text = NickName;
     }
 
     private void OnEnable()
     {
-        MaxHp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
-        MaxExp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
-        Attack = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
-        Score = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Score;
-        Exp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Exp;
-        MoveSpeed = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MoveSpeed;
-
         if (photonView.IsMine)
         {
-            photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, Level, MaxHp, Attack, Score, Exp);
+            MaxHp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
+            MaxExp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
+            Attack = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
+            Score = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Score;
+            Exp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Exp;
+            MoveSpeed = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MoveSpeed;
+
+            photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, MaxHp, Attack, Score, Exp);
+
+            CurHp = MaxHp;
+
+            photonView.RPC(nameof(SetCurHp), RpcTarget.AllViaServer, CurHp);
         }
 
-        CurHp = MaxHp;
         IsDead = false;
         _hitSound.SetActive(false);
         _deathSound.SetActive(false);
     }
 
     [PunRPC]
-    public void UpdatePlayerInfo(int level, int maxHp, int attack, int score, int exp)
+    private void SetCurHp(int curHp)
     {
-        Level = level;
+        CurHp = curHp;
+    }
+
+    [PunRPC]
+    public void UpdatePlayerInfo(int maxHp, int attack, int score, int exp)
+    {
         MaxHp = maxHp;
         Attack = attack;
         Score = score;
@@ -120,22 +147,20 @@ public class PlayerInfo : LivingEntity
 
     private void Update()
     {
-        //// 디버깅용
-        //Debug.Log($"CurExp : {CurExp}");
         _profileCanvas.gameObject.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;    // (22.04.16) 플레이어 레벨 회전
-
-        //Debug.Log($"CurExp : {CurExp}\nCurScore : {CurScore}");
 
         if (false == photonView.IsMine)
         {
             return;
         }
+
+        //Debug.Log($"CurExp : {CurExp}\nCurScore : {CurScore}");
+
         HpUpdate();
         AmmoUpdate();
         ExpUpdate();
         ScoreUpdate();
         LevelUpdate();
-
     }
 
     public override void OnCollisionEnter(Collision collision)
@@ -178,14 +203,12 @@ public class PlayerInfo : LivingEntity
 
     private void ExpUpdate()
     {
-
         _expText.text = "Exp : " + CurExp;
 
         _expSlider.value = (float)CurExp / MaxExp;
 
         if (CurExp >= MaxExp && Level < MaxLevel)
         {
-
             StartCoroutine(LevelUp());
 
             CurExp = 0;
@@ -202,6 +225,8 @@ public class PlayerInfo : LivingEntity
         _levelUpText.gameObject.SetActive(true);
         ++Level;
 
+        photonView.RPC(nameof(SetPlayerLevel), RpcTarget.Others, Level);
+
         MaxHp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxHp;
         MaxExp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MaxExp;
         Attack = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
@@ -209,9 +234,11 @@ public class PlayerInfo : LivingEntity
         Exp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Exp;
         MoveSpeed = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MoveSpeed;
 
-        photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, Level, MaxHp, Attack, Score, Exp);
+        photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, MaxHp, Attack, Score, Exp);
 
         CurHp = MaxHp;
+
+        photonView.RPC(nameof(SetCurHp), RpcTarget.AllViaServer, CurHp);
 
         yield return new WaitForSeconds(3f);
 

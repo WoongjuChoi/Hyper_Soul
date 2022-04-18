@@ -81,7 +81,6 @@ public class GameManager : MonoBehaviourPunCallbacks
                 return false;
             }
         }
-        Debug.Log($"{key} / All players ready");
         return true;
     }
 
@@ -104,7 +103,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             case EPlayerType.Bazooka:
                 _player = PhotonNetwork.Instantiate("BazookaPlayer", _spawnPoint[index].position, Quaternion.identity);
                 break;
-            case EPlayerType.Snipers:
+            case EPlayerType.Sniper:
                 _player = PhotonNetwork.Instantiate("SniperPlayer", _spawnPoint[index].position, Quaternion.identity);
                 break;
         }

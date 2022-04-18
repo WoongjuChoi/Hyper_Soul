@@ -31,13 +31,17 @@ public class PlayerInfo : LivingEntity
     [SerializeField]
     private GameObject _playerUI;
 
-    private PlayerType _playerType;
+    public EPlayerType _playerType;
 
     private Weapon _playerWeapon;
 
     public int PhotonViewID;
 
     public int MaxExp
+    {
+        get; set;
+    }
+    public float MoveSpeed
     {
         get; set;
     }
@@ -49,10 +53,8 @@ public class PlayerInfo : LivingEntity
         _hitSound.SetActive(false);
         _deathSound.SetActive(false);
         _animator = GetComponentInChildren<Animator>();
-        //_dataManager = GameManager.DataManager;
+        _playerType = DataManager.Instance.PlayerType;
 
-        // Temp
-        _playerType = PlayerType.Rifle;
         Level = 1;
         CurExp = 0;
         CurScore = 0;
@@ -93,6 +95,7 @@ public class PlayerInfo : LivingEntity
         Attack = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
         Score = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Score;
         Exp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Exp;
+        MoveSpeed = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MoveSpeed;
 
         if (photonView.IsMine)
         {
@@ -121,7 +124,7 @@ public class PlayerInfo : LivingEntity
         //Debug.Log($"CurExp : {CurExp}");
         _profileCanvas.gameObject.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;    // (22.04.16) 플레이어 레벨 회전
 
-        Debug.Log($"CurExp : {CurExp}\nCurScore : {CurScore}");
+        //Debug.Log($"CurExp : {CurExp}\nCurScore : {CurScore}");
 
         if (false == photonView.IsMine)
         {
@@ -204,6 +207,7 @@ public class PlayerInfo : LivingEntity
         Attack = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Attack;
         Score = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Score;
         Exp = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).Exp;
+        MoveSpeed = DataManager.Instance.FindPlayerData(_playerType.ToString() + Level.ToString()).MoveSpeed;
 
         photonView.RPC(nameof(UpdatePlayerInfo), RpcTarget.AllViaServer, Level, MaxHp, Attack, Score, Exp);
 

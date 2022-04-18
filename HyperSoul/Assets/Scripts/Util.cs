@@ -86,7 +86,7 @@ public enum EPlayerType
 {
     Rifle = 0,
     Bazooka = 1,
-    Snipers = 2
+    Sniper = 2
 }
     
 
@@ -94,13 +94,6 @@ public enum CharacterType
 {
     Player,
     Monster,
-}
-
-public enum PlayerType
-{
-    Bazooka,
-    Rifle,
-    Sniper,
 }
 
 public enum MonsterType

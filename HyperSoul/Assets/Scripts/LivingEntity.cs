@@ -97,8 +97,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
                 Die();
                 photonView.RPC("Die", RpcTarget.Others);
 
-                Debug.Log($"Score : {Score}");
-
                 GiveScore(attackerID, Score);
                 GiveExp(attackerID, Exp);
             }
@@ -177,21 +175,39 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
 
     public void GiveScore(int attackerID, int score)
     {
-        if (photonView.IsMine)
-        {
-            LivingEntity attacker = PhotonView.Find(attackerID).GetComponent<LivingEntity>();
+        LivingEntity attacker = PhotonView.Find(attackerID).GetComponent<LivingEntity>();
 
-            attacker.CurScore += score;
-        }
+        attacker.CurScore += score;
+
+        int newScore = attacker.CurScore;
+
+        photonView.RPC(nameof(UpdateScore), RpcTarget.Others, attackerID, newScore);
+    }
+
+    [PunRPC]
+    public void UpdateScore(int attackerID, int newScore)
+    {
+        LivingEntity attacker = PhotonView.Find(attackerID).GetComponent<LivingEntity>();
+
+        attacker.CurScore = newScore;
     }
 
     public void GiveExp(int attackerID, int expAmt)
     {
-        if (photonView.IsMine)
-        {
-            LivingEntity attacker = PhotonView.Find(attackerID).GetComponent<LivingEntity>();
+        LivingEntity attacker = PhotonView.Find(attackerID).GetComponent<LivingEntity>();
 
-            attacker.CurExp += expAmt;
-        }
+        attacker.CurExp += expAmt;
+
+        int newExpAmt = attacker.CurExp;
+
+        photonView.RPC(nameof(UpdateExp), RpcTarget.Others, attackerID, newExpAmt);
+    }
+
+    [PunRPC]
+    public void UpdateExp(int attackerID, int newExpAmt)
+    {
+        LivingEntity attacker = PhotonView.Find(attackerID).GetComponent<LivingEntity>();
+
+        attacker.CurExp = newExpAmt;
     }
 }

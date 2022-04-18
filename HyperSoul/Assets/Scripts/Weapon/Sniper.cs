@@ -25,8 +25,11 @@ public class Sniper : Weapon
 
     private void OnEnable()
     {
-        MaxBulletAmt = DataManager.Instance.FindPlayerData("Sniper" + _playerInfo.Level.ToString()).MaxBullet;
-        CurBulletCnt = MaxBulletAmt;
+        if (photonView.IsMine)
+        {
+            MaxBulletAmt = DataManager.Instance.FindPlayerData("Sniper" + _playerInfo.Level.ToString()).MaxBullet;
+            CurBulletCnt = MaxBulletAmt;
+        }
         _reloadTime = 2;
         _gunState = EGunState.Ready;
         ZoomRotationSpeed = new Vector2(0.05f, 0.05f);
@@ -101,5 +104,5 @@ public class Sniper : Weapon
         _shootCotountine = null;
     }
 
-   
+
 }

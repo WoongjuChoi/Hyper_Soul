@@ -139,7 +139,6 @@ public class BazookaMissile : Projectile
             Collider[] colliders = Physics.OverlapSphere(pos, 5f);
             foreach (Collider col in colliders)
             {
-                //Debug.Log($"{col.gameObject.name}¿¡¼­ Æø¹ßÇÔ");
                 if (PLAYER_LAYER == col.gameObject.layer)
                 {
                     col.gameObject.GetComponent<PlayerInfo>().TakeDamage(ProjectileOwnerID, Attack, pos, pos.normalized);

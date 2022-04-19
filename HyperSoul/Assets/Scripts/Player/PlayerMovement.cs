@@ -146,9 +146,19 @@ public class PlayerMovement : MonoBehaviourPun
     {
         if (_input.IsReload && _weapon.HasReloaded())
         {
-            _playerAnimator.SetTrigger(PlayerAnimatorID.RELOAD);
+            StartCoroutine(ReloadAnimation());
+         
             _input.IsReload = false;
         }
+    }
+
+    private IEnumerator ReloadAnimation()
+    {
+        _playerAnimator.SetBool(PlayerAnimatorID.RELOAD, true);
+
+        yield return new WaitForSeconds(0.1f);
+
+        _playerAnimator.SetBool(PlayerAnimatorID.RELOAD, false);
     }
     private void Fire()
     {

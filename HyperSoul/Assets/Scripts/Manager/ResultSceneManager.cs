@@ -92,6 +92,6 @@ public class ResultSceneManager : MonoBehaviour
         }
 
         player.GetComponentInChildren<Animator>().SetTrigger(AnimationTrigger);
-        player.GetComponentInChildren<Text>().text = info.playerName;
+        player.GetComponentInChildren<Text>().text = info.playerName + "\n" + info.score;
     }
 }

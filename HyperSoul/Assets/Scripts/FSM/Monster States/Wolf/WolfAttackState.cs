@@ -29,7 +29,7 @@ public class WolfAttackState : BaseState<WolfInformation>
 
         CreatureInformation.AttackCollider.SetActive(false);
 
-        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ATTACK, false);
+        CreatureInformation.CreatureAnimator.SetBool(MonsterAnimatorID.IS_ATTACK, false);
     }
 
     public override void UpdateState()
@@ -85,11 +85,11 @@ public class WolfAttackState : BaseState<WolfInformation>
 
         yield return new WaitForSeconds(0.1f);
 
-        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ATTACK, true);
+        CreatureInformation.CreatureAnimator.SetBool(MonsterAnimatorID.IS_ATTACK, true);
 
         yield return new WaitForSeconds(0.1f);
 
-        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ATTACK, false);
+        CreatureInformation.CreatureAnimator.SetBool(MonsterAnimatorID.IS_ATTACK, false);
 
         if (PhotonNetwork.IsMasterClient)
         {

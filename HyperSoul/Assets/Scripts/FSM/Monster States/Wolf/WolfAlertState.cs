@@ -11,14 +11,14 @@ public class WolfAlertState : BaseState<WolfInformation>
     {
         CreatureInformation.MonsterCurrentState = EStateIDs.Alert;
 
-        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, true);
+        CreatureInformation.CreatureAnimator.SetBool(MonsterAnimatorID.IS_ALERT, true);
     }
 
     public override void ExitState()
     {
         _elapsedTime = 0;
 
-        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_ALERT, false);
+        CreatureInformation.CreatureAnimator.SetBool(MonsterAnimatorID.IS_ALERT, false);
     }
 
     public override void UpdateState()

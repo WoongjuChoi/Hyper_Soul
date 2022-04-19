@@ -60,21 +60,21 @@ public class TreantInformation : MonsterInformation
 
     public override void OnCollisionEnter(Collision collision)
     {
-        if (false == _isDamaged && SampleObjectParameterID.LAYER_SAMPLE_AMMO == collision.gameObject.layer)
+        if (false == IsDamaged && SampleObjectParameterID.LAYER_SAMPLE_AMMO == collision.gameObject.layer)
         {
-            if (EStateIDs.Attack == _monsterCurrentState || EStateIDs.Idle == _monsterCurrentState || EStateIDs.RotatePosition == _monsterCurrentState)
+            if (EStateIDs.Attack == MonsterCurrentState || EStateIDs.Idle == MonsterCurrentState || EStateIDs.RotatePosition == MonsterCurrentState)
             {
                 _collisionVec = collision.gameObject.transform.position;
 
-                _isDamaged = true;
+                IsDamaged = true;
 
-                if (false == _isTargeting)
+                if (false == IsTargeting)
                 {
                     _attackerInfo = collision.gameObject.GetComponent<Projectile>();
 
                     _target = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
 
-                    _isTargeting = true;
+                    IsTargeting = true;
                 }
             }
         }
@@ -82,7 +82,7 @@ public class TreantInformation : MonsterInformation
 
     private void Update()
     {
-        if (_isTargeting)
+        if (IsTargeting)
         {
             _targetPosition = _target.transform.position + new Vector3(0f, 1.3f, 0f);
 

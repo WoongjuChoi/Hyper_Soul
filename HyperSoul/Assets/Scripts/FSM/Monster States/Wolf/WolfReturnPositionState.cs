@@ -17,7 +17,7 @@ public class WolfReturnPositionState : BaseState<WolfInformation>
     {
         CreatureInformation.MonsterCurrentState = EStateIDs.ReturnPosition;
 
-        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_CHASE, true);
+        CreatureInformation.CreatureAnimator.SetBool(MonsterAnimatorID.IS_CHASE, true);
 
         _returnPositionAudioSource.Play();
     }
@@ -30,26 +30,28 @@ public class WolfReturnPositionState : BaseState<WolfInformation>
 
         CreatureInformation.MonsterChaser.IsActive = false;
 
-        GameObject.transform.position = CreatureInformation.InitializePosition.position;
+        GameObject.transform.position = CreatureInformation.InitializeTransform.position;
 
-        GameObject.GetComponentInChildren<Animator>().SetBool(IS_WALK, false);
+        CreatureInformation.CreatureAnimator.SetBool(IS_WALK, false);
 
-        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_CHASE, false);
+        CreatureInformation.CreatureAnimator.SetBool(MonsterAnimatorID.IS_CHASE, false);
         
         _returnPositionAudioSource.Stop();
     }
 
     public override void UpdateState()
     {
-        _distance = (GameObject.transform.position - CreatureInformation.InitializePosition.position).magnitude;
+        _distance = (GameObject.transform.position - CreatureInformation.InitializeTransform.position).magnitude;
 
         if (_distance <= 2f)
         {
-            CreatureInformation.GetComponentInChildren<Animator>().SetBool(IS_WALK, true);
+            CreatureInformation.CreatureAnimator.SetBool(IS_WALK, true);
         }
         
         if (_distance <= 0.5f)
         {
+            InitializeDirection();
+
             FiniteStateMachine.ChangeState(EStateIDs.Idle);
 
             return;
@@ -71,8 +73,25 @@ public class WolfReturnPositionState : BaseState<WolfInformation>
             CreatureInformation.CurHp += _increaseHealing;
         }
 
-        CreatureInformation.MonsterChaser.IsTarget = CreatureInformation.InitializePosition;
+        CreatureInformation.MonsterChaser.IsTarget = CreatureInformation.InitializeTransform;
 
         CreatureInformation.MonsterChaser.IsActive = true;
+    }
+
+    private void InitializeDirection()
+    {
+        Vector3 InitializeAngle = new Vector3(0f, CreatureInformation.MonsterSpawnDirection, 0f);
+
+        if (InitializeAngle != GameObject.transform.eulerAngles)
+        {
+            GameObject.transform.eulerAngles = Vector3.zero;
+
+            Quaternion monsterInitializeDirection = Quaternion.Euler(0f, CreatureInformation.MonsterSpawnDirection, 0f);
+
+            GameObject.transform.rotation = monsterInitializeDirection;
+
+            //Debug.Log($"ReturnPosition GameObject.transform.rotation : {GameObject.transform.rotation}\n" +
+            //    $"GameObject.transform.eulerAngles : {GameObject.transform.eulerAngles}");
+        }
     }
 }

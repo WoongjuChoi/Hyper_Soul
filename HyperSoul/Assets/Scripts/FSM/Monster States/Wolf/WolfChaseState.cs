@@ -11,7 +11,7 @@ public class WolfChaseState : BaseState<WolfInformation>
     {
         CreatureInformation.MonsterCurrentState = EStateIDs.Chase;
 
-        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_CHASE, true);
+        CreatureInformation.CreatureAnimator.SetBool(MonsterAnimatorID.IS_CHASE, true);
 
         _chaseAudioSource.Play();
     }
@@ -22,7 +22,7 @@ public class WolfChaseState : BaseState<WolfInformation>
 
         CreatureInformation.MonsterChaser.ResetPath();
 
-        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_CHASE, false);
+        CreatureInformation.CreatureAnimator.SetBool(MonsterAnimatorID.IS_CHASE, false);
 
         _chaseAudioSource.Stop();
     }
@@ -52,7 +52,7 @@ public class WolfChaseState : BaseState<WolfInformation>
             return;
         }
 
-        float distance = (GameObject.transform.position - CreatureInformation.InitializePosition.position).magnitude;
+        float distance = (GameObject.transform.position - CreatureInformation.InitializeTransform.position).magnitude;
 
         if (distance >= 20f)
         {

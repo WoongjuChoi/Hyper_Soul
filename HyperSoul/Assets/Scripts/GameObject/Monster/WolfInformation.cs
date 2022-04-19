@@ -28,8 +28,24 @@ public class WolfInformation : MonsterInformation
         _hitImage.SetActive(false);
         _hitSound.SetActive(false);
         _deathSound.SetActive(false);
-        _animator = GetComponentInChildren<Animator>();
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
+
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+        //    _monsterAnimatorIndex = Random.Range(0, 3);
+        //    photonView.RPC(nameof(SetMonsterAnimatorIndex), RpcTarget.AllViaServer, _monsterAnimatorIndex);
+        //}
+        //_monsterAnimatorIndex = 0;
+        //_animator = _monsterAnimatorObject.transform.GetChild(_monsterAnimatorIndex).GetComponent<Animator>();
+
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+        //    _animator.gameObject.SetActive(true);
+
+        //    photonView.RPC(nameof(SetMonsterAnimatorIndex), RpcTarget.Others, true);
+        //}
+
+        _animator = _monsterAnimatorObject.GetComponent<Animator>();
 
         _monsterType = MonsterType.Wolf;
         Level = 1;
@@ -53,6 +69,12 @@ public class WolfInformation : MonsterInformation
         _monsterFSM.AddState(EStateIDs.Idle, _monsterIdleState);
         _monsterFSM.AddState(EStateIDs.ReturnPosition, _monsterReturnPositionState);
         _monsterFSM.AddState(EStateIDs.Spawn, _monsterSpawnState);
+    }
+
+    [PunRPC]
+    public void SetMonsterAnimatorIndex(int index)
+    {
+        _monsterAnimatorIndex = index;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -81,13 +103,13 @@ public class WolfInformation : MonsterInformation
 
     public override void OnCollisionEnter(Collision collision)
     {
-        if (false == _isDamaged && SampleObjectParameterID.LAYER_SAMPLE_AMMO == collision.gameObject.layer)
+        if (false == IsDamaged && SampleObjectParameterID.LAYER_SAMPLE_AMMO == collision.gameObject.layer)
         {
-            if (EStateIDs.Alert == _monsterCurrentState || EStateIDs.Attack == _monsterCurrentState || EStateIDs.Chase == _monsterCurrentState || EStateIDs.Idle == _monsterCurrentState)
+            if (EStateIDs.Alert == MonsterCurrentState || EStateIDs.Attack == MonsterCurrentState || EStateIDs.Chase == MonsterCurrentState || EStateIDs.Idle == MonsterCurrentState)
             {
                 _collisionVec = gameObject.transform.position;
 
-                _isDamaged = true;
+                IsDamaged = true;
 
                 _attackerInfo = collision.gameObject.GetComponent<Projectile>();
 

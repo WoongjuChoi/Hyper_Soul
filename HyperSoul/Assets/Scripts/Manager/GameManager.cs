@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     private GameObject _timeManager;
 
     private GameObject _monsterSpawnManager;
+    private Coroutine _playerRespawn;
 
     private void Awake()
     {
@@ -147,7 +148,15 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void RespawnPlayer()
     {
-        StartCoroutine(CoroutineRespawn());
+        _playerRespawn = StartCoroutine(CoroutineRespawn());
+    }
+
+    public void StopRespawnPlayer()
+    {
+        if (_playerRespawn != null)
+        {
+            StopCoroutine(_playerRespawn);
+        }
     }
 
     private IEnumerator CoroutineRespawn()

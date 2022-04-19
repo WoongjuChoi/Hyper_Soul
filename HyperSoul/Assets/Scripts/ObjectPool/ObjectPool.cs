@@ -47,7 +47,7 @@ public class ObjectPool
     {
         string[] prefabName = gameObject.name.Split('(');
         gameObject.SetActive(false);
-        gameObject.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.AllBuffered, false);
+        gameObject.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.All, false);
 
         _objPoolDictionary[prefabName[0]].Enqueue(gameObject);
 

@@ -92,6 +92,14 @@ public class Bazooka : Weapon
         --CurBulletCnt;
 
         BazookaMissile bazookaMissile = _objectPool.GetObj("BazookaMissile").GetComponent<BazookaMissile>();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            CreateCollider(bazookaMissile.GetComponent<PhotonView>().ViewID);
+        }
+        if (false == PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(CreateCollider), RpcTarget.MasterClient, bazookaMissile.GetComponent<PhotonView>().ViewID);
+        }
 
         bazookaMissile.MissilePrefab.SetActive(true);
         bazookaMissile.RocketParticleEffect.SetActive(false);
@@ -113,14 +121,8 @@ public class Bazooka : Weapon
         bazookaMissile.Attack = _playerInfo.Attack;
         bazookaMissile.GetComponent<PoolObject>().SetActiveObj(true);
         bazookaMissile.ReceiveReturnProjectileFunc(ReturnProjectile);
-        bazookaMissile.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.All, true);
+        bazookaMissile.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.AllViaServer, true);
 
-
-
-        if (true == PhotonNetwork.IsMasterClient)
-        {
-            photonView.RPC(nameof(RemoveCollider), RpcTarget.OthersBuffered, bazookaMissile.GetComponent<PhotonView>().ViewID);
-        }
 
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, true);
         _canFire = false;

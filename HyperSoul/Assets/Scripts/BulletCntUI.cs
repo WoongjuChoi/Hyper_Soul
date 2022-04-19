@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class BulletCntUI : MonoBehaviour
 {
     [SerializeField]
-    Text _bullet;
+    Text _bullet; 
     [SerializeField]
     Text _nickname;
     [SerializeField]

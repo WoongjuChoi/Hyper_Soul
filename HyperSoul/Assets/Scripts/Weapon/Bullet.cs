@@ -32,11 +32,17 @@ public class Bullet : Projectile
         _bulletRigidbody.velocity = transform.forward * _speed;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collider)
     {
         if (photonView.IsMine)
         {
-            _projectileReturn(gameObject);
+            photonView.RPC(nameof(ReturnBullet), RpcTarget.All);
         }
+    }
+
+    [PunRPC]
+    private void ReturnBullet()
+    {
+        _projectileReturn(gameObject);
     }
 }

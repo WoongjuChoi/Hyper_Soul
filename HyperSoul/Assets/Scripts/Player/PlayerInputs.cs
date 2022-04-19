@@ -15,7 +15,7 @@ public class PlayerInputs : MonoBehaviourPun
 
 	public void OnMove(InputValue value)
 	{
-		if (photonView.IsMine)
+		if (photonView.IsMine && false == GameManager.Chat.IsChatting)
 		{
 			MoveVec = value.Get<Vector2>();
 		}

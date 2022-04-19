@@ -10,7 +10,7 @@ public class WolfSpawnState : BaseState<WolfInformation>
     {
         CreatureInformation.MonsterCurrentState = EStateIDs.Spawn;
 
-        GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_SPAWN);
+        CreatureInformation.CreatureAnimator.SetTrigger(MonsterAnimatorID.HAS_SPAWN);
     }
 
     public override void ExitState()

@@ -36,17 +36,26 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private GameObject _timeManager;
 
+    private GameObject _monsterSpawnManager;
+
     private void Awake()
     {
         PhotonNetwork.IsMessageQueueRunning = true;
         Init();
         IsReady = true;
         IsGameOver = false;
+
+        // MonsterSpawnManager 게임오브젝트 찾기    (22.04.19)
+        if (PhotonNetwork.IsMasterClient)
+        {
+            //_monsterSpawnManager = GameObject.Find("Monster Spawn Manager");
+        }    
     }
 
     IEnumerator Start()
     {
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "loadScene", true } });
+
         yield return Loading();
 
         if (true == PhotonNetwork.IsMasterClient)
@@ -66,7 +75,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             _timeManager = PhotonNetwork.InstantiateRoomObject("TimeManager", Vector3.zero, Quaternion.identity);
 
-            _timeManager.GetComponent<TimeManager>().photonView.RPC("ObjectActive", RpcTarget.AllViaServer, false);
+            _timeManager.GetComponent<TimeManager>().photonView.RPC("ObjectActive", RpcTarget.AllBufferedViaServer, false);
         }
 
         SpawnPlayer();
@@ -74,6 +83,12 @@ public class GameManager : MonoBehaviourPunCallbacks
         while (false == AllPlayerCheck("loadPlayer"))
         {
             yield return null;
+        }
+
+        // Monster 위치시키는 함수 실행  (22.04.19)
+        if (PhotonNetwork.IsMasterClient)
+        {
+            //_monsterSpawnManager.GetComponent<MonsterSpawnManager>().SetMonsterPosition();
         }
     }
 
@@ -86,6 +101,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             _timeManager.GetComponent<TimeManager>().photonView.RPC("ObjectActive", RpcTarget.AllViaServer, true);
+
+            //_monsterSpawnManager.GetComponent<MonsterSpawnManager>().SetMonsterPosition();
         }
     }
 

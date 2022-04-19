@@ -149,6 +149,7 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
     private void SetGameOver(bool gameOver)
     {
         GameManager.Instance.IsGameOver = gameOver;
+        GameManager.Instance.StopRespawnPlayer();
 
         _GameOverText.gameObject.SetActive(true);
 

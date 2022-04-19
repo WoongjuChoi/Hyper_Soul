@@ -11,6 +11,8 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
     private GameObject _waitingRoomPrefab;
     [SerializeField]
     private WaitingRoom[] _roomList;
+    [SerializeField]
+    private Button _startButton;
 
     private GameObject _roomPanal;
     private Text _roomNameText;
@@ -36,7 +38,7 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            GameObject.Find("GameStartButton").GetComponent<Button>().interactable = false;
+            _startButton.interactable = false;
         }
 
         for (int i = 0; i < _roomList.Length; ++i)

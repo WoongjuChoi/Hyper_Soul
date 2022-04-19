@@ -40,14 +40,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private byte _maxPlayer = 4;
 
-
-
     private void Awake()
     {
         Screen.SetResolution(1920, 1080, false);
         PhotonNetwork.AutomaticallySyncScene = true; // 마스터클라이언트와 씬 동기화
         _curPanel = _loginPanel;
         _joinButton.interactable = false;
+        _createRoomButton.interactable = false;
+        _randomJoinRoomButton.interactable = false;
         _connetInfoText.text = "데이터 로딩 중입니다. 잠시 기다려주세요";
 
         DataManager.Instance.DataReady -= DataIsReady;
@@ -83,6 +83,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     IEnumerator LobbyText()
     {
         _connetInfoText.text = "로비에 접속했습니다.";
+        _createRoomButton.interactable = true;
+        _randomJoinRoomButton.interactable = true;
         yield return new WaitForSeconds(1.0f);
 
         _connetInfoText.text = "";
@@ -180,7 +182,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        _connetInfoText.text = "No room, create new room";
+        _connetInfoText.text = "목록에 방이 없습니다. 방을 생성합니다.";
         PhotonNetwork.CreateRoom(_roomNameInput.text, new RoomOptions { MaxPlayers = 4 });
     }
 

@@ -10,13 +10,14 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    static private GameManager _instance;
-
-    static public GameManager Instance
+    private static GameManager _instance;
+    public static GameManager Instance
     {
         get { Init(); return _instance; }
     }
 
+    private ChatManager _chatManager;
+    public static ChatManager Chat { get { return Instance._chatManager; } }
     public Transform PlayerCamRotationTransform { get; set; }
 
     private bool[] _isSpawned = new bool[5];
@@ -50,6 +51,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             //_monsterSpawnManager = GameObject.Find("Monster Spawn Manager");
         }    
+        _chatManager = GameObject.Find("ChatManager").gameObject.GetComponent<ChatManager>();
     }
 
     IEnumerator Start()
@@ -167,6 +169,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         _player.transform.position = _spawnPoint[index].position;
     }
+
 
     // ΩÃ±€≈Ê
     static private void Init()

@@ -57,7 +57,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
     }
 
     public virtual void OnCollisionEnter(Collision collision) { }
-
+    public virtual void OnTriggerEnter(Collider other) { }
     public void TakeMonsterDamage(int damageAmt)
     {
         if (PhotonNetwork.IsMasterClient)
@@ -110,6 +110,12 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
             photonView.RPC(nameof(Die), RpcTarget.AllBuffered);
 
             Debug.Log($"Score : {Score}");
+                CurHp = 0;
+                GameManager.Chat.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
+                Die();
+                photonView.RPC("Die", RpcTarget.Others);
+
+                Debug.Log($"Score : {Score}");
 
             //GiveScore(attackerID, Score);
             //GiveExp(attackerID, Exp);

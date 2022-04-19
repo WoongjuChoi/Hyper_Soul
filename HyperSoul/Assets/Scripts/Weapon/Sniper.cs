@@ -80,10 +80,13 @@ public class Sniper : Weapon
         bullet.GetComponent<Bullet>().ProjectileOwnerID = _playerInfo.PhotonViewID;
         bullet.GetComponent<Bullet>().Attack = _playerInfo.Attack;
         bullet.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.All, true);
-
-        if (true == PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC(nameof(RemoveCollider), RpcTarget.OthersBuffered, bullet.GetComponent<PhotonView>().ViewID);
+            CreateCollider(bullet.GetComponent<PhotonView>().ViewID);
+        }
+        if (false == PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(CreateCollider), RpcTarget.MasterClient, bullet.GetComponent<PhotonView>().ViewID);
         }
 
         _canFire = false;

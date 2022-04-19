@@ -12,18 +12,29 @@ public class ChatManager : MonoBehaviourPun
     [SerializeField]
     private Text[] _chatList;
 
+    public bool IsChatting = false;
+
+    private void Start()
+    {
+        _chatMsg.interactable = false;
+    }
 
     private void Update()
     {
         if (Keyboard.current[Key.Tab].wasPressedThisFrame && _chatMsg.isFocused == false)
         {
+            IsChatting = true;
+            _chatMsg.interactable = true;
             _chatMsg.ActivateInputField();
         }
         if (Keyboard.current[Key.Enter].wasPressedThisFrame && _chatMsg.text != "")
         {
             SendChatMessage();
             _chatMsg.text = "";
+            _chatMsg.interactable = false;
+            IsChatting = false;
         }
+
     }
 
 
@@ -41,7 +52,7 @@ public class ChatManager : MonoBehaviourPun
         // MonsterInfo victimMonsterInfo =  victim.GetComponent<MonsterInfo>(); 만들기
         if (victimPlayerInfo != null)
         {
-            msg = $"{attackerInfo.NickName}이(가) {victimPlayerInfo.NickName}을(를) 처치";
+            msg = "<color=#62FF00>" + $"{attackerInfo.NickName}" + "</color>" + "이(가)" + "<color=#FF0000>" + $"{ victimPlayerInfo.NickName}" + "</color>" + "을(를) 처치";
         }
         //else if(victimMonsterInfo != null)
         //{
@@ -69,7 +80,9 @@ public class ChatManager : MonoBehaviourPun
                     }
                 }
                 _input = true;
+
                 _chatList[0].text = msg;
+
                 break;
             }
         }
@@ -79,7 +92,9 @@ public class ChatManager : MonoBehaviourPun
             {
                 _chatList[i].text = _chatList[i - 1].text;
             }
+
             _chatList[0].text = msg;
+
         }
     }
 }

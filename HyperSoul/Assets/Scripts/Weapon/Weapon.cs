@@ -13,7 +13,7 @@ public abstract class Weapon : MonoBehaviourPun
     public GameObject MuzzleFlashEffect;
     public AudioClip ShotSound;
     public AudioClip ReloadSound;
-    
+
     public int CurBulletCnt = 0;
     public int MaxBulletAmt = 0;
 
@@ -60,7 +60,7 @@ public abstract class Weapon : MonoBehaviourPun
             ZoomCam.SetActive(false);
         }
 
-        if(CurBulletCnt <= 0)
+        if (CurBulletCnt <= 0)
         {
             _gunState = EGunState.Empty;
         }
@@ -104,7 +104,7 @@ public abstract class Weapon : MonoBehaviourPun
         _gunState = EGunState.Ready;
     }
 
-    
+
     public void SetMousePos()
     {
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
@@ -116,7 +116,7 @@ public abstract class Weapon : MonoBehaviourPun
         {
             RaycastHit hit = raycastHits[i];
 
-            if (hit.distance > 4) 
+            if (hit.distance > 4)
             {
                 _mousePos = hit.point;
                 break;
@@ -127,22 +127,14 @@ public abstract class Weapon : MonoBehaviourPun
 
 
     [PunRPC]
-    protected void RemoveCollider(int projectileId)
+    protected void CreateCollider(int objId)
     {
-        //if(null != projectile.GetComponent<Collider>())
-        //{
-        //    Collider Collider = projectile.GetComponent<Collider>();
-        //    Collider.enabled = false;
-        //}
-        //else
-        //{
-        GameObject projectile = PhotonNetwork.GetPhotonView(projectileId).gameObject;
-        Collider[] Colliders = projectile.GetComponentsInChildren<Collider>();
+        GameObject obj = PhotonNetwork.GetPhotonView(objId).gameObject;
+        Collider[] Colliders = obj.GetComponentsInChildren<Collider>(true);
         foreach (Collider col in Colliders)
         {
-            col.enabled = false;
+            col.enabled = true;
         }
-        //}
     }
 
     protected void ReturnProjectile(GameObject projectile)

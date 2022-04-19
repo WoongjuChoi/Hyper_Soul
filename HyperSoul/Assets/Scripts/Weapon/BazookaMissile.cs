@@ -37,6 +37,9 @@ public class BazookaMissile : Projectile
     Coroutine lunchCoroutine = null;
     Coroutine explosionCoroutine = null;
 
+    private const int PLAYER_LAYER = 10;
+    private const int MONSTER_LAYER = 12;
+
     public void Init()
     {
         _curSpeed = 0f;
@@ -53,7 +56,7 @@ public class BazookaMissile : Projectile
             return;
         }
 
-        photonView.RPC(nameof(ReceiveInfo), RpcTarget.Others, ProjectileOwnerID, Attack);
+        photonView.RPC(nameof(ReceiveInfo), RpcTarget.MasterClient, ProjectileOwnerID, Attack);
 
         _launchPos = transform.position;
 
@@ -65,15 +68,14 @@ public class BazookaMissile : Projectile
     }
     private void FixedUpdate()
     {
-        if (false == photonView.IsMine)
+        if (false == photonView.IsMine || true == _isHit)
         {
             return;
         }
 
         GetComponent<Rigidbody>().AddForce(Vector3.up * _gravityForce);
         float _curDistMissileAndLaunchPos = Vector3.Distance(_launchPos, transform.position);
-
-        if (false == _isHit && _isLaunched == true)
+        if (_isLaunched == true)
         {
             if (_curSpeed <= _maxSpeed)
             {
@@ -85,7 +87,7 @@ public class BazookaMissile : Projectile
         {
             Vector3 dir = (_target.position - transform.position).normalized;
             transform.forward = Vector3.Lerp(transform.forward, dir, 0.1f);
-            if (_targetDistance + 10f < _curDistMissileAndLaunchPos)
+            if (_targetDistance + 30f < _curDistMissileAndLaunchPos)
             {
                 Explosion(transform.position);
                 photonView.RPC(nameof(Explosion), RpcTarget.Others, transform.position);
@@ -98,19 +100,14 @@ public class BazookaMissile : Projectile
             {
                 RocketParticleEffect.SetActive(true);
             }
-
-            if (_curDistMissileAndLaunchPos > 200f)
-            {
-                Explosion(transform.position);
-                photonView.RPC(nameof(Explosion), RpcTarget.Others, transform.position);
-            }
         }
     }
 
     private void OnTriggerEnter(Collider collider)
     {
-        //Explosion(transform.position);
-        GetComponent<PhotonView>().RPC(nameof(Explosion), RpcTarget.All, transform.position);
+        Debug.Log($"{collider.gameObject.name}¿¡¼­ Æø¹ßÇÔ");
+        Explosion(transform.position);
+        photonView.RPC(nameof(Explosion), RpcTarget.Others, transform.position);
     }
 
     private IEnumerator SoftLaunch()
@@ -137,6 +134,21 @@ public class BazookaMissile : Projectile
         RocketParticleEffect.SetActive(false);
         ExplosionEffect.SetActive(true);
 
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Collider[] colliders = Physics.OverlapSphere(pos, 5f);
+            foreach (Collider col in colliders)
+            {
+                if (PLAYER_LAYER == col.gameObject.layer)
+                {
+                    col.gameObject.GetComponent<PlayerInfo>().TakeDamage(ProjectileOwnerID, Attack, pos, pos.normalized);
+                }
+                else if (MONSTER_LAYER == col.gameObject.layer)
+                {
+                    col.gameObject.GetComponent<MonsterInformation>().TakeMonsterDamage(Attack);
+                }
+            }
+        }
         yield return new WaitForSeconds(1.3f);
 
         if (photonView.IsMine)

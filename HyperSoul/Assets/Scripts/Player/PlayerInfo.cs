@@ -45,7 +45,7 @@ public class PlayerInfo : LivingEntity
     {
         get; set;
     }
-
+    private const int AMMO_COLLIDER = 11;
     private const int MONSTER_ATTACK_COLLIDER = 13;
 
     public override void Awake()
@@ -138,23 +138,23 @@ public class PlayerInfo : LivingEntity
 
     }
 
-    public override void OnCollisionEnter(Collision collision)
+    public override void OnTriggerEnter(Collider collider)
     {
-        Projectile projectile = collision.gameObject.GetComponent<Projectile>();
+        Projectile projectile = collider.gameObject.GetComponent<Projectile>();
 
-        if (null != projectile)
+        if (AMMO_COLLIDER ==  collider.gameObject.layer)
         {
             Debug.Log($"피격당함\n Attacker : {projectile.ProjectileOwnerID}" +
            $"\n Damage : {projectile.Attack}" +
            $"\n HP : {CurHp}");
 
             TakeDamage(projectile.ProjectileOwnerID, projectile.Attack,
-                collision.transform.position, collision.transform.position.normalized);
+                collider.transform.position, collider.transform.position.normalized);
         }
 
-        LivingEntity livingEntity = collision.gameObject.GetComponentInParent<LivingEntity>();
+        LivingEntity livingEntity = collider.gameObject.GetComponentInParent<LivingEntity>();
 
-        if (MONSTER_ATTACK_COLLIDER == collision.gameObject.layer)
+        if (MONSTER_ATTACK_COLLIDER == collider.gameObject.layer)
         {
             Debug.Log($"피격당함\nAttacker : {livingEntity.gameObject.name}" +
                     $"\nDamage : {livingEntity.Attack}" +

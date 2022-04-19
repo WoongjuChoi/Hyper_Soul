@@ -12,18 +12,29 @@ public class ChatManager : MonoBehaviourPun
     [SerializeField]
     private Text[] _chatList;
 
+    public bool IsChatting = false;
+
+    private void Start()
+    {
+        _chatMsg.interactable = false;
+    }
 
     private void Update()
     {
         if (Keyboard.current[Key.Tab].wasPressedThisFrame && _chatMsg.isFocused == false)
         {
+            IsChatting = true;
+            _chatMsg.interactable = true;
             _chatMsg.ActivateInputField();
         }
         if (Keyboard.current[Key.Enter].wasPressedThisFrame && _chatMsg.text != "")
         {
             SendChatMessage();
             _chatMsg.text = "";
+            _chatMsg.interactable = false;
+            IsChatting = false;
         }
+        
     }
 
 

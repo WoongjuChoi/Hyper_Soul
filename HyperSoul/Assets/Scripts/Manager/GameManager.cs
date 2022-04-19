@@ -10,13 +10,14 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    static private GameManager _instance;
-
-    static public GameManager Instance
+    private static GameManager _instance;
+    public static GameManager Instance
     {
         get { Init(); return _instance; }
     }
 
+    private ChatManager _chatManager;
+    public static ChatManager Chat { get { return Instance._chatManager; } }
     public Transform PlayerCamRotationTransform { get; set; }
 
     private bool[] _isSpawned = new bool[5];
@@ -36,6 +37,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.IsMessageQueueRunning = true;
         Init();
+        _chatManager = GameObject.Find("ChatManager").gameObject.GetComponent<ChatManager>();
     }
 
     IEnumerator Start()
@@ -124,7 +126,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             index = Random.Range(1, 5);
         }
-        
+
         _player.GetComponent<PlayerInfo>().GetComponent<PhotonView>().RPC("PlayerActive", RpcTarget.All, false);
 
         yield return new WaitForSeconds(2.5f);

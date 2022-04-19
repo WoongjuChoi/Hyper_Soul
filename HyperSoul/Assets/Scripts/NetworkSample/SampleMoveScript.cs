@@ -9,11 +9,9 @@ public class SampleMoveScript : MonoBehaviour
     bool leftOrRight = false;
 
     public float moveSpeed = 20f;
-    
-    void Start()
-    {
-        
-    }
+
+    private const int AMMO_COLLIDER = 11;
+    private const int MONSTER_ATTACK_COLLIDER = 13;
 
     void Update()
     {
@@ -36,9 +34,26 @@ public class SampleMoveScript : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collider)
     {
-        Debug.Log($"피격당함\n Attacker : {collision.gameObject.GetComponent<Projectile>().ProjectileOwnerID}" +
-            $"\n Damage : {collision.gameObject.GetComponent<Projectile>().Attack}");
+        Projectile projectile = collider.gameObject.GetComponent<Projectile>();
+
+        if (AMMO_COLLIDER == collider.gameObject.layer)
+        {
+            Debug.Log($"피격당함\n Attacker : {projectile.ProjectileOwnerID}" +
+           $"\n Damage : {projectile.Attack}");
+
+        }
+
+        //LivingEntity livingEntity = collider.gameObject.GetComponentInParent<LivingEntity>();
+
+        //if (MONSTER_ATTACK_COLLIDER == collider.gameObject.layer)
+        //{
+        //    Debug.Log($"피격당함\nAttacker : {livingEntity.gameObject.name}" +
+        //            $"\nDamage : {livingEntity.Attack}" +
+        //            $"\nHP : {CurHp}");
+
+        //}
+
     }
 }

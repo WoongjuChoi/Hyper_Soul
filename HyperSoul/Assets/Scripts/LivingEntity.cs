@@ -54,7 +54,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
     }
 
     public virtual void OnCollisionEnter(Collision collision) { }
-
+    public virtual void OnTriggerEnter(Collider other) { }
     public void TakeMonsterDamage(int damageAmt)
     {
         if (PhotonNetwork.IsMasterClient)
@@ -93,7 +93,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
             if (CurHp <= 0 && IsDead == false)
             {
                 CurHp = 0;
-                //GameManager.Instance.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
+                GameManager.Chat.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
                 Die();
                 photonView.RPC("Die", RpcTarget.Others);
 
@@ -108,7 +108,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
                 photonView.RPC("Hit", RpcTarget.Others);
             }
             photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
-            //photonView.RPC("TakeDamage", RpcTarget.Others, attackerID, damageAmt, hitPoint, hitNormal);
         }
     }
 

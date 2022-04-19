@@ -37,6 +37,9 @@ public class BazookaMissile : Projectile
     Coroutine lunchCoroutine = null;
     Coroutine explosionCoroutine = null;
 
+    private const int PLAYER_LAYER = 10;
+    private const int MONSTER_LAYER = 12;
+
     public void Init()
     {
         _curSpeed = 0f;
@@ -102,6 +105,7 @@ public class BazookaMissile : Projectile
 
     private void OnTriggerEnter(Collider collider)
     {
+        Debug.Log($"{collider.gameObject.name}¿¡¼­ Æø¹ßÇÔ");
         Explosion(transform.position);
         photonView.RPC(nameof(Explosion), RpcTarget.Others, transform.position);
     }
@@ -130,6 +134,22 @@ public class BazookaMissile : Projectile
         RocketParticleEffect.SetActive(false);
         ExplosionEffect.SetActive(true);
 
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Collider[] colliders = Physics.OverlapSphere(pos, 5f);
+            foreach (Collider col in colliders)
+            {
+                //Debug.Log($"{col.gameObject.name}¿¡¼­ Æø¹ßÇÔ");
+                if (PLAYER_LAYER == col.gameObject.layer)
+                {
+                    col.gameObject.GetComponent<PlayerInfo>().TakeDamage(ProjectileOwnerID, Attack, pos, pos.normalized);
+                }
+                else if (MONSTER_LAYER == col.gameObject.layer)
+                {
+                    col.gameObject.GetComponent<MonsterInformation>().TakeMonsterDamage(Attack);
+                }
+            }
+        }
         yield return new WaitForSeconds(1.3f);
 
         if (photonView.IsMine)

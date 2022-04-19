@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,99 +7,89 @@ public abstract class MonsterInformation : LivingEntity
 {
     [SerializeField]
     protected FiniteStateMachine _monsterFSM;
-
     [SerializeField]
     protected MonsterSpawnManager _monsterSpawnManager;
-
+    [SerializeField]
+    protected GameObject _monsterAnimatorObject;
     [SerializeField]
     protected Chaser _monsterChaser;
-
     [SerializeField]
     protected Collider _attackRangeCollider;
-
     [SerializeField]
     protected Transform _monsterRayPoint;
-
     [SerializeField]
     protected float _monsterInvincibleTime = 0f;
-
     [SerializeField]
     protected int _monsterMaxHP = 0;
 
     protected GameObject _target;
-
-    protected Transform _initializePosition;
-
     protected Projectile _attackerInfo;
-
     protected Vector3 _collisionVec;
     protected Vector3 _lookAtTargetVec;
-
     protected MonsterType _monsterType;
-    protected EStateIDs _monsterCurrentState;
-
-    protected float _monsterSpawnDirection = 0f;
-
-    protected bool _isDamaged = false;
-    protected bool _isTargeting = false;
     protected bool _isWithinAttackRange = false;
-
-    protected int _monsterCurrentHP = 0;
+    protected int _monsterAnimatorIndex = 0;
 
     public GameObject Target { get { return _target; } }
     public Chaser MonsterChaser { get { return _monsterChaser; } }
     public Projectile AttackerInfo { get { return _attackerInfo; } }
     public Collider MonsterAttackRangeCollider { get { return _attackRangeCollider; } }
-    public Transform InitializePosition { get { return _initializePosition; } }
+    public Transform InitializeTransform { get; set; }
     public Transform MonsterRayPoint { get { return _monsterRayPoint; } }
     public Vector3 CollisionVec { get { return _collisionVec; } }
     public Vector3 LookAtTargetVec { get { return _lookAtTargetVec; } }
     public MonsterType MonsterType { get { return _monsterType; } }
     public bool IsWithinAttackRange { get { return _isWithinAttackRange; } }
     public float MonsterInvincibleTime { get { return _monsterInvincibleTime; } }
-    public float MonsterSpawnDirection { get { return _monsterSpawnDirection; } }
-    public int MonsterMaxHP { get { return _monsterMaxHP; } }
+    public float MonsterSpawnDirection { get; set; }
     public int MonsterMaxLevel { get { return 5; } }
 
-    public EStateIDs MonsterCurrentState { get { return _monsterCurrentState; } set { _monsterCurrentState = value; } }
-    public bool IsDamaged { get { return _isDamaged; } set { _isDamaged = value; } }
-    public bool IsTargeting { get { return _isTargeting; } set { _isTargeting = value; } }
-    public int MonsterCurrentHP { get { return _monsterCurrentHP; } set { _monsterCurrentHP = value; } }
+    public EStateIDs MonsterCurrentState { get; set; }
+    public bool IsDamaged { get; set; }
+    public bool IsTargeting { get; set; }
 
     private void OnEnable()
     {
-        MaxHp = DataManager.Instance.FindMonsterData(_monsterType.ToString() + Level.ToString()).MaxHp;
-        Attack = DataManager.Instance.FindMonsterData(_monsterType.ToString() + Level.ToString()).Attack;
-        Exp = DataManager.Instance.FindMonsterData(_monsterType.ToString() + Level.ToString()).Exp;
-        Score = DataManager.Instance.FindMonsterData(_monsterType.ToString() + Level.ToString()).Score;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            MaxHp = DataManager.Instance.FindMonsterData(_monsterType.ToString() + Level.ToString()).MaxHp;
+            Attack = DataManager.Instance.FindMonsterData(_monsterType.ToString() + Level.ToString()).Attack;
+            Exp = DataManager.Instance.FindMonsterData(_monsterType.ToString() + Level.ToString()).Exp;
+            Score = DataManager.Instance.FindMonsterData(_monsterType.ToString() + Level.ToString()).Score;
 
-        //// µð¹ö±ë¿ë
-        //Debug.Log($"MonsterInfo MaxHp : {MaxHp}\nMonsterInfo Attack : {Attack}\nMonsterInfo Exp : {Exp}");
+            CurHp = MaxHp;
 
-        CurHp = MaxHp;
+            photonView.RPC(nameof(SetMonsterInformation), RpcTarget.Others, CurHp, MaxHp);
+        }
 
         IsDead = false;
 
         _monsterFSM.ChangeState(EStateIDs.Spawn);
 
-        _monsterCurrentHP = _monsterMaxHP;
-
-        _initializePosition = _monsterSpawnManager.gameObject.transform;
-
-        gameObject.transform.position = _initializePosition.position;
-
-        _monsterSpawnDirection = _monsterSpawnManager.InitializeDirection;
-
-        Quaternion monsterInitializeDirection = Quaternion.Euler(0f, _monsterSpawnDirection, 0f);
-
-        gameObject.transform.rotation = monsterInitializeDirection;
-
-        _isTargeting = false;
+        IsTargeting = false;
         _isWithinAttackRange = false;
+    }
+
+    [PunRPC]
+    public void SetMonsterInformation(int curHp, int maxHp)
+    {
+        CurHp = curHp;
+        MaxHp = maxHp;
     }
 
     private void Start()
     {
         NickName = gameObject.name;
+    }
+
+    public override void Respawn()
+    {
+        photonView.RPC(nameof(MonsterActive), RpcTarget.AllViaServer, false);
+    }
+
+    [PunRPC]
+    public void MonsterActive(bool b)
+    {
+        gameObject.SetActive(b);
     }
 }

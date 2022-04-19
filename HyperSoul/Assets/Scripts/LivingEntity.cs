@@ -33,6 +33,8 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
     protected Animator _animator;
     protected bool _isHitting = false;
 
+    public Animator CreatureAnimator { get { return _animator; } }
+
     public int Exp { get; set; }
     public int Level { get; set; }
     public int MaxLevel { get { return 5; } }
@@ -50,6 +52,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
     private void LateUpdate()
     {
         _hpBarOverhead.value = (float)CurHp / MaxHp;
+
         _hpBarOverheadCanvas.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;
     }
 
@@ -90,7 +93,12 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
             }
             CurHp -= damageAmt;
 
-           
+            if (CurHp <= 0 && IsDead == false)
+            {
+                GiveScore(attackerID, Score);
+                GiveExp(attackerID, Exp);
+            }
+
             //photonView.RPC("TakeDamage", RpcTarget.Others, attackerID, damageAmt, hitPoint, hitNormal);
         }
 
@@ -99,12 +107,12 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
             CurHp = 0;
             //GameManager.Instance.SendDieMessage(PhotonView.Find(attackerID).GetComponent<LivingEntity>(), this);
             
-            photonView.RPC("Die", RpcTarget.AllBuffered);
+            photonView.RPC(nameof(Die), RpcTarget.AllBuffered);
 
             Debug.Log($"Score : {Score}");
 
-            GiveScore(attackerID, Score);
-            GiveExp(attackerID, Exp);
+            //GiveScore(attackerID, Score);
+            //GiveExp(attackerID, Exp);
         }
         else if (false == _isHitting && IsDead)
         {
@@ -158,24 +166,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
         }
     }
 
-    public virtual void Respawn()
-    {
-        gameObject.SetActive(false);
-    }
-
-    public virtual void UpdateLevelUpInfo(string info)
-    {
-        switch (Type)
-        {
-            case CharacterType.Monster:
-                MonsterData monsterData = DataManager.Instance.FindMonsterData(info);
-                MaxHp = monsterData.MaxHp;
-                CurHp = MaxHp;
-                Attack = monsterData.Attack;
-                Exp = monsterData.Exp;
-                break;
-        }
-    }
+    public abstract void Respawn();
 
     public void GiveScore(int attackerID, int score)
     {

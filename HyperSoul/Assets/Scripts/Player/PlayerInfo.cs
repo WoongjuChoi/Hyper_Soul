@@ -213,6 +213,18 @@ public class PlayerInfo : LivingEntity
     private void ScoreUpdate()
     {
         _scoreText.text = $"Score : {CurScore}";
+
+        if (GameManager.Instance.IsGameOver)
+        {
+            photonView.RPC(nameof(MyScoreUpdate), RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
+    private void MyScoreUpdate()
+    {
+        int myPlayerOrderIndex = DataManager.Instance.MyPlayerOrderIndex;
+        DataManager.Instance.PlayerInfos[myPlayerOrderIndex].score = CurScore;
     }
 
     private IEnumerator LevelUp()

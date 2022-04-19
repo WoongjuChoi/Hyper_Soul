@@ -152,10 +152,19 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
         IsDead = true;
         if (photonView.IsMine)
         {
-            _animator.SetTrigger(CommonAnimatorID.DIE);
+            StartCoroutine(DieCoroutine());
 
-            Invoke(nameof(Respawn), 1.5f);
+            Respawn();
         }
+    }
+
+    private IEnumerator DieCoroutine()
+    {
+        _animator.SetBool(CommonAnimatorID.DIE, true);
+
+        yield return new WaitForSeconds(0.1f);
+
+        _animator.SetBool(CommonAnimatorID.DIE, false);
     }
 
     public virtual void Respawn()

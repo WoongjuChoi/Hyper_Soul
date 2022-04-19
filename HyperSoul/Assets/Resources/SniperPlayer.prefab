@@ -8716,7 +8716,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ef8acc97e1cd084099a198e69886c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 8
   _jumpForce: 10
   _cameraArm: {fileID: 7060348393687223639}
   _weapon: {fileID: 8709393862377261426}

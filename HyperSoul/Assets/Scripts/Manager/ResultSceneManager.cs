@@ -91,7 +91,12 @@ public class ResultSceneManager : MonoBehaviour
                 break;
         }
 
+        //if (rank == 3)
+        //{
+        //    player.GetComponent<Canvas>().gameObject.transform.position = new Vector3(0, 1, 0);
+        //}
+
         player.GetComponentInChildren<Animator>().SetTrigger(AnimationTrigger);
-        player.GetComponentInChildren<Text>().text = info.playerName;
+        player.GetComponentInChildren<Text>().text = info.playerName + "\n" + info.score;
     }
 }

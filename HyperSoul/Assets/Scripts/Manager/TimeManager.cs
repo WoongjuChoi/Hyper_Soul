@@ -151,6 +151,16 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
         GameManager.Instance.IsGameOver = gameOver;
 
         _GameOverText.gameObject.SetActive(true);
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Invoke("GoResultScene", 3f);
+        }
+    }
+
+    private void GoResultScene()
+    {
+        PhotonNetwork.LoadLevel("ResultScene");
     }
 
     [PunRPC]

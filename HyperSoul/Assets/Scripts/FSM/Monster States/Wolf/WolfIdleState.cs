@@ -72,10 +72,19 @@ public class WolfIdleState : BaseState<WolfInformation>
 
         if (_elapsedTime >= _changeRestingAnimationTime)
         {
-            CreatureInformation.CreatureAnimator.SetTrigger(MonsterAnimatorID.HAS_RESTING);
+            StartCoroutine(RestingAnimator());
 
             _playAnimation = true;
         }
+    }
+
+    private IEnumerator RestingAnimator()
+    {
+        CreatureInformation.CreatureAnimator.SetBool(MonsterAnimatorID.IS_RESTING, true);
+
+        yield return new WaitForSeconds(0.1f);
+
+        CreatureInformation.CreatureAnimator.SetBool(MonsterAnimatorID.IS_RESTING, false);
     }
 
     private void IncreaseHealing()

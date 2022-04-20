@@ -429,6 +429,7 @@ GameObject:
   - component: {fileID: 3389361559797630753}
   - component: {fileID: 3389361559797630752}
   - component: {fileID: 3389361559797630755}
+  - component: {fileID: 165610381283347585}
   - component: {fileID: 3389361559797630765}
   - component: {fileID: 3389361559797630764}
   - component: {fileID: 7746764716110101254}
@@ -443,6 +444,7 @@ GameObject:
   - component: {fileID: 3389361559797630766}
   - component: {fileID: 3389361561535918764}
   - component: {fileID: 7137063948790295214}
+  - component: {fileID: 4318733810436777255}
   m_Layer: 12
   m_Name: Black Wolf
   m_TagString: Untagged
@@ -488,7 +490,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3389361559797630761}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.5, y: 1, z: 1}
@@ -506,6 +508,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 1, z: 1.75}
   m_Center: {x: 0, y: 0, z: 1.55}
+--- !u!54 &165610381283347585
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3389361559797630761}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!114 &3389361559797630765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -703,6 +721,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 7137063948790295214}
+  - {fileID: 4318733810436777255}
   - {fileID: 2558911861377477455}
   - {fileID: 4506151842377235016}
   sceneViewId: 0
@@ -724,6 +743,22 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &4318733810436777255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3389361559797630761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &3389361559803868872
 GameObject:
   m_ObjectHideFlags: 0
@@ -1508,15 +1543,6 @@ MonoBehaviour:
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
   m_SynchronizeParameters:
-  - Type: 9
-    SynchronizeType: 2
-    Name: hasDie
-  - Type: 9
-    SynchronizeType: 2
-    Name: hasResting
-  - Type: 9
-    SynchronizeType: 2
-    Name: hasSpawn
   - Type: 4
     SynchronizeType: 2
     Name: isAlert
@@ -1541,6 +1567,12 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 2
     Name: Die
+  - Type: 4
+    SynchronizeType: 2
+    Name: isSpawn
+  - Type: 4
+    SynchronizeType: 2
+    Name: isResting
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0

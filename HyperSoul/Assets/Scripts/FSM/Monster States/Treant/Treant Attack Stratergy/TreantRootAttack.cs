@@ -52,7 +52,11 @@ public class TreantRootAttack : MonoBehaviourPun, ITreantAttack
 
         yield return new WaitForSeconds(0.1f);
 
-        _treantRoot.GetComponent<Animator>().SetTrigger(MonsterAnimatorID.HAS_SPAWN);
+        _treantRoot.GetComponent<Animator>().SetBool(MonsterAnimatorID.IS_SPAWN, true);
+
+        yield return new WaitForSeconds(0.1f);
+
+        _treantRoot.GetComponent<Animator>().SetBool(MonsterAnimatorID.IS_SPAWN, false);
 
         yield return new WaitForSeconds(4f);
 

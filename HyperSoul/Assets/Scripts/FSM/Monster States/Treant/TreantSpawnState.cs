@@ -10,7 +10,16 @@ public class TreantSpawnState : BaseState<TreantInformation>
     {
         CreatureInformation.MonsterCurrentState = EStateIDs.Spawn;
 
-        GameObject.GetComponentInChildren<Animator>().SetTrigger(MonsterAnimatorID.HAS_SPAWN);
+        StartCoroutine(SpawnAnimator());
+    }
+
+    private IEnumerator SpawnAnimator()
+    {
+        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_SPAWN, true);
+        
+        yield return new WaitForSeconds(0.1f);
+
+        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_SPAWN, false);
     }
 
     public override void ExitState()

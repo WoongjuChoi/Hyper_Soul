@@ -60,46 +60,7 @@ public class TreantInformation : MonsterInformation
 
     public override void OnTriggerEnter(Collider other)
     {
-        if (false == IsDamaged && SampleObjectParameterID.LAYER_SAMPLE_AMMO == other.gameObject.layer)
-        {
-            if (EStateIDs.Attack == MonsterCurrentState || EStateIDs.Idle == MonsterCurrentState || EStateIDs.RotatePosition == MonsterCurrentState)
-            {
-                _collisionVec = other.gameObject.transform.position;
-
-                IsDamaged = true;
-
-                if (false == IsTargeting)
-                {
-                    _attackerInfo = other.gameObject.GetComponent<Projectile>();
-
-                    _target = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
-
-                    IsTargeting = true;
-                }
-            }
-        }
-    }
-
-    public override void OnCollisionEnter(Collision collision)
-    {
-        //if (false == IsDamaged && SampleObjectParameterID.LAYER_SAMPLE_AMMO == collision.gameObject.layer)
-        //{
-        //    if (EStateIDs.Attack == MonsterCurrentState || EStateIDs.Idle == MonsterCurrentState || EStateIDs.RotatePosition == MonsterCurrentState)
-        //    {
-        //        _collisionVec = collision.gameObject.transform.position;
-
-        //        IsDamaged = true;
-
-        //        if (false == IsTargeting)
-        //        {
-        //            _attackerInfo = collision.gameObject.GetComponent<Projectile>();
-
-        //            _target = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
-
-        //            IsTargeting = true;
-        //        }
-        //    }
-        //}
+        MonsterDamage(other);
     }
 
     private void Update()
@@ -133,6 +94,28 @@ public class TreantInformation : MonsterInformation
         else
         {
             _existInSight = false;
+        }
+    }
+
+    public override void MonsterDamage(Collider other)
+    {
+        if (false == IsDamaged && LayerParameter.LAYER_AMMO == other.gameObject.layer)
+        {
+            if (EStateIDs.Attack == MonsterCurrentState || EStateIDs.Idle == MonsterCurrentState || EStateIDs.RotatePosition == MonsterCurrentState)
+            {
+                _collisionVec = other.gameObject.transform.position;
+
+                IsDamaged = true;
+
+                if (false == IsTargeting)
+                {
+                    _attackerInfo = other.gameObject.GetComponent<Projectile>();
+
+                    _target = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
+
+                    IsTargeting = true;
+                }
+            }
         }
     }
 }

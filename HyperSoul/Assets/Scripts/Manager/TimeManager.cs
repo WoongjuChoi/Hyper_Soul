@@ -101,7 +101,6 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
 
             photonView.RPC(nameof(SetGameOver), RpcTarget.AllViaServer, true);
         }
-
     }
 
     private void CheckReadyTimer()
@@ -119,7 +118,7 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
 
         //Debug.Log($"_timerText : {_timerText}");
 
-        if (0 == _timerText)
+        if (0 >= _timerText)
         {
             photonView.RPC(nameof(SetIsReady), RpcTarget.AllViaServer, false);
 

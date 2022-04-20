@@ -31,7 +31,7 @@ public class SampleAmmo : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (SampleObjectParameterID.LAYER_SAMPLE_PLAYER != collision.gameObject.layer)
+        if (LayerParameter.LAYER_PLAYER != collision.gameObject.layer)
         {
             gameObject.SetActive(false);
 

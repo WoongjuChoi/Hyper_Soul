@@ -1574,15 +1574,6 @@ MonoBehaviour:
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
   m_SynchronizeParameters:
-  - Type: 9
-    SynchronizeType: 2
-    Name: hasDie
-  - Type: 9
-    SynchronizeType: 2
-    Name: hasResting
-  - Type: 9
-    SynchronizeType: 2
-    Name: hasSpawn
   - Type: 4
     SynchronizeType: 2
     Name: isAlert
@@ -1607,6 +1598,12 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 2
     Name: Die
+  - Type: 4
+    SynchronizeType: 2
+    Name: isSpawn
+  - Type: 4
+    SynchronizeType: 2
+    Name: isResting
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0

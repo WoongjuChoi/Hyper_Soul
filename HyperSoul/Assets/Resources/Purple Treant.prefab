@@ -418,11 +418,11 @@ MonoBehaviour:
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
   m_SynchronizeParameters:
-  - Type: 9
+  - Type: 4
     SynchronizeType: 2
-    Name: hasSpawn
+    Name: isSpawn
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 2
     LayerIndex: 0
 --- !u!1 &1466246566505018302
 GameObject:
@@ -5627,12 +5627,6 @@ MonoBehaviour:
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
   m_SynchronizeParameters:
-  - Type: 9
-    SynchronizeType: 2
-    Name: hasDie
-  - Type: 9
-    SynchronizeType: 2
-    Name: hasSpawn
   - Type: 4
     SynchronizeType: 2
     Name: isDamaged
@@ -5654,6 +5648,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 2
     Name: Die
+  - Type: 4
+    SynchronizeType: 2
+    Name: isSpawn
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0

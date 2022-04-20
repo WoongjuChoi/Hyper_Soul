@@ -60,7 +60,12 @@ public class TreantInformation : MonsterInformation
 
     public override void OnTriggerEnter(Collider other)
     {
-        MonsterDamage(other);
+        if (null != other.gameObject.GetComponent<PhotonView>())
+        {
+            int colliderID = other.gameObject.GetComponent<PhotonView>().ViewID;
+
+            MonsterDamage(colliderID);
+        }
     }
 
     private void Update()
@@ -97,19 +102,21 @@ public class TreantInformation : MonsterInformation
         }
     }
 
-    public override void MonsterDamage(Collider other)
+    public override void MonsterDamage(int ID)
     {
-        if (false == IsDamaged && LayerParameter.LAYER_AMMO == other.gameObject.layer)
+        GameObject collideObject = PhotonView.Find(ID).gameObject;
+
+        if (false == IsDamaged && LayerParameter.LAYER_AMMO == collideObject.layer)
         {
             if (EStateIDs.Attack == MonsterCurrentState || EStateIDs.Idle == MonsterCurrentState || EStateIDs.RotatePosition == MonsterCurrentState)
             {
-                _collisionVec = other.gameObject.transform.position;
+                _collisionVec = collideObject.transform.position;
 
                 IsDamaged = true;
 
                 if (false == IsTargeting)
                 {
-                    _attackerInfo = other.gameObject.GetComponent<Projectile>();
+                    _attackerInfo = collideObject.GetComponent<Projectile>();
 
                     _target = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
 

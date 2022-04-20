@@ -100,5 +100,5 @@ public abstract class MonsterInformation : LivingEntity
         gameObject.SetActive(b);
     }
 
-    public abstract void MonsterDamage(Collider other);
+    public abstract void MonsterDamage(int ID);
 }

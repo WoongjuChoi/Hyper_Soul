@@ -49,8 +49,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         // MonsterSpawnManager 게임오브젝트 찾기    (22.04.19)
         if (PhotonNetwork.IsMasterClient)
         {
-            //_monsterSpawnManager = GameObject.Find("Monster Spawn Manager");
+            _monsterSpawnManager = GameObject.Find("Monster Spawn Manager");
         }    
+
         _chatManager = GameObject.Find("ChatManager").gameObject.GetComponent<ChatManager>();
     }
 
@@ -90,7 +91,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         // Monster 위치시키는 함수 실행  (22.04.19)
         if (PhotonNetwork.IsMasterClient)
         {
-            //_monsterSpawnManager.GetComponent<MonsterSpawnManager>().SetMonsterPosition();
+            _monsterSpawnManager.GetComponent<MonsterSpawnManager>().SetMonsterPosition();
         }
     }
 

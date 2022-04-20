@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TreantStompAttack : MonoBehaviour, ITreantAttack
+public class TreantStompAttack : MonoBehaviourPun, ITreantAttack
 {
     [SerializeField]
     private GameObject _attackCollider = null;
@@ -27,7 +27,12 @@ public class TreantStompAttack : MonoBehaviour, ITreantAttack
 
     private void OnEnable()
     {
-        _attackCollider.SetActive(false);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _attackCollider.SetActive(false);
+
+            photonView.RPC(nameof(StompObjectActive), RpcTarget.Others, false);
+        }
     }
 
     private void Start()
@@ -60,8 +65,10 @@ public class TreantStompAttack : MonoBehaviour, ITreantAttack
         if (PhotonNetwork.IsMasterClient)
         {
             _attackCollider.SetActive(true);
+
+            photonView.RPC(nameof(StompObjectActive), RpcTarget.Others, true);
         }
-        
+
         while (_distance > 1f)
         {
             _attackCollider.transform.position += MOVE_SPEED * Time.deltaTime * gameObject.transform.up;
@@ -77,7 +84,12 @@ public class TreantStompAttack : MonoBehaviour, ITreantAttack
 
         _distance = (_endPoint.transform.position - _startPoint.transform.position).magnitude;
 
-        _attackCollider.SetActive(false);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _attackCollider.SetActive(false);
+
+            photonView.RPC(nameof(StompObjectActive), RpcTarget.Others, false);
+        }
 
         yield return new WaitForSeconds(3f);
 
@@ -87,7 +99,7 @@ public class TreantStompAttack : MonoBehaviour, ITreantAttack
     public void StopAttack()
     {
         _isAttack = false;
-        
+
         _distance = (_endPoint.transform.position - _startPoint.transform.position).magnitude;
 
         _attackCollider.transform.position = _startPoint.transform.position;
@@ -98,5 +110,11 @@ public class TreantStompAttack : MonoBehaviour, ITreantAttack
         {
             StopCoroutine(_stompAttackCoroutine);
         }
+    }
+
+    [PunRPC]
+    public void StompObjectActive(bool b)
+    {
+        _attackCollider.SetActive(b);
     }
 }

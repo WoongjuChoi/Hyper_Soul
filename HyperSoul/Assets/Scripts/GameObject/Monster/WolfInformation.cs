@@ -77,11 +77,29 @@ public class WolfInformation : MonsterInformation
         _monsterAnimatorIndex = index;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public override void OnTriggerEnter(Collider other)
     {
         if (SampleObjectParameterID.LAYER_SAMPLE_PLAYER == other.gameObject.layer)
         {
             _isWithinAttackRange = true;
+        }
+
+        if (false == IsDamaged && SampleObjectParameterID.LAYER_SAMPLE_AMMO == other.gameObject.layer)
+        {
+            if (EStateIDs.Alert == MonsterCurrentState || EStateIDs.Attack == MonsterCurrentState || EStateIDs.Chase == MonsterCurrentState || EStateIDs.Idle == MonsterCurrentState)
+            {
+                _collisionVec = gameObject.transform.position;
+
+                IsDamaged = true;
+
+                _attackerInfo = other.gameObject.GetComponent<Projectile>();
+
+                _target = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
+
+                Vector3 targetPosition = _target.transform.position + new Vector3(0f, 1.3f, 0f);
+
+                _lookAtTargetVec = targetPosition - _collisionVec;
+            }
         }
     }
 
@@ -103,23 +121,23 @@ public class WolfInformation : MonsterInformation
 
     public override void OnCollisionEnter(Collision collision)
     {
-        if (false == IsDamaged && SampleObjectParameterID.LAYER_SAMPLE_AMMO == collision.gameObject.layer)
-        {
-            if (EStateIDs.Alert == MonsterCurrentState || EStateIDs.Attack == MonsterCurrentState || EStateIDs.Chase == MonsterCurrentState || EStateIDs.Idle == MonsterCurrentState)
-            {
-                _collisionVec = gameObject.transform.position;
+        //if (false == IsDamaged && SampleObjectParameterID.LAYER_SAMPLE_AMMO == collision.gameObject.layer)
+        //{
+        //    if (EStateIDs.Alert == MonsterCurrentState || EStateIDs.Attack == MonsterCurrentState || EStateIDs.Chase == MonsterCurrentState || EStateIDs.Idle == MonsterCurrentState)
+        //    {
+        //        _collisionVec = gameObject.transform.position;
 
-                IsDamaged = true;
+        //        IsDamaged = true;
 
-                _attackerInfo = collision.gameObject.GetComponent<Projectile>();
+        //        _attackerInfo = collision.gameObject.GetComponent<Projectile>();
 
-                _target = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
+        //        _target = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
 
-                Vector3 targetPosition = _target.transform.position + new Vector3(0f, 1.3f, 0f);
+        //        Vector3 targetPosition = _target.transform.position + new Vector3(0f, 1.3f, 0f);
 
-                _lookAtTargetVec = targetPosition - _collisionVec;
-            }
-        }
+        //        _lookAtTargetVec = targetPosition - _collisionVec;
+        //    }
+        //}
 
         if (SampleObjectParameterID.LAYER_SAMPLE_PLAYER == collision.gameObject.layer)
         {

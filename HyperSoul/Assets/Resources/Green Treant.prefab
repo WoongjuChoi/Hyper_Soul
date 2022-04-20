@@ -583,6 +583,7 @@ GameObject:
   - component: {fileID: 5921869202839836983}
   - component: {fileID: 6635159434083680893}
   - component: {fileID: 7413426063218941799}
+  - component: {fileID: 6887304700217788918}
   m_Layer: 12
   m_Name: Green Treant
   m_TagString: Untagged
@@ -916,9 +917,10 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 7413426063218941799}
+  - {fileID: 6887304700217788918}
   - {fileID: 1720183949523376999}
   - {fileID: 7334060388992514113}
-  - {fileID: 2694283500727369483}
+  - {fileID: 1969361087520705382}
   - {fileID: 1655902686077004744}
   - {fileID: 7430855791928548294}
   sceneViewId: 0
@@ -940,6 +942,22 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &6887304700217788918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5921869202839836987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &5921869203745610184
 GameObject:
   m_ObjectHideFlags: 0
@@ -1116,7 +1134,7 @@ GameObject:
   - component: {fileID: 3462930166696726845}
   - component: {fileID: 8710842450999135579}
   - component: {fileID: 7334060388992514113}
-  - component: {fileID: 2694283500727369483}
+  - component: {fileID: 1969361087520705382}
   - component: {fileID: 1655902686077004744}
   m_Layer: 13
   m_Name: Root Green
@@ -1220,7 +1238,7 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &2694283500727369483
+--- !u!114 &1969361087520705382
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

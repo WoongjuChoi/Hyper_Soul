@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TreantRootAttack : MonoBehaviour, ITreantAttack
+public class TreantRootAttack : MonoBehaviourPun, ITreantAttack
 {
     [SerializeField]
     private GameObject _treantRoot = null;
@@ -34,7 +35,12 @@ public class TreantRootAttack : MonoBehaviour, ITreantAttack
 
         _animator.SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, true);
 
-        _treantRoot.SetActive(true);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _treantRoot.SetActive(true);
+
+            photonView.RPC(nameof(RootObjectActive), RpcTarget.Others, true);
+        }
 
         yield return new WaitForSeconds(0.1f);
 
@@ -50,7 +56,12 @@ public class TreantRootAttack : MonoBehaviour, ITreantAttack
 
         yield return new WaitForSeconds(4f);
 
-        _treantRoot.SetActive(false);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _treantRoot.SetActive(false);
+
+            photonView.RPC(nameof(RootObjectActive), RpcTarget.Others, false);
+        }
 
         yield return new WaitForSeconds(1f);
 
@@ -67,5 +78,11 @@ public class TreantRootAttack : MonoBehaviour, ITreantAttack
         {
             StopCoroutine(_rootAttackCoroutine);
         }
+    }
+
+    [PunRPC]
+    public void RootObjectActive(bool b)
+    {
+        _treantRoot.SetActive(b);
     }
 }

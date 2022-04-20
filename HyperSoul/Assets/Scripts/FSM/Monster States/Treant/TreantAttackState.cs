@@ -35,15 +35,6 @@ public class TreantAttackState : BaseState<TreantInformation>
 
     public override void UpdateState()
     {
-        if (CreatureInformation.Target.GetComponent<LivingEntity>().IsDead)
-        {
-            CreatureInformation.IsTargeting = false;
-
-            FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
-
-            return;
-        }
-
         if (CreatureInformation.IsDamaged)
         {
             FiniteStateMachine.ChangeState(EStateIDs.Damaged);
@@ -51,9 +42,11 @@ public class TreantAttackState : BaseState<TreantInformation>
             return;
         }
 
-        if (false == CreatureInformation.ExistInSight)
+        if (CreatureInformation.Target.GetComponent<LivingEntity>().IsDead || false == CreatureInformation.ExistInSight)
         {
-            FiniteStateMachine.ChangeState(EStateIDs.RotatePosition);
+            CreatureInformation.IsTargeting = false;
+
+            FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
 
             return;
         }

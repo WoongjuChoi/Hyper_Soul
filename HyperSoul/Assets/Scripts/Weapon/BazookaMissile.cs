@@ -105,7 +105,6 @@ public class BazookaMissile : Projectile
 
     private void OnTriggerEnter(Collider collider)
     {
-        Debug.Log($"{collider.gameObject.name}¿¡¼­ Æø¹ßÇÔ");
         Explosion(transform.position);
         photonView.RPC(nameof(Explosion), RpcTarget.Others, transform.position);
     }
@@ -145,7 +144,7 @@ public class BazookaMissile : Projectile
                 }
                 else if (MONSTER_LAYER == col.gameObject.layer)
                 {
-                    col.gameObject.GetComponent<MonsterInformation>().TakeMonsterDamage(Attack);
+                    //col.gameObject.GetComponent<MonsterInformation>().MonsterDamage(gameObject.GetComponent<Collider>());
                 }
             }
         }
@@ -153,6 +152,7 @@ public class BazookaMissile : Projectile
 
         if (photonView.IsMine)
         {
+            photonView.RPC(nameof(SetInit), RpcTarget.All);
             ReturnMissile();
         }
         explosionCoroutine = null;
@@ -170,14 +170,19 @@ public class BazookaMissile : Projectile
             StopCoroutine(explosionCoroutine);
         }
 
-        MissilePrefab.SetActive(true);
-        RocketParticleEffect.SetActive(false);
-        ExplosionEffect.SetActive(false);
 
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         _isHit = false;
 
         _projectileReturn(gameObject);
+    }
+
+    [PunRPC]
+    private void SetInit()
+    {
+        MissilePrefab.SetActive(true);
+        RocketParticleEffect.SetActive(false);
+        ExplosionEffect.SetActive(false);
     }
 }

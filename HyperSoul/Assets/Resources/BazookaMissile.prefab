@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3925037113999933903
 Transform:
   m_ObjectHideFlags: 0
@@ -9867,6 +9867,7 @@ GameObject:
   - component: {fileID: 5291299365151892888}
   - component: {fileID: 3136841636401813356}
   - component: {fileID: 2466905187335634039}
+  - component: {fileID: 8534049127828603824}
   m_Layer: 0
   m_Name: BazookaMissile
   m_TagString: Untagged
@@ -9945,6 +9946,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 3136841636401813356}
+  - {fileID: 8534049127828603824}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -9976,6 +9978,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4373d5e7f41d344492cd29a76ecd98e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8534049127828603824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5412352353896642085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1001 &133719831722333001
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9993,7 +10011,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 858254026862122849, guid: 1766a670ebcd6184fa925641db1abbba, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5259923927791077651, guid: 1766a670ebcd6184fa925641db1abbba, type: 3}
       propertyPath: m_RootOrder

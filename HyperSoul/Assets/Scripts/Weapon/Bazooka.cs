@@ -121,7 +121,7 @@ public class Bazooka : Weapon
         bazookaMissile.Attack = _playerInfo.Attack;
         bazookaMissile.GetComponent<PoolObject>().SetActiveObj(true);
         bazookaMissile.ReceiveReturnProjectileFunc(ReturnProjectile);
-        bazookaMissile.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.AllViaServer, true);
+        bazookaMissile.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.All, true);
 
 
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, true);

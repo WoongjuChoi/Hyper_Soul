@@ -58,25 +58,13 @@ public class TreantInformation : MonsterInformation
         _monsterFSM.AddState(EStateIDs.Spawn, _treantSpawnState);
     }
 
-    public override void OnCollisionEnter(Collision collision)
+    public override void OnTriggerEnter(Collider other)
     {
-        if (false == IsDamaged && SampleObjectParameterID.LAYER_SAMPLE_AMMO == collision.gameObject.layer)
+        if (null != other.gameObject.GetComponent<PhotonView>())
         {
-            if (EStateIDs.Attack == MonsterCurrentState || EStateIDs.Idle == MonsterCurrentState || EStateIDs.RotatePosition == MonsterCurrentState)
-            {
-                _collisionVec = collision.gameObject.transform.position;
+            int colliderID = other.gameObject.GetComponent<PhotonView>().ViewID;
 
-                IsDamaged = true;
-
-                if (false == IsTargeting)
-                {
-                    _attackerInfo = collision.gameObject.GetComponent<Projectile>();
-
-                    _target = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
-
-                    IsTargeting = true;
-                }
-            }
+            MonsterDamage(colliderID);
         }
     }
 
@@ -111,6 +99,30 @@ public class TreantInformation : MonsterInformation
         else
         {
             _existInSight = false;
+        }
+    }
+
+    public override void MonsterDamage(int ID)
+    {
+        GameObject collideObject = PhotonView.Find(ID).gameObject;
+
+        if (false == IsDamaged && LayerParameter.LAYER_AMMO == collideObject.layer)
+        {
+            if (EStateIDs.Attack == MonsterCurrentState || EStateIDs.Idle == MonsterCurrentState || EStateIDs.RotatePosition == MonsterCurrentState)
+            {
+                _collisionVec = collideObject.transform.position;
+
+                IsDamaged = true;
+
+                if (false == IsTargeting)
+                {
+                    _attackerInfo = collideObject.GetComponent<Projectile>();
+
+                    _target = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
+
+                    IsTargeting = true;
+                }
+            }
         }
     }
 }

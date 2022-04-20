@@ -93,6 +93,8 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
             }
             CurHp -= damageAmt;
 
+            Debug.Log($"damageAmt : {damageAmt}");
+
             if (CurHp <= 0 && IsDead == false)
             {
                 GiveScore(attackerID, Score);

@@ -314,10 +314,8 @@ GameObject:
   - component: {fileID: 1464287308591926832}
   - component: {fileID: 1517672977247203068}
   - component: {fileID: 1467457754326675459}
-  - component: {fileID: 5523297436763561340}
   - component: {fileID: 1467457754326675458}
   - component: {fileID: 2987024790502333322}
-  - component: {fileID: 103684138873351853}
   - component: {fileID: 4049944202997991353}
   m_Layer: 13
   m_Name: Root Purple
@@ -375,22 +373,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.4, z: 0.1}
   m_Center: {x: 0, y: 0.2, z: 0}
---- !u!54 &5523297436763561340
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1466242037181407008}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
 --- !u!114 &1467457754326675458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,22 +403,6 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &103684138873351853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1466242037181407008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 0
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
 --- !u!114 &4049944202997991353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -452,11 +418,11 @@ MonoBehaviour:
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
   m_SynchronizeParameters:
-  - Type: 9
+  - Type: 4
     SynchronizeType: 2
-    Name: hasSpawn
+    Name: isSpawn
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 2
     LayerIndex: 0
 --- !u!1 &1466246566505018302
 GameObject:
@@ -5661,12 +5627,6 @@ MonoBehaviour:
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
   m_SynchronizeParameters:
-  - Type: 9
-    SynchronizeType: 2
-    Name: hasDie
-  - Type: 9
-    SynchronizeType: 2
-    Name: hasSpawn
   - Type: 4
     SynchronizeType: 2
     Name: isDamaged
@@ -5688,6 +5648,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 2
     Name: Die
+  - Type: 4
+    SynchronizeType: 2
+    Name: isSpawn
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0
@@ -6532,6 +6495,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4710790873026732667}
   - component: {fileID: 4710790873026732669}
+  - component: {fileID: 6814374048118499342}
   - component: {fileID: 7081784377893977787}
   - component: {fileID: 4710790873026732671}
   - component: {fileID: 4710790873026732668}
@@ -6545,6 +6509,7 @@ GameObject:
   - component: {fileID: 4710790873026732663}
   - component: {fileID: 4710790873026732660}
   - component: {fileID: 5718007630330526014}
+  - component: {fileID: 8187905916868218919}
   m_Layer: 12
   m_Name: Purple Treant
   m_TagString: Untagged
@@ -6587,6 +6552,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3, y: 4, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &6814374048118499342
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4710790873026732664}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!82 &7081784377893977787
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6861,14 +6842,30 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 8187905916868218919}
   - {fileID: 6468913042251341610}
   - {fileID: 2987024790502333322}
-  - {fileID: 103684138873351853}
   - {fileID: 4049944202997991353}
   - {fileID: 4256151541655464093}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &8187905916868218919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4710790873026732664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &4710790874335027851
 GameObject:
   m_ObjectHideFlags: 0

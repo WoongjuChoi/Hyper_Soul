@@ -77,17 +77,26 @@ public class WolfInformation : MonsterInformation
         _monsterAnimatorIndex = index;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public override void OnTriggerEnter(Collider other)
     {
-        if (SampleObjectParameterID.LAYER_SAMPLE_PLAYER == other.gameObject.layer)
+        if (LayerParameter.LAYER_PLAYER == other.gameObject.layer)
         {
             _isWithinAttackRange = true;
+        }
+
+        if (null != other.gameObject.GetComponent<PhotonView>())
+        {
+            Debug.Log($"other.gameObject.name : {other.gameObject.name}");
+
+            int colliderID = other.gameObject.GetComponent<PhotonView>().ViewID;
+
+            MonsterDamage(colliderID);
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (SampleObjectParameterID.LAYER_SAMPLE_PLAYER == other.gameObject.layer)
+        if (LayerParameter.LAYER_PLAYER == other.gameObject.layer)
         {
             _isWithinAttackRange = true;
         }
@@ -95,7 +104,7 @@ public class WolfInformation : MonsterInformation
 
     private void OnTriggerExit(Collider other)
     {
-        if (SampleObjectParameterID.LAYER_SAMPLE_PLAYER == other.gameObject.layer)
+        if (LayerParameter.LAYER_PLAYER == other.gameObject.layer)
         {
             _isWithinAttackRange = false;
         }
@@ -103,7 +112,17 @@ public class WolfInformation : MonsterInformation
 
     public override void OnCollisionEnter(Collision collision)
     {
-        if (false == IsDamaged && SampleObjectParameterID.LAYER_SAMPLE_AMMO == collision.gameObject.layer)
+        if (LayerParameter.LAYER_PLAYER == collision.gameObject.layer)
+        {
+            _isWithinAttackRange = true;
+        }
+    }
+
+    public override void MonsterDamage(int ID)
+    {
+        GameObject collideObject = PhotonView.Find(ID).gameObject;
+
+        if (false == IsDamaged && LayerParameter.LAYER_AMMO == collideObject.layer)
         {
             if (EStateIDs.Alert == MonsterCurrentState || EStateIDs.Attack == MonsterCurrentState || EStateIDs.Chase == MonsterCurrentState || EStateIDs.Idle == MonsterCurrentState)
             {
@@ -111,7 +130,7 @@ public class WolfInformation : MonsterInformation
 
                 IsDamaged = true;
 
-                _attackerInfo = collision.gameObject.GetComponent<Projectile>();
+                _attackerInfo = collideObject.GetComponent<Projectile>();
 
                 _target = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
 
@@ -119,11 +138,6 @@ public class WolfInformation : MonsterInformation
 
                 _lookAtTargetVec = targetPosition - _collisionVec;
             }
-        }
-
-        if (SampleObjectParameterID.LAYER_SAMPLE_PLAYER == collision.gameObject.layer)
-        {
-            _isWithinAttackRange = true;
         }
     }
 }

@@ -24,14 +24,8 @@ class PlayerAnimatorID
 
 public class MonsterAnimatorID
 {
-    public const string HAS_ALERT = "hasAlert";
-    public const string HAS_ATTACK = "hasAttack";
-    public const string HAS_DIE = "hasDie";
-    public const string HAS_IDLE = "hasIdle";
-    public const string HAS_RESTING = "hasResting";
-    public const string HAS_WALK = "hasWalk";
-    public const string HAS_SPAWN = "hasSpawn";
-
+    public const string IS_RESTING = "isResting";
+    public const string IS_SPAWN = "isSpawn";
     public const string IS_ALERT = "isAlert";
     public const string IS_ATTACK = "isAttack";
     public const string IS_DAMAGED = "isDamaged";
@@ -54,13 +48,6 @@ public class ResultSceneParameterID
     public const string LOSE = "Lose";
 }
 
-public class SampleObjectParameterID
-{
-    public const int LAYER_SAMPLE_PLAYER = 10;
-    public const int LAYER_SAMPLE_AMMO = 11;
-    public const int LAYER_MONSTER_BOUNDARY = 12;
-}
-
 class TagParameterID
 {
     public const string MAP = "Map"; // Layer·Î ¹Ù²ã¾ßÇÔ
@@ -79,7 +66,11 @@ class LayerParameter
 {
     public const int PLAYER = 3;
     public const int MONSTER = 6; 
-    public const int BULLET = 7;
+    public const int BULLET = 7; 
+
+    public const int LAYER_PLAYER = 10;
+    public const int LAYER_AMMO = 11;
+    public const int LAYER_BOUNDARY = 12;
 }
 
 public enum EPlayerType

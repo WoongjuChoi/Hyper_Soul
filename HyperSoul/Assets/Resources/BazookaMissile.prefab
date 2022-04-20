@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3925037113999933903}
   - component: {fileID: 8607549936997029812}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: ExplosionEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 4296430238211426558}
   - component: {fileID: 5633987169989672805}
   - component: {fileID: 7235160697251418393}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5002,7 +5002,7 @@ GameObject:
   - component: {fileID: 6364875482894770470}
   - component: {fileID: 7082967956748783006}
   - component: {fileID: 2733714222965624595}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Flame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9868,7 +9868,7 @@ GameObject:
   - component: {fileID: 3136841636401813356}
   - component: {fileID: 2466905187335634039}
   - component: {fileID: 8534049127828603824}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BazookaMissile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

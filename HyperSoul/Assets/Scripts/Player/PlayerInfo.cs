@@ -146,12 +146,13 @@ public class PlayerInfo : LivingEntity
 
     private void Update()
     {
-        _profileCanvas.gameObject.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;    // (22.04.16) 플레이어 레벨 회전
+        _profileCanvas.gameObject.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;
 
         if (false == photonView.IsMine)
         {
             return;
         }
+        
         HpUpdate();
         AmmoUpdate();
         ExpUpdate();
@@ -162,11 +163,11 @@ public class PlayerInfo : LivingEntity
     {
         Projectile projectile = collider.gameObject.GetComponent<Projectile>();
 
-        if (AMMO_COLLIDER ==  collider.gameObject.layer)
+        if (AMMO_COLLIDER == collider.gameObject.layer)
         {
-           //Debug.Log($"피격당함\n Attacker : {projectile.ProjectileOwnerID}" +
-           //$"\n Damage : {projectile.Attack}" +
-           //$"\n HP : {CurHp}");
+            //Debug.Log($"피격당함\n Attacker : {projectile.ProjectileOwnerID}" +
+            //$"\n Damage : {projectile.Attack}" +
+            //$"\n HP : {CurHp}");
 
             TakeDamage(projectile.ProjectileOwnerID, projectile.Attack,
                 collider.transform.position, collider.transform.position.normalized);
@@ -182,7 +183,6 @@ public class PlayerInfo : LivingEntity
 
             TakeMonsterDamage(livingEntity.Attack);
         }
-
     }
 
     private void HpUpdate()

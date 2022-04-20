@@ -84,6 +84,13 @@ public abstract class MonsterInformation : LivingEntity
 
     public override void Respawn()
     {
+        StartCoroutine(RespawnMonster());
+    }
+
+    private IEnumerator RespawnMonster()
+    {
+        yield return new WaitForSeconds(1.5f);
+
         photonView.RPC(nameof(MonsterActive), RpcTarget.AllViaServer, false);
     }
 
@@ -92,4 +99,6 @@ public abstract class MonsterInformation : LivingEntity
     {
         gameObject.SetActive(b);
     }
+
+    public abstract void MonsterDamage(int ID);
 }

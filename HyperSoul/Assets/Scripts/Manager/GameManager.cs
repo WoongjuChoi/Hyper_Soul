@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private GameObject _timeManager;
 
-    private GameObject _monsterSpawnManager;
+    //private GameObject _monsterSpawnManager;
 
     private void Awake()
     {

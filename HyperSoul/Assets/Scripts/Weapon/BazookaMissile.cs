@@ -144,7 +144,7 @@ public class BazookaMissile : Projectile
                 }
                 else if (MONSTER_LAYER == col.gameObject.layer)
                 {
-                    col.gameObject.GetComponent<MonsterInformation>().TakeMonsterDamage(Attack);
+                    //col.gameObject.GetComponent<MonsterInformation>().MonsterDamage(gameObject.GetComponent<Collider>());
                 }
             }
         }

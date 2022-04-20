@@ -29,6 +29,9 @@ public class ResultSceneManager : MonoBehaviour
     private void Awake()
     {
         ResultSceneInit();
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     private void ResultSceneInit()

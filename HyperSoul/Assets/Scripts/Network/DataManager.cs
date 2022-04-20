@@ -1,8 +1,10 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public struct OtherPlayerInfos : IComparable
 {
@@ -15,11 +17,29 @@ public struct OtherPlayerInfos : IComparable
     {
         OtherPlayerInfos infos = (OtherPlayerInfos)obj;
 
-        return score.CompareTo(infos.score);
+        if (score > infos.score)
+        {
+            return -1;
+        }
+        else if (score < infos.score)
+        {
+            return 1;
+        }
+        else
+        {
+            if (playerOrderIndex >= infos.playerOrderIndex)
+            {
+                return -1;
+            }
+            else
+            {
+                return 1;
+            }
+        }
     }
 }
 
-public class DataManager : MonoBehaviour
+public class DataManager : MonoBehaviourPun
 {
     static private DataManager _instance;
 
@@ -65,6 +85,8 @@ public class DataManager : MonoBehaviour
         {
             print("웹 응답 없음");
         }
+
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable {{ "Score", 0 }});
     }
 
     private void SetData(CharacterType characterType, string tsvFile)

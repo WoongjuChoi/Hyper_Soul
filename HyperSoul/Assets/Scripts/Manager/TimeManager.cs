@@ -153,7 +153,7 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
 
         _GameOverText.gameObject.SetActive(true);
 
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient && GameManager.Instance.AllPlayerCheck("Score"))
         {
             Invoke("GoResultScene", 3f);
         }

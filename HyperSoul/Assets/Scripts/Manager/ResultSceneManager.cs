@@ -4,8 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class ResultSceneManager : MonoBehaviour
+public class ResultSceneManager : MonoBehaviourPun
 {
     [SerializeField]
     private Transform _1stPosition;
@@ -28,10 +29,23 @@ public class ResultSceneManager : MonoBehaviour
 
     private void Awake()
     {
-        ResultSceneInit();
+        PhotonNetwork.IsMessageQueueRunning = true;
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+
+    }
+
+    private IEnumerator Start()
+    {
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "Score", 0 } });
+        
+        while (false == GameManager.Instance.AllPlayerCheck("Score"))
+        {
+            yield return null;
+        }
+
+        ResultSceneInit();
     }
 
     private void ResultSceneInit()

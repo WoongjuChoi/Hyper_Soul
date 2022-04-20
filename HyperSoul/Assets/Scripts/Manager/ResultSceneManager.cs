@@ -108,12 +108,19 @@ public class ResultSceneManager : MonoBehaviourPun
                 break;
         }
 
-        //if (rank == 3)
-        //{
-        //    player.GetComponent<Canvas>().gameObject.transform.position = new Vector3(0, 1, 0);
-        //}
+        Text playerText = player.GetComponentInChildren<Text>();
+        if (rank == 3)
+        {
+            player.GetComponentInChildren<Text>().GetComponent<RectTransform>().position = new Vector3(0, 1, -7);
+
+            playerText.color = Color.red;
+        }
+        else if (rank == 0)
+        {
+            playerText.color = Color.green;
+        }
 
         player.GetComponentInChildren<Animator>().SetTrigger(AnimationTrigger);
-        player.GetComponentInChildren<Text>().text = info.playerName + "\n" + info.score;
+        playerText.text = info.playerName + "\n" + info.score;
     }
 }

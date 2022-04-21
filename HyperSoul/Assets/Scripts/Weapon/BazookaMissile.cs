@@ -98,11 +98,16 @@ public class BazookaMissile : Projectile
             _isLaunched = true;
             if (false == _isHit)
             {
-                RocketParticleEffect.SetActive(true);
+                photonView.RPC(nameof(ActivateRocketEffect), RpcTarget.All, true);
             }
         }
     }
 
+    [PunRPC]
+    private void ActivateRocketEffect(bool onoff)
+    {
+        RocketParticleEffect.SetActive(onoff);
+    }
     private void OnTriggerEnter(Collider collider)
     {
         Explosion(transform.position);
@@ -113,7 +118,7 @@ public class BazookaMissile : Projectile
     {
         yield return new WaitForSeconds(0.4f);
         lunchCoroutine = null;
-        RocketParticleEffect.SetActive(true);
+        photonView.RPC(nameof(ActivateRocketEffect), RpcTarget.All, true);
         _isLaunched = true;
     }
 

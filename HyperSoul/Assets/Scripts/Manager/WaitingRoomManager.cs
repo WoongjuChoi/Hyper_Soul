@@ -14,14 +14,12 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private Button _startButton;
 
+    private Dictionary<int, Player> _playerList;
     private GameObject _roomPanal;
     private Text _roomNameText;
-    private Dictionary<int, Player> _playerList;
     private bool _isSceneLoading = false;
 
-    // 이 아래는 Master만 사용하는 변수들
     private bool[] _emptyRoomCheck = new bool[4];
-
 
     private void Awake()
     {
@@ -29,7 +27,6 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         _roomPanal = GameObject.Find("RoomPanel");
         _roomNameText = GameObject.Find("RoomNameText").GetComponent<Text>();
         _roomNameText.text = PhotonNetwork.CurrentRoom.Name;
-
         _playerList = PhotonNetwork.CurrentRoom.Players;
 
         if (PhotonNetwork.IsMasterClient)
@@ -76,11 +73,6 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("LobbyScene");
     }
 
-    public override void OnLeftRoom()
-    {
-        
-    }
-
     public void GameStart()
     {
         if (false == PhotonNetwork.IsMasterClient)
@@ -99,24 +91,6 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         photonView.RPC(nameof(SendPlayerData), RpcTarget.AllBuffered);
 
         StartMainScene();
-    }
-
-    [PunRPC]
-    private void SendPlayerData()
-    {
-        for (int i = 0; i < _playerList.Count; ++i)
-        {
-            if (_roomList[i].PlayerName.text == PhotonNetwork.LocalPlayer.NickName) // 본인의 패널인 경우 데이터매니저에 정보 전달
-            {
-                DataManager.Instance.MyPlayerOrderIndex = i;
-                DataManager.Instance.PlayerType = (EPlayerType)_roomList[i].CurPlayerType;
-            }
-
-            DataManager.Instance.PlayerInfos[i].playerName = _roomList[i].PlayerName.text;
-            DataManager.Instance.PlayerInfos[i].playerOrderIndex = i;
-            DataManager.Instance.PlayerInfos[i].playerType = (EPlayerType)_roomList[i].CurPlayerType;
-            DataManager.Instance.PlayerInfos[i].score = 0;
-        }
     }
 
     private void AddPlayer(string playerName)
@@ -154,14 +128,6 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         }
     }
 
-    [PunRPC]
-    private void UpdateRoomInfo(int index, string name, bool isActive)
-    {
-        _roomList[index].Index = index;
-        _roomList[index].gameObject.SetActive(isActive);
-        _roomList[index].PlayerName.text = name;
-    }
-
     private void SelectCharactor(int index, string dir)
     {
         switch (dir)
@@ -182,6 +148,42 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         photonView.RPC("ReadyButton", RpcTarget.AllBuffered, index);
     }
 
+    private void StartMainScene()
+    {
+        if (_isSceneLoading == false)
+        {
+            _isSceneLoading = true;
+            PhotonNetwork.IsMessageQueueRunning = false;
+            PhotonNetwork.LoadLevel("MainScene");
+        }
+    }
+
+    [PunRPC]
+    private void SendPlayerData()
+    {
+        for (int i = 0; i < _playerList.Count; ++i)
+        {
+            if (_roomList[i].PlayerName.text == PhotonNetwork.LocalPlayer.NickName) // 본인의 패널인 경우 데이터매니저에 정보 전달
+            {
+                DataManager.Instance.MyPlayerOrderIndex = i;
+                DataManager.Instance.PlayerType = (EPlayerType)_roomList[i].CurPlayerType;
+            }
+
+            DataManager.Instance.PlayerInfos[i].playerName = _roomList[i].PlayerName.text;
+            DataManager.Instance.PlayerInfos[i].playerOrderIndex = i;
+            DataManager.Instance.PlayerInfos[i].playerType = (EPlayerType)_roomList[i].CurPlayerType;
+            DataManager.Instance.PlayerInfos[i].score = 0;
+        }
+    }
+
+    [PunRPC]
+    private void UpdateRoomInfo(int index, string name, bool isActive)
+    {
+        _roomList[index].Index = index;
+        _roomList[index].gameObject.SetActive(isActive);
+        _roomList[index].PlayerName.text = name;
+    }
+
     [PunRPC]
     private void RightButton(int index)
     {
@@ -198,15 +200,5 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
     private void ReadyButton(int index)
     {
         _roomList[index].SetReadyState();
-    }
-
-    private void StartMainScene()
-    {
-        if (_isSceneLoading == false)
-        {
-            _isSceneLoading = true;
-            PhotonNetwork.IsMessageQueueRunning = false;
-            PhotonNetwork.LoadLevel("MainScene");
-        }
     }
 }

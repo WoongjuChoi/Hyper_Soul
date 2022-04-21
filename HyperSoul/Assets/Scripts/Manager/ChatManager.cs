@@ -37,7 +37,6 @@ public class ChatManager : MonoBehaviourPun
 
     }
 
-
     private void SendChatMessage()
     {
         string msg = $"[{PhotonNetwork.LocalPlayer.NickName}] \n {_chatMsg.text}";
@@ -49,15 +48,10 @@ public class ChatManager : MonoBehaviourPun
         string msg = "";
         PlayerInfo attackerInfo = attacker.GetComponent<PlayerInfo>();
         PlayerInfo victimPlayerInfo = victim.GetComponent<PlayerInfo>();
-        // MonsterInfo victimMonsterInfo =  victim.GetComponent<MonsterInfo>(); 만들기
         if (victimPlayerInfo != null)
         {
             msg = "<color=#62FF00>" + $"{attackerInfo.NickName}" + "</color>" + "이(가)" + "<color=#FF0000>" + $"{ victimPlayerInfo.NickName}" + "</color>" + "을(를) 처치";
         }
-        //else if(victimMonsterInfo != null)
-        //{
-        //    msg = $"{attackerInfo.NickName}이(가) {victimMonsterInfo.NickName}을(를) 처치";
-        //}
 
         photonView.RPC("Chat", RpcTarget.OthersBuffered, msg);
         Chat(msg);
@@ -79,8 +73,8 @@ public class ChatManager : MonoBehaviourPun
                         _chatList[j].text = _chatList[j - 1].text;
                     }
                 }
-                _input = true;
 
+                _input = true;
                 _chatList[0].text = msg;
 
                 break;
@@ -94,7 +88,6 @@ public class ChatManager : MonoBehaviourPun
             }
 
             _chatList[0].text = msg;
-
         }
     }
 }

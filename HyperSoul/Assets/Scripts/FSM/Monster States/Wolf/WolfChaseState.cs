@@ -9,21 +9,16 @@ public class WolfChaseState : BaseState<WolfInformation>
 
     public override void EnterState()
     {
-        CreatureInformation.MonsterCurrentState = EStateIDs.Chase;
-
+        CreatureInformation.MonsterCurrentState = EMonsterStateIDs.Chase;
         CreatureInformation.CreatureAnimator.SetBool(MonsterAnimatorID.IS_CHASE, true);
-
         _chaseAudioSource.Play();
     }
 
     public override void ExitState()
     {
         CreatureInformation.MonsterChaser.IsActive = false;
-
         CreatureInformation.MonsterChaser.ResetPath();
-
         CreatureInformation.CreatureAnimator.SetBool(MonsterAnimatorID.IS_CHASE, false);
-
         _chaseAudioSource.Stop();
     }
 
@@ -32,31 +27,30 @@ public class WolfChaseState : BaseState<WolfInformation>
         if (CreatureInformation.Target.GetComponent<LivingEntity>().IsDead)
         {
             CreatureInformation.IsTargeting = false;
-
-            FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
+            FiniteStateMachine.ChangeState(EMonsterStateIDs.ReturnPosition);
 
             return;
         }
 
         if (CreatureInformation.IsDamaged)
         {
-            FiniteStateMachine.ChangeState(EStateIDs.Damaged);
+            FiniteStateMachine.ChangeState(EMonsterStateIDs.Damaged);
 
             return;
         }
 
         if (CreatureInformation.IsWithinAttackRange)
         {
-            FiniteStateMachine.ChangeState(EStateIDs.Attack);
+            FiniteStateMachine.ChangeState(EMonsterStateIDs.Attack);
 
             return;
         }
 
-        float distance = (GameObject.transform.position - CreatureInformation.InitializeTransform.position).magnitude;
+        float distance = (MonsterObject.transform.position - CreatureInformation.InitializeTransform.position).magnitude;
 
         if (distance >= 20f)
         {
-            FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
+            FiniteStateMachine.ChangeState(EMonsterStateIDs.ReturnPosition);
 
             return;
         }

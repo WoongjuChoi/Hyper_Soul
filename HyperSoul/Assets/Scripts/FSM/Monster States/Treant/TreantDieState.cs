@@ -8,7 +8,7 @@ public class TreantDieState : BaseState<TreantInformation>
 
     public override void EnterState()
     {
-        CreatureInformation.MonsterCurrentState = EStateIDs.Die;
+        CreatureInformation.MonsterCurrentState = EMonsterStateIDs.Die;
     }
 
     public override void ExitState()

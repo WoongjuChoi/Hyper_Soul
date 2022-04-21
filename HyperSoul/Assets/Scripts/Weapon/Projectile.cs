@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviourPun
 {
+    protected System.Action<GameObject> _projectileReturn;
+
     public int ProjectileOwnerID { get; set; }
     public int Attack { get; set; }
-
-    protected System.Action<GameObject> _projectileReturn;
 
     public void ReceiveReturnProjectileFunc(System.Action<GameObject> returnProjectile)
     {

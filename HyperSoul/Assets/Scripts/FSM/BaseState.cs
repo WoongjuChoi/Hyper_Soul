@@ -4,28 +4,20 @@ using UnityEngine;
 
 public abstract class BaseState<T> : MonoBehaviour, IfiniteState where T : class
 {
-    private GameObject _gameObject = null;
+    public GameObject MonsterObject { get; private set; }
+    public FiniteStateMachine FiniteStateMachine { get; private set; }
+    public T CreatureInformation { get; set; }
 
-    private FiniteStateMachine _finiteStateMachine = null;
-
-    private T _creatureInfo = null;
-
-    public GameObject GameObject { get { return _gameObject; } }
-    public FiniteStateMachine FiniteStateMachine { get { return _finiteStateMachine; } }
-    public T CreatureInformation { get { return _creatureInfo; } set { _creatureInfo = value; } }
+    public virtual void InitializeState(GameObject obj, FiniteStateMachine fsm)
+    {
+        MonsterObject = obj;
+        CreatureInformation = MonsterObject.GetComponent<T>();
+        FiniteStateMachine = fsm;
+    }
 
     public abstract void EnterState();
 
     public abstract void ExitState();
-
-    public virtual void InitializeState(GameObject obj, FiniteStateMachine fsm)
-    {
-        _gameObject = obj;
-
-        _creatureInfo = _gameObject.GetComponent<T>();
-
-        _finiteStateMachine = fsm;
-    }
 
     public abstract void UpdateState();
 }

@@ -9,18 +9,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
 {
     [SerializeField]
     protected Slider _hpBarOverhead;
-
-    public string NickName { get; set; } // 로그인 시 닉네임 넣을 것
-    public int MaxHp { get; set; }
-    public int Attack { get; set; }
-    public bool IsDead { get; set; }
-    public int Score { get; set; }
-
-    public int CurHp { get; set; }
-    public int CurExp { get; set; }
-    public int CurScore { get; set; }
-
-    // 새로 추가된 변수들
     [SerializeField]
     protected GameObject _hitSound;
     [SerializeField]
@@ -29,35 +17,41 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
     protected GameObject _hitImage;
     [SerializeField]
     protected Canvas _hpBarOverheadCanvas;
+    [SerializeField]
+    protected Canvas _profileCanvas;
+    [SerializeField]
+    protected Text _levelText;
 
     protected Animator _animator;
     protected bool _isHitting = false;
 
     public Animator CreatureAnimator { get { return _animator; } }
+    public int MaxLevel { get { return 5; } }
 
+    public string NickName { get; set; }
+    public int MaxHp { get; set; }
+    public int Attack { get; set; }
+    public bool IsDead { get; set; }
+    public int Score { get; set; }
+    public int CurHp { get; set; }
+    public int CurExp { get; set; }
+    public int CurScore { get; set; }
     public int Exp { get; set; }
     public int Level { get; set; }
-    public int MaxLevel { get { return 5; } }
-    public CharacterType Type { get; set; }
-
-    protected DataManager _dataManager;
-
-    [SerializeField]
-    protected Canvas _profileCanvas;
-    [SerializeField]
-    protected Text _levelText;
+    public ECharacterType Type { get; set; }
 
     public virtual void Awake() { }
 
     private void LateUpdate()
     {
         _hpBarOverhead.value = (float)CurHp / MaxHp;
-
         _hpBarOverheadCanvas.transform.rotation = GameManager.Instance.PlayerCamRotationTransform.rotation;
     }
 
     public virtual void OnCollisionEnter(Collision collision) { }
+
     public virtual void OnTriggerEnter(Collider other) { }
+
     public void TakeMonsterDamage(int damageAmt)
     {
         if (PhotonNetwork.IsMasterClient)
@@ -69,7 +63,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
             CurHp -= damageAmt;
             photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
 
-            if (CurHp <= 0 && IsDead == false)
+            if (CurHp <= 0 && false == IsDead)
             {
                 CurHp = 0;
                 Die();
@@ -92,16 +86,22 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
                 return;
             }
             CurHp -= damageAmt;
+
+            if (CurHp <= 0)
+            {
+                CurHp = 0;
+            }
+
             photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
 
-            if (CurHp <= 0 && IsDead == false)
+            if (CurHp <= 0 && false == IsDead && attackerID != photonView.ViewID)
             {
                 GiveScore(attackerID, Score);
                 GiveExp(attackerID, Exp);
             }
         }
 
-        if (CurHp <= 0 && IsDead == false)
+        if (CurHp <= 0 && false == IsDead)
         {
             CurHp = 0;
             photonView.RPC(nameof(Die), RpcTarget.AllBuffered);
@@ -113,18 +113,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
             Hit();
             photonView.RPC("Hit", RpcTarget.Others);
         }
-    }
-
-    [PunRPC]
-    public void UpdateHp(int hp)
-    {
-        CurHp = hp;
-    }
-
-    [PunRPC]
-    public void Hit()
-    {
-        StartCoroutine(HitCorountine());
     }
 
     // Hit시 애니메이션과 사운드, 이펙트 처리
@@ -145,20 +133,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
         _animator.SetBool(CommonAnimatorID.HIT, false);
     }
 
-    [PunRPC]
-    public virtual void Die()
-    {
-        _deathSound.SetActive(true);
-
-        IsDead = true;
-        if (photonView.IsMine)
-        {
-            StartCoroutine(DieCoroutine());
-
-            Respawn();
-        }
-    }
-
     private IEnumerator DieCoroutine()
     {
         _animator.SetBool(CommonAnimatorID.DIE, true);
@@ -174,7 +148,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
     {
         switch (Type)
         {
-            case CharacterType.Monster:
+            case ECharacterType.Monster:
                 MonsterData monsterData = DataManager.Instance.FindMonsterData(info);
                 MaxHp = monsterData.MaxHp;
                 CurHp = MaxHp;
@@ -195,14 +169,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
         photonView.RPC(nameof(UpdateScore), RpcTarget.Others, attackerID, newScore);
     }
 
-    [PunRPC]
-    public void UpdateScore(int attackerID, int newScore)
-    {
-        LivingEntity attacker = PhotonView.Find(attackerID).GetComponent<LivingEntity>();
-
-        attacker.CurScore = newScore;
-    }
-
     public void GiveExp(int attackerID, int expAmt)
     {
         LivingEntity attacker = PhotonView.Find(attackerID).GetComponent<LivingEntity>();
@@ -212,6 +178,40 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
         int newExpAmt = attacker.CurExp;
 
         photonView.RPC(nameof(UpdateExp), RpcTarget.Others, attackerID, newExpAmt);
+    }
+
+    [PunRPC]
+    public void UpdateHp(int hp)
+    {
+        CurHp = hp;
+    }
+
+    [PunRPC]
+    public void Hit()
+    {
+        StartCoroutine(HitCorountine());
+    }
+
+    [PunRPC]
+    public virtual void Die()
+    {
+        _deathSound.SetActive(true);
+
+        IsDead = true;
+        if (photonView.IsMine)
+        {
+            StartCoroutine(DieCoroutine());
+
+            Respawn();
+        }
+    }
+
+    [PunRPC]
+    public void UpdateScore(int attackerID, int newScore)
+    {
+        LivingEntity attacker = PhotonView.Find(attackerID).GetComponent<LivingEntity>();
+
+        attacker.CurScore = newScore;
     }
 
     [PunRPC]

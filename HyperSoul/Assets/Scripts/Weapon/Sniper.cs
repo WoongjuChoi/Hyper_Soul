@@ -7,11 +7,8 @@ public class Sniper : Weapon
 {
     [SerializeField]
     private Transform _bulletSpawnPos;
-
     [SerializeField]
     private GameObject _bulletPrefab;
-
-    private ObjectPool _sniperPool = new ObjectPool();
 
     private Coroutine _shootCotountine;
 
@@ -30,6 +27,7 @@ public class Sniper : Weapon
             MaxBulletAmt = DataManager.Instance.FindPlayerData("Sniper" + _playerInfo.Level.ToString()).MaxBullet;
             CurBulletCnt = MaxBulletAmt;
         }
+
         _reloadTime = 2;
         _gunState = EGunState.Ready;
         ZoomRotationSpeed = new Vector2(0.05f, 0.05f);
@@ -65,7 +63,9 @@ public class Sniper : Weapon
         {
             return;
         }
+
         SetMousePos();
+
         _shootCotountine = StartCoroutine(Shoot());
     }
     private IEnumerator Shoot()
@@ -80,18 +80,19 @@ public class Sniper : Weapon
         bullet.GetComponent<Bullet>().ProjectileOwnerID = _playerInfo.PhotonViewID;
         bullet.GetComponent<Bullet>().Attack = _playerInfo.Attack;
         bullet.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.All, true);
+
         if (PhotonNetwork.IsMasterClient)
         {
             CreateCollider(bullet.GetComponent<PhotonView>().ViewID);
         }
+
         if (false == PhotonNetwork.IsMasterClient)
         {
             photonView.RPC(nameof(CreateCollider), RpcTarget.MasterClient, bullet.GetComponent<PhotonView>().ViewID);
         }
 
         _canFire = false;
-        _playerAnimator.SetTrigger(PlayerAnimatorID.SINGLESHOT);
-
+        _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, true);
         _audioSource.PlayOneShot(ShotSound);
         MuzzleFlashEffect.SetActive(true);
 

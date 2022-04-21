@@ -7,32 +7,29 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviourPun
 {
-    public Vector2 ZoomRotationSpeed;
     public GameObject ZoomCam;
     public GameObject Player;
     public GameObject MuzzleFlashEffect;
     public AudioClip ShotSound;
     public AudioClip ReloadSound;
+    public Vector2 ZoomRotationSpeed;
 
     public int CurBulletCnt = 0;
     public int MaxBulletAmt = 0;
 
-    protected float _reloadTime = 0;
-    protected float _reloadSpeed = 1;
-    protected bool _canFire = true;
-
-    protected Vector3 _mousePos;
     protected PlayerInfo _playerInfo;
     protected Animator _playerAnimator;
     protected PlayerCam _playerCam;
     protected PlayerInputs _input;
     protected AudioSource _audioSource;
+    protected Vector3 _mousePos;
     protected EGunState _gunState;
+    protected float _reloadTime = 0;
+    protected float _reloadSpeed = 1;
+    protected bool _canFire = true;
 
     protected ObjectPool _objectPool = new ObjectPool();
 
-
-    DataManager _dataManager;
     private void Awake()
     {
         _playerInfo = GetComponentInParent<PlayerInfo>();
@@ -40,14 +37,10 @@ public abstract class Weapon : MonoBehaviourPun
         _playerCam = Player.GetComponent<PlayerCam>();
         _input = Player.GetComponent<PlayerInputs>();
         _audioSource = this.gameObject.GetComponent<AudioSource>();
-        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
-
 
         _playerAnimator.SetFloat(PlayerAnimatorID.RELOAD_SPEED, _reloadSpeed);
         ZoomRotationSpeed = new Vector2(0.2f, 0.2f);
         ZoomCam.SetActive(false);
-        //MaxBulletAmt = _dataManager.
-
     }
     protected void Update()
     {
@@ -88,9 +81,12 @@ public abstract class Weapon : MonoBehaviourPun
         {
             return false;
         }
+
         StartCoroutine(Reload());
+
         return true;
     }
+
     private IEnumerator Reload()
     {
         _gunState = EGunState.Reloading;
@@ -103,7 +99,6 @@ public abstract class Weapon : MonoBehaviourPun
 
         _gunState = EGunState.Ready;
     }
-
 
     public void SetMousePos()
     {
@@ -124,13 +119,12 @@ public abstract class Weapon : MonoBehaviourPun
         }
     }
 
-
-
     [PunRPC]
     protected void CreateCollider(int objId)
     {
         GameObject obj = PhotonNetwork.GetPhotonView(objId).gameObject;
         Collider[] Colliders = obj.GetComponentsInChildren<Collider>(true);
+
         foreach (Collider col in Colliders)
         {
             col.enabled = true;

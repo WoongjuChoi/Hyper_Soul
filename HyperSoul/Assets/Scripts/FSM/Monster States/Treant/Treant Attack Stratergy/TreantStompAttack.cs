@@ -7,22 +7,16 @@ public class TreantStompAttack : MonoBehaviourPun, ITreantAttack
 {
     [SerializeField]
     private GameObject _attackCollider = null;
-
     [SerializeField]
     private GameObject _startPoint = null;
-
     [SerializeField]
     private GameObject _endPoint = null;
-
     [SerializeField]
     private Animator _animator = null;
 
     private Coroutine _stompAttackCoroutine = null;
-
     private bool _isAttack = false;
-
     private float _distance = 0f;
-
     private const float MOVE_SPEED = 5f;
 
     private void OnEnable()
@@ -30,7 +24,6 @@ public class TreantStompAttack : MonoBehaviourPun, ITreantAttack
         if (PhotonNetwork.IsMasterClient)
         {
             _attackCollider.SetActive(false);
-
             photonView.RPC(nameof(StompObjectActive), RpcTarget.Others, false);
         }
     }
@@ -65,14 +58,12 @@ public class TreantStompAttack : MonoBehaviourPun, ITreantAttack
         if (PhotonNetwork.IsMasterClient)
         {
             _attackCollider.SetActive(true);
-
             photonView.RPC(nameof(StompObjectActive), RpcTarget.Others, true);
         }
 
         while (_distance > 1f)
         {
             _attackCollider.transform.position += MOVE_SPEED * Time.deltaTime * gameObject.transform.up;
-
             _distance = (_endPoint.transform.position - _attackCollider.transform.position).magnitude;
 
             yield return null;
@@ -81,13 +72,11 @@ public class TreantStompAttack : MonoBehaviourPun, ITreantAttack
         yield return new WaitForSeconds(0.5f);
 
         _attackCollider.transform.position = _startPoint.transform.position;
-
         _distance = (_endPoint.transform.position - _startPoint.transform.position).magnitude;
 
         if (PhotonNetwork.IsMasterClient)
         {
             _attackCollider.SetActive(false);
-
             photonView.RPC(nameof(StompObjectActive), RpcTarget.Others, false);
         }
 
@@ -99,11 +88,8 @@ public class TreantStompAttack : MonoBehaviourPun, ITreantAttack
     public void StopAttack()
     {
         _isAttack = false;
-
         _distance = (_endPoint.transform.position - _startPoint.transform.position).magnitude;
-
         _attackCollider.transform.position = _startPoint.transform.position;
-
         _attackCollider.SetActive(false);
 
         if (null != _stompAttackCoroutine)

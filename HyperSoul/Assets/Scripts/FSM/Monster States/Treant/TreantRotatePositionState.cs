@@ -12,7 +12,7 @@ public class TreantRotatePositionState : BaseState<TreantInformation>
 
     public override void EnterState()
     {
-        CreatureInformation.MonsterCurrentState = EStateIDs.RotatePosition;
+        CreatureInformation.MonsterCurrentState = EMonsterStateIDs.RotatePosition;
     }
 
     public override void ExitState()
@@ -20,36 +20,43 @@ public class TreantRotatePositionState : BaseState<TreantInformation>
         _isLocatedLeftSide = false;
         _isLocatedRightSide = false;
 
-        GameObject.GetComponentInChildren<Animator>().SetBool(IS_LEFT_ROTATE, _isLocatedLeftSide);
-        GameObject.GetComponentInChildren<Animator>().SetBool(IS_RIGHT_ROTATE, _isLocatedRightSide);
+        MonsterObject.GetComponentInChildren<Animator>().SetBool(IS_LEFT_ROTATE, _isLocatedLeftSide);
+        MonsterObject.GetComponentInChildren<Animator>().SetBool(IS_RIGHT_ROTATE, _isLocatedRightSide);
     }
 
     public override void UpdateState()
     {
         if (CreatureInformation.IsDamaged)
         {
-            FiniteStateMachine.ChangeState(EStateIDs.Damaged);
+            FiniteStateMachine.ChangeState(EMonsterStateIDs.Damaged);
 
             return;
         }
 
         if (CreatureInformation.ExistInSight)
         {
-            FiniteStateMachine.ChangeState(EStateIDs.Attack);
+            FiniteStateMachine.ChangeState(EMonsterStateIDs.Attack);
 
             return;
         }
 
-        // 외적을 이용해 타겟의 방향을 확인
+        if (CreatureInformation.Target.GetComponent<LivingEntity>().IsDead)
+        {
+            CreatureInformation.IsTargeting = false;
+
+            FiniteStateMachine.ChangeState(EMonsterStateIDs.ReturnPosition);
+
+            return;
+        }
+
         CheckTargetPosition();
 
-        // 그 방향으로 회전 이동
         StartCoroutine(RotatePosition());
     }
 
     private void CheckTargetPosition()
     {
-        Vector3 crossMonsterToTarget = Vector3.Cross(GameObject.transform.forward, CreatureInformation.VectorMonsterToTarget);
+        Vector3 crossMonsterToTarget = Vector3.Cross(MonsterObject.transform.forward, CreatureInformation.VectorMonsterToTarget);
 
         if (crossMonsterToTarget.y > 0f)
         {
@@ -69,16 +76,16 @@ public class TreantRotatePositionState : BaseState<TreantInformation>
         {
             float rotateSpeed = CreatureInformation.RotateSpeed * Time.deltaTime;
 
-            GameObject.GetComponentInChildren<Animator>().SetBool(IS_LEFT_ROTATE, _isLocatedLeftSide);
-            GameObject.GetComponentInChildren<Animator>().SetBool(IS_RIGHT_ROTATE, _isLocatedRightSide);
+            MonsterObject.GetComponentInChildren<Animator>().SetBool(IS_LEFT_ROTATE, _isLocatedLeftSide);
+            MonsterObject.GetComponentInChildren<Animator>().SetBool(IS_RIGHT_ROTATE, _isLocatedRightSide);
 
             if (_isLocatedRightSide)
             {
-                GameObject.transform.Rotate(0f, rotateSpeed, 0f);
+                MonsterObject.transform.Rotate(0f, rotateSpeed, 0f);
             }
             else if (_isLocatedLeftSide)
             {
-                GameObject.transform.Rotate(0f, -rotateSpeed, 0f);
+                MonsterObject.transform.Rotate(0f, -rotateSpeed, 0f);
             }
 
             yield return new WaitForSeconds(1f);

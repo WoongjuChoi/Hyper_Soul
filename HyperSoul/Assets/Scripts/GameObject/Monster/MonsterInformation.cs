@@ -24,14 +24,16 @@ public abstract class MonsterInformation : LivingEntity
     [SerializeField]
     protected int _monsterMaxHP = 0;
 
+    protected GameObject _attacker;
     protected GameObject _target;
     protected Projectile _attackerInfo;
     protected Vector3 _collisionVec;
     protected Vector3 _lookAtTargetVec;
-    protected MonsterType _monsterType;
+    protected EMonsterType _monsterType;
     protected bool _isWithinAttackRange = false;
     protected int _monsterAnimatorIndex = 0;
 
+    public GameObject Attacker { get { return _attacker; } }
     public GameObject Target { get { return _target; } }
     public Chaser MonsterChaser { get { return _monsterChaser; } }
     public Projectile AttackerInfo { get { return _attackerInfo; } }
@@ -40,15 +42,15 @@ public abstract class MonsterInformation : LivingEntity
     public Transform MonsterRayPoint { get { return _monsterRayPoint; } }
     public Vector3 CollisionVec { get { return _collisionVec; } }
     public Vector3 LookAtTargetVec { get { return _lookAtTargetVec; } }
-    public MonsterType MonsterType { get { return _monsterType; } }
+    public EMonsterType MonsterType { get { return _monsterType; } }
     public bool IsWithinAttackRange { get { return _isWithinAttackRange; } }
     public float MonsterInvincibleTime { get { return _monsterInvincibleTime; } }
-    public float MonsterSpawnDirection { get; set; }
     public int MonsterMaxLevel { get { return 5; } }
 
-    public EStateIDs MonsterCurrentState { get; set; }
+    public EMonsterStateIDs MonsterCurrentState { get; set; }
     public bool IsDamaged { get; set; }
     public bool IsTargeting { get; set; }
+    public float MonsterSpawnDirection { get; set; }
 
     private void OnEnable()
     {
@@ -66,7 +68,7 @@ public abstract class MonsterInformation : LivingEntity
 
         IsDead = false;
 
-        _monsterFSM.ChangeState(EStateIDs.Spawn);
+        _monsterFSM.ChangeState(EMonsterStateIDs.Spawn);
 
         IsTargeting = false;
         _isWithinAttackRange = false;

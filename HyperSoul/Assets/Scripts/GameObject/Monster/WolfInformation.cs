@@ -7,18 +7,8 @@ public class WolfInformation : MonsterInformation
 {
     [SerializeField]
     private GameObject _attackCollider = null;
-
     [SerializeField]
     private GameObject _startPoint = null;
-
-    private WolfAlertState _monsterAlertState = null;
-    private WolfAttackState _monsterAttackState = null;
-    private WolfChaseState _monsterChaseState = null;
-    private WolfDamagedState _monsterDamagedState = null;
-    private WolfDieState _monsterDieState = null;
-    private WolfIdleState _monsterIdleState = null;
-    private WolfReturnPositionState _monsterReturnPositionState = null;
-    private WolfSpawnState _monsterSpawnState = null;
 
     public GameObject AttackCollider { get { return _attackCollider; } }
     public GameObject StartPoint { get { return _startPoint; } }
@@ -28,32 +18,22 @@ public class WolfInformation : MonsterInformation
         _hitImage.SetActive(false);
         _hitSound.SetActive(false);
         _deathSound.SetActive(false);
-        _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
         _animator = _monsterAnimatorObject.GetComponent<Animator>();
 
-        _monsterType = MonsterType.Wolf;
+        _monsterType = EMonsterType.Wolf;
         Level = 1;
 
         _attackCollider.SetActive(false);
 
-        _monsterAlertState = GetComponent<WolfAlertState>();
-        _monsterAttackState = GetComponent<WolfAttackState>();
-        _monsterChaseState = GetComponent<WolfChaseState>();
-        _monsterDamagedState = GetComponent<WolfDamagedState>();
-        _monsterDieState = GetComponent<WolfDieState>();
-        _monsterIdleState = GetComponent<WolfIdleState>();
-        _monsterReturnPositionState = GetComponent<WolfReturnPositionState>();
-        _monsterSpawnState = GetComponent<WolfSpawnState>();
-
-        _monsterFSM.AddState(EStateIDs.Alert, _monsterAlertState);
-        _monsterFSM.AddState(EStateIDs.Attack, _monsterAttackState);
-        _monsterFSM.AddState(EStateIDs.Chase, _monsterChaseState);
-        _monsterFSM.AddState(EStateIDs.Damaged, _monsterDamagedState);
-        _monsterFSM.AddState(EStateIDs.Die, _monsterDieState);
-        _monsterFSM.AddState(EStateIDs.Idle, _monsterIdleState);
-        _monsterFSM.AddState(EStateIDs.ReturnPosition, _monsterReturnPositionState);
-        _monsterFSM.AddState(EStateIDs.Spawn, _monsterSpawnState);
+        _monsterFSM.AddState(EMonsterStateIDs.Alert, GetComponent<WolfAlertState>());
+        _monsterFSM.AddState(EMonsterStateIDs.Attack, GetComponent<WolfAttackState>());
+        _monsterFSM.AddState(EMonsterStateIDs.Chase, GetComponent<WolfChaseState>());
+        _monsterFSM.AddState(EMonsterStateIDs.Damaged, GetComponent<WolfDamagedState>());
+        _monsterFSM.AddState(EMonsterStateIDs.Die, GetComponent<WolfDieState>());
+        _monsterFSM.AddState(EMonsterStateIDs.Idle, GetComponent<WolfIdleState>());
+        _monsterFSM.AddState(EMonsterStateIDs.ReturnPosition, GetComponent<WolfReturnPositionState>());
+        _monsterFSM.AddState(EMonsterStateIDs.Spawn, GetComponent<WolfSpawnState>());
     }
 
     public override void OnTriggerEnter(Collider other)
@@ -99,21 +79,21 @@ public class WolfInformation : MonsterInformation
     {
         GameObject collideObject = PhotonView.Find(ID).gameObject;
 
-        if (false == IsDamaged && LayerParameter.LAYER_AMMO == collideObject.layer)
+        if (LayerParameter.LAYER_AMMO == collideObject.layer)
         {
-            if (EStateIDs.Alert == MonsterCurrentState || EStateIDs.Attack == MonsterCurrentState || EStateIDs.Chase == MonsterCurrentState || EStateIDs.Idle == MonsterCurrentState)
+            _attackerInfo = collideObject.GetComponent<Projectile>();
+            _attacker = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
+
+            if (false == IsDamaged)
             {
-                _collisionVec = gameObject.transform.position;
-
-                IsDamaged = true;
-
-                _attackerInfo = collideObject.GetComponent<Projectile>();
-
-                _target = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
-
-                Vector3 targetPosition = _target.transform.position + new Vector3(0f, 1.3f, 0f);
-
-                _lookAtTargetVec = targetPosition - _collisionVec;
+                if (EMonsterStateIDs.Alert == MonsterCurrentState || EMonsterStateIDs.Attack == MonsterCurrentState || EMonsterStateIDs.Chase == MonsterCurrentState || EMonsterStateIDs.Idle == MonsterCurrentState)
+                {
+                    IsDamaged = true;
+                    _collisionVec = gameObject.transform.position;
+                    _target = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
+                    Vector3 targetPosition = _target.transform.position + new Vector3(0f, 1.3f, 0f);
+                    _lookAtTargetVec = targetPosition - _collisionVec;
+                }
             }
         }
     }

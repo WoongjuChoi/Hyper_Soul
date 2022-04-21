@@ -8,14 +8,13 @@ public class WolfDieState : BaseState<WolfInformation>
 
     public override void EnterState()
     {
-        CreatureInformation.MonsterCurrentState = EStateIDs.Die;
+        CreatureInformation.MonsterCurrentState = EMonsterStateIDs.Die;
     }
 
     public override void ExitState()
     {
         _isDie = false;
-
-        GameObject.transform.rotation = Quaternion.identity;
+        MonsterObject.transform.rotation = Quaternion.identity;
     }
 
     public override void UpdateState()

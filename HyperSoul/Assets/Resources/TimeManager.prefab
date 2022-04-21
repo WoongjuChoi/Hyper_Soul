@@ -208,7 +208,7 @@ MonoBehaviour:
   _startTimeText: {fileID: 455378267469415053}
   _inGameTimeText: {fileID: 455378268810119389}
   _maxReadyTime: 4
-  _maxInGameTime: 900
+  _maxInGameTime: 300
 --- !u!114 &455378268259368125
 MonoBehaviour:
   m_ObjectHideFlags: 0

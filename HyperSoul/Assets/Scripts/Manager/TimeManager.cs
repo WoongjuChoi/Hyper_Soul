@@ -8,30 +8,22 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
 {
     [SerializeField]
     private Text _gameOverText;
-
     [SerializeField]
     private Text _startGameText;
-
     [SerializeField]
     private Text _startTimeText;
-
     [SerializeField]
     private Text _inGameTimeText;
-
     [SerializeField]
     private float _maxReadyTime = 0f;
-
     [SerializeField]
     private int _maxInGameTime = 0;
 
     private float _startTime = 0f;
     private float _currTime = 0f;
-
     private int _minutesNum = 0;
     private int _secondsNum = 0;
-
     private int _timerText = 0;
-
     private bool _isReadyDone = false;
 
     private void OnEnable()
@@ -48,24 +40,9 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
         }
 
         ResetTimer();
+
         _minutesNum = _maxInGameTime / 60;
         _secondsNum = _maxInGameTime % 60;
-
-        //photonView.RPC(nameof(TextsActive), RpcTarget.All, true, false, false);
-    }
-
-    [PunRPC]
-    public void ActivateTexts(bool startTime, bool inGameTime, bool startText)
-    {
-        _startTimeText.gameObject.SetActive(startTime);
-        _inGameTimeText.gameObject.SetActive(inGameTime);
-        _startGameText.gameObject.SetActive(startText);
-    }
-
-    [PunRPC]
-    public void ObjectActive(bool b)
-    {
-        gameObject.SetActive(b);
     }
 
     private void Update()
@@ -147,27 +124,9 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
         _currTime = Time.time;
     }
 
-    [PunRPC]
-    private void SetIsReady(bool isReady)
+    private void ShowStartGameText()
     {
-        GameManager.Instance.IsReady = isReady;
-    }
-
-    private bool IsCoroutineCalled = false;
-    [PunRPC]
-    private void SetGameOver(bool gameOver)
-    {
-        GameManager.Instance.IsGameOver = gameOver;
-        GameManager.Instance.StopRespawnPlayer();
-        GameManager.Instance.StopRespawnMonster();
-
-        _gameOverText.gameObject.SetActive(true);
-
-        if (PhotonNetwork.IsMasterClient && IsCoroutineCalled == false)
-        {
-            IsCoroutineCalled = true;
-            StartCoroutine(GoResultScene());
-        }
+        StartCoroutine(ShowStartText());
     }
 
     private IEnumerator GoResultScene()
@@ -176,11 +135,6 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
 
         PhotonNetwork.IsMessageQueueRunning = false;
         PhotonNetwork.LoadLevel("ResultScene");
-    }
-
-    private void ShowStartGameText()
-    {
-        StartCoroutine(ShowStartText());
     }
 
     private IEnumerator ShowStartText()
@@ -203,6 +157,44 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
             _timerText = (int)stream.ReceiveNext();
             _minutesNum = (int)stream.ReceiveNext();
             _secondsNum = (int)stream.ReceiveNext();
+        }
+    }
+
+    [PunRPC]
+    public void ObjectActive(bool b)
+    {
+        gameObject.SetActive(b);
+    }
+
+    [PunRPC]
+    private void ActivateTexts(bool startTime, bool inGameTime, bool startText)
+    {
+        _startTimeText.gameObject.SetActive(startTime);
+        _inGameTimeText.gameObject.SetActive(inGameTime);
+        _startGameText.gameObject.SetActive(startText);
+    }
+
+    [PunRPC]
+    private void SetIsReady(bool isReady)
+    {
+        GameManager.Instance.IsReady = isReady;
+    }
+
+    private bool _isCoroutineCalled = false;
+
+    [PunRPC]
+    private void SetGameOver(bool gameOver)
+    {
+        GameManager.Instance.IsGameOver = gameOver;
+        GameManager.Instance.StopRespawnPlayer();
+        GameManager.Instance.StopRespawnMonster();
+
+        _gameOverText.gameObject.SetActive(true);
+
+        if (PhotonNetwork.IsMasterClient && _isCoroutineCalled == false)
+        {
+            _isCoroutineCalled = true;
+            StartCoroutine(GoResultScene());
         }
     }
 }

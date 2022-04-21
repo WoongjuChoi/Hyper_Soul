@@ -8,8 +8,7 @@ public class FiniteStateMachine : MonoBehaviourPun
     [SerializeField]
     private GameObject _gameObject = null;
 
-    private Dictionary<EStateIDs, IfiniteState> _states = new Dictionary<EStateIDs, IfiniteState>();
-
+    private Dictionary<EMonsterStateIDs, IfiniteState> _states = new Dictionary<EMonsterStateIDs, IfiniteState>();
     private IfiniteState _currState;
 
     private void Update()
@@ -22,7 +21,7 @@ public class FiniteStateMachine : MonoBehaviourPun
         _currState.UpdateState();
     }
 
-    public void AddState(EStateIDs index, IfiniteState state)
+    public void AddState(EMonsterStateIDs index, IfiniteState state)
     {
         // 상태가 이미 있다면 추가시키지 않음
         if (_states.ContainsKey(index))
@@ -36,7 +35,7 @@ public class FiniteStateMachine : MonoBehaviourPun
         _states[index].InitializeState(_gameObject, this);
     }
 
-    public void ChangeState(EStateIDs index)
+    public void ChangeState(EMonsterStateIDs index)
     {
         // 현재 다른 상태가 있을 때 Exit
         _currState?.ExitState();

@@ -11,45 +11,43 @@ public class MonsterSpawnManager : MonoBehaviour
 
     private string _monsterName;
 
+    private enum EMonsterColors
+    {
+        // Treant Color
+        Green = 0,
+        Blue = 1,
+        Purple = 2,
+        // Wolf Color
+        Black = 3,
+        Brown = 4,
+        White = 5,
+    }
+
+    private const string TREANT = "Treant";
+    private const string WOLF = "Wolf";
+
     public void SetMonsterPosition()
     {
         GameObject monster = null;
 
+        EMonsterColors monsterColor;
+
         for (int i = 0; i < _monsterSpawnTransform.Length; ++i)
         {
-            if (i < 7)
+            if (0 == i % 2)
             {
-                _monsterName = "Green Treant";
+                monsterColor = (EMonsterColors)UnityEngine.Random.Range(0, 3);
+                _monsterName = monsterColor.ToString() + TREANT;
             }
-            else if (i <= 7 && i < 12)
+            else
             {
-                _monsterName = "Blue Treant";
-            }
-            else if (12 <= i && i < 19)
-            {
-                _monsterName = "Purple Treant";
-            }
-            else if (19 <= i && i < 29)
-            {
-                _monsterName = "Brown Wolf";
-            }
-            else if (29 <= i && i < 38)
-            {
-                _monsterName = "Black Wolf";
-            }
-            else if (38 <= i && i < 47)
-            {
-                _monsterName = "White Wolf";
+                monsterColor = (EMonsterColors)UnityEngine.Random.Range(3, 6);
+                _monsterName = monsterColor.ToString() + WOLF;
             }
 
             monster = PhotonNetwork.InstantiateRoomObject(_monsterName, _monsterSpawnTransform[i].position, _monsterSpawnTransform[i].rotation);
             monster.GetComponent<MonsterInformation>().InitializeTransform = _monsterSpawnTransform[i];
             monster.GetComponent<MonsterInformation>().MonsterSpawnDirection = _monsterSpawnTransform[i].eulerAngles.y;
-
-            if (i == 0)
-            {
-                break;
-            }
         }
     }
 }

@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class Room : MonoBehaviour
 {
+    private Text _roomInfo;
+
     private string _roomName;
     private int _curPlayerCnt;
     private int _maxPlayer;
-
-    private Text _roomInfo;
 
     public string RoomName
     {
@@ -37,5 +37,4 @@ public class Room : MonoBehaviour
     {
         _roomInfo.text = $"{_roomName}\n {_curPlayerCnt.ToString("0")} / {_maxPlayer.ToString()}";
     }
-
 }

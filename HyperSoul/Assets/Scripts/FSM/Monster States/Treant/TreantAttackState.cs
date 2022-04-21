@@ -6,20 +6,17 @@ public class TreantAttackState : BaseState<TreantInformation>
 {
     [SerializeField]
     private TreantRootAttack _treantRootAttack = null;
-
     [SerializeField]
     private TreantStompAttack _treantStompAttack = null;
-
     [SerializeField]
     private Animator _animator = null;
 
     private ITreantAttack _treantAttack;
-
     private bool _outOfSight = false;
 
     public override void EnterState()
     {
-        CreatureInformation.MonsterCurrentState = EStateIDs.RotatePosition;
+        CreatureInformation.MonsterCurrentState = EMonsterStateIDs.RotatePosition;
     }
 
     public override void ExitState()
@@ -37,14 +34,14 @@ public class TreantAttackState : BaseState<TreantInformation>
     {
         if (CreatureInformation.IsDamaged)
         {
-            FiniteStateMachine.ChangeState(EStateIDs.Damaged);
+            FiniteStateMachine.ChangeState(EMonsterStateIDs.Damaged);
 
             return;
         }
 
         if (false == CreatureInformation.ExistInSight)
         {
-            FiniteStateMachine.ChangeState(EStateIDs.RotatePosition);
+            FiniteStateMachine.ChangeState(EMonsterStateIDs.RotatePosition);
 
             return;
         }
@@ -54,8 +51,7 @@ public class TreantAttackState : BaseState<TreantInformation>
         if (CreatureInformation.Target.GetComponent<LivingEntity>().IsDead || _outOfSight)
         {
             CreatureInformation.IsTargeting = false;
-
-            FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
+            FiniteStateMachine.ChangeState(EMonsterStateIDs.ReturnPosition);
 
             return;
         }
@@ -68,13 +64,11 @@ public class TreantAttackState : BaseState<TreantInformation>
         if (CreatureInformation.DistanceMonsterToTarget < 10f)
         {
             _treantRootAttack.StopAttack();
-
             _treantAttack = _treantStompAttack;
         }
         else if (CreatureInformation.DistanceMonsterToTarget < 30f)
         {
             _treantStompAttack.StopAttack();
-
             _treantAttack = _treantRootAttack;
         }
         else

@@ -40,6 +40,15 @@ public class TreantRotatePositionState : BaseState<TreantInformation>
             return;
         }
 
+        if (CreatureInformation.Target.GetComponent<LivingEntity>().IsDead)
+        {
+            CreatureInformation.IsTargeting = false;
+
+            FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
+
+            return;
+        }
+
         // 외적을 이용해 타겟의 방향을 확인
         CheckTargetPosition();
 

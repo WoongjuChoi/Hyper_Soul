@@ -42,19 +42,19 @@ public class TreantAttackState : BaseState<TreantInformation>
             return;
         }
 
-        if (CreatureInformation.Target.GetComponent<LivingEntity>().IsDead || false == CreatureInformation.ExistInSight)
+        if (false == CreatureInformation.ExistInSight)
         {
-            CreatureInformation.IsTargeting = false;
-
-            FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
+            FiniteStateMachine.ChangeState(EStateIDs.RotatePosition);
 
             return;
         }
 
         SetAttackPattern();
 
-        if (_outOfSight)
+        if (CreatureInformation.Target.GetComponent<LivingEntity>().IsDead || _outOfSight)
         {
+            CreatureInformation.IsTargeting = false;
+
             FiniteStateMachine.ChangeState(EStateIDs.ReturnPosition);
 
             return;

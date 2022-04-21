@@ -4,8 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class ResultSceneManager : MonoBehaviour
+public class ResultSceneManager : MonoBehaviourPun
 {
     [SerializeField]
     private Transform _1stPosition;
@@ -28,6 +29,22 @@ public class ResultSceneManager : MonoBehaviour
 
     private void Awake()
     {
+        PhotonNetwork.IsMessageQueueRunning = true;
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+    }
+
+    private IEnumerator Start()
+    {
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "Score", 0 } });
+        
+        while (false == GameManager.Instance.AllPlayerCheck("Score"))
+        {
+            yield return null;
+        }
+
         ResultSceneInit();
     }
 
@@ -91,12 +108,19 @@ public class ResultSceneManager : MonoBehaviour
                 break;
         }
 
-        //if (rank == 3)
-        //{
-        //    player.GetComponent<Canvas>().gameObject.transform.position = new Vector3(0, 1, 0);
-        //}
+        Text playerText = player.GetComponentInChildren<Text>();
+        if (rank == 3)
+        {
+            player.GetComponentInChildren<Text>().GetComponent<RectTransform>().position = new Vector3(0, 1, -7);
+
+            playerText.color = Color.red;
+        }
+        else if (rank == 0)
+        {
+            playerText.color = Color.green;
+        }
 
         player.GetComponentInChildren<Animator>().SetTrigger(AnimationTrigger);
-        player.GetComponentInChildren<Text>().text = info.playerName + "\n" + info.score;
+        playerText.text = info.playerName + "\n" + info.score;
     }
 }

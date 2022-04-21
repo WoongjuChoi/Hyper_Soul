@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    private bool AllPlayerCheck(string key)
+    public bool AllPlayerCheck(string key)
     {
         for (int i = 0; i < PhotonNetwork.PlayerList.Length; ++i)
         {

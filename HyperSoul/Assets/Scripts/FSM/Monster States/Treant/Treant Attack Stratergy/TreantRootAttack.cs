@@ -37,9 +37,7 @@ public class TreantRootAttack : MonoBehaviourPun, ITreantAttack
 
         if (PhotonNetwork.IsMasterClient)
         {
-            _treantRoot.SetActive(true);
-
-            photonView.RPC(nameof(RootObjectActive), RpcTarget.Others, true);
+            photonView.RPC(nameof(RootObjectActive), RpcTarget.All, true);
         }
 
         yield return new WaitForSeconds(0.1f);
@@ -62,9 +60,7 @@ public class TreantRootAttack : MonoBehaviourPun, ITreantAttack
 
         if (PhotonNetwork.IsMasterClient)
         {
-            _treantRoot.SetActive(false);
-
-            photonView.RPC(nameof(RootObjectActive), RpcTarget.Others, false);
+            photonView.RPC(nameof(RootObjectActive), RpcTarget.All, false);
         }
 
         yield return new WaitForSeconds(1f);

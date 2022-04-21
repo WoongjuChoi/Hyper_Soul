@@ -92,6 +92,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
                 return;
             }
             CurHp -= damageAmt;
+            photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
 
             photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
 

@@ -41,6 +41,7 @@ public class DataManager : MonoBehaviour
 
     const string PlayerDataURL = "https://docs.google.com/spreadsheets/d/1smTaItZFLP5k4agzZ8nvxX_KSp0n_y9UjP701PXgMWs/export?format=tsv&range=A2:J";
     const string MonsterDataURL = "https://docs.google.com/spreadsheets/d/1smTaItZFLP5k4agzZ8nvxX_KSp0n_y9UjP701PXgMWs/export?format=tsv&range=A2:F&gid=1983254392";
+    const string ScoreDataURL = "https://script.google.com/macros/s/AKfycbwdWYKDZhGhA_JI5MZOZq9gFT2886BV7ZShN1pWLqoAX59Zxi9Y3Khegeh0KSD9mFq5/exec";
 
     private void Awake()
     {
@@ -52,8 +53,10 @@ public class DataManager : MonoBehaviour
     {
         UnityWebRequest playerDB = UnityWebRequest.Get(PlayerDataURL);
         UnityWebRequest monsterDB = UnityWebRequest.Get(MonsterDataURL);
+
         yield return playerDB.SendWebRequest();
         yield return monsterDB.SendWebRequest();
+        
         if (playerDB.isDone && monsterDB.isDone)
         {
             SetData(CharacterType.Player, playerDB.downloadHandler.text);
@@ -65,6 +68,36 @@ public class DataManager : MonoBehaviour
         {
             print("웹 응답 없음");
         }
+    }
+
+    public void PostScore()
+    {
+        WWWForm scoreForm = new WWWForm();
+        for (int i = 0; i < 4; ++i)
+        {
+            scoreForm.AddField("NickName" + i.ToString(), "NickNameValue");
+            scoreForm.AddField("Score" + i.ToString(), "ScoreValue");
+            scoreForm.AddField("TopScoreNickName", "TopScoreNickNameValue");
+            scoreForm.AddField("TopScore", "TopScoreValue");
+        }
+        
+        StartCoroutine(SendScore(scoreForm));
+    }
+
+    private IEnumerator SendScore(WWWForm form)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(ScoreDataURL, form))
+        {
+            yield return www.SendWebRequest();
+
+            if(false == www.isDone)
+            {
+                print("스코어웹의 응답이 없음");
+            }
+        }
+
+        UnityWebRequest scoreDB = UnityWebRequest.Post(ScoreDataURL, "");
+        yield return scoreDB.SendWebRequest();
     }
 
     private void SetData(CharacterType characterType, string tsvFile)

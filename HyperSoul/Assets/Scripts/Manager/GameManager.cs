@@ -60,7 +60,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     IEnumerator Start()
     {
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "loadScene", true } });
-
         yield return Loading();
 
         if (true == PhotonNetwork.IsMasterClient)

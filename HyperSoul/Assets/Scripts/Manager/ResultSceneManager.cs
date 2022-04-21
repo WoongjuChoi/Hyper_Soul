@@ -9,14 +9,13 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class ResultSceneManager : MonoBehaviourPun
 {
     [SerializeField]
-    private Transform _1stPosition;
+    private Transform _goldMedalPosition;
     [SerializeField]
-    private Transform _2ndPosition;
+    private Transform _silverMedalPosition;
     [SerializeField]
-    private Transform _3rdPosition;
+    private Transform _bronzeMedalPosition;
     [SerializeField]
-    private Transform _4thPosition;
-
+    private Transform _loserPosition;
     [SerializeField]
     private GameObject _riflePlayerPrefab;
     [SerializeField]
@@ -33,7 +32,6 @@ public class ResultSceneManager : MonoBehaviourPun
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-
     }
 
     private IEnumerator Start()
@@ -78,19 +76,19 @@ public class ResultSceneManager : MonoBehaviourPun
         switch(rank)
         {
             case 0:
-                spawnPosition = _1stPosition.position;
+                spawnPosition = _goldMedalPosition.position;
                 AnimationTrigger = "Win";
                 break;
             case 1:
-                spawnPosition = _2ndPosition.position;
+                spawnPosition = _silverMedalPosition.position;
                 spawnRotation = Quaternion.Euler(0, 10, 0);
                 break;
             case 2:
-                spawnPosition = _3rdPosition.position;
+                spawnPosition = _bronzeMedalPosition.position;
                 spawnRotation = Quaternion.Euler(0, -10, 0);
                 break;
             case 3:
-                spawnPosition = _4thPosition.position;
+                spawnPosition = _loserPosition.position;
                 AnimationTrigger = "Lose";
                 break;
         }

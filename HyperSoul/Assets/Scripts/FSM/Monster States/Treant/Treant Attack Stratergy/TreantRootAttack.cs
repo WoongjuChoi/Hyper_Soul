@@ -7,14 +7,11 @@ public class TreantRootAttack : MonoBehaviourPun, ITreantAttack
 {
     [SerializeField]
     private GameObject _treantRoot = null;
-
     [SerializeField]
     private Animator _animator = null;
 
     private Coroutine _rootAttackCoroutine = null;
-
     private Transform _targetTransform = null;
-
     private bool _isAttack = false;
 
     public void Attack()
@@ -30,9 +27,7 @@ public class TreantRootAttack : MonoBehaviourPun, ITreantAttack
     private IEnumerator RootAttack()
     {
         _isAttack = true;
-
         _targetTransform = gameObject.GetComponent<TreantInformation>().Target.transform;
-
         _animator.SetBool(MonsterAnimatorID.IS_TREANT_ROOT_ATTACK, true);
 
         if (PhotonNetwork.IsMasterClient)
@@ -71,7 +66,6 @@ public class TreantRootAttack : MonoBehaviourPun, ITreantAttack
     public void StopAttack()
     {
         _isAttack = false;
-
         _treantRoot.SetActive(false);
 
         if (null != _rootAttackCoroutine)

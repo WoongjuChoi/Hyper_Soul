@@ -14,11 +14,6 @@ public class Bullet : Projectile
     private void Awake()
     {
         _bulletRigidbody = GetComponent<Rigidbody>();
-
-        //if (false == PhotonNetwork.IsMasterClient)
-        //{
-        //    gameObject.GetComponent<BoxCollider>().enabled = false;
-        //}
     }
 
     private void OnEnable()
@@ -34,9 +29,7 @@ public class Bullet : Projectile
 
     private void OnTriggerEnter(Collider collider)
     {
-
         photonView.RPC(nameof(ReturnBullet), RpcTarget.All);
-
     }
 
     [PunRPC]

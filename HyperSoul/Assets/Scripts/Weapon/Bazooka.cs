@@ -8,19 +8,15 @@ public class Bazooka : Weapon
 {
     [SerializeField]
     Transform _missileSpawnPos;
-
     [SerializeField]
     GameObject _missilePrefab;
-
     [SerializeField]
     GameObject _aimAngleRef;
-
     [SerializeField]
     private float _rayDist = 200f;
 
-    private Vector3 _targetPos;
-
     private Coroutine _shootCotountine;
+    private Vector3 _targetPos;
 
     private void Start()
     {
@@ -37,6 +33,7 @@ public class Bazooka : Weapon
             MaxBulletAmt = DataManager.Instance.FindPlayerData("Bazooka" + _playerInfo.Level.ToString()).MaxBullet;
             CurBulletCnt = MaxBulletAmt;
         }
+
         _reloadTime = 5;
         _gunState = EGunState.Ready;
     }
@@ -49,9 +46,11 @@ public class Bazooka : Weapon
         }
 
         SetMousePos();
+
         Vector3 aimDir = (_mousePos - _missileSpawnPos.position).normalized;
         GameObject target = AimTarget();
         int targetViewID = -1;
+
         if (target != null)
         {
             targetViewID = target.GetComponent<PhotonView>().ViewID;
@@ -92,6 +91,7 @@ public class Bazooka : Weapon
         --CurBulletCnt;
 
         BazookaMissile bazookaMissile = _objectPool.GetObj("BazookaMissile").GetComponent<BazookaMissile>();
+
         if (PhotonNetwork.IsMasterClient)
         {
             CreateCollider(bazookaMissile.GetComponent<PhotonView>().ViewID);
@@ -123,11 +123,11 @@ public class Bazooka : Weapon
         bazookaMissile.ReceiveReturnProjectileFunc(ReturnProjectile);
         bazookaMissile.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.All, true);
 
-
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, true);
         _canFire = false;
 
         yield return new WaitForSeconds(1f);
+
         _shootCotountine = null;
         _canFire = true;
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, false);
@@ -138,6 +138,7 @@ public class Bazooka : Weapon
         RaycastHit target;
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+
         if (Physics.Raycast(ray, out target, _rayDist))
         {
             Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 1f);
@@ -147,8 +148,7 @@ public class Bazooka : Weapon
                 return target.transform.gameObject;
             }
         }
+
         return null;
     }
-
-
 }

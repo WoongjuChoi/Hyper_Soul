@@ -8,18 +8,17 @@ public class TreantSpawnState : BaseState<TreantInformation>
 
     public override void EnterState()
     {
-        CreatureInformation.MonsterCurrentState = EStateIDs.Spawn;
-
+        CreatureInformation.MonsterCurrentState = EMonsterStateIDs.Spawn;
         StartCoroutine(SpawnAnimator());
     }
 
     private IEnumerator SpawnAnimator()
     {
-        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_SPAWN, true);
+        MonsterObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_SPAWN, true);
         
         yield return new WaitForSeconds(0.1f);
 
-        GameObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_SPAWN, false);
+        MonsterObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_SPAWN, false);
     }
 
     public override void ExitState()
@@ -33,7 +32,7 @@ public class TreantSpawnState : BaseState<TreantInformation>
 
         if (_elapsedTime >= CreatureInformation.MonsterInvincibleTime)
         {
-            FiniteStateMachine.ChangeState(EStateIDs.Idle);
+            FiniteStateMachine.ChangeState(EMonsterStateIDs.Idle);
 
             return;
         }

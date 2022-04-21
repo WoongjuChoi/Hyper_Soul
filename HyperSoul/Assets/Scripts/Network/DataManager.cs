@@ -46,16 +46,15 @@ public class DataManager : MonoBehaviour
         get { Init(); return _instance; }
     }
 
+    public event System.Action DataReady = null;
+    public OtherPlayerInfos[] PlayerInfos = new OtherPlayerInfos[4];
 
     private Dictionary<string, PlayerData> _playerDataDictionary = new Dictionary<string, PlayerData>();
-    private Dictionary<string, MonsterData> _monsterDataDictionary = new Dictionary<string, MonsterData>();
+    private Dictionary<string, MonsterData> _monsterDataDictionary = new Dictionary<string, MonsterData>();    
 
     public bool IsDataReady { get; private set; }
-
-    public event System.Action DataReady = null;
     public int MyPlayerOrderIndex { get; set; }
     public EPlayerType PlayerType { get; set;}
-    public OtherPlayerInfos[] PlayerInfos = new OtherPlayerInfos[4];
 
     const string PlayerDataURL = "https://docs.google.com/spreadsheets/d/1smTaItZFLP5k4agzZ8nvxX_KSp0n_y9UjP701PXgMWs/export?format=tsv&range=A2:J";
     const string MonsterDataURL = "https://docs.google.com/spreadsheets/d/1smTaItZFLP5k4agzZ8nvxX_KSp0n_y9UjP701PXgMWs/export?format=tsv&range=A2:F&gid=1983254392";
@@ -77,8 +76,8 @@ public class DataManager : MonoBehaviour
         
         if (playerDB.isDone && monsterDB.isDone)
         {
-            SetData(CharacterType.Player, playerDB.downloadHandler.text);
-            SetData(CharacterType.Monster, monsterDB.downloadHandler.text);
+            SetData(ECharacterType.Player, playerDB.downloadHandler.text);
+            SetData(ECharacterType.Monster, monsterDB.downloadHandler.text);
             DataReady.Invoke();
             IsDataReady = true;
         }
@@ -91,6 +90,7 @@ public class DataManager : MonoBehaviour
     public void PostScore()
     {
         WWWForm scoreForm = new WWWForm();
+
         for (int i = 0; i < 4; ++i)
         {
             scoreForm.AddField("NickName" + i.ToString(), "NickNameValue");
@@ -118,15 +118,16 @@ public class DataManager : MonoBehaviour
         yield return scoreDB.SendWebRequest();
     }
 
-    private void SetData(CharacterType characterType, string tsvFile)
+    private void SetData(ECharacterType characterType, string tsvFile)
     {
         string[] row = tsvFile.Split('\n');
+
         for (int i = 0; i < row.Length; ++i)
         {
             string[] column = row[i].Split('\t');
             switch (characterType)
             {
-                case CharacterType.Player:
+                case ECharacterType.Player:
                     PlayerData playerData = new PlayerData();
                     playerData.PlayerName = column[0] + (string)column[1];
                     playerData.MaxHp = int.Parse(column[2]);
@@ -139,7 +140,7 @@ public class DataManager : MonoBehaviour
                     playerData.MoveSpeed = int.Parse(column[9]);
                     _playerDataDictionary.Add(playerData.PlayerName, playerData);
                     break;
-                case CharacterType.Monster:
+                case ECharacterType.Monster:
                     MonsterData monsterData = new MonsterData();
                     monsterData.MonsterName = column[0] + (string)column[1];
                     monsterData.MaxHp = int.Parse(column[2]);

@@ -16,30 +16,28 @@ public class GameManager : MonoBehaviourPunCallbacks
         get { Init(); return _instance; }
     }
 
-    private ChatManager _chatManager;
-    public static ChatManager Chat { get { return Instance._chatManager; } }
-    public Transform PlayerCamRotationTransform { get; set; }
-
-    private bool[] _isSpawned = new bool[5];
-    private GameObject _player;
-    private GameObject _spawnPosBase;
-
-    Transform[] _spawnPoint;
-
-    // 씬 동기화 부분
     [SerializeField]
     private GameObject _loadingPanel;
+
     private List<PlayerInfo> _playerInfoList;
-    public bool IsStart = false;
 
-    public bool IsReady { get; set; }
-    public bool IsGameOver { get; set; }
-
-    private GameObject _timeManager;
-
-    private GameObject _monsterSpawnManager;
+    private ChatManager _chatManager;
     private Coroutine _playerRespawn;
     private Coroutine _monsterRespawn;
+    private GameObject _player;
+    private GameObject _spawnPosBase;
+    private GameObject _timeManager;
+    private GameObject _monsterSpawnManager;
+
+    private Transform[] _spawnPoint;
+
+    private bool[] _isSpawned = new bool[5];
+
+    public static ChatManager Chat { get { return Instance._chatManager; } }
+    public Transform PlayerCamRotationTransform { get; set; }
+    public bool IsStart { get; set; }
+    public bool IsReady { get; set; }
+    public bool IsGameOver { get; set; }
 
     private void Awake()
     {
@@ -48,7 +46,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         IsReady = true;
         IsGameOver = false;
 
-        // MonsterSpawnManager 게임오브젝트 찾기    (22.04.19)
         if (PhotonNetwork.IsMasterClient)
         {
             _monsterSpawnManager = GameObject.Find("Monster Spawn Manager");
@@ -57,7 +54,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         _chatManager = GameObject.Find("ChatManager").gameObject.GetComponent<ChatManager>();
     }
 
-    IEnumerator Start()
+    private IEnumerator Start()
     {
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "loadScene", true } });
         yield return Loading();
@@ -68,7 +65,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    IEnumerator Loading()
+    private IEnumerator Loading()
     {
         while (false == AllPlayerCheck("loadScene"))
         {
@@ -78,7 +75,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             _timeManager = PhotonNetwork.InstantiateRoomObject("TimeManager", Vector3.zero, Quaternion.identity);
-            
             _timeManager.GetComponent<TimeManager>().photonView.RPC("ObjectActive", RpcTarget.All, false);
         }
 
@@ -89,7 +85,6 @@ public class GameManager : MonoBehaviourPunCallbacks
             yield return null;
         }
 
-        // Monster 위치시키는 함수 실행  (22.04.19)
         if (PhotonNetwork.IsMasterClient)
         {
             _monsterSpawnManager.GetComponent<MonsterSpawnManager>().SetMonsterPosition();
@@ -210,17 +205,20 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     // 싱글톤
-    static private void Init()
+    private static void Init()
     {
         if (_instance == null)
         {
             GameObject gameManager = GameObject.Find("GameManager");
+
             if (gameManager == null)
             {
                 gameManager = new GameObject { name = "GameManager" };
                 gameManager.AddComponent<GameManager>();
             }
+
             DontDestroyOnLoad(gameManager);
+
             _instance = gameManager.GetComponent<GameManager>();
         }
     }

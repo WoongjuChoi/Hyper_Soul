@@ -9,15 +9,13 @@ public class WolfAlertState : BaseState<WolfInformation>
 
     public override void EnterState()
     {
-        CreatureInformation.MonsterCurrentState = EStateIDs.Alert;
-
+        CreatureInformation.MonsterCurrentState = EMonsterStateIDs.Alert;
         CreatureInformation.CreatureAnimator.SetBool(MonsterAnimatorID.IS_ALERT, true);
     }
 
     public override void ExitState()
     {
         _elapsedTime = 0;
-
         CreatureInformation.CreatureAnimator.SetBool(MonsterAnimatorID.IS_ALERT, false);
     }
 
@@ -25,7 +23,7 @@ public class WolfAlertState : BaseState<WolfInformation>
     {
         if (CreatureInformation.IsDamaged)
         {
-            FiniteStateMachine.ChangeState(EStateIDs.Damaged);
+            FiniteStateMachine.ChangeState(EMonsterStateIDs.Damaged);
 
             return;
         }
@@ -34,7 +32,7 @@ public class WolfAlertState : BaseState<WolfInformation>
 
         if (_elapsedTime >= _changeIdleAnimationTime)
         {
-            FiniteStateMachine.ChangeState(EStateIDs.Idle);
+            FiniteStateMachine.ChangeState(EMonsterStateIDs.Idle);
 
             return;
         }

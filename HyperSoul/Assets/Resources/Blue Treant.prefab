@@ -115,6 +115,7 @@ MonoBehaviour:
   _hpBarOverheadCanvas: {fileID: 8439511973682582716}
   _profileCanvas: {fileID: 0}
   _levelText: {fileID: 0}
+  _monster: {fileID: 3392279994915056130}
   _monsterFSM: {fileID: 3392279994915056133}
   _monsterSpawnManager: {fileID: 0}
   _monsterAnimatorObject: {fileID: 8803028639666625282}

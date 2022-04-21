@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private GameObject _monsterSpawnManager;
     private Coroutine _playerRespawn;
+    private Coroutine _monsterRespawn;
 
     private void Awake()
     {
@@ -64,7 +65,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         if (true == PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC(nameof(StartGame), RpcTarget.AllViaServer);
+            photonView.RPC(nameof(StartGame), RpcTarget.All);
         }
     }
 
@@ -78,8 +79,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             _timeManager = PhotonNetwork.InstantiateRoomObject("TimeManager", Vector3.zero, Quaternion.identity);
-
-            _timeManager.GetComponent<TimeManager>().photonView.RPC("ObjectActive", RpcTarget.AllBufferedViaServer, false);
+            
+            _timeManager.GetComponent<TimeManager>().photonView.RPC("ObjectActive", RpcTarget.All, false);
         }
 
         SpawnPlayer();
@@ -104,9 +105,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient)
         {
-            _timeManager.GetComponent<TimeManager>().photonView.RPC("ObjectActive", RpcTarget.AllViaServer, true);
-
-            //_monsterSpawnManager.GetComponent<MonsterSpawnManager>().SetMonsterPosition();
+            _timeManager.GetComponent<TimeManager>().photonView.RPC("ObjectActive", RpcTarget.All, true);
         }
     }
 
@@ -147,20 +146,51 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public void RespawnMonster(GameObject monster)
+    {
+        MonsterInformation monsterInfo = monster.GetComponent<MonsterInformation>();
+
+        _monsterRespawn = StartCoroutine(CoroutineRespawnMonster(monster, monsterInfo));
+    }
+
+    public void StopRespawnMonster()
+    {
+        if (null != _monsterRespawn)
+        {
+            StopCoroutine(_monsterRespawn);
+        }
+    }
+
+    private IEnumerator CoroutineRespawnMonster(GameObject monster, MonsterInformation monsterInfo)
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        // MonsterInformation.cs ¿« MonsterActive() Ω««‡
+        monsterInfo.GetComponent< PhotonView>().RPC("MonsterActive", RpcTarget.All, false);
+
+        yield return new WaitForSeconds(1.5f);
+
+        monsterInfo.GetComponent< PhotonView>().RPC("MonsterActive", RpcTarget.All, true);
+
+        monster.transform.position = monsterInfo.InitializeTransform.position;
+
+        monster.transform.rotation = Quaternion.Euler(0f, monsterInfo.MonsterSpawnDirection, 0f);
+    }
+
     public void RespawnPlayer()
     {
-        _playerRespawn = StartCoroutine(CoroutineRespawn());
+        _playerRespawn = StartCoroutine(CoroutineRespawnPlayer());
     }
 
     public void StopRespawnPlayer()
     {
-        if (_playerRespawn != null)
+        if (null != _playerRespawn)
         {
             StopCoroutine(_playerRespawn);
         }
     }
 
-    private IEnumerator CoroutineRespawn()
+    private IEnumerator CoroutineRespawnPlayer()
     {
         yield return new WaitForSeconds(1.5f);
 
@@ -179,7 +209,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         _player.transform.position = _spawnPoint[index].position;
     }
-
 
     // ΩÃ±€≈Ê
     static private void Init()

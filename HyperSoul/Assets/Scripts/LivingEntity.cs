@@ -67,6 +67,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
                 return;
             }
             CurHp -= damageAmt;
+            photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
 
             if (CurHp <= 0 && IsDead == false)
             {
@@ -79,7 +80,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
                 Hit();
                 photonView.RPC("Hit", RpcTarget.Others, null);
             }
-            photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
         }
     }
 
@@ -93,14 +93,13 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
             }
             CurHp -= damageAmt;
 
-            Debug.Log($"damageAmt : {damageAmt}");
+            photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
 
             if (CurHp <= 0 && IsDead == false)
             {
                 GiveScore(attackerID, Score);
                 GiveExp(attackerID, Exp);
             }
-
         }
 
         if (CurHp <= 0 && IsDead == false)
@@ -115,7 +114,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
             Hit();
             photonView.RPC("Hit", RpcTarget.Others);
         }
-        photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
     }
 
     [PunRPC]
@@ -171,10 +169,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
         _animator.SetBool(CommonAnimatorID.DIE, false);
     }
 
-    public virtual void Respawn()
-    {
-        gameObject.SetActive(false);
-    }
+    public virtual void Respawn() { }
 
     public virtual void UpdateLevelUpInfo(string info)
     {

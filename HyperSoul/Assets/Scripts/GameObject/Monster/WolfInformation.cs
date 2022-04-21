@@ -30,21 +30,6 @@ public class WolfInformation : MonsterInformation
         _deathSound.SetActive(false);
         _dataManager = GameObject.Find("DataManager").GetComponent<DataManager>();
 
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        //    _monsterAnimatorIndex = Random.Range(0, 3);
-        //    photonView.RPC(nameof(SetMonsterAnimatorIndex), RpcTarget.AllViaServer, _monsterAnimatorIndex);
-        //}
-        //_monsterAnimatorIndex = 0;
-        //_animator = _monsterAnimatorObject.transform.GetChild(_monsterAnimatorIndex).GetComponent<Animator>();
-
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        //    _animator.gameObject.SetActive(true);
-
-        //    photonView.RPC(nameof(SetMonsterAnimatorIndex), RpcTarget.Others, true);
-        //}
-
         _animator = _monsterAnimatorObject.GetComponent<Animator>();
 
         _monsterType = MonsterType.Wolf;
@@ -71,12 +56,6 @@ public class WolfInformation : MonsterInformation
         _monsterFSM.AddState(EStateIDs.Spawn, _monsterSpawnState);
     }
 
-    [PunRPC]
-    public void SetMonsterAnimatorIndex(int index)
-    {
-        _monsterAnimatorIndex = index;
-    }
-
     public override void OnTriggerEnter(Collider other)
     {
         if (LayerParameter.LAYER_PLAYER == other.gameObject.layer)
@@ -86,8 +65,6 @@ public class WolfInformation : MonsterInformation
 
         if (null != other.gameObject.GetComponent<PhotonView>())
         {
-            Debug.Log($"other.gameObject.name : {other.gameObject.name}");
-
             int colliderID = other.gameObject.GetComponent<PhotonView>().ViewID;
 
             MonsterDamage(colliderID);

@@ -6,6 +6,8 @@ public class TreantIdleState : BaseState<TreantInformation>
 {
     private int _increaseHealing = 0;
 
+    private bool _isDoneHealing = false;
+
     public override void EnterState()
     {
         CreatureInformation.MonsterCurrentState = EStateIDs.Idle;
@@ -14,6 +16,8 @@ public class TreantIdleState : BaseState<TreantInformation>
     public override void ExitState()
     {
         _increaseHealing = 0;
+
+        _isDoneHealing = false;
 
         CreatureInformation.OriginVec = GameObject.transform.forward;
     }
@@ -27,20 +31,34 @@ public class TreantIdleState : BaseState<TreantInformation>
             return;
         }
 
-        // 현재 체력이 최대 체력이 아니라면 서서히 증가
-        if (CreatureInformation.CurHp >= CreatureInformation.MaxHp)
+        IncreaseHealing();
+    }
+
+    private void IncreaseHealing()
+    {
+        if (false == _isDoneHealing)
         {
-            CreatureInformation.CurHp = CreatureInformation.MaxHp;
+            // 현재 체력이 최대 체력이 아니라면 서서히 증가
+            if (CreatureInformation.CurHp >= CreatureInformation.MaxHp)
+            {
+                CreatureInformation.CurHp = CreatureInformation.MaxHp;
 
-            _increaseHealing = 0;
-        }
-        else
-        {
-            float increaseHealing = Random.Range(0f, 1f);
+                _increaseHealing = 0;
 
-            _increaseHealing += (int)Mathf.Round(increaseHealing * 10);
+                CreatureInformation.SetMonsterHp(CreatureInformation.CurHp);
 
-            CreatureInformation.CurHp += _increaseHealing;
+                _isDoneHealing = true;
+            }
+            else
+            {
+                float increaseHealing = Random.Range(0f, 1f);
+
+                _increaseHealing += (int)Mathf.Round(increaseHealing * 10);
+
+                CreatureInformation.CurHp += _increaseHealing;
+
+                CreatureInformation.SetMonsterHp(CreatureInformation.CurHp);
+            }
         }
     }
 }

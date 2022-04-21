@@ -165,9 +165,9 @@ public class PlayerInfo : LivingEntity
 
         if (AMMO_COLLIDER == collider.gameObject.layer)
         {
-            //Debug.Log($"피격당함\n Attacker : {projectile.ProjectileOwnerID}" +
-            //$"\n Damage : {projectile.Attack}" +
-            //$"\n HP : {CurHp}");
+            //Debug.Log($"피격당함\nAttacker : {projectile.ProjectileOwnerID}" +
+            //$"\nAttack : {projectile.Attack}" +
+            //$"\nHP : {CurHp}");
 
             TakeDamage(projectile.ProjectileOwnerID, projectile.Attack,
                 collider.transform.position, collider.transform.position.normalized);
@@ -178,7 +178,7 @@ public class PlayerInfo : LivingEntity
         if (MONSTER_ATTACK_COLLIDER == collider.gameObject.layer)
         {
             Debug.Log($"피격당함\nAttacker : {livingEntity.gameObject.name}" +
-                    $"\nDamage : {livingEntity.Attack}" +
+                    $"\nAttack : {livingEntity.Attack}" +
                     $"\nHP : {CurHp}");
 
             TakeMonsterDamage(livingEntity.Attack);

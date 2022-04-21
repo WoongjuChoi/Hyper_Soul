@@ -34,15 +34,17 @@ public class Bullet : Projectile
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (photonView.IsMine)
-        {
-            photonView.RPC(nameof(ReturnBullet), RpcTarget.All);
-        }
+
+        photonView.RPC(nameof(ReturnBullet), RpcTarget.All);
+
     }
 
     [PunRPC]
     private void ReturnBullet()
     {
-        _projectileReturn(gameObject);
+        if (photonView.IsMine)
+        {
+            _projectileReturn(gameObject);
+        }
     }
 }

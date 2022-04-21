@@ -56,12 +56,6 @@ public class WolfInformation : MonsterInformation
         _monsterFSM.AddState(EStateIDs.Spawn, _monsterSpawnState);
     }
 
-    [PunRPC]
-    public void SetMonsterAnimatorIndex(int index)
-    {
-        _monsterAnimatorIndex = index;
-    }
-
     public override void OnTriggerEnter(Collider other)
     {
         if (LayerParameter.LAYER_PLAYER == other.gameObject.layer)

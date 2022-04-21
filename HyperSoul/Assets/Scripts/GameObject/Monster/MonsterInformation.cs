@@ -72,6 +72,16 @@ public abstract class MonsterInformation : LivingEntity
         _isWithinAttackRange = false;
     }
 
+    public void SetMonsterHp(int curHp)
+    {
+        Debug.Log($"curHp : {curHp}");
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(SetMonsterInformation), RpcTarget.All, curHp, MaxHp);
+        }
+    }
+
     [PunRPC]
     public void SetMonsterInformation(int curHp, int maxHp)
     {

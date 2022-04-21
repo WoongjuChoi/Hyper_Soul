@@ -45,6 +45,11 @@ public class MonsterSpawnManager : MonoBehaviour
             monster = PhotonNetwork.InstantiateRoomObject(_monsterName, _monsterSpawnTransform[i].position, _monsterSpawnTransform[i].rotation);
             monster.GetComponent<MonsterInformation>().InitializeTransform = _monsterSpawnTransform[i];
             monster.GetComponent<MonsterInformation>().MonsterSpawnDirection = _monsterSpawnTransform[i].eulerAngles.y;
+
+            if (i == 0)
+            {
+                break;
+            }
         }
     }
 }

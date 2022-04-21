@@ -11,8 +11,6 @@ public class Sniper : Weapon
     [SerializeField]
     private GameObject _bulletPrefab;
 
-    private ObjectPool _sniperPool = new ObjectPool();
-
     private Coroutine _shootCotountine;
 
     private void Start()
@@ -90,7 +88,7 @@ public class Sniper : Weapon
         }
 
         _canFire = false;
-        _playerAnimator.SetTrigger(PlayerAnimatorID.SINGLESHOT);
+        _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, true);
 
         _audioSource.PlayOneShot(ShotSound);
         MuzzleFlashEffect.SetActive(true);

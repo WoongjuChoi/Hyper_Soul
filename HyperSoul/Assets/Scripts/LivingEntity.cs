@@ -92,6 +92,7 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
                 return;
             }
             CurHp -= damageAmt;
+            photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
 
             Debug.Log($"damageAmt : {damageAmt}");
 
@@ -100,7 +101,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
                 GiveScore(attackerID, Score);
                 GiveExp(attackerID, Exp);
             }
-
         }
 
         if (CurHp <= 0 && IsDead == false)
@@ -115,7 +115,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
             Hit();
             photonView.RPC("Hit", RpcTarget.Others);
         }
-        photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
     }
 
     [PunRPC]

@@ -48,13 +48,13 @@ public class ChatManager : MonoBehaviourPun
         string msg = "";
         PlayerInfo attackerInfo = attacker.GetComponent<PlayerInfo>();
         PlayerInfo victimPlayerInfo = victim.GetComponent<PlayerInfo>();
+
         if (victimPlayerInfo != null)
         {
             msg = "<color=#62FF00>" + $"{attackerInfo.NickName}" + "</color>" + "이(가)" + "<color=#FF0000>" + $"{ victimPlayerInfo.NickName}" + "</color>" + "을(를) 처치";
+            photonView.RPC("Chat", RpcTarget.OthersBuffered, msg);
+            Chat(msg);
         }
-
-        photonView.RPC("Chat", RpcTarget.OthersBuffered, msg);
-        Chat(msg);
     }
 
     [PunRPC]

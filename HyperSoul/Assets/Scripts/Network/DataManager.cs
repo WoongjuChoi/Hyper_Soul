@@ -15,7 +15,25 @@ public struct OtherPlayerInfos : IComparable
     {
         OtherPlayerInfos infos = (OtherPlayerInfos)obj;
 
-        return score.CompareTo(infos.score);
+        if (score > infos.score)
+        {
+            return -1;
+        }
+        else if (score < infos.score)
+        {
+            return 1;
+        }
+        else
+        {
+            if (playerOrderIndex >= infos.playerOrderIndex)
+            {
+                return -1;
+            }
+            else
+            {
+                return 1;
+            }
+        }
     }
 }
 

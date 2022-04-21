@@ -153,6 +153,7 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
         GameManager.Instance.IsReady = isReady;
     }
 
+    private bool IsCoroutineCalled = false;
     [PunRPC]
     private void SetGameOver(bool gameOver)
     {
@@ -162,14 +163,18 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
 
         _gameOverText.gameObject.SetActive(true);
 
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient && IsCoroutineCalled == false)
         {
-            Invoke("GoResultScene", 3f);
+            IsCoroutineCalled = true;
+            StartCoroutine(GoResultScene());
         }
     }
 
-    private void GoResultScene()
+    private IEnumerator GoResultScene()
     {
+        yield return new WaitForSeconds(3f);
+
+        PhotonNetwork.IsMessageQueueRunning = false;
         PhotonNetwork.LoadLevel("ResultScene");
     }
 

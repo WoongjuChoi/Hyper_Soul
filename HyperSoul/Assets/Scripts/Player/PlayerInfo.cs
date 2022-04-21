@@ -216,15 +216,15 @@ public class PlayerInfo : LivingEntity
 
         if (GameManager.Instance.IsGameOver)
         {
-            photonView.RPC(nameof(MyScoreUpdate), RpcTarget.All);
+            int myPlayerOrderIndex = DataManager.Instance.MyPlayerOrderIndex;
+            photonView.RPC(nameof(DataManagerScoreUpdate), RpcTarget.All, myPlayerOrderIndex, CurScore);
         }
     }
 
     [PunRPC]
-    private void MyScoreUpdate()
+    private void DataManagerScoreUpdate(int playerIndex, int score)
     {
-        int myPlayerOrderIndex = DataManager.Instance.MyPlayerOrderIndex;
-        DataManager.Instance.PlayerInfos[myPlayerOrderIndex].score = CurScore;
+        DataManager.Instance.PlayerInfos[playerIndex].score = score;
     }
 
     private IEnumerator LevelUp()

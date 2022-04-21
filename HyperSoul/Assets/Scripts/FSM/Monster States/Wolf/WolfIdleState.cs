@@ -12,6 +12,8 @@ public class WolfIdleState : BaseState<WolfInformation>
 
     private int _increaseHealing = 0;
 
+    private bool _isDoneHealing = false;
+
     public override void EnterState()
     {
         if (EStateIDs.ReturnPosition == CreatureInformation.MonsterCurrentState)
@@ -32,6 +34,7 @@ public class WolfIdleState : BaseState<WolfInformation>
         _elapsedTime = 0f;
 
         _playAnimation = false;
+        _isDoneHealing = false;
         _isReturnPosition = false;
 
         _increaseHealing = 0;
@@ -89,22 +92,32 @@ public class WolfIdleState : BaseState<WolfInformation>
 
     private void IncreaseHealing()
     {
-        // 현재 체력이 최대 체력이 아니라면 서서히 증가
-        if (CreatureInformation.CurHp >= CreatureInformation.MaxHp)
+        if (false == _isDoneHealing)
         {
-            CreatureInformation.CurHp = CreatureInformation.MaxHp;
+            // 현재 체력이 최대 체력이 아니라면 서서히 증가
+            if (CreatureInformation.CurHp >= CreatureInformation.MaxHp)
+            {
+                CreatureInformation.CurHp = CreatureInformation.MaxHp;
 
-            _increaseHealing = 0;
-        }
-        else
-        {
-            float increaseHealing = Random.Range(0f, 1f);
+                _increaseHealing = 0;
 
-            _increaseHealing += (int)Mathf.Round(increaseHealing * 10);
+                CreatureInformation.SetMonsterHp(CreatureInformation.CurHp);
 
-            CreatureInformation.CurHp += _increaseHealing;
+                _isDoneHealing = true;
+            }
+            else
+            {
+                float increaseHealing = Random.Range(0f, 1f);
+
+                _increaseHealing += (int)Mathf.Round(increaseHealing * 10);
+
+                CreatureInformation.CurHp += _increaseHealing;
+
+                CreatureInformation.SetMonsterHp(CreatureInformation.CurHp);
+            }
         }
     }
+
     private void InitializeDirection()
     {
         Vector3 InitializeAngle = new Vector3(0f, CreatureInformation.MonsterSpawnDirection, 0f);

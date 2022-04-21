@@ -11,6 +11,8 @@ public class WolfReturnPositionState : BaseState<WolfInformation>
 
     private int _increaseHealing = 0;
 
+    private bool _isDoneHealing = false;
+
     private const string IS_WALK = "isWalk";
 
     public override void EnterState()
@@ -24,6 +26,8 @@ public class WolfReturnPositionState : BaseState<WolfInformation>
 
     public override void ExitState()
     {
+        _isDoneHealing = false;
+
         CreatureInformation.IsTargeting = false;
 
         CreatureInformation.MonsterChaser.ResetPath();
@@ -57,25 +61,39 @@ public class WolfReturnPositionState : BaseState<WolfInformation>
             return;
         }
 
-        // 현재 체력이 최대 체력이 아니라면 서서히 증가
-        if (CreatureInformation.CurHp >= CreatureInformation.MaxHp)
-        {
-            CreatureInformation.CurHp = CreatureInformation.MaxHp;
-
-            _increaseHealing = 0;
-        }
-        else
-        {
-            float increaseHealing = Random.Range(0f, 1f);
-
-            _increaseHealing += (int)Mathf.Round(increaseHealing * 10);
-
-            CreatureInformation.CurHp += _increaseHealing;
-        }
+        IncreaseHealing();
 
         CreatureInformation.MonsterChaser.IsTarget = CreatureInformation.InitializeTransform;
 
         CreatureInformation.MonsterChaser.IsActive = true;
+    }
+
+    private void IncreaseHealing()
+    {
+        if (false == _isDoneHealing)
+        {
+            // 현재 체력이 최대 체력이 아니라면 서서히 증가
+            if (CreatureInformation.CurHp >= CreatureInformation.MaxHp)
+            {
+                CreatureInformation.CurHp = CreatureInformation.MaxHp;
+
+                _increaseHealing = 0;
+
+                CreatureInformation.SetMonsterHp(CreatureInformation.CurHp);
+
+                _isDoneHealing = true;
+            }
+            else
+            {
+                float increaseHealing = Random.Range(0f, 1f);
+
+                _increaseHealing += (int)Mathf.Round(increaseHealing * 10);
+
+                CreatureInformation.CurHp += _increaseHealing;
+
+                CreatureInformation.SetMonsterHp(CreatureInformation.CurHp);
+            }
+        }
     }
 
     private void InitializeDirection()

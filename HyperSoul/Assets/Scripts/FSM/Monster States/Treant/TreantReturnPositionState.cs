@@ -12,6 +12,8 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
     private const string IS_LEFT_ROTATE = "isLeftRotate";
     private const string IS_RIGHT_ROTATE = "isRightRotate";
 
+    private bool _isDoneHealing = false;
+
     public override void EnterState()
     {
         CreatureInformation.MonsterCurrentState = EStateIDs.ReturnPosition;
@@ -21,6 +23,7 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
     {
         _increaseHealing = 0;
 
+        _isDoneHealing = false;
         _isLocatedLeftSide = false;
         _isLocatedRightSide = false;
 
@@ -38,21 +41,7 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
             return;
         }
 
-        // 현재 체력이 최대 체력이 아니라면 서서히 증가
-        if (CreatureInformation.CurHp >= CreatureInformation.MaxHp)
-        {
-            CreatureInformation.CurHp = CreatureInformation.MaxHp;
-
-            _increaseHealing = 0;
-        }
-        else
-        {
-            float increaseHealing = Random.Range(0f, 1f);
-
-            _increaseHealing += (int)Mathf.Round(increaseHealing * 10);
-
-            CreatureInformation.CurHp += _increaseHealing;
-        }
+        IncreaseHealing();
 
         // 현재 바라보는 방향을 확인
         CheckCurrentPosition();
@@ -96,6 +85,34 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
             }
 
             yield return new WaitForSeconds(1f);
+        }
+    }
+
+    private void IncreaseHealing()
+    {
+        if (false == _isDoneHealing)
+        {
+            // 현재 체력이 최대 체력이 아니라면 서서히 증가
+            if (CreatureInformation.CurHp >= CreatureInformation.MaxHp)
+            {
+                CreatureInformation.CurHp = CreatureInformation.MaxHp;
+
+                _increaseHealing = 0;
+
+                CreatureInformation.SetMonsterHp(CreatureInformation.CurHp);
+
+                _isDoneHealing = true;
+            }
+            else
+            {
+                float increaseHealing = Random.Range(0f, 1f);
+
+                _increaseHealing += (int)Mathf.Round(increaseHealing * 10);
+
+                CreatureInformation.CurHp += _increaseHealing;
+
+                CreatureInformation.SetMonsterHp(CreatureInformation.CurHp);
+            }
         }
     }
 }

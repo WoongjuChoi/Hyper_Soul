@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class TimeManager : MonoBehaviourPun, IPunObservable
 {
     [SerializeField]
-    private Text _GameOverText;
+    private Text _gameOverText;
 
     [SerializeField]
     private Text _startGameText;
@@ -32,20 +32,34 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
 
     private int _timerText = 0;
 
+    private bool _isReadyDone = false;
+
     private void OnEnable()
     {
-        ResetTimer();
+        _startGameText.text = "START GAME";
 
+        // HACK : TimeManager가 이미 RPC를 통해 생성돼서 OnEnalble이 전부 들어오는데
+        // 굳이 여기서 또 RPC를 통해 실행시켜야하는가 의문을 가져 각 클라이언트에서 실행하기로 했습니다.
+        ActivateTexts(true, false, false);
+
+        if (false == PhotonNetwork.IsMasterClient)
+        {
+            return;
+        }
+
+        ResetTimer();
         _minutesNum = _maxInGameTime / 60;
         _secondsNum = _maxInGameTime % 60;
 
-        _startTimeText.text = $"{_timerText}";
-        _inGameTimeText.text = $"{_minutesNum} : {_secondsNum}";
-        _startGameText.text = "START GAME";
+        //photonView.RPC(nameof(TextsActive), RpcTarget.All, true, false, false);
+    }
 
-        _startTimeText.gameObject.SetActive(true);
-        _inGameTimeText.gameObject.SetActive(false);
-        _startGameText.gameObject.SetActive(false);
+    [PunRPC]
+    public void ActivateTexts(bool startTime, bool inGameTime, bool startText)
+    {
+        _startTimeText.gameObject.SetActive(startTime);
+        _inGameTimeText.gameObject.SetActive(inGameTime);
+        _startGameText.gameObject.SetActive(startText);
     }
 
     [PunRPC]
@@ -56,14 +70,21 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
 
     private void Update()
     {
-        if (GameManager.Instance.IsGameOver)
+        _startTimeText.text = $"{_timerText}";
+        _inGameTimeText.text = $"{_minutesNum} : {_secondsNum}";
+
+        if (GameManager.Instance.IsGameOver || false == PhotonNetwork.IsMasterClient)
         {
             return;
         }
 
         CheckReadyTimer();
 
-        CheckInGameTimer();
+        if (_isReadyDone)
+        {
+            CheckInGameTimer();
+        }
+
     }
 
     private void CheckInGameTimer()
@@ -73,10 +94,7 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
             return;
         }
 
-        _inGameTimeText.text = $"{_minutesNum} : {_secondsNum}";
-
-        //Debug.Log($"_minutesNum : {_minutesNum}\n" +
-        //    $"_secondsNum : {_secondsNum}");
+        photonView.RPC(nameof(ActivateTexts), RpcTarget.All, false, true, false);
 
         _currTime = Time.time - _startTime;
 
@@ -99,7 +117,7 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
             _minutesNum = 0;
             _secondsNum = 0;
 
-            photonView.RPC(nameof(SetGameOver), RpcTarget.AllViaServer, true);
+            photonView.RPC(nameof(SetGameOver), RpcTarget.All, true);
         }
     }
 
@@ -111,24 +129,15 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
         }
 
         _currTime = Time.time - _startTime;
-
         _timerText = (int)(_maxReadyTime - _currTime);
 
-        _startTimeText.text = $"{_timerText}";
-
-        //Debug.Log($"_timerText : {_timerText}");
-
-        if (0 >= _timerText)
+        if (_timerText <= 0)
         {
-            photonView.RPC(nameof(SetIsReady), RpcTarget.AllViaServer, false);
-
-            _startTimeText.gameObject.SetActive(false);
+            photonView.RPC(nameof(SetIsReady), RpcTarget.All, false);
+            photonView.RPC(nameof(ActivateTexts), RpcTarget.All, false, false, true);
 
             ShowStartGameText();
-
             ResetTimer();
-
-            _inGameTimeText.gameObject.SetActive(true);
         }
     }
 
@@ -149,8 +158,9 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
     {
         GameManager.Instance.IsGameOver = gameOver;
         GameManager.Instance.StopRespawnPlayer();
+        GameManager.Instance.StopRespawnMonster();
 
-        _GameOverText.gameObject.SetActive(true);
+        _gameOverText.gameObject.SetActive(true);
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -163,21 +173,16 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
         PhotonNetwork.LoadLevel("ResultScene");
     }
 
-    [PunRPC]
     private void ShowStartGameText()
     {
-        StartCoroutine(ShowText());
+        StartCoroutine(ShowStartText());
     }
 
-    private IEnumerator ShowText()
+    private IEnumerator ShowStartText()
     {
-        yield return new WaitForSeconds(0.3f);
-
-        _startGameText.gameObject.SetActive(true);
-
         yield return new WaitForSeconds(1f);
-
-        _startGameText.gameObject.SetActive(false);
+        photonView.RPC(nameof(ActivateTexts), RpcTarget.All, false, false, false);
+        _isReadyDone = true;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

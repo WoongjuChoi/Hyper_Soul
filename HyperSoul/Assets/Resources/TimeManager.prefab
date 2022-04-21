@@ -203,12 +203,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccb2129fbb3e239439308e8e59e8847d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _GameOverText: {fileID: 455378268879549936}
+  _gameOverText: {fileID: 455378268879549936}
   _startGameText: {fileID: 455378267311429150}
   _startTimeText: {fileID: 455378267469415053}
   _inGameTimeText: {fileID: 455378268810119389}
   _maxReadyTime: 3
-  _maxInGameTime: 100000
+  _maxInGameTime: 1000000
 --- !u!114 &455378268259368125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,7 +224,7 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 2
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
@@ -427,7 +427,7 @@ GameObject:
   - component: {fileID: 455378268879549936}
   - component: {fileID: 455378268879549938}
   m_Layer: 5
-  m_Name: GameOverText
+  m_Name: Game Over Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

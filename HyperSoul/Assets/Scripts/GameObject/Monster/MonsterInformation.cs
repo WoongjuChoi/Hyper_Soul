@@ -6,6 +6,8 @@ using UnityEngine;
 public abstract class MonsterInformation : LivingEntity
 {
     [SerializeField]
+    private GameObject _monster;
+    [SerializeField]
     protected FiniteStateMachine _monsterFSM;
     [SerializeField]
     protected MonsterSpawnManager _monsterSpawnManager;
@@ -84,14 +86,7 @@ public abstract class MonsterInformation : LivingEntity
 
     public override void Respawn()
     {
-        StartCoroutine(RespawnMonster());
-    }
-
-    private IEnumerator RespawnMonster()
-    {
-        yield return new WaitForSeconds(1.5f);
-
-        photonView.RPC(nameof(MonsterActive), RpcTarget.AllViaServer, false);
+        GameManager.Instance.RespawnMonster(_monster);
     }
 
     [PunRPC]

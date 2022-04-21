@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FiniteStateMachine : MonoBehaviour
+public class FiniteStateMachine : MonoBehaviourPun
 {
     [SerializeField]
     private GameObject _gameObject = null;
@@ -13,7 +14,7 @@ public class FiniteStateMachine : MonoBehaviour
 
     private void Update()
     {
-        if (null == _currState)
+        if (null == _currState || false == PhotonNetwork.IsMasterClient)
         {
             return;
         }

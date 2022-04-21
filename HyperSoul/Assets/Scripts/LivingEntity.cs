@@ -94,8 +94,6 @@ public abstract class LivingEntity : MonoBehaviourPun, IDamageable, IGiveExp, IG
             CurHp -= damageAmt;
             photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
 
-            photonView.RPC("UpdateHp", RpcTarget.Others, CurHp);
-
             if (CurHp <= 0 && IsDead == false)
             {
                 GiveScore(attackerID, Score);

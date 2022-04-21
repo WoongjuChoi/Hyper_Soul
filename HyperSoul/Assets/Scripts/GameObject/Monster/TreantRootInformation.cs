@@ -7,7 +7,6 @@ public class TreantRootInformation : MonoBehaviour
 {
     [SerializeField]
     private GameObject _treant = null;
-
     [SerializeField]
     private BoxCollider _attackCollider = null;
 
@@ -16,7 +15,6 @@ public class TreantRootInformation : MonoBehaviour
     private void OnEnable()
     {
         _rotateVec = _treant.transform.eulerAngles;
-
         gameObject.transform.Rotate(0f, _rotateVec.y, 0f);
 
         Invoke(nameof(EnabledAttackCollider), 0.5f);
@@ -25,7 +23,6 @@ public class TreantRootInformation : MonoBehaviour
     private void OnDisable()
     {
         _attackCollider.enabled = false;
-
         gameObject.transform.Rotate(0f, -_rotateVec.y, 0f);
     }
 

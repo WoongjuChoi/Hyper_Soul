@@ -7,13 +7,6 @@ using UnityEngine.UI;
 
 public class WaitingRoom : MonoBehaviourPun
 {
-    public int CurPlayerType { get; private set; }
-    public int Index { get; set; }
-    public bool IsReady { get; private set; }
-    public Text PlayerName;
-
-    private const int PLAYERCHARACTOR_COUNT = 3;
-
     [SerializeField]
     private GameObject _riflePlayer;
     [SerializeField]
@@ -23,12 +16,19 @@ public class WaitingRoom : MonoBehaviourPun
     [SerializeField]
     private GameObject _readyButton;
 
+    public Text PlayerName;
+
     private List<GameObject> _playerCharactor = new List<GameObject>();
     private Text _readyButtonText;
     private Image _readyButtonImage;
     private event Action<int, string> _charactorSelectFunc;
     private event Action<int> _readyFunc;
 
+    public int CurPlayerType { get; private set; }
+    public int Index { get; set; }
+    public bool IsReady { get; private set; }
+
+    private const int PLAYERCHARACTOR_COUNT = 3;
 
     private void Awake()
     {

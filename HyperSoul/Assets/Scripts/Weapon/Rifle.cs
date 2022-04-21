@@ -7,12 +7,11 @@ public class Rifle : Weapon
 {
     [SerializeField]
     private Transform _bulletSpawnPos;
-
     [SerializeField]
     private GameObject _bulletPrefab;
 
-
     private Coroutine _shootCotountine;
+
     private void Start()
     {
         if (photonView.IsMine)
@@ -25,12 +24,10 @@ public class Rifle : Weapon
     {
         if (photonView.IsMine)
         {
-            //Debug.Log($"_playerInfo.Level : {_playerInfo.Level}");
-
             MaxBulletAmt = DataManager.Instance.FindPlayerData("Rifle" + _playerInfo.Level.ToString()).MaxBullet;
-
             CurBulletCnt = MaxBulletAmt;
         }
+
         _reloadTime = 2;
         _gunState = EGunState.Ready;
     }
@@ -66,7 +63,9 @@ public class Rifle : Weapon
         {
             return;
         }
+
         SetMousePos();
+
         _shootCotountine = StartCoroutine(Shoot());
     }
 
@@ -82,6 +81,7 @@ public class Rifle : Weapon
         bullet.GetComponent<Bullet>().ProjectileOwnerID = _playerInfo.PhotonViewID;
         bullet.GetComponent<Bullet>().Attack = _playerInfo.Attack;
         bullet.GetComponent<PoolObject>().photonView.RPC("SetActiveObj", RpcTarget.All, true);
+
         if(PhotonNetwork.IsMasterClient)
         {
             CreateCollider(bullet.GetComponent<PhotonView>().ViewID);
@@ -92,16 +92,14 @@ public class Rifle : Weapon
             photonView.RPC(nameof(CreateCollider), RpcTarget.MasterClient, bullet.GetComponent<PhotonView>().ViewID);
         }
 
-
         _canFire = false;
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, true);
-
         _audioSource.clip = ShotSound;
         _audioSource.Play();
-
         MuzzleFlashEffect.SetActive(true);
 
         yield return new WaitForSeconds(0.1f);
+
         _canFire = true;
         _playerAnimator.SetBool(PlayerAnimatorID.ISSHOOT, false);
         MuzzleFlashEffect.SetActive(false);

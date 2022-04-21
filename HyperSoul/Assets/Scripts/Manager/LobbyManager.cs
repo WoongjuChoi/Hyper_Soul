@@ -8,7 +8,6 @@ using UnityEngine.InputSystem;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
-    private const string GAME_VERSION = "0.01";
     // 로그인
     [SerializeField]
     private GameObject _loginPanel;
@@ -30,20 +29,23 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private GameObject _roomInfo;
     [SerializeField]
     private Transform _roomPos;
-
-    GameObject _curPanel;
-
-    private Dictionary<string, GameObject> _roomList = new Dictionary<string, GameObject>();
-
     [SerializeField]
     private Text _connetInfoText;
 
+    private Dictionary<string, GameObject> _roomList = new Dictionary<string, GameObject>();
+
+    private GameObject _curPanel;
+
     private byte _maxPlayer = 4;
+
+    private const string GAME_VERSION = "0.01";
 
     private void Awake()
     {
         Screen.SetResolution(1920, 1080, false);
-        PhotonNetwork.AutomaticallySyncScene = true; // 마스터클라이언트와 씬 동기화
+        PhotonNetwork.AutomaticallySyncScene = true;    // 마스터클라이언트와 씬 동기화
+        PhotonNetwork.GameVersion = GAME_VERSION;
+
         _curPanel = _loginPanel;
         _joinButton.interactable = false;
         _createRoomButton.interactable = false;
@@ -72,7 +74,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         PhotonNetwork.JoinLobby();
         _connetInfoText.text = "로비 접속 중입니다.";
-
     }
 
     public override void OnJoinedLobby()
@@ -80,7 +81,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         StartCoroutine(LobbyText());
     }
 
-    IEnumerator LobbyText()
+    private IEnumerator LobbyText()
     {
         _connetInfoText.text = "로비에 접속했습니다.";
         _createRoomButton.interactable = true;
@@ -109,10 +110,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.CreateRoom(_roomNameInput.text, new RoomOptions { MaxPlayers = _maxPlayer }, null);
     }
+
     public override void OnCreatedRoom()
     {
         Debug.Log($"{PhotonNetwork.CurrentRoom.Name} Created Room");
     }
+
     public override void OnRoomListUpdate(List<Photon.Realtime.RoomInfo> roomList)
     {
         GameObject _newRoom = null;
@@ -162,14 +165,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         _connetInfoText.text = "방에 입장하였습니다.";
-        PhotonNetwork.IsMessageQueueRunning = false; // 통신 일시정지, 플레이어 스폰 후 다시 연결 시켜준다
+        PhotonNetwork.IsMessageQueueRunning = false;        // 통신 일시정지, 플레이어 스폰 후 다시 연결 시켜준다
+
         if (true == PhotonNetwork.AutomaticallySyncScene)
         {
-            //PhotonNetwork.LoadLevel("MainScene");
-            //PhotonNetwork.LoadLevel("Bajooka Sample Scene");
             PhotonNetwork.LoadLevel("RoomScene");
-            //PhotonNetwork.LoadLevel("FSM Scene");
-
         }
     }
 

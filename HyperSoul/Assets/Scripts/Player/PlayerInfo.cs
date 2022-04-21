@@ -19,32 +19,22 @@ public class PlayerInfo : LivingEntity
     private Text _expText;
     [SerializeField]
     private Text _scoreText;
-
     [SerializeField]
     private Text _killText;
     [SerializeField]
     private Text _levelUpText;
-
     [SerializeField]
     private Text _nickNameText;
-
     [SerializeField]
     private GameObject _playerUI;
 
     private EPlayerType _playerType;
-
     private Weapon _playerWeapon;
 
-    public int PhotonViewID;
+    public int PhotonViewID { get; set; }
+    public int MaxExp { get; set; }
+    public float MoveSpeed { get; set; }
 
-    public int MaxExp
-    {
-        get; set;
-    }
-    public float MoveSpeed
-    {
-        get; set;
-    }
     private const int AMMO_COLLIDER = 11;
     private const int MONSTER_ATTACK_COLLIDER = 13;
 
@@ -165,22 +155,13 @@ public class PlayerInfo : LivingEntity
 
         if (AMMO_COLLIDER == collider.gameObject.layer)
         {
-            //Debug.Log($"피격당함\nAttacker : {projectile.ProjectileOwnerID}" +
-            //$"\nAttack : {projectile.Attack}" +
-            //$"\nHP : {CurHp}");
-
-            TakeDamage(projectile.ProjectileOwnerID, projectile.Attack,
-                collider.transform.position, collider.transform.position.normalized);
+            TakeDamage(projectile.ProjectileOwnerID, projectile.Attack, collider.transform.position, collider.transform.position.normalized);
         }
 
         LivingEntity livingEntity = collider.gameObject.GetComponentInParent<LivingEntity>();
 
         if (MONSTER_ATTACK_COLLIDER == collider.gameObject.layer)
         {
-            Debug.Log($"피격당함\nAttacker : {livingEntity.gameObject.name}" +
-                    $"\nAttack : {livingEntity.Attack}" +
-                    $"\nHP : {CurHp}");
-
             TakeMonsterDamage(livingEntity.Attack);
         }
     }

@@ -1,13 +1,13 @@
 using UnityEditor;
 using UnityEngine;
 
-class InputParameterID
+public class InputParameterID
 {
     public const string VERTICAL = "Vertical";
     public const string HORIZONTAL = "Horizontal";
 }
 
-class PlayerAnimatorID
+public class PlayerAnimatorID
 {
     public static readonly int VERTICAL = Animator.StringToHash(InputParameterID.VERTICAL);
     public static readonly int HORIZONTAL = Animator.StringToHash(InputParameterID.HORIZONTAL);
@@ -48,21 +48,14 @@ public class ResultSceneParameterID
     public const string LOSE = "Lose";
 }
 
-class TagParameterID
+public class TagParameterID
 {
-    public const string MAP = "Map"; // Layer·Î ¹Ù²ã¾ßÇÔ
+    public const string MAP = "Map";
     public const string BULLET = "Bullet";
     public const string PLAYER = "Player";
 }
 
-public enum EGunState
-{
-    Ready,
-    Empty,
-    Reloading,
-}
-
-class LayerParameter
+public class LayerParameter
 {
     public const int PLAYER = 3;
     public const int MONSTER = 6; 
@@ -73,6 +66,27 @@ class LayerParameter
     public const int LAYER_BOUNDARY = 12;
 }
 
+public enum EGunState
+{
+    Ready,
+    Empty,
+    Reloading,
+}
+
+public enum EMonsterStateIDs
+{
+    None,
+    Idle,
+    Spawn,
+    Attack,
+    Damaged,
+    Die,
+    Alert,
+    Chase,
+    ReturnPosition,
+    RotatePosition,
+}
+
 public enum EPlayerType
 {
     Rifle = 0,
@@ -80,16 +94,14 @@ public enum EPlayerType
     Sniper = 2
 }
     
-
-public enum CharacterType
+public enum ECharacterType
 {
     Player,
     Monster,
 }
 
-public enum MonsterType
+public enum EMonsterType
 {
     Wolf,
     Tree,
-    Golem,
 }

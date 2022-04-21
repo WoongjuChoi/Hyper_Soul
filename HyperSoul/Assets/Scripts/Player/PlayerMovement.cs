@@ -22,13 +22,7 @@ public class PlayerMovement : MonoBehaviourPun
     private PlayerCam _playerCam;
     private PlayerInputs _input;
     private PlayerInfo _playerInfo;
-
     private bool _isJump = false;
-    private float _aim = 0.5f;
-
-    private Vector3 _storeFirePosition = Vector3.zero;  // (22.04.01) 슈팅했을 때의 플레이어의 위치값을 저장하는 변수 추가
-    
-    public Vector3 StoreFirePosition { get { return _storeFirePosition; } } // (22.04.01) 슈팅했을 때의 플레이어의 위치값을 저장하는 변수의 프로퍼티 추가
 
     private void Awake()
     {
@@ -40,24 +34,19 @@ public class PlayerMovement : MonoBehaviourPun
         _walkingSound.SetActive(false);       
     }
 
-    private bool Continuing()
+    private void FixedUpdate()
     {
-        if (GameManager.Instance.IsReady || false == GameManager.Instance.IsStart || GameManager.Instance.IsGameOver || _playerInfo.IsDead)
+        if (Continuing())
         {
-            return true;
+            return;
         }
-        else
-        {
-            return false;
-        }
+
+        Move();
+        Jump();
     }
 
     private void Update()
     {
-        //Debug.Log($"GameManager.Instance.IsStart : {GameManager.Instance.IsStart}\n" +
-        //    $"GameManager.Instance.IsGameOver : {GameManager.Instance.IsGameOver}\n" +
-        //    $"_playerInfo.IsDead : {_playerInfo.IsDead}");
-
         if (Continuing())
         {
             _walkingSound.SetActive(false);
@@ -74,15 +63,37 @@ public class PlayerMovement : MonoBehaviourPun
         Fire();
     }
 
-    private void FixedUpdate()
+    // 점프 애니메이션 처리를 위한 트리거 콜라이더 처리
+    private void OnTriggerStay(Collider other)
     {
-        if (Continuing())
+        if (false == _playerInfo.IsDead)
         {
-            return;
+            _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, false);
+            _isJump = false;
+            _input.IsJump = false;
         }
+    }
 
-        Move();
-        Jump();
+    private void OnTriggerExit(Collider other)
+    {
+        if (false == _playerInfo.IsDead)
+        {
+            _playerAnimator.SetTrigger(PlayerAnimatorID.FALLING);
+            _isJump = true;
+            _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, true);
+        }
+    }
+
+    private bool Continuing()
+    {
+        if (GameManager.Instance.IsReady || false == GameManager.Instance.IsStart || GameManager.Instance.IsGameOver || _playerInfo.IsDead)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private void MoveAnimation()
@@ -121,6 +132,7 @@ public class PlayerMovement : MonoBehaviourPun
             _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, true);
         }
     }
+
     private void Jump()
     {
         if (_input.IsJump && _isJump == false)
@@ -129,6 +141,7 @@ public class PlayerMovement : MonoBehaviourPun
             _playerRigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
         }
     }
+
     private void JumpSound()
     {
         if (_playerAnimator.GetBool(PlayerAnimatorID.ISJUMP) && photonView.IsMine)
@@ -140,6 +153,7 @@ public class PlayerMovement : MonoBehaviourPun
             _jumpSound.SetActive(false);
         }
     }
+
     private void Reload()
     {
         if (_input.IsReload && _weapon.HasReloaded())
@@ -158,33 +172,12 @@ public class PlayerMovement : MonoBehaviourPun
 
         _playerAnimator.SetBool(PlayerAnimatorID.RELOAD, false);
     }
+
     private void Fire()
     {
         if (_input.IsShoot)
         {
-            _storeFirePosition = gameObject.transform.position;
             _weapon.Fire();
-        }
-    }
-
-    // 점프 애니메이션 처리를 위한 트리거 콜라이더 처리
-    private void OnTriggerStay(Collider other)
-    {
-        if (false == _playerInfo.IsDead)
-        {
-            _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, false);
-            _isJump = false;
-            _input.IsJump = false;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (false == _playerInfo.IsDead)
-        {
-            _playerAnimator.SetTrigger(PlayerAnimatorID.FALLING);
-            _isJump = true;
-            _playerAnimator.SetBool(PlayerAnimatorID.ISJUMP, true);
         }
     }
 }

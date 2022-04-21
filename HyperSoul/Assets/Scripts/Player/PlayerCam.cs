@@ -8,30 +8,27 @@ public class PlayerCam : MonoBehaviourPun
 {
     [SerializeField]
     private Transform _playerBody;
-
     [SerializeField]
     private Transform _cameraArm;
-
     [SerializeField]
     private Transform _followCameraPos;
+    [SerializeField]
+    private Vector2 _normalRotationSpeed;
 
     public float _rotationSpeedX = 0.5f;
     public float _rotationSpeedY = 0.5f;
 
-    [SerializeField]
-    private Vector2 _normalRotationSpeed;
-
-    private float _limitMinX = -80f;
-    private float _limitMaxX = 50f;
-    public float _eulerAngleX { get; private set; }
-    private float _eulerAngleY;
-
     private PlayerInfo _playerInfo;
     private PlayerInputs _input;
-    private RaycastHit _hit;
-    private float _rayDistance = 3f;
-    private Vector3 _defaultCamPos;
     private Animator _playerAnimator;
+    private RaycastHit _hit;
+    private Vector3 _defaultCamPos;
+    private float _rayDistance = 3f;
+    private float _limitMinX = -80f;
+    private float _limitMaxX = 50f;
+    private float _eulerAngleY;
+
+    public float _eulerAngleX { get; private set; }
 
     private void Awake()
     {
@@ -83,6 +80,7 @@ public class PlayerCam : MonoBehaviourPun
         }
 
         MouseRotate(_input.MousePos.x, _input.MousePos.y);
+
         camCollisionFix();
 
         PlayerRotation();
@@ -90,12 +88,9 @@ public class PlayerCam : MonoBehaviourPun
 
     public void MouseRotate(float mouseX, float mouseY)
     {
-        _eulerAngleY += mouseX * _rotationSpeedY;
-        // 마우스 아래로 내리면 음수인데 오브젝트의 x축이 +방향으로 회전해야 아래를 보기 때문에 -연산
-        _eulerAngleX -= mouseY * _rotationSpeedX;
-
+        _eulerAngleY += mouseX * _rotationSpeedY;        
+        _eulerAngleX -= mouseY * _rotationSpeedX;   // 마우스 아래로 내리면 음수인데 오브젝트의 x축이 +방향으로 회전해야 아래를 보기 때문에 -연산
         _eulerAngleX = clampAngle(_eulerAngleX, _limitMinX, _limitMaxX);
-
         _cameraArm.rotation = Quaternion.Euler(_eulerAngleX, _eulerAngleY, 0);
     }
 
@@ -128,18 +123,4 @@ public class PlayerCam : MonoBehaviourPun
         _playerAnimator.SetFloat(PlayerAnimatorID.AIM, (_eulerAngleX + 80f) / 130f);
         _playerBody.rotation = Quaternion.Euler(0, _eulerAngleY, 0);
     }
-
-    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    //{
-    //    if (stream.IsWriting)
-    //    {
-    //        stream.SendNext(_playerBody.rotation);
-    //        stream.SendNext(_playerAnimator);
-    //    }
-    //    else
-    //    {
-    //        _playerBody = (Transform)stream.ReceiveNext();
-    //        _playerAnimator = (Animator)stream.ReceiveNext();
-    //    }
-    //}
 }

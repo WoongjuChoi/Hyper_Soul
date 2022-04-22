@@ -152,10 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50d6a13ea2fb02e44bc1940e8c1677e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _1stPosition: {fileID: 250181665}
-  _2ndPosition: {fileID: 769259013}
-  _3rdPosition: {fileID: 1699046366}
-  _4thPosition: {fileID: 1835044257}
+  _goldMedalPosition: {fileID: 250181665}
+  _silverMedalPosition: {fileID: 769259013}
+  _bronzeMedalPosition: {fileID: 1699046366}
+  _loserPosition: {fileID: 1835044257}
   _riflePlayerPrefab: {fileID: 4384328772422037406, guid: ad0a3d9043b9baf48b41a7e93468fa38, type: 3}
   _bazookaPlayerPrefab: {fileID: 5966523949941904412, guid: 069168b6987712141b844f9f40def11e, type: 3}
   _sniperPlayerPrefab: {fileID: 5921646174881970306, guid: e577f10980bb17f46859c2cd2f09a5f0, type: 3}
@@ -278,7 +278,7 @@ GameObject:
   m_Component:
   - component: {fileID: 250181665}
   m_Layer: 0
-  m_Name: 1stPosition
+  m_Name: GoldMedalPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -391,7 +391,7 @@ GameObject:
   m_Component:
   - component: {fileID: 769259013}
   m_Layer: 0
-  m_Name: 2ndPosition
+  m_Name: SilverMedalPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -645,7 +645,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1699046366}
   m_Layer: 0
-  m_Name: 3rdPosition
+  m_Name: BronzeMedalPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -675,7 +675,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1835044257}
   m_Layer: 0
-  m_Name: 4thPosition
+  m_Name: LoserPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

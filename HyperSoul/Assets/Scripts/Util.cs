@@ -32,6 +32,8 @@ public class MonsterAnimatorID
     public const string IS_DIE = "isDie";
     public const string IS_CHASE = "isChase";
     public const string IS_RETURN_POSITION = "isReturnPosition";
+    public const string IS_LEFT_ROTATE = "isLeftRotate";
+    public const string IS_RIGHT_ROTATE = "isRightRotate";
     public const string IS_TREANT_ROOT_ATTACK = "isRootAttack";
     public const string IS_TREANT_STOMP_ATTACK = "isStompAttack";
 }

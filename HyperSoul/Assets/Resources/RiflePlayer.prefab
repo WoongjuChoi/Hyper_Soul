@@ -541,9 +541,9 @@ MonoBehaviour:
   _playerBody: {fileID: 6693680876565690992}
   _cameraArm: {fileID: 580094372236106193}
   _followCameraPos: {fileID: 580094373284290993}
+  _normalRotationSpeed: {x: 0, y: 0}
   _rotationSpeedX: 0.5
   _rotationSpeedY: 0.5
-  _normalRotationSpeed: {x: 0, y: 0}
 --- !u!114 &580094374002295456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -573,7 +573,6 @@ MonoBehaviour:
   _levelUpText: {fileID: 5022178616290729025}
   _nickNameText: {fileID: 4662847216909428382}
   _playerUI: {fileID: 6186339734304336912}
-  PhotonViewID: 0
 --- !u!114 &580094374002295459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -650,11 +649,8 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 7699030613690402228}
-  - {fileID: 5826583379303083019}
-  - {fileID: 4186782827809483194}
+  observableSearch: 0
+  ObservedComponents: []
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -8204,7 +8200,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
-  m_UseLocal: 1
+  m_UseLocal: 0
 --- !u!114 &4186782827809483194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8219,48 +8215,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 1
-    SynchronizeType: 2
-    Name: Horizontal
-  - Type: 1
-    SynchronizeType: 2
-    Name: Vertical
-  - Type: 9
-    SynchronizeType: 2
-    Name: DoJump
-  - Type: 4
-    SynchronizeType: 2
-    Name: IsJump
-  - Type: 9
-    SynchronizeType: 2
-    Name: Falling
-  - Type: 9
-    SynchronizeType: 2
-    Name: Die
-  - Type: 1
-    SynchronizeType: 2
-    Name: Aim
-  - Type: 9
-    SynchronizeType: 2
-    Name: Reload
-  - Type: 4
-    SynchronizeType: 2
-    Name: IsShoot
-  - Type: 1
-    SynchronizeType: 2
-    Name: ReloadSpeed
-  - Type: 9
-    SynchronizeType: 2
-    Name: SingleShot
-  - Type: 4
-    SynchronizeType: 2
-    Name: Hit
-  m_SynchronizeLayers:
-  - SynchronizeType: 2
-    LayerIndex: 0
-  - SynchronizeType: 2
-    LayerIndex: 1
+  m_SynchronizeParameters: []
+  m_SynchronizeLayers: []
 --- !u!1 &6693680876572344808
 GameObject:
   m_ObjectHideFlags: 0
@@ -11077,12 +11033,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a80129f993a0c474da82abd27284ac6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ZoomRotationSpeed: {x: 0, y: 0}
   ZoomCam: {fileID: 580094372102848751}
   Player: {fileID: 580094374002295468}
   MuzzleFlashEffect: {fileID: 578808420069903376}
   ShotSound: {fileID: 8300000, guid: 0e5ec5d798406aa4699be8c44dd7599f, type: 3}
   ReloadSound: {fileID: 8300000, guid: 5e7f633dda3117f4f90253f51ee065f0, type: 3}
+  ZoomRotationSpeed: {x: 0, y: 0}
   CurBulletCnt: 0
   MaxBulletAmt: 0
   _bulletSpawnPos: {fileID: 580094371961263158}
@@ -11104,7 +11060,7 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 2
+  observableSearch: 0
   ObservedComponents: []
   sceneViewId: 0
   InstantiationId: 0

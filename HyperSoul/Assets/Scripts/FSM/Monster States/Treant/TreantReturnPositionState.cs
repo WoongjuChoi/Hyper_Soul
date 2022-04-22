@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class TreantReturnPositionState : BaseState<TreantInformation>
 {
+    private Coroutine _rotateCoroutine;
+
     private bool _isDoneHealing = false;
     private bool _isLocatedLeftSide = false;
     private bool _isLocatedRightSide = false;
     private int _increaseHealing = 0;
-
-    private const string IS_LEFT_ROTATE = "isLeftRotate";
-    private const string IS_RIGHT_ROTATE = "isRightRotate";
 
     public override void EnterState()
     {
@@ -25,8 +24,8 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
         _isLocatedLeftSide = false;
         _isLocatedRightSide = false;
 
-        MonsterObject.GetComponentInChildren<Animator>().SetBool(IS_LEFT_ROTATE, _isLocatedLeftSide);
-        MonsterObject.GetComponentInChildren<Animator>().SetBool(IS_RIGHT_ROTATE, _isLocatedRightSide);
+        MonsterObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_LEFT_ROTATE, _isLocatedLeftSide);
+        MonsterObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_RIGHT_ROTATE, _isLocatedRightSide);
     }
 
     public override void UpdateState()
@@ -42,7 +41,12 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
 
         CheckCurrentPosition();
 
-        StartCoroutine(ReturnPosition());
+        if (null != _rotateCoroutine)
+        {
+            StopCoroutine(_rotateCoroutine);
+        }
+
+        _rotateCoroutine = StartCoroutine(ReturnPosition());
     }
 
     private void CheckCurrentPosition()
@@ -58,28 +62,6 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
         {
             _isLocatedLeftSide = false;
             _isLocatedRightSide = true;
-        }
-    }
-
-    private IEnumerator ReturnPosition()
-    {
-        while (CreatureInformation.OriginVec != MonsterObject.transform.forward)
-        {
-            float rotateSpeed = CreatureInformation.RotateSpeed * Time.deltaTime;
-
-            MonsterObject.GetComponentInChildren<Animator>().SetBool(IS_LEFT_ROTATE, _isLocatedLeftSide);
-            MonsterObject.GetComponentInChildren<Animator>().SetBool(IS_RIGHT_ROTATE, _isLocatedRightSide);
-
-            if (_isLocatedRightSide)
-            {
-                MonsterObject.transform.Rotate(0f, rotateSpeed, 0f);
-            }
-            else if (_isLocatedLeftSide)
-            {
-                MonsterObject.transform.Rotate(0f, -rotateSpeed, 0f);
-            }
-
-            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -101,6 +83,28 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
                 CreatureInformation.CurHp += _increaseHealing;
                 CreatureInformation.SetMonsterHp(CreatureInformation.CurHp);
             }
+        }
+    }
+
+    private IEnumerator ReturnPosition()
+    {
+        while (CreatureInformation.OriginVec != MonsterObject.transform.forward)
+        {
+            float rotateSpeed = CreatureInformation.RotateSpeed * Time.deltaTime;
+
+            MonsterObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_LEFT_ROTATE, _isLocatedLeftSide);
+            MonsterObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_RIGHT_ROTATE, _isLocatedRightSide);
+
+            if (_isLocatedRightSide)
+            {
+                MonsterObject.transform.Rotate(0f, rotateSpeed, 0f);
+            }
+            else if (_isLocatedLeftSide)
+            {
+                MonsterObject.transform.Rotate(0f, -rotateSpeed, 0f);
+            }
+
+            yield return new WaitForSeconds(1f);
         }
     }
 }

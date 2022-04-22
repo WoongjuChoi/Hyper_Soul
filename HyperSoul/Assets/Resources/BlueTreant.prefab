@@ -126,6 +126,7 @@ MonoBehaviour:
   _monsterMaxHP: 100
   _viewAngle: 60
   _rotateSpeed: 2
+  _distanceFromTarget: 50
 --- !u!114 &3392279994915056136
 MonoBehaviour:
   m_ObjectHideFlags: 0

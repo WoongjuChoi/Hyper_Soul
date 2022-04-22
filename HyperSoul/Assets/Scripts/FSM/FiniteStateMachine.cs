@@ -13,7 +13,7 @@ public class FiniteStateMachine : MonoBehaviourPun
 
     private void Update()
     {
-        if (null == _currState)
+        if (null == _currState /*|| false == PhotonNetwork.IsMasterClient*/)
         {
             return;
         }

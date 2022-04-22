@@ -6,6 +6,8 @@ public class WolfChaseState : BaseState<WolfInformation>
 {
     [SerializeField]
     private AudioSource _chaseAudioSource;
+    [SerializeField]
+    private float _distanceFromTarget = 0f;
 
     public override void EnterState()
     {
@@ -48,7 +50,7 @@ public class WolfChaseState : BaseState<WolfInformation>
 
         float distance = (MonsterObject.transform.position - CreatureInformation.InitializeTransform.position).magnitude;
 
-        if (distance >= 20f)
+        if (distance >= _distanceFromTarget)
         {
             FiniteStateMachine.ChangeState(EMonsterStateIDs.ReturnPosition);
 

@@ -9,9 +9,6 @@ public class TreantRotatePositionState : BaseState<TreantInformation>
     private bool _isLocatedLeftSide = false;
     private bool _isLocatedRightSide = false;
 
-    private const string IS_LEFT_ROTATE = "isLeftRotate";
-    private const string IS_RIGHT_ROTATE = "isRightRotate";
-
     public override void EnterState()
     {
         CreatureInformation.MonsterCurrentState = EMonsterStateIDs.RotatePosition;
@@ -22,8 +19,8 @@ public class TreantRotatePositionState : BaseState<TreantInformation>
         _isLocatedLeftSide = false;
         _isLocatedRightSide = false;
 
-        MonsterObject.GetComponentInChildren<Animator>().SetBool(IS_LEFT_ROTATE, _isLocatedLeftSide);
-        MonsterObject.GetComponentInChildren<Animator>().SetBool(IS_RIGHT_ROTATE, _isLocatedRightSide);
+        MonsterObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_LEFT_ROTATE, _isLocatedLeftSide);
+        MonsterObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_RIGHT_ROTATE, _isLocatedRightSide);
     }
 
     public override void UpdateState()
@@ -42,7 +39,7 @@ public class TreantRotatePositionState : BaseState<TreantInformation>
             return;
         }
 
-        if (CreatureInformation.Target.GetComponent<LivingEntity>().IsDead)
+        if (CreatureInformation.Target.GetComponent<LivingEntity>().IsDead || CreatureInformation.OutOfSight)
         {
             CreatureInformation.IsTargeting = false;
 
@@ -83,8 +80,8 @@ public class TreantRotatePositionState : BaseState<TreantInformation>
         {
             float rotateSpeed = CreatureInformation.RotateSpeed * Time.deltaTime;
 
-            MonsterObject.GetComponentInChildren<Animator>().SetBool(IS_LEFT_ROTATE, _isLocatedLeftSide);
-            MonsterObject.GetComponentInChildren<Animator>().SetBool(IS_RIGHT_ROTATE, _isLocatedRightSide);
+            MonsterObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_LEFT_ROTATE, _isLocatedLeftSide);
+            MonsterObject.GetComponentInChildren<Animator>().SetBool(MonsterAnimatorID.IS_RIGHT_ROTATE, _isLocatedRightSide);
 
             if (_isLocatedRightSide)
             {

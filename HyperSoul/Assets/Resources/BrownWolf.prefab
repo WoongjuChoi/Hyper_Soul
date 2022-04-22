@@ -2440,6 +2440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _chaseAudioSource: {fileID: 413349106439393332}
+  _distanceFromTarget: 50
 --- !u!114 &763783811343904815
 MonoBehaviour:
   m_ObjectHideFlags: 0

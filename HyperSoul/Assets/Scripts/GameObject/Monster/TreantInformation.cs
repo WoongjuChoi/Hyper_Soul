@@ -7,19 +7,22 @@ public class TreantInformation : MonsterInformation
 {
     [SerializeField]
     private float _viewAngle = 0f;
-
     [SerializeField]
     private float _rotateSpeed = 0f;
+    [SerializeField]
+    private float _distanceFromTarget = 0f;
 
     private Vector3 _vecMonsterToTarget = Vector3.zero;
     private Vector3 _targetPosition = Vector3.zero;
     private bool _existInSight = false;
 
-    public Vector3 VectorMonsterToTarget { get { return _vecMonsterToTarget; } }
     public Vector3 OriginVec { get; set; }
-    public bool ExistInSight { get { return _existInSight; } }
+    public bool OutOfSight { get; private set; }
     public float DistanceMonsterToTarget { get; private set; }
+    public Vector3 VectorMonsterToTarget { get { return _vecMonsterToTarget; } }
+    public bool ExistInSight { get { return _existInSight; } }
     public float RotateSpeed { get { return _rotateSpeed; } }
+    public float DistanceFromTarget { get { return _distanceFromTarget; } }
 
     public override void Awake()
     {
@@ -60,6 +63,8 @@ public class TreantInformation : MonsterInformation
 
             Vector3 gameObjecPosition = new Vector3(gameObject.transform.position.x, _targetPosition.y, gameObject.transform.position.z);
             DistanceMonsterToTarget = (_targetPosition - gameObjecPosition).magnitude;
+
+            OutOfMonsterSight();
         }
     }
 
@@ -107,6 +112,18 @@ public class TreantInformation : MonsterInformation
                     IsTargeting = true;
                 }
             }
+        }
+    }
+
+    private void OutOfMonsterSight()
+    {
+        if (DistanceMonsterToTarget < _distanceFromTarget)
+        {
+            OutOfSight = false;
+        }
+        else
+        {
+            OutOfSight = true;
         }
     }
 }

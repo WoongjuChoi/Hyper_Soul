@@ -1742,8 +1742,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
-  m_SynchronizeParameters: []
-  m_SynchronizeLayers: []
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 2
+    Name: isAlert
+  - Type: 4
+    SynchronizeType: 2
+    Name: isAttack
+  - Type: 4
+    SynchronizeType: 2
+    Name: isChase
+  - Type: 4
+    SynchronizeType: 2
+    Name: isDamaged
+  - Type: 4
+    SynchronizeType: 2
+    Name: isReturnPosition
+  - Type: 4
+    SynchronizeType: 2
+    Name: isWalk
+  - Type: 4
+    SynchronizeType: 2
+    Name: Hit
+  - Type: 4
+    SynchronizeType: 2
+    Name: Die
+  - Type: 4
+    SynchronizeType: 2
+    Name: isSpawn
+  - Type: 4
+    SynchronizeType: 2
+    Name: isResting
+  m_SynchronizeLayers:
+  - SynchronizeType: 2
+    LayerIndex: 0
 --- !u!1 &6284711341426110872
 GameObject:
   m_ObjectHideFlags: 0
@@ -2919,6 +2951,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _chaseAudioSource: {fileID: 1930855409514379947}
+  _distanceFromTarget: 50
 --- !u!114 &968989740115898183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3034,7 +3067,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 0
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

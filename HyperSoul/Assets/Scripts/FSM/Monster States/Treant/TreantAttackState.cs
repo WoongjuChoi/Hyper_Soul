@@ -12,7 +12,6 @@ public class TreantAttackState : BaseState<TreantInformation>
     private Animator _animator = null;
 
     private ITreantAttack _treantAttack;
-    private bool _outOfSight = false;
 
     public override void EnterState()
     {
@@ -26,8 +25,6 @@ public class TreantAttackState : BaseState<TreantInformation>
 
         _treantRootAttack.StopAttack();
         _treantStompAttack.StopAttack();
-
-        _outOfSight = false;
     }
 
     public override void UpdateState()
@@ -48,7 +45,7 @@ public class TreantAttackState : BaseState<TreantInformation>
 
         SetAttackPattern();
 
-        if (CreatureInformation.Target.GetComponent<LivingEntity>().IsDead || _outOfSight)
+        if (CreatureInformation.Target.GetComponent<LivingEntity>().IsDead || CreatureInformation.OutOfSight)
         {
             CreatureInformation.IsTargeting = false;
             FiniteStateMachine.ChangeState(EMonsterStateIDs.ReturnPosition);
@@ -66,14 +63,10 @@ public class TreantAttackState : BaseState<TreantInformation>
             _treantRootAttack.StopAttack();
             _treantAttack = _treantStompAttack;
         }
-        else if (CreatureInformation.DistanceMonsterToTarget < 30f)
+        else if (CreatureInformation.DistanceMonsterToTarget < CreatureInformation.DistanceFromTarget)
         {
             _treantStompAttack.StopAttack();
             _treantAttack = _treantRootAttack;
-        }
-        else
-        {
-            _outOfSight = true;
         }
     }
 }

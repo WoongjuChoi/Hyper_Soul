@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TreantRotatePositionState : BaseState<TreantInformation>
 {
+    private Coroutine _rotatePositionCoroutine;
+
     private bool _isLocatedLeftSide = false;
     private bool _isLocatedRightSide = false;
 
@@ -51,7 +53,12 @@ public class TreantRotatePositionState : BaseState<TreantInformation>
 
         CheckTargetPosition();
 
-        StartCoroutine(RotatePosition());
+        if (null != _rotatePositionCoroutine)
+        {
+            StopCoroutine(_rotatePositionCoroutine);
+        }
+
+        _rotatePositionCoroutine = StartCoroutine(RotatePosition());
     }
 
     private void CheckTargetPosition()

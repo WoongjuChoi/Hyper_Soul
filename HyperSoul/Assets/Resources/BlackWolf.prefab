@@ -69,7 +69,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
-  m_UseLocal: 1
+  m_UseLocal: 0
 --- !u!1 &728245604481292853
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,12 +719,8 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 7137063948790295214}
-  - {fileID: 4318733810436777255}
-  - {fileID: 2558911861377477455}
-  - {fileID: 4506151842377235016}
+  observableSearch: 0
+  ObservedComponents: []
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -743,7 +739,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
-  m_UseLocal: 1
+  m_UseLocal: 0
 --- !u!114 &4318733810436777255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1543,40 +1539,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 2
-    Name: isAlert
-  - Type: 4
-    SynchronizeType: 2
-    Name: isAttack
-  - Type: 4
-    SynchronizeType: 2
-    Name: isChase
-  - Type: 4
-    SynchronizeType: 2
-    Name: isDamaged
-  - Type: 4
-    SynchronizeType: 2
-    Name: isReturnPosition
-  - Type: 4
-    SynchronizeType: 2
-    Name: isWalk
-  - Type: 4
-    SynchronizeType: 2
-    Name: Hit
-  - Type: 9
-    SynchronizeType: 2
-    Name: Die
-  - Type: 4
-    SynchronizeType: 2
-    Name: isSpawn
-  - Type: 4
-    SynchronizeType: 2
-    Name: isResting
-  m_SynchronizeLayers:
-  - SynchronizeType: 2
-    LayerIndex: 0
+  m_SynchronizeParameters: []
+  m_SynchronizeLayers: []
 --- !u!1 &3389361560843343543
 GameObject:
   m_ObjectHideFlags: 0

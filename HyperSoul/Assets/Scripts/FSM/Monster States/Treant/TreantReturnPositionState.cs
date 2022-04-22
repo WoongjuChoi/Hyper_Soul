@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TreantReturnPositionState : BaseState<TreantInformation>
 {
+    private Coroutine _returnPositionCoroutine;
+
     private bool _isDoneHealing = false;
     private bool _isLocatedLeftSide = false;
     private bool _isLocatedRightSide = false;
@@ -42,7 +44,12 @@ public class TreantReturnPositionState : BaseState<TreantInformation>
 
         CheckCurrentPosition();
 
-        StartCoroutine(ReturnPosition());
+        if (null != _returnPositionCoroutine)
+        {
+            StopCoroutine(_returnPositionCoroutine);
+        }
+
+        _returnPositionCoroutine = StartCoroutine(ReturnPosition());
     }
 
     private void CheckCurrentPosition()

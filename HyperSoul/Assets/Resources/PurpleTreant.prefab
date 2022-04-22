@@ -402,7 +402,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
-  m_UseLocal: 1
+  m_UseLocal: 0
 --- !u!114 &4049944202997991353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,13 +417,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 2
-    Name: isSpawn
-  m_SynchronizeLayers:
-  - SynchronizeType: 2
-    LayerIndex: 0
+  m_SynchronizeParameters: []
+  m_SynchronizeLayers: []
 --- !u!1 &1466246566505018302
 GameObject:
   m_ObjectHideFlags: 0
@@ -5626,34 +5621,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 2
-    Name: isDamaged
-  - Type: 4
-    SynchronizeType: 2
-    Name: isLeftRotate
-  - Type: 4
-    SynchronizeType: 2
-    Name: isRightRotate
-  - Type: 4
-    SynchronizeType: 2
-    Name: isRootAttack
-  - Type: 4
-    SynchronizeType: 2
-    Name: isStompAttack
-  - Type: 4
-    SynchronizeType: 2
-    Name: Hit
-  - Type: 9
-    SynchronizeType: 2
-    Name: Die
-  - Type: 4
-    SynchronizeType: 2
-    Name: isSpawn
-  m_SynchronizeLayers:
-  - SynchronizeType: 2
-    LayerIndex: 0
+  m_SynchronizeParameters: []
+  m_SynchronizeLayers: []
 --- !u!1 &1466840863180545527
 GameObject:
   m_ObjectHideFlags: 0
@@ -6484,7 +6453,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
-  m_UseLocal: 1
+  m_UseLocal: 0
 --- !u!1 &4710790873026732664
 GameObject:
   m_ObjectHideFlags: 0
@@ -6841,13 +6810,8 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 8187905916868218919}
-  - {fileID: 6468913042251341610}
-  - {fileID: 2987024790502333322}
-  - {fileID: 4049944202997991353}
-  - {fileID: 4256151541655464093}
+  observableSearch: 0
+  ObservedComponents: []
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

@@ -9921,11 +9921,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _launchSound: {fileID: 8300000, guid: a2550d7096ad62d4d97266a2072d9408, type: 3}
+  _maxSpeed: 70
+  _gravityForce: 0.8
   MissilePrefab: {fileID: 3456087214949747122}
   RocketParticleEffect: {fileID: 734702495889507368}
   ExplosionEffect: {fileID: 289230306847107765}
-  _maxSpeed: 70
-  _gravityForce: 0.8
 --- !u!114 &5291299365151892888
 MonoBehaviour:
   m_ObjectHideFlags: 0

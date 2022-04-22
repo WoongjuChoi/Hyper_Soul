@@ -2622,7 +2622,6 @@ MonoBehaviour:
   _levelUpText: {fileID: 3522381616358166007}
   _nickNameText: {fileID: 9063685862057431096}
   _playerUI: {fileID: 2302762841791192007}
-  PhotonViewID: 0
 --- !u!114 &5379531540559722048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2638,9 +2637,9 @@ MonoBehaviour:
   _playerBody: {fileID: 6347490903008237272}
   _cameraArm: {fileID: 4640153929139642222}
   _followCameraPos: {fileID: 4640153927486101442}
+  _normalRotationSpeed: {x: 0, y: 0}
   _rotationSpeedX: 0.5
   _rotationSpeedY: 0.5
-  _normalRotationSpeed: {x: 0, y: 0}
 --- !u!114 &1642316058653411580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10684,12 +10683,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26f3c8a1929ee374fab3b0c2ab9e3da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ZoomRotationSpeed: {x: 0, y: 0}
   ZoomCam: {fileID: 4640153929063469879}
   Player: {fileID: 5379531540559722079}
   MuzzleFlashEffect: {fileID: 3033746417185834461}
   ShotSound: {fileID: 8300000, guid: a2550d7096ad62d4d97266a2072d9408, type: 3}
   ReloadSound: {fileID: 8300000, guid: 5e7f633dda3117f4f90253f51ee065f0, type: 3}
+  ZoomRotationSpeed: {x: 0, y: 0}
   CurBulletCnt: 0
   MaxBulletAmt: 0
   _missileSpawnPos: {fileID: 2446344342490065382}

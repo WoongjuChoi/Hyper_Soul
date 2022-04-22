@@ -140,6 +140,7 @@ public class TimeManager : MonoBehaviourPun, IPunObservable
     private IEnumerator ShowStartText()
     {
         yield return new WaitForSeconds(1f);
+
         photonView.RPC(nameof(ActivateTexts), RpcTarget.All, false, false, false);
         _isReadyDone = true;
     }

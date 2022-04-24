@@ -79,17 +79,18 @@ public class WolfInformation : MonsterInformation
     {
         GameObject collideObject = PhotonView.Find(ID).gameObject;
 
-        if (LayerParameter.LAYER_AMMO == collideObject.layer)
+        if (false == IsDamaged && LayerParameter.LAYER_AMMO == collideObject.layer)
         {
             _attackerInfo = collideObject.GetComponent<Projectile>();
             _attacker = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
 
-            if (false == IsDamaged)
+            if (EMonsterStateIDs.Alert == MonsterCurrentState || EMonsterStateIDs.Attack == MonsterCurrentState || EMonsterStateIDs.Chase == MonsterCurrentState || EMonsterStateIDs.Idle == MonsterCurrentState)
             {
-                if (EMonsterStateIDs.Alert == MonsterCurrentState || EMonsterStateIDs.Attack == MonsterCurrentState || EMonsterStateIDs.Chase == MonsterCurrentState || EMonsterStateIDs.Idle == MonsterCurrentState)
+                IsDamaged = true;
+                _collisionVec = gameObject.transform.position;
+
+                if (false == IsTargeting)
                 {
-                    IsDamaged = true;
-                    _collisionVec = gameObject.transform.position;
                     _target = PhotonView.Find(_attackerInfo.ProjectileOwnerID).GetComponent<LivingEntity>().gameObject;
                     Vector3 targetPosition = _target.transform.position + new Vector3(0f, 1.3f, 0f);
                     _lookAtTargetVec = targetPosition - _collisionVec;

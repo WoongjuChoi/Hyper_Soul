@@ -76,8 +76,6 @@ public abstract class MonsterInformation : LivingEntity
 
     public void SetMonsterHp(int curHp)
     {
-        Debug.Log($"curHp : {curHp}");
-
         if (PhotonNetwork.IsMasterClient)
         {
             photonView.RPC(nameof(SetMonsterInformation), RpcTarget.All, curHp, MaxHp);

@@ -159,16 +159,16 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         yield return new WaitForSeconds(1.5f);
 
-        // MonsterInformation.cs 의 MonsterActive() 실행
-        monsterInfo.GetComponent< PhotonView>().RPC("MonsterActive", RpcTarget.All, false);
-
-        yield return new WaitForSeconds(1.5f);
-
-        monsterInfo.GetComponent< PhotonView>().RPC("MonsterActive", RpcTarget.All, true);
+        monster.transform.rotation = Quaternion.Euler(0f, monsterInfo.MonsterSpawnDirection, 0f);
 
         monster.transform.position = monsterInfo.InitializeTransform.position;
 
-        monster.transform.rotation = Quaternion.Euler(0f, monsterInfo.MonsterSpawnDirection, 0f);
+        // MonsterInformation.cs 의 MonsterActive() 실행
+        monsterInfo.GetComponent< PhotonView>().RPC("MonsterActive", RpcTarget.All, false);
+
+        yield return new WaitForSeconds(3.5f);
+
+        monsterInfo.GetComponent< PhotonView>().RPC("MonsterActive", RpcTarget.All, true);
     }
 
     public void RespawnPlayer()
